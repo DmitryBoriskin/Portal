@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PgDbase;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
@@ -9,8 +6,21 @@ namespace Portal.Areas.Admin.Controllers
     [Authorize]
     public class CoreController : Controller
     {
+        /// <summary>
+        /// Репозитория для работы с сущностями cms
+        /// </summary>
+        protected CmsRepository CmsRepository { get; private set; }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public CoreController()
+        {
+            CmsRepository = new CmsRepository();
+        }
+
         // GET: Admin/Core
-        public ActionResult Index2()
+        public ActionResult Index()
         {
             return View();
         }
