@@ -511,7 +511,7 @@ namespace PgDbase.models
 		[Column,        Nullable] public string    c_email            { get; set; } // character varying(128)
 		[Column,        Nullable] public string    c_salt             { get; set; } // character varying(32)
 		[Column,        Nullable] public string    c_hash             { get; set; } // character varying(128)
-		[Column,        Nullable] public Guid?     с_change_pass_code { get; set; } // uuid
+		[Column,        Nullable] public Guid?     c_change_pass_code { get; set; } // uuid
 		[Column,     NotNull    ] public string    c_surname          { get; set; } // character varying(128)
 		[Column,     NotNull    ] public string    c_name             { get; set; } // character varying(128)
 		[Column,        Nullable] public string    c_patronymic       { get; set; } // character varying(128)

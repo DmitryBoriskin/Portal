@@ -7,7 +7,7 @@
 	DataContextName	 = "CMSdb"; 
 	DefaultConfiguration = "CMSdb";
 	GenerateConstructors = true;
-	GenerateBackReferences = true;
+	GenerateBackReferences = true; 
 	
 
 	LoadPostgreSQLMetadata("chuvashia.com", "5432", "portal", "postgres", "sa0.123");
@@ -22,5 +22,5 @@
 					PluralizeDataContextPropertyNames   ? ToPlural  (t.TypeName) :
 					SingularizeDataContextPropertyNames ? ToSingular(t.TypeName) : t.TypeName);
 	}
-	GenerateModel();  
+	GenerateModel();    
 #>  

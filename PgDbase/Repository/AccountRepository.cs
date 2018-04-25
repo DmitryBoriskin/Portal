@@ -1,11 +1,9 @@
 ﻿using LinqToDB;
+using LinqToDB.Data;
 using PgDbase.entity;
 using PgDbase.models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PgDbase
 {
@@ -45,8 +43,7 @@ namespace PgDbase
                         Id = s.id,
                         Mail = s.c_email,
                         Salt = s.c_salt,
-                        Hash = s.c_hash,
-                        Group = s.f_group.ToLower(),
+                        Hash = s.c_hash,                        
                         Surname = s.c_surname,
                         Name = s.c_name,
                         Patronymic = s.c_patronymic,
@@ -54,8 +51,8 @@ namespace PgDbase
                         LockDate = s.d_try_login,
                         Disabled = s.b_disabled
                     });
-                if (!data.Any()) { return null; }
-                else { return data.First(); }
+                if (data.Any()) return data.First();
+                return null;
             }
         }        
         public AccountModel getCmsAccount(Guid Id)
@@ -89,7 +86,7 @@ namespace PgDbase
             {
                 bool result = false;
 
-                int count = db.core_user.Where(w => w.с_change_pass_code == Code).Count();
+                int count = db.core_user.Where(w => w.c_change_pass_code == Code).Count();
                 if (count > 0) result = true;
 
                 return result;
@@ -107,7 +104,7 @@ namespace PgDbase
                 var data = db.core_user.Where(w => w.id == id)
                         .Set(u => u.n_error_count, 0)
                         .Set(u => u.d_try_login, DateTime.Now)
-                        .Set(u => u.с_change_pass_code, change_pass_code)
+                        .Set(u => u.c_change_pass_code, change_pass_code)
                         .Update();
 
                 // Логирование
@@ -155,7 +152,7 @@ namespace PgDbase
             using (var db = new CMSdb(_context))
             {
                 var data = db.core_user.Where(w => w.id == id)
-                    .Set(u => u.с_change_pass_code, Code)
+                    .Set(u => u.c_change_pass_code, Code)
                     .Update();
 
                 // Логирование
