@@ -23,6 +23,9 @@ namespace PgDbase.models
 		public ITable<core_cms_menu>                  core_cms_menu                  { get { return this.GetTable<core_cms_menu>(); } }
 		public ITable<core_cms_menu_group>            core_cms_menu_group            { get { return this.GetTable<core_cms_menu_group>(); } }
 		public ITable<core_controller>                core_controller                { get { return this.GetTable<core_controller>(); } }
+		public ITable<core_log>                       core_log                       { get { return this.GetTable<core_log>(); } }
+		public ITable<core_log_action>                core_log_action                { get { return this.GetTable<core_log_action>(); } }
+		public ITable<core_log_sections>              core_log_sections              { get { return this.GetTable<core_log_sections>(); } }
 		public ITable<core_material>                  core_material                  { get { return this.GetTable<core_material>(); } }
 		public ITable<core_materials_categories>      core_materials_categories      { get { return this.GetTable<core_materials_categories>(); } }
 		public ITable<core_materials_categories_link> core_materials_categories_link { get { return this.GetTable<core_materials_categories_link>(); } }
@@ -125,6 +128,76 @@ namespace PgDbase.models
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="pid", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_controller> fk_controller_id_pid_BackReferences { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="core", Name="log")]
+	public partial class core_log
+	{
+		[PrimaryKey, NotNull    ] public Guid            id            { get; set; } // uuid
+		[Column,        Nullable] public Guid?           f_page        { get; set; } // uuid
+		[Column,        Nullable] public string          c_page_name   { get; set; } // character varying(512)
+		[Column,     NotNull    ] public Guid            f_site        { get; set; } // uuid
+		[Column,     NotNull    ] public string          f_logsections { get; set; } // character varying(64)
+		[Column,     NotNull    ] public Guid            f_user        { get; set; } // uuid
+		[Column,        Nullable] public DateTimeOffset? d_date        { get; set; } // timestamp (6) with time zone
+		[Column,     NotNull    ] public string          f_action      { get; set; } // character varying(32)
+		[Column,     NotNull    ] public string          c_ip          { get; set; } // character varying(16)
+
+		#region Associations
+
+		/// <summary>
+		/// fk_log_sites
+		/// </summary>
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_log_sites", BackReferenceName="fklogs")]
+		public core_site fksite { get; set; }
+
+		/// <summary>
+		/// fk_log_log_sections
+		/// </summary>
+		[Association(ThisKey="f_logsections", OtherKey="c_alias", CanBeNull=false, KeyName="fk_log_log_sections", BackReferenceName="fkloglogsections")]
+		public core_log_sections fksection { get; set; }
+
+		/// <summary>
+		/// fk_log_log_action
+		/// </summary>
+		[Association(ThisKey="f_action", OtherKey="c_action", CanBeNull=false, KeyName="fk_log_log_action", BackReferenceName="fkloglogactions")]
+		public core_log_action fkaction { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="core", Name="log_action")]
+	public partial class core_log_action
+	{
+		[PrimaryKey, NotNull    ] public string c_action      { get; set; } // character varying(32)
+		[Column,        Nullable] public string c_action_name { get; set; } // character varying(100)
+
+		#region Associations
+
+		/// <summary>
+		/// fk_log_log_action_BackReference
+		/// </summary>
+		[Association(ThisKey="c_action", OtherKey="f_action", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_log> fkloglogactions { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="core", Name="log_sections")]
+	public partial class core_log_sections
+	{
+		[PrimaryKey, NotNull] public string c_alias        { get; set; } // character varying(64)
+		[Column,     NotNull] public string c_section_name { get; set; } // character varying(64)
+
+		#region Associations
+
+		/// <summary>
+		/// fk_log_log_sections_BackReference
+		/// </summary>
+		[Association(ThisKey="c_alias", OtherKey="f_logsections", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_log> fkloglogsections { get; set; }
 
 		#endregion
 	}
@@ -355,6 +428,12 @@ namespace PgDbase.models
 		public IEnumerable<core_user_site_link> fkusersitelinks { get; set; }
 
 		/// <summary>
+		/// fk_log_sites_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_log> fklogs { get; set; }
+
+		/// <summary>
 		/// fk_materials_categories_sites_BackReference
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
@@ -550,6 +629,24 @@ namespace PgDbase.models
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);
+		}
+
+		public static core_log Find(this ITable<core_log> table, Guid id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id == id);
+		}
+
+		public static core_log_action Find(this ITable<core_log_action> table, string c_action)
+		{
+			return table.FirstOrDefault(t =>
+				t.c_action == c_action);
+		}
+
+		public static core_log_sections Find(this ITable<core_log_sections> table, string c_alias)
+		{
+			return table.FirstOrDefault(t =>
+				t.c_alias == c_alias);
 		}
 
 		public static core_material Find(this ITable<core_material> table, Guid gid)

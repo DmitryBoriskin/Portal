@@ -15,6 +15,7 @@ namespace PgDbase
         /// Контекст подключения
         /// </summary>
         private string _context = null;
+        private Guid _siteid = Guid.Empty;
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -97,6 +98,23 @@ namespace PgDbase
 
 
 
+        public void SuccessLogin(Guid id, string IP)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Guid? change_pass_code = null;
+
+                var data = db.core_user.Where(w => w.id == id)
+                        .Set(u => u.n_error_count, 0)
+                        .Set(u => u.d_try_login, DateTime.Now)
+                        .Set(u => u.с_change_pass_code, change_pass_code)
+                        .Update();
+
+                // Логирование
+                InsertLog(id, IP, "login", id, _siteid, "Users", "Авторизация в CMS");
+            }
+        }
+
         /// <summary>
         /// Записываем неудачную попытку входа
         /// </summary>
@@ -123,6 +141,43 @@ namespace PgDbase
                 }
 
                 return Num;
+            }
+        }
+
+        /// <summary>
+        /// записываем код востановления пароля
+        /// </summary>
+        /// <param name="id">id аккаунта</param>
+        /// <param name="Code">код восстановления</param>
+        /// <param name="IP"></param>
+        public void SetRestorePassCode(Guid id, Guid Code, string IP)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_user.Where(w => w.id == id)
+                    .Set(u => u.с_change_pass_code, Code)
+                    .Update();
+
+                // Логирование
+                InsertLog(id, IP, "reqest_change_pass", id, _siteid, "Users", "Восстановление пароля");
+            }
+        }
+
+        public void InsertLog(Guid UserId, string IP, string Action, Guid PageId, Guid Site, string Section, string PageName)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                db.core_log.Insert(() => new core_log
+                {
+                    d_date = DateTime.Now,
+                    f_page = PageId,
+                    c_page_name = PageName,
+                    f_logsections = Section,
+                    f_site = Site,
+                    f_user = UserId,
+                    c_ip = IP,
+                    f_action = Action
+                });
             }
         }
 

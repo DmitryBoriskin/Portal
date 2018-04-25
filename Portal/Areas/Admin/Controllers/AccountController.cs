@@ -56,7 +56,7 @@ namespace Portal.Areas.Admin.Controllers
                 string _login = model.Login;
                 string _pass = model.Pass;
                 bool _remember = model.RememberMe;
-
+           
                 AccountModel AccountInfo = _accountRepository.getCmsAccount(_login);
 
                 // Если пользователь найден
@@ -104,7 +104,7 @@ namespace Portal.Areas.Admin.Controllers
                                 #region Оповещение о блокировке
                                 // Формируем код востановления пароля
                                 Guid RestoreCode = Guid.NewGuid();
-                                _accountRepository.setRestorePassCode(AccountInfo.Id, RestoreCode, RequestUserInfo.IP);
+                                _accountRepository.SetRestorePassCode(AccountInfo.Id, RestoreCode, RequestUserInfo.IP);
 
                                 // оповещение на e-mail
                                 string Massege = String.Empty;

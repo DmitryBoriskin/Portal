@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="entity\AccountModel.cs" />
+    <Compile Include="entity\cms\LogModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

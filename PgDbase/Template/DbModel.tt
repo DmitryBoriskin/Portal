@@ -22,5 +22,5 @@
 					PluralizeDataContextPropertyNames   ? ToPlural  (t.TypeName) :
 					SingularizeDataContextPropertyNames ? ToSingular(t.TypeName) : t.TypeName);
 	}
-	GenerateModel(); 
+	GenerateModel();  
 #>  
