@@ -3,17 +3,10 @@
 */Logs/
 */bin/
 */obj/
-Disly/Properties/PublishProfiles/
-cms.dbase/template/
-Integration.Frmp.library/template/
-Integration.Frmp.library/Data
+PgDbase/Template/
 App.config
 app.config
 Web.config
 Web.Release.config
 Web.Debug.config
-Integration.Frmp.cmd/App.config
-Integration.Frmp.service/App.config
-PhotoImport/App.config
-PhotoImport/Template/
 
