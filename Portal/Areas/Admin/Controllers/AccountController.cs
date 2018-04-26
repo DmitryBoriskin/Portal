@@ -8,6 +8,8 @@ using System.Web.Security;
 using PgDbase;
 using Portal.Areas.Admin.Models;
 using PgDbase.Repository.cms;
+using System.Configuration;
+using Portal.Code;
 
 namespace Portal.Areas.Admin.Controllers
 {
@@ -17,13 +19,28 @@ namespace Portal.Areas.Admin.Controllers
         protected bool _IsAuthenticated = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
         protected AccountRepository _accountRepository;
         protected CmsRepository _cmsRepository;
+
+        public Guid SiteId;
+
         protected int maxLoginError = 5;        
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-
             _accountRepository = new AccountRepository("dbConnection");
-                        
+
+
+            try
+            {
+                SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));
+            }
+            catch (Exception ex)
+            {
+                if (Request.Url.Host.ToLower().Replace("www.", "") != ConfigurationManager.AppSettings["BaseURL"])
+                    filterContext.Result = Redirect("/Error/");                
+
+                AppLogger.Debug("CoreController: Не получилось определить Domain", ex);
+            }
+
 
             Guid userId = Guid.Empty;
             var domainUrl = "";
@@ -48,7 +65,7 @@ namespace Portal.Areas.Admin.Controllers
                 }
             }
 
-            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, domainUrl);
+            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
 
             #region Метатеги
             ViewBag.Title = "Авторизация";

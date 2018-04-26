@@ -95,7 +95,7 @@ namespace Portal.Areas.Admin.Controllers
                     }
                 }
             }
-            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, domainUrl);
+            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
         }
     }
 }
