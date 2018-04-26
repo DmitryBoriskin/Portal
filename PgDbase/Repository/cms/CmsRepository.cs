@@ -4,19 +4,31 @@ using PgDbase.models;
 using System;
 using System.Linq;
 
-namespace PgDbase
+namespace PgDbase.Repository.cms
 {
     /// <summary>
     /// Репозиторий для работы с сущностями бд
     /// </summary>
-    public class CmsRepository
+    public partial class CmsRepository
     {
         /// <summary>
         /// Контекст подключения
         /// </summary>
         private string _context = null;
+
+        /// <summary>
+        /// Текущий пользователь
+        /// </summary>
         private Guid _currentUserId = Guid.Empty;
+
+        /// <summary>
+        /// ip-адрес
+        /// </summary>
         private string _ip = string.Empty;
+
+        /// <summary>
+        /// Домен
+        /// </summary>
         private string _domain = string.Empty;
 
         /// <summary>
@@ -83,13 +95,13 @@ namespace PgDbase
                 db.core_log.Insert(() => new core_log
                 {
                     d_date = DateTime.Now,
-                    f_page = log.Page,
+                    f_page = log.PageId,
                     c_page_name = log.PageName,
-                    f_logsections = log.Section,
-                    f_site = log.Site,
-                    f_user = log.User,
+                    f_logsections = log.Section.ToString(),
+                    f_site = log.SiteId,
+                    f_user = log.UserId,
                     c_ip = log.Ip,
-                    f_action = log.Action
+                    f_action = log.Action.ToString()
                 });
             }
         }
