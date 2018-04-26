@@ -101,11 +101,82 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         /// <summary>
+        /// Добавляет параметр
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="name"></param>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        protected string AddFilterParam(string query, string name, string val)
+        {
+            var returnUrl = "";
+            //Формируем строку с параметрами фильтра без пейджера и параметра(чтоб убрать дублирование)
+            returnUrl = UrlQueryExclude(query, "page");
+            returnUrl = UrlQueryExclude(query, name);
+
+            var page = 1;
+            if (!string.IsNullOrEmpty(Request.QueryString["page"]))
+                int.TryParse(Request.QueryString["page"], out page);
+
+            //Добавляем параметр name
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(val))
+                returnUrl = !string.IsNullOrEmpty(returnUrl)
+                    ? string.Format("{0}&{1}={2}", returnUrl, name, val)
+                    : string.Format("{0}={1}", name, val);
+
+            //Добавляем page
+            if (page > 1)
+                returnUrl = !string.IsNullOrEmpty(returnUrl)
+                    ? string.Format("{0}&page={1}", returnUrl, page)
+                    : string.Format("page={0}", page);
+
+
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                var s = (returnUrl.IndexOf("?") > -1) ? "&" : "?";
+                returnUrl = s + returnUrl;
+            }
+
+            return returnUrl.ToLower();
+        }
+
+        /// <summary>
+        /// Формируем новую строку запроса из queryStr="?size=40&searchtext=поиск&page=2" исключая exclude
+        /// </summary>
+        /// <param name="queryStr"></param>
+        /// <param name="exclude"></param>
+        /// <returns></returns>
+        protected string UrlQueryExclude(string queryStr, string exclude)
+        {
+            if (string.IsNullOrEmpty(queryStr))
+                return "";
+
+            var qparams = HttpUtility.ParseQueryString(queryStr);
+
+            var queryParams = new Dictionary<string, string>();
+            if (qparams.AllKeys != null && qparams.AllKeys.Count() > 0)
+            {
+                foreach (var p in qparams.AllKeys)
+                {
+                    if (p != null)
+                        queryParams.Add(p, qparams[p]);
+                }
+            }
+
+            var urlParams = String.Join("&", queryParams
+                            .Where(p => p.Key != exclude)
+                            .Select(p => String.Format("{0}={1}", p.Key, p.Value))
+                            );
+
+            return urlParams;
+        }
+
+        /// <summary>
         /// Возвращает фильтр
         /// </summary>
         /// <param name="defaultPageSize"></param>
         /// <returns></returns>
-        public FilterParams GetFilter(int defaultPageSize = 20)
+        protected FilterParams GetFilter(int defaultPageSize = 20)
         {
             FilterParams filter = new FilterParams()
             {
