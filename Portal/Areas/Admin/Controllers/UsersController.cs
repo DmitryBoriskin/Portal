@@ -1,5 +1,6 @@
 ﻿using PgDbase.Services;
 using Portal.Areas.Admin.Models;
+using System;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
@@ -33,6 +34,13 @@ namespace Portal.Areas.Admin.Controllers
             filter = GetFilter();
             model.List = _cmsRepository.GetUsers(filter);
             return View(model);
+        }
+
+        // GET: Admin/Users/<id>
+        public ActionResult Item(Guid id)
+        {
+            model.Item = _cmsRepository.GetUser(id);
+            return View("Item", model);
         }
     }
 }

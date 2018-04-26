@@ -16,6 +16,11 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Пользователь
         /// </summary>
-        public UserModel User { get; set; }
+        public UserModel Item { get; set; }
+
+        /// <summary>
+        /// Пароль
+        /// </summary>
+        public PasswordModel Password { get; set; }
     }
 }
