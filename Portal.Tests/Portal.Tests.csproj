@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Portal.Tests</RootNamespace>
-    <AssemblyName>Portal.Tests</AssemblyName>
+    <AssemblyName>t</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -62,13 +62,17 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="AccountTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PgDbase\PgDbase.csproj">
+      <Project>{cf9ad0c6-218b-47f4-b8a3-85d13329bbb6}</Project>
+      <Name>PgDbase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Portal\Portal.csproj">
       <Project>{038CE648-12C4-4B80-9B72-A14FDB235A13}</Project>
       <Name>Portal</Name>

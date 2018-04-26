@@ -4,11 +4,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Portal.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class AccountTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void LogIn_LogInModel()
         {
+            //arrage
+
+            //act
+
+            //assert
         }
     }
 }

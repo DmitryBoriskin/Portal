@@ -293,7 +293,81 @@ namespace Portal.Areas.Admin.Controllers
             }
         }
 
+        /// <summary>
+        /// Форма "Изменить пароль"
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ChangePass(Guid id)
+        {
+            // Авторизованного пользователя направляем на главную страницу
+            if (_IsAuthenticated)
+                return RedirectToAction("", "Main");
 
+            string ViewName = "~/Areas/Admin/Views/Account/ChangePass.cshtml";
+
+            // Проверка кода востановления пароля
+            if (!_accountRepository.getCmsAccountCode(id))
+                ViewName = "~/Areas/Admin/Views/Account/MsgFailRestore.cshtml";
+
+
+            return View(ViewName);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePass(Guid id, PasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string NewPass = model.Password;
+
+                Cripto pass = new Cripto(NewPass.ToCharArray());
+                string NewSalt = pass.Salt;
+                string NewHash = pass.Hash;
+
+                _accountRepository.changePasByCode(id, NewSalt, NewHash, RequestUserInfo.IP);
+
+                return RedirectToAction("MsgResult", "Account");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Ошибки в заполнении формы.");
+            }
+
+            return View();
+        }
+
+        /// <summary>
+        /// Сообщение об отправке письма для смены пароля
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MsgSendMail()
+        {
+            // Авторизованного пользователя направляем на главную страницу
+            if (_IsAuthenticated) return RedirectToAction("", "Main");
+            return View();
+        }
+
+        /// <summary>
+        /// Сообщение о некоректности кода востановления пароля
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MsgFailRestore()
+        {
+            // Авторизованного пользователя направляем на главную страницу
+            if (_IsAuthenticated) return RedirectToAction("", "Main");
+            return View();
+        }
+
+        /// <summary>
+        /// Сообщение о смене пароля
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MsgResult()
+        {
+            // Авторизованного пользователя направляем на главную страницу
+            if (_IsAuthenticated) return RedirectToAction("", "Main");
+            return View();
+        }
 
         /// <summary>
         /// Закрываем сеанс работы с CMS
