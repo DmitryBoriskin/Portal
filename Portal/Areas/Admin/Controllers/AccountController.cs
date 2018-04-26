@@ -10,6 +10,7 @@ using Portal.Areas.Admin.Models;
 using PgDbase.Repository.cms;
 using System.Configuration;
 using Portal.Code;
+using PgDbase.entity.cms;
 
 namespace Portal.Areas.Admin.Controllers
 {
@@ -324,7 +325,7 @@ namespace Portal.Areas.Admin.Controllers
                 string NewSalt = pass.Salt;
                 string NewHash = pass.Hash;
 
-                _accountRepository.changePasByCode(id, NewSalt, NewHash, RequestUserInfo.IP);
+                //_accountRepository.changePasByCode(id, NewSalt, NewHash, RequestUserInfo.IP);
 
                 return RedirectToAction("MsgResult", "Account");
             }
