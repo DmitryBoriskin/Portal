@@ -1,6 +1,7 @@
 ﻿using PgDbase;
 using PgDbase.entity;
 using PgDbase.entity.cms;
+using PgDbase.Repository.cms;
 using Portal.Code;
 using System;
 using System.Collections.Generic;

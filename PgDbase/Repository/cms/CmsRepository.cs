@@ -1,4 +1,6 @@
-﻿using PgDbase.entity.cms;
+﻿using LinqToDB;
+using PgDbase.entity;
+using PgDbase.entity.cms;
 using PgDbase.models;
 using System;
 using System.Linq;
@@ -77,8 +79,7 @@ namespace PgDbase.Repository.cms
             }
         }
 
-
-        public CmsMenuModel[] GetCmsMenu(Guid UserId, Guid SiteId)
+        public void InsertLog(LogModel log)
         {
             using (var db = new CMSdb(_context))
             {
@@ -93,6 +94,15 @@ namespace PgDbase.Repository.cms
                     c_ip = log.Ip,
                     f_action = log.Action.ToString()
                 });
+            }
+        }
+
+
+        public CmsMenuModel[] GetCmsMenu(Guid UserId, Guid SiteId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return null;
             }
         }
 

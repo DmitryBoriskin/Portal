@@ -7,6 +7,7 @@ using PgDbase.entity;
 using System.Web.Security;
 using PgDbase;
 using Portal.Areas.Admin.Models;
+using PgDbase.Repository.cms;
 
 namespace Portal.Areas.Admin.Controllers
 {
