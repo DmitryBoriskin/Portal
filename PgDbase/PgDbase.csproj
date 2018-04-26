@@ -60,7 +60,7 @@
     <Compile Include="Repository\cms\CmsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\cms\CmsUserRepository.cs" />
-    <Compile Include="Services\Filter.cs" />
+    <Compile Include="Services\FilterParams.cs" />
     <Compile Include="Services\PagedEnumerable.cs" />
     <Compile Include="Services\Pager.cs" />
     <Compile Include="Template\DbModel.generated.cs">

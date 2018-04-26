@@ -5,7 +5,7 @@ namespace PgDbase.Services
     /// <summary>
     /// Фильтр
     /// </summary>
-    public class Filter
+    public class FilterParams
     {
         /// <summary>
         /// Id
@@ -67,8 +67,8 @@ namespace PgDbase.Services
         /// </summary>
         public string Lang { get; set; }
 
-        public static T Extend<T>(Filter f)
-            where T : Filter, new()
+        public static T Extend<T>(FilterParams f)
+            where T : FilterParams, new()
         {
             return new T()
             {
