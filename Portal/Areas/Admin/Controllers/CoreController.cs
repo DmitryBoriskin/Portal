@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -158,6 +159,21 @@ namespace Portal.Areas.Admin.Controllers
             }
 
             return filter;
+        }
+
+        /// <summary>
+        /// Срабатывание на нажатие кнопки с определённым атрибутом
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+        public class MultiButtonAttribute : ActionNameSelectorAttribute
+        {
+            public string MatchFormKey { get; set; }
+            public string MatchFormValue { get; set; }
+            public override bool IsValidName(ControllerContext controllerContext, string actionName, MethodInfo methodInfo)
+            {
+                return controllerContext.HttpContext.Request[MatchFormKey] != null &&
+                    controllerContext.HttpContext.Request[MatchFormKey] == MatchFormValue;
+            }
         }
     }
 }

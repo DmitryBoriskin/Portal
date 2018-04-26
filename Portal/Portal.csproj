@@ -478,6 +478,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ServicesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
@@ -594,6 +595,10 @@
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.woff" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.woff2" />
     <Content Include="Areas\Admin\Views\Account\RestorePass.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Partial\_pager.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Part\SearchFilter.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Item.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -605,7 +610,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Core\" />
-    <Folder Include="Areas\Admin\Views\Users\" />
+    <Folder Include="Areas\Admin\Views\Services\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
