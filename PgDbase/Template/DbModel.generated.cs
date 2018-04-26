@@ -138,7 +138,7 @@ namespace PgDbase.models
 		[PrimaryKey, NotNull    ] public Guid            id            { get; set; } // uuid
 		[Column,        Nullable] public Guid?           f_page        { get; set; } // uuid
 		[Column,        Nullable] public string          c_page_name   { get; set; } // character varying(512)
-		[Column,     NotNull    ] public Guid            f_site        { get; set; } // uuid
+		[Column,        Nullable] public Guid?           f_site        { get; set; } // uuid
 		[Column,     NotNull    ] public string          f_logsections { get; set; } // character varying(64)
 		[Column,     NotNull    ] public Guid            f_user        { get; set; } // uuid
 		[Column,        Nullable] public DateTimeOffset? d_date        { get; set; } // timestamp (6) with time zone
@@ -146,12 +146,6 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string          c_ip          { get; set; } // character varying(16)
 
 		#region Associations
-
-		/// <summary>
-		/// fk_log_sites
-		/// </summary>
-		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_log_sites", BackReferenceName="fklogs")]
-		public core_site fksite { get; set; }
 
 		/// <summary>
 		/// fk_log_log_sections
@@ -426,12 +420,6 @@ namespace PgDbase.models
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_user_site_link> fkusersitelinks { get; set; }
-
-		/// <summary>
-		/// fk_log_sites_BackReference
-		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_log> fklogs { get; set; }
 
 		/// <summary>
 		/// fk_materials_categories_sites_BackReference
