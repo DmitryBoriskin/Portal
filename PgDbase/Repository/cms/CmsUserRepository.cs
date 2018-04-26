@@ -17,7 +17,7 @@ namespace PgDbase.Repository.cms
         /// Возвращает постраничный список пользователей
         /// </summary>
         /// <returns></returns>
-        public PagedEnumerable<UserModel> GetUsers(Filter filter)
+        public PagedEnumerable<UserModel> GetUsers(FilterParams filter)
         {
             using (var db = new CMSdb(_context))
             {

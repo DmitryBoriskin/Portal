@@ -478,8 +478,10 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\UsersViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -603,6 +605,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Core\" />
+    <Folder Include="Areas\Admin\Views\Users\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
