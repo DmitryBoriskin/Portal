@@ -104,9 +104,7 @@ namespace PgDbase
                 return result;
             }
         }
-
-
-
+        
         public void SuccessLogin(Guid id, string IP)
         {
             using (var db = new CMSdb(_context))

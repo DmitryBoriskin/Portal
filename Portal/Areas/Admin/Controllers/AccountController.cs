@@ -17,7 +17,7 @@ namespace Portal.Areas.Admin.Controllers
         protected bool _IsAuthenticated = System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
         protected AccountRepository _accountRepository;
         protected CmsRepository _cmsRepository;
-        protected int maxLoginError = 5;
+        protected int maxLoginError = 5;        
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -193,5 +193,100 @@ namespace Portal.Areas.Admin.Controllers
                 return View();
             }
         }
+
+
+        /// <summary>
+        /// Форма "Напомнить пароль"
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RestorePass()
+        {
+            // Авторизованного пользователя направляем на главную страницу
+            if (_IsAuthenticated) return RedirectToAction("", "Main");
+            else return View();
+        }
+
+        [HttpPost]
+        public ActionResult RestorePass(RestoreModel model)
+        {
+            try
+            {
+                string _login = model.Email;
+                AccountModel AccountInfo = _accountRepository.getCmsAccount(_login);
+
+                // Ошибки в форме
+                if (!ModelState.IsValid)
+                {
+                    // пустое поле
+                    if (_login == null || _login == "")
+                    {
+                        ModelState.AddModelError("", "Поле \"E-Mail\" не заполнено. Для восстановления пароля введите адрес почты.");
+                    }
+                    return View(model);
+                }
+
+                // существует ли адрес
+                if (AccountInfo != null)
+                {
+                    // Формируем код востановления пароля
+                    Guid RestoreCode = Guid.NewGuid();
+                    _accountRepository.SetRestorePassCode(AccountInfo.Id, RestoreCode, RequestUserInfo.IP);
+
+                    #region оповещение на e-mail
+                    string Massege = String.Empty;
+                    Mailer Letter = new Mailer();
+                    Letter.Theme = "Изменение пароля";
+                    Massege = "<p>Уважаемый " + AccountInfo.Surname + " " + AccountInfo.Name + ", Вы отправили запрос на смену пароля на сайте " + Request.Url.Host + ".</p>";
+                    Massege += "<p>Для вас сформирована ссылка, перейдя по которой, Вы сможете ввести новый пароль для вашего аккаунта.</p>";
+                    Massege += "<p><a href=\"http://" + Request.Url.Host + "/Admin/Account/ChangePass/" + RestoreCode + "/\">http://" + Request.Url.Host + "/Admin/Account/ChangePass/" + RestoreCode + "/</a></p>";
+                    Massege += "<p>С уважением, администрация сайта!</p>";
+                    Massege += "<hr><i><span style=\"font-size:11px\">Это сообщение отпралено роботом, на него не надо отвечать</i></span>";
+                    Letter.MailTo = AccountInfo.Mail;
+                    Letter.Text = Massege;
+
+                    //Логируем в SendMail
+                    var res = Letter.SendMail();
+
+                    #endregion
+
+                    return RedirectToAction("MsgSendMail", "Account");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Адрес почты заполнен неверно. Попробуйте ещё раз");
+                }
+                return View();
+
+            }
+            catch (HttpAntiForgeryException ex)
+            {
+                return View();
+            }
+        }
+
+
+
+        /// <summary>
+        /// Закрываем сеанс работы с CMS
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult logOff()
+        {
+            AccountModel AccountInfo = _accountRepository.getCmsAccount(new Guid(User.Identity.Name));
+            //_accountRepository.InsertLog(AccountInfo.Id, RequestUserInfo.IP, "log_off", AccountInfo.Id, "", "account", "");
+
+            HttpCookie MyCookie = new HttpCookie(".ASPXAUTHMORE")
+            {
+                Expires = DateTime.Now.AddDays(-1d),
+                Value = HttpUtility.UrlEncode("", System.Text.Encoding.UTF8),
+                Domain = "." + Settings.BaseURL
+            };
+            Response.Cookies.Add(MyCookie);
+            FormsAuthentication.SignOut();
+
+
+            return RedirectToAction("LogIn", "Account");
+        }
+
     }
 }
