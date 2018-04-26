@@ -1,4 +1,5 @@
 ﻿using LinqToDB;
+using PgDbase.entity.cms;
 using PgDbase.models;
 using System;
 using System.Linq;
@@ -75,20 +76,20 @@ namespace PgDbase
         /// <param name="site"></param>
         /// <param name="section"></param>
         /// <param name="pageName"></param>
-        public void InsertLog(Guid userId, string ip, string action, Guid pageId, Guid site, string section, string pageName)
+        public void InsertLog(LogModel log)
         {
             using (var db = new CMSdb(_context))
             {
                 db.core_log.Insert(() => new core_log
                 {
                     d_date = DateTime.Now,
-                    f_page = pageId,
-                    c_page_name = pageName,
-                    f_logsections = section,
-                    f_site = site,
-                    f_user = userId,
-                    c_ip = ip,
-                    f_action = action
+                    f_page = log.Page,
+                    c_page_name = log.PageName,
+                    f_logsections = log.Section,
+                    f_site = log.Site,
+                    f_user = log.User,
+                    c_ip = log.Ip,
+                    f_action = log.Action
                 });
             }
         }
