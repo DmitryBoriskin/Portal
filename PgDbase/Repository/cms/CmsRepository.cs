@@ -1,4 +1,5 @@
-﻿using PgDbase.models;
+﻿using PgDbase.entity.cms;
+using PgDbase.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,11 @@ namespace PgDbase
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
-
+        /// <summary>
+        /// Возвращает идентификатор класса
+        /// </summary>
+        /// <param name="DomainUrl">домен</param>
+        /// <returns></returns>
         public Guid GetSiteGuid(string DomainUrl)
         {
             try
@@ -51,5 +56,26 @@ namespace PgDbase
             }
         }
 
+
+        public CmsMenuModel[] GetCmsMenu(Guid user_id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_cms_menu_group
+                           .Select(s => new CmsMenuModel {
+                               GroupName = s.c_title,
+                               Alias = s.c_alias,
+                               GroupItems = s.fkcmsmenucmsmenugroups
+                               .OrderBy(o=>o.n_sort)
+                               .Select(g => new CmsMenuItem() {
+                                   Alias=g.c_alias,
+                                   Title=g.c_title,
+                                   Class=g.c_class                                   
+                               }).ToArray()
+                           });
+                if (data.Any()) return data.ToArray();
+                return null;
+            }
+        }
     }
 }

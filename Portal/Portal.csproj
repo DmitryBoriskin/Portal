@@ -545,6 +545,7 @@
     <Content Include="Content\fonts\Roboto\roboto-regular_4-webfont.woff" />
     <Content Include="Content\fonts\Roboto\roboto-regular_4-webfont.woff2" />
     <Content Include="Areas\Admin\Views\Shared\Partial\Modal.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Templates\Menu.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
