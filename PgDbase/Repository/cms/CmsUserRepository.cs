@@ -70,6 +70,30 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Возвращает пользователя
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public UserModel GetUser(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_user
+                    .Where(w => w.id == id)
+                    .Select(s => new UserModel
+                    {
+                        Id = s.id,
+                        Email = s.c_email,
+                        Surname = s.c_surname,
+                        Name = s.c_name,
+                        Patronimyc = s.c_patronymic,
+                        Disabled = s.b_disabled,
+                        TryLogin = s.d_try_login
+                    }).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
         /// Добавляет пользователя
         /// </summary>
         /// <param name="user"></param>
@@ -109,26 +133,31 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        //public bool UpdateUser(UserModel user)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var tr = db.BeginTransaction())
-        //        {
-        //            var log = new LogModel
-        //            {
-        //                PageId = user.Id,
-        //                PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
-        //                Section = LogSection.Users,
-        //                Action = LogAction.Update
-        //            };
-        //            InsertLog(log);
+        public bool UpdateUser(UserModel user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var log = new LogModel
+                    {
+                        PageId = user.Id,
+                        PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
+                        Section = LogSection.Users,
+                        Action = LogAction.Update
+                    };
+                    InsertLog(log);
 
-        //            return db.core_user
-        //                .Where(w => w.id == user.Id)
-        //                .Set(s => s.)
-        //        }
-        //    }
-        //}
+                    return db.core_user
+                        .Where(w => w.id == user.Id)
+                        .Set(s => s.c_email, user.Email)
+                        .Set(s => s.c_name, user.Name)
+                        .Set(s => s.c_surname, user.Surname)
+                        .Set(s => s.c_patronymic, user.Patronimyc)
+                        .Set(s => s.b_disabled, user.Disabled)
+                        .Update() > 0;
+                }
+            }
+        }
     }
 }
