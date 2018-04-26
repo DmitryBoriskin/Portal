@@ -480,7 +480,7 @@ namespace PgDbase.models
 		[PrimaryKey, Identity   ] public int    id        { get; set; } // integer
 		[Column,        Nullable] public Guid?  f_site    { get; set; } // uuid
 		[Column,     NotNull    ] public string c_domain  { get; set; } // character varying(256)
-		[Column,        Nullable] public bool?  b_default { get; set; } // boolean
+		[Column,     NotNull    ] public bool   b_default { get; set; } // boolean
 
 		#region Associations
 

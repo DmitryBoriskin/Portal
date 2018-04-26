@@ -62,8 +62,7 @@ namespace Portal.Areas.Admin.Controllers
             AccountInfo = _accountRepository.getCmsAccount(_userId);
 
             // Список доменов, доступных пользователю
-            //AccountInfo.Domains = _accountRepository.getUserDomains(_userId);
-
+            AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
             #endregion
         }
 

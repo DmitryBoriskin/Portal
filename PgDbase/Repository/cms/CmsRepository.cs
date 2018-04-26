@@ -1,13 +1,13 @@
 ﻿using PgDbase.entity.cms;
 using PgDbase.models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PgDbase
 {
+    /// <summary>
+    /// Репозиторий для работы с сущностями бд
+    /// </summary>
     public class CmsRepository
     {
         /// <summary>
@@ -26,56 +26,55 @@ namespace PgDbase
             _context = "defaultConnection";
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
-        public CmsRepository(string ConnectionString, Guid UserId, string IP, string DomainUrl)
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="userId"></param>
+        /// <param name="Ip"></param>
+        /// <param name="domainUrl"></param>
+        public CmsRepository(string connectionString, Guid userId, string Ip, string domainUrl)
         {
-            _context = ConnectionString;
+            _context = connectionString;
             //_domain = (!string.IsNullOrEmpty(DomainUrl)) ? getSiteId(DomainUrl) : "";
-            _ip = IP;
-            _currentUserId = UserId;
+            _ip = Ip;
+            _currentUserId = userId;
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
+
         /// <summary>
-        /// Возвращает идентификатор класса
+        /// Возвращает идентификатор сайта
         /// </summary>
-        /// <param name="DomainUrl">домен</param>
+        /// <param name="domainUrl"></param>
         /// <returns></returns>
-        public Guid GetSiteGuid(string DomainUrl)
+        public Guid GetSiteGuid(string domainUrl)
         {
             try
             {
                 using (var db = new CMSdb(_context))
                 {
-                    return db.core_sites_domains.Where(w => w.c_domain == DomainUrl).SingleOrDefault().fksitesdomainssite.id;
+                    return db.core_sites_domains.Where(w => w.c_domain == domainUrl).SingleOrDefault().fksitesdomainssite.id;
                 }
 
             }
             catch(Exception ex)
             {
-                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + DomainUrl + ") " + ex);
+                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + domainUrl + ") " + ex);
             }
         }
 
 
-        public CmsMenuModel[] GetCmsMenu(Guid user_id)
+        public CmsMenuModel[] GetCmsMenu(Guid UserId, Guid SiteId)
         {
             using (var db = new CMSdb(_context))
             {
-                var data = db.core_cms_menu_group
-                           .Select(s => new CmsMenuModel {
-                               GroupName = s.c_title,
-                               Alias = s.c_alias,
-                               GroupItems = s.fkcmsmenucmsmenugroups
-                               .OrderBy(o=>o.n_sort)
-                               .Select(g => new CmsMenuItem() {
-                                   Alias=g.c_alias,
-                                   Title=g.c_title,
-                                   Class=g.c_class                                   
-                               }).ToArray()
-                           });
-                if (data.Any()) return data.ToArray();
+              //var query=
                 return null;
+                    
             }
         }
+
     }
 }
