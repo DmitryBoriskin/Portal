@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgDbase.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,22 @@ namespace PgDbase
             _currentUserId = UserId;
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
+        }
+
+        public Guid GetSiteGuid(string DomainUrl)
+        {
+            try
+            {
+                using (var db = new CMSdb(_context))
+                {
+                    return db.core_sites_domains.Where(w => w.c_domain == DomainUrl).SingleOrDefault().fksitesdomainssite.id;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + DomainUrl + ") " + ex);
+            }
         }
 
     }

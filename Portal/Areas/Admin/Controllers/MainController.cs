@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Portal.Areas.Admin.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,21 @@ namespace Portal.Areas.Admin.Controllers
         // GET: Admin/Main
         public ActionResult Index()
         {
-            return View();
+            MainViewModel model = new MainViewModel()
+            {
+                DomainName = Domain,
+                Account = AccountInfo,
+                Settings = SettingsInfo,
+                ControllerName = ControllerName,
+                ActionName = ActionName,
+            };
+            if (AccountInfo != null)
+            {
+                //model.Menu = _cmsRepository.getCmsMenu(AccountInfo.Id);
+                //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
+            }
+
+            return View(model);
         }
     }
 }

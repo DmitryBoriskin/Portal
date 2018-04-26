@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PgDbase.entity.cms
 {
-    public class СmsMenuModel
+    public class CmsMenuModel
     {
         public int Num { get; set; }
         /// <summary>

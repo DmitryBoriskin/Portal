@@ -1,18 +1,101 @@
-﻿using System;
+﻿using PgDbase;
+using PgDbase.entity;
+using PgDbase.entity.cms;
+using Portal.Code;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Portal.Areas.Admin.Controllers
 {
     [Authorize]
     public class CoreController : Controller
     {
-        // GET: Admin/Core
-        public ActionResult Index2()
+        //protected Logger cmsLogger = null;
+        /// <summary>
+        /// Контекст доступа к базе данных
+        /// </summary>
+        protected AccountRepository _accountRepository { get; private set; }
+        protected CmsRepository _cmsRepository { get; private set; }
+
+        public string Domain;
+        public Guid SiteId;
+        public string StartUrl;
+        public AccountModel AccountInfo;
+        public SettingsModel SettingsInfo;
+        public string ControllerName;
+        public string ActionName;
+
+
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            return View();
+            base.OnActionExecuting(filterContext);
+
+            ControllerName = filterContext.RouteData.Values["Controller"].ToString().ToLower();
+            ActionName = filterContext.RouteData.Values["Action"].ToString().ToLower();
+
+
+            try
+            {
+                SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));                
+            }
+            catch (Exception ex)
+            {
+                if (Request.Url.Host.ToLower().Replace("www.", "") != ConfigurationManager.AppSettings["BaseURL"])
+                    filterContext.Result = Redirect("/Error/");
+                else Domain = String.Empty;
+
+                AppLogger.Debug("CoreController: Не получилось определить Domain", ex);
+            }
+            StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
+
+
+            #region Данные об авторизованном пользователе
+            Guid _userId = new Guid();
+            try { _userId = new Guid(System.Web.HttpContext.Current.User.Identity.Name); }
+            catch { FormsAuthentication.SignOut(); }
+            AccountInfo = _accountRepository.getCmsAccount(_userId);
+
+            // Список доменов, доступных пользователю
+            //AccountInfo.Domains = _accountRepository.getUserDomains(_userId);
+
+            #endregion
+        }
+
+
+
+        public CoreController()
+        {
+            _accountRepository = new AccountRepository("dbConnection");
+
+            Guid userId = Guid.Empty;
+            var domainUrl = "";
+
+            if (System.Web.HttpContext.Current != null)
+            {
+                var context = System.Web.HttpContext.Current;
+
+                if (context.Request != null && context.Request.Url != null && !string.IsNullOrEmpty(context.Request.Url.Host))
+                    domainUrl = context.Request.Url.Host.ToLower().Replace("www.", "");
+
+                if (context.User != null && context.User.Identity != null && !string.IsNullOrEmpty(context.User.Identity.Name))
+                {
+                    try
+                    {
+                        userId = Guid.Parse(System.Web.HttpContext.Current.User.Identity.Name);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Не удалось определить идентификатор пользователя" + ex);
+                    }
+                }
+            }
+            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, domainUrl);
         }
     }
 }
