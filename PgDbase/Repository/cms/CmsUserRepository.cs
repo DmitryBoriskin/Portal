@@ -1,4 +1,5 @@
 ﻿using LinqToDB;
+using PgDbase.entity;
 using PgDbase.entity.cms;
 using PgDbase.models;
 using PgDbase.Services;
@@ -79,6 +80,15 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
+                    var log = new LogModel
+                    {
+                        PageId = user.Id,
+                        PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
+                        Section = LogSection.Users,
+                        Action = LogAction.Insert
+                    };
+                    InsertLog(log);
+
                     return db.core_user.Insert(() => new core_user
                     {
                         id = user.Id,
@@ -92,6 +102,49 @@ namespace PgDbase.Repository.cms
                     }) > 0;
                 }
             }
+        }
+
+        /// <summary>
+        /// Обновляет пользователя
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        //public bool UpdateUser(UserModel user)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tr = db.BeginTransaction())
+        //        {
+        //            var log = new LogModel
+        //            {
+        //                PageId = user.Id,
+        //                PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
+        //                Section = LogSection.Users,
+        //                Action = LogAction.Update
+        //            };
+        //            InsertLog(log);
+
+        //            var u = new core_user
+        //            {
+        //                c_email = user.Email,
+        //                c_surname = user.Surname,
+        //                c_name = user.Name,
+        //                c_patronymic = user.Patronimyc,
+        //                b_disabled = user.Disabled
+        //            };
+
+        //            db.core_user.Where(w => w.id == user.Id)
+        //                .Update(u);
+
+        //            //var u = db.core_user
+        //            //    .Where(w => w.id == user.Id)
+        //            //    .Update(() => new core_user
+        //            //    {
+        //            //        id = user.Id,
+        //            //        c_email = user.Email
+        //            //    }) > 0;
+        //        }
+        //    }
         }
     }
 }
