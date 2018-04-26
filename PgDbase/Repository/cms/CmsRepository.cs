@@ -30,7 +30,7 @@ namespace PgDbase.Repository.cms
         /// <summary>
         /// Домен
         /// </summary>
-        private string _domain = string.Empty;
+        private Guid _siteId;
 
         /// <summary>
         /// Конструктор
@@ -48,12 +48,14 @@ namespace PgDbase.Repository.cms
         /// <param name="userId"></param>
         /// <param name="Ip"></param>
         /// <param name="domainUrl"></param>
-        public CmsRepository(string connectionString, Guid userId, string Ip, string domainUrl)
+        public CmsRepository(string connectionString, Guid userId, string Ip, Guid siteId)
         {
             _context = connectionString;
             //_domain = (!string.IsNullOrEmpty(DomainUrl)) ? getSiteId(DomainUrl) : "";
             _ip = Ip;
             _currentUserId = userId;
+            _siteId = siteId;
+
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
@@ -79,7 +81,11 @@ namespace PgDbase.Repository.cms
             }
         }
 
-        public void InsertLog(LogModel log)
+        /// <summary>
+        /// Логирование
+        /// </summary>
+        /// <param name="log"></param>
+        private void InsertLog(LogModel log)
         {
             using (var db = new CMSdb(_context))
             {
@@ -89,9 +95,9 @@ namespace PgDbase.Repository.cms
                     f_page = log.PageId,
                     c_page_name = log.PageName,
                     f_logsections = log.Section.ToString(),
-                    f_site = log.SiteId,
-                    f_user = log.UserId,
-                    c_ip = log.Ip,
+                    f_site = _siteId,
+                    f_user = _currentUserId,
+                    c_ip = _ip,
                     f_action = log.Action.ToString()
                 });
             }
