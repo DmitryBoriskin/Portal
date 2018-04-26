@@ -1,4 +1,5 @@
 ﻿using LinqToDB;
+using PgDbase.entity;
 using PgDbase.entity.cms;
 using PgDbase.models;
 using System;
@@ -78,16 +79,6 @@ namespace PgDbase.Repository.cms
             }
         }
 
-        /// <summary>
-        /// Логирование
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ip"></param>
-        /// <param name="action"></param>
-        /// <param name="pageId"></param>
-        /// <param name="site"></param>
-        /// <param name="section"></param>
-        /// <param name="pageName"></param>
         public void InsertLog(LogModel log)
         {
             using (var db = new CMSdb(_context))
@@ -105,5 +96,15 @@ namespace PgDbase.Repository.cms
                 });
             }
         }
+
+
+        public CmsMenuModel[] GetCmsMenu(Guid UserId, Guid SiteId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return null;
+            }
+        }
+
     }
 }

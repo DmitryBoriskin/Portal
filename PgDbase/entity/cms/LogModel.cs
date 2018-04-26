@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PgDbase.entity.cms
+namespace PgDbase.entity
 {
     /// <summary>
     /// Лог
@@ -306,4 +306,5 @@ namespace PgDbase.entity.cms
         }
 
     }
+    
 }

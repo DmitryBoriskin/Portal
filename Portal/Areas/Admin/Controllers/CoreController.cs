@@ -1,6 +1,7 @@
 ﻿using PgDbase;
 using PgDbase.entity;
 using PgDbase.entity.cms;
+using PgDbase.Repository.cms;
 using Portal.Code;
 using System;
 using System.Collections.Generic;
@@ -62,8 +63,7 @@ namespace Portal.Areas.Admin.Controllers
             AccountInfo = _accountRepository.getCmsAccount(_userId);
 
             // Список доменов, доступных пользователю
-            //AccountInfo.Domains = _accountRepository.getUserDomains(_userId);
-
+            AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
             #endregion
         }
 

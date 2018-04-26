@@ -22,7 +22,7 @@ namespace Portal.Areas.Admin.Controllers
             };
             if (AccountInfo != null)
             {
-                //model.Menu = _cmsRepository.getCmsMenu(AccountInfo.Id);
+                //model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
                 //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
             }
 

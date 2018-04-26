@@ -63,6 +63,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string c_alias      { get; set; } // character varying(32)
 		[Column,        Nullable] public string c_class      { get; set; } // character varying(50)
 		[Column,        Nullable] public string f_menu_group { get; set; } // character varying(16)
+		[Column,        Nullable] public int?   n_sort       { get; set; } // integer
 
 		#region Associations
 
@@ -479,7 +480,7 @@ namespace PgDbase.models
 		[PrimaryKey, Identity   ] public int    id        { get; set; } // integer
 		[Column,        Nullable] public Guid?  f_site    { get; set; } // uuid
 		[Column,     NotNull    ] public string c_domain  { get; set; } // character varying(256)
-		[Column,        Nullable] public bool?  b_default { get; set; } // boolean
+		[Column,     NotNull    ] public bool   b_default { get; set; } // boolean
 
 		#region Associations
 
@@ -504,7 +505,6 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string    c_name             { get; set; } // character varying(128)
 		[Column,        Nullable] public string    c_patronymic       { get; set; } // character varying(128)
 		[Column,     NotNull    ] public bool      b_disabled         { get; set; } // boolean
-		[Column,        Nullable] public string    f_group            { get; set; } // character varying(32)
 		[Column,     NotNull    ] public int       n_error_count      { get; set; } // integer
 		[Column,        Nullable] public DateTime? d_try_login        { get; set; } // timestamp (6) without time zone
 

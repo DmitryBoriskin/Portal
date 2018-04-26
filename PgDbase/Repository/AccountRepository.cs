@@ -72,8 +72,20 @@ namespace PgDbase
                 if (data.Any()) return data.First();
                 return null;
             }
-
         }
+        public DomainList[] GetSiteLinkUser(Guid UserId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_user_site_link
+                            .Where(w => w.f_user == UserId)
+                            .Select(s => s.fkusersitelinksite.fkdomains.Where(ww => ww.b_default));
+                //if (query.Any()) return query.ToArray();
+                return null;
+            }
+        }
+
+
 
         /// <summary>
         /// Проверка существования пользователя
