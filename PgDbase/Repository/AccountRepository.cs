@@ -196,6 +196,45 @@ namespace PgDbase
         }
         
 
+
+
+        public bool ChangePasByCode(Guid Code, string Salt, string Hash, string IP)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.core_user.Where(w => w.c_change_pass_code == Code);
+                    if (query.Any())
+                    {
+                        string LogTitle = query.First().c_surname + " " + query.First().c_name;
+                        Guid accountId = query.First().id;
+                        Guid? change_pass_code = null;
+                        query
+                            .Set(p => p.c_salt, Salt)
+                            .Set(p => p.c_hash, Hash)
+                            .Set(p => p.n_error_count, 0)
+                            .Set(p => p.c_change_pass_code, change_pass_code)
+                            .Update();
+                        tr.Commit();
+
+                        var log = new LogModel
+                        {
+                            PageId = accountId,
+                            PageName = "Авторизация в CMS",
+                            Section = LogSection.Account,
+                            Action = LogAction.change_pass
+                        };
+                        InsertLog(log);
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+
+
+
         public void InsertLog(LogModel log)
         {
             using (var db = new CMSdb(_context))

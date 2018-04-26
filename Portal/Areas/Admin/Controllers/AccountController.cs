@@ -325,7 +325,7 @@ namespace Portal.Areas.Admin.Controllers
                 string NewSalt = pass.Salt;
                 string NewHash = pass.Hash;
 
-                //_accountRepository.changePasByCode(id, NewSalt, NewHash, RequestUserInfo.IP);
+                _accountRepository.ChangePasByCode(id, NewSalt, NewHash, RequestUserInfo.IP);
 
                 return RedirectToAction("MsgResult", "Account");
             }
