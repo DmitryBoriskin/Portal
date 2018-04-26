@@ -98,10 +98,22 @@ namespace PgDbase.Repository.cms
         }
 
 
-        public CmsMenuModel[] GetCmsMenu(Guid UserId, Guid SiteId)
+        public CmsMenuModel[] GetCmsMenu(Guid UserId)
         {
             using (var db = new CMSdb(_context))
             {
+#warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
+                var data = db.core_cms_menu_group
+                            .Select(s => new CmsMenuModel() {
+                                Alias = s.c_alias,
+                                GroupName = s.c_title,
+                                GroupItems = s.fkcmsmenucmsmenugroups.Select(m => new CmsMenuItem() {
+                                    Alias = m.c_alias,
+                                    Title = m.c_title,
+                                    Class = m.c_class
+                                }).ToArray()
+                            });
+                if (data.Any()) return data.ToArray();
                 return null;
             }
         }

@@ -591,6 +591,7 @@
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.ttf" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.woff" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.woff2" />
+    <Content Include="Areas\Admin\Views\Account\RestorePass.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
