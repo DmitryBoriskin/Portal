@@ -599,6 +599,8 @@
     <Content Include="Areas\Admin\Views\Shared\Partial\_pager.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Part\SearchFilter.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_popUp.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\ChangePass.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -610,7 +612,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Core\" />
-    <Folder Include="Areas\Admin\Views\Services\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
