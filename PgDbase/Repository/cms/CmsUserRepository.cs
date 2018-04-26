@@ -124,27 +124,11 @@ namespace PgDbase.Repository.cms
         //            };
         //            InsertLog(log);
 
-        //            var u = new core_user
-        //            {
-        //                c_email = user.Email,
-        //                c_surname = user.Surname,
-        //                c_name = user.Name,
-        //                c_patronymic = user.Patronimyc,
-        //                b_disabled = user.Disabled
-        //            };
-
-        //            db.core_user.Where(w => w.id == user.Id)
-        //                .Update(u);
-
-        //            //var u = db.core_user
-        //            //    .Where(w => w.id == user.Id)
-        //            //    .Update(() => new core_user
-        //            //    {
-        //            //        id = user.Id,
-        //            //        c_email = user.Email
-        //            //    }) > 0;
+        //            return db.core_user
+        //                .Where(w => w.id == user.Id)
+        //                .Set(s => s.)
         //        }
         //    }
-        }
+        //}
     }
 }
