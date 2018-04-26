@@ -53,6 +53,7 @@
     <Compile Include="entity\AccountModel.cs" />
     <Compile Include="entity\cms\CmsMenuModel.cs" />
     <Compile Include="entity\cms\LogModel.cs" />
+    <Compile Include="entity\cms\PasswordModel.cs" />
     <Compile Include="entity\cms\SettingsModel.cs" />
     <Compile Include="entity\cms\SitesModel.cs" />
     <Compile Include="entity\cms\UserModel.cs" />
