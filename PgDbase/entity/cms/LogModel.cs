@@ -42,7 +42,6 @@ namespace PgDbase.entity
         /// </summary>
         public string PageName { get; set; }
     }
-
     /// <summary>
     /// Действие для логирования
     /// </summary>
@@ -51,110 +50,109 @@ namespace PgDbase.entity
         /// <summary>
         /// Неопределено
         /// </summary>
-        Undefined = 0,
+        undefined = 0,
 
         /// <summary>
         /// Создание
         /// </summary>
-        Insert,
+        insert,
 
         /// <summary>
         /// Удаление
         /// </summary>
-        Delete,
+        delete,
 
         /// <summary>
         /// Изменение
         /// </summary>
-        Update,
+        update,
 
         /// <summary>
         /// Восстановление
         /// </summary>
-        Recovery,
+        recovery,
 
         /// <summary>
         /// Заблокировано
         /// </summary>
-        AdminLock,
+        admin_lock,
 
 
         /// <summary>
         /// Авторизация
         /// </summary>
-        Login,
+        login,
 
         /// <summary>
         /// Выход из системы
         /// </summary>
-        LogOff,
+        log_off,
 
         /// <summary>
         /// Неудачная попытка входа
         /// </summary>
-        FailedLogin,
+        failed_login,
 
         /// <summary>
         /// Блокировка аккаунта
         /// </summary>
-        AccountLockout,
+        account_lockout,
 
         /// <summary>
         /// Изменение пароля
         /// </summary>
-        ChangePass,
+        change_pass,
 
         /// <summary>
         /// Запрос на востановление пароля
         /// </summary>
-        RequestChangePass,
+        reqest_change_pass,
 
         /// <summary>
         /// Добавление домена
         /// </summary>
-        InsertDomain,
+        insert_domain,
 
         /// <summary>
         /// Удаление домена
         /// </summary>
-        DeleteDomain,
+        delete_domain,
 
         /// <summary>
         /// Создание связи пользователя и сайта
         /// </summary>
-        InsertSitelink,
+        insert_sitelink,
 
         /// <summary>
         /// Удаление связи пользователя и сайта
         /// </summary>
-        DeleteSitelink,
+        delete_sitelink,
 
         /// <summary>
         /// Изменение прав доступа
         /// </summary>
-        ChangeResolutions,
+        change_resolutions,
 
         /// <summary>
         /// Отправлен ответ
         /// </summary>
-        MailAnswer,
+        mail_answer,
 
         /// <summary>
         /// Сообщение прочитано
         /// </summary>
-        MailRead,
+        mail_read,
 
         /// <summary>
         ///  Удаление телефона депртамента
         /// </summary>
-        DeletePhoneDepart,
+        delete_phone_derpart,
 
         /// <summary>
         /// Добавление телефона департменту
         /// </summary>
-        InsertPhoneDepart
+        insert_phone_depart
     }
-
     /// <summary>
     /// Секция для логирования
     /// </summary>

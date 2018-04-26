@@ -73,7 +73,7 @@ namespace Portal.Areas.Admin.Controllers
 
         public CoreController()
         {
-            _accountRepository = new AccountRepository("dbConnection");
+            _accountRepository = new AccountRepository("dbConnection",RequestUserInfo.IP, SiteId);
 
             Guid userId = Guid.Empty;
             var domainUrl = "";

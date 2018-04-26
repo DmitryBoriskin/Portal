@@ -19,6 +19,10 @@ namespace PgDbase
         /// Идентифкатор сайта
         /// </summary>
         private Guid _siteid = Guid.Empty;
+        /// <summary>
+        /// ip-адрес
+        /// </summary>
+        private string _ip = string.Empty;
 
         /// <summary>
         /// Конструктор
@@ -27,9 +31,11 @@ namespace PgDbase
         {
             _context = "dbConnection";
         }
-        public AccountRepository(string ConnectionString)
+        public AccountRepository(string ConnectionString, string Ip, Guid siteId)
         {
             _context = ConnectionString;
+            _ip = Ip;
+            _siteid = siteId;
         }
 
 
@@ -124,7 +130,13 @@ namespace PgDbase
                         .Update();
 
                 // Логирование
-                InsertLog(id, IP, "login", id, "Users", "Авторизация в CMS");
+                var log = new LogModel{
+                    PageId=id,
+                    PageName= "Авторизация в CMS",
+                    Section=LogSection.Account,
+                    Action= LogAction.login
+                };
+                InsertLog(log);
             }
         }
 
@@ -172,28 +184,17 @@ namespace PgDbase
                     .Update();
 
                 // Логирование
-                InsertLog(id, IP, "reqest_change_pass", id, "Users", "Восстановление пароля");
-            }
-        }
-
-        public void InsertLog(Guid UserId, string IP, string Action, Guid PageId,string Section, string PageName)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                db.core_log.Insert(() => new core_log
+                var log = new LogModel
                 {
-                    d_date = DateTime.Now,
-                    f_page = PageId,
-                    c_page_name = PageName,
-                    f_logsections = Section,
-                    f_site = _siteid,
-                    f_user = UserId,
-                    c_ip = IP,
-                    f_action = Action
-                });
+                    PageId = id,
+                    UserId = id,
+                    Action = LogAction.reqest_change_pass,
+                    Section = LogSection.Account
+                };
+                InsertLog(log);
             }
         }
-
+        
 
         public void InsertLog(LogModel log)
         {
@@ -207,7 +208,7 @@ namespace PgDbase
                     f_logsections = log.Section.ToString(),
                     f_site = _siteid,
                     f_user = log.PageId,
-                    c_ip = log.Ip,
+                    c_ip = _ip,
                     f_action = log.Action.ToString()
                 });
             }

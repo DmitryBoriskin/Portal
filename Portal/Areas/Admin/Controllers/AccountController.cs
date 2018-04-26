@@ -26,7 +26,20 @@ namespace Portal.Areas.Admin.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            _accountRepository = new AccountRepository("dbConnection");
+            try
+            {
+                SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));
+            }
+            catch (Exception ex)
+            {
+                if (Request.Url.Host.ToLower().Replace("www.", "") != ConfigurationManager.AppSettings["BaseURL"])
+                    filterContext.Result = Redirect("/Error/");
+                
+
+                AppLogger.Debug("CoreController: Не получилось определить Domain", ex);
+            }
+
+            _accountRepository = new AccountRepository("dbConnection",RequestUserInfo.IP, SiteId);
 
             try
             {
@@ -286,10 +299,20 @@ namespace Portal.Areas.Admin.Controllers
         /// Закрываем сеанс работы с CMS
         /// </summary>
         /// <returns></returns>
-        public ActionResult logOff()
+        public ActionResult LogOff()
         {
             AccountModel AccountInfo = _accountRepository.getCmsAccount(new Guid(User.Identity.Name));
-            _accountRepository.InsertLog(AccountInfo.Id, RequestUserInfo.IP, "log_off", AccountInfo.Id, "account", "");
+
+            // Логирование
+            var log = new LogModel
+            {
+                PageId = Guid.NewGuid(),
+                PageName = "Выход из CMS",
+                Section = LogSection.Account,
+                Action =LogAction.log_off
+            };
+            _accountRepository.InsertLog(log);
+            
 
             HttpCookie MyCookie = new HttpCookie(".ASPXAUTHMORE")
             {

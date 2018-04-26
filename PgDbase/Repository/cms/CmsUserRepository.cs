@@ -109,7 +109,7 @@ namespace PgDbase.Repository.cms
                         PageId = user.Id,
                         PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
                         Section = LogSection.Users,
-                        Action = LogAction.Insert
+                        Action = LogAction.insert
                     };
                     InsertLog(log);
 
@@ -144,7 +144,7 @@ namespace PgDbase.Repository.cms
                         PageId = user.Id,
                         PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
                         Section = LogSection.Users,
-                        Action = LogAction.Update
+                        Action = LogAction.update
                     };
                     InsertLog(log);
 
