@@ -73,23 +73,25 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        //public bool InsertUser(UserModel user)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var )
-        //        return db.core_user.Insert(() => new core_user
-        //        {
-        //            id = user.Id,
-        //            c_email = user.Email,
-        //            c_salt = user.Salt,
-        //            c_hash = user.Hash,
-        //            c_surname = user.Surname,
-        //            c_name = user.Name,
-        //            c_patronymic = user.Patronimyc,
-        //            b_disabled = user.Disabled
-        //        }) > 0;
-        //    }
-        //}
+        public bool InsertUser(UserModel user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    return db.core_user.Insert(() => new core_user
+                    {
+                        id = user.Id,
+                        c_email = user.Email,
+                        c_salt = user.Salt,
+                        c_hash = user.Hash,
+                        c_surname = user.Surname,
+                        c_name = user.Name,
+                        c_patronymic = user.Patronimyc,
+                        b_disabled = user.Disabled
+                    }) > 0;
+                }
+            }
+        }
     }
 }
