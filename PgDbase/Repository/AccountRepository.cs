@@ -13,7 +13,13 @@ namespace PgDbase
         /// Контекст подключения
         /// </summary>
         private string _context = null;
+
+        
+        /// <summary>
+        /// Идентифкатор сайта
+        /// </summary>
         private Guid _siteid = Guid.Empty;
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -118,7 +124,7 @@ namespace PgDbase
                         .Update();
 
                 // Логирование
-                InsertLog(id, IP, "login", id, _siteid, "Users", "Авторизация в CMS");
+                InsertLog(id, IP, "login", id, "Users", "Авторизация в CMS");
             }
         }
 
@@ -166,11 +172,11 @@ namespace PgDbase
                     .Update();
 
                 // Логирование
-                InsertLog(id, IP, "reqest_change_pass", id, _siteid, "Users", "Восстановление пароля");
+                InsertLog(id, IP, "reqest_change_pass", id, "Users", "Восстановление пароля");
             }
         }
 
-        public void InsertLog(Guid UserId, string IP, string Action, Guid PageId, Guid Site, string Section, string PageName)
+        public void InsertLog(Guid UserId, string IP, string Action, Guid PageId,string Section, string PageName)
         {
             using (var db = new CMSdb(_context))
             {
@@ -180,10 +186,29 @@ namespace PgDbase
                     f_page = PageId,
                     c_page_name = PageName,
                     f_logsections = Section,
-                    f_site = Site,
+                    f_site = _siteid,
                     f_user = UserId,
                     c_ip = IP,
                     f_action = Action
+                });
+            }
+        }
+
+
+        public void InsertLog(LogModel log)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                db.core_log.Insert(() => new core_log
+                {
+                    d_date = DateTime.Now,
+                    f_page = log.PageId,
+                    c_page_name = log.PageName,
+                    f_logsections = log.Section.ToString(),
+                    f_site = _siteid,
+                    f_user = log.PageId,
+                    c_ip = log.Ip,
+                    f_action = log.Action.ToString()
                 });
             }
         }

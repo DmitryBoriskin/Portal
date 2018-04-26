@@ -28,7 +28,6 @@ namespace Portal.Areas.Admin.Controllers
             base.OnActionExecuting(filterContext);
             _accountRepository = new AccountRepository("dbConnection");
 
-
             try
             {
                 SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));
@@ -290,7 +289,7 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult logOff()
         {
             AccountModel AccountInfo = _accountRepository.getCmsAccount(new Guid(User.Identity.Name));
-            //_accountRepository.InsertLog(AccountInfo.Id, RequestUserInfo.IP, "log_off", AccountInfo.Id, "", "account", "");
+            _accountRepository.InsertLog(AccountInfo.Id, RequestUserInfo.IP, "log_off", AccountInfo.Id, "account", "");
 
             HttpCookie MyCookie = new HttpCookie(".ASPXAUTHMORE")
             {

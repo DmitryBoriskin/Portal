@@ -28,7 +28,7 @@ namespace PgDbase.Repository.cms
         private string _ip = string.Empty;
 
         /// <summary>
-        /// Домен
+        /// Идентифкатор сайта
         /// </summary>
         private Guid _siteId;
 
