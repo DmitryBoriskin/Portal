@@ -27,6 +27,7 @@ namespace Portal.Areas.Admin
             if (AccountInfo != null)
             {
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+
             }
         }
 
