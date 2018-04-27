@@ -1,0 +1,25 @@
+﻿using System;
+
+namespace PgDbase.entity
+{
+    /// <summary>
+    /// Список групп
+    /// </summary>
+    public class GroupListModel
+    {
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Название
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Псевдоним
+        /// </summary>
+        public string Alias { get; set; }
+    }
+}

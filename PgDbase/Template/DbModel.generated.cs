@@ -559,29 +559,29 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="user_site_link")]
 	public partial class core_user_site_link
 	{
-		[PrimaryKey, NotNull    ] public Guid  id           { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_site       { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_user       { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_user_group { get; set; } // uuid
+		[PrimaryKey, NotNull] public Guid id           { get; set; } // uuid
+		[Column,     NotNull] public Guid f_site       { get; set; } // uuid
+		[Column,     NotNull] public Guid f_user       { get; set; } // uuid
+		[Column,     NotNull] public Guid f_user_group { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
 		/// fk_user_site_link_user_group
 		/// </summary>
-		[Association(ThisKey="f_user_group", OtherKey="id", CanBeNull=true, KeyName="fk_user_site_link_user_group", BackReferenceName="fkusersitelinkusergroups")]
+		[Association(ThisKey="f_user_group", OtherKey="id", CanBeNull=false, KeyName="fk_user_site_link_user_group", BackReferenceName="fkusersitelinkusergroups")]
 		public core_user_group fkusersitelinkusergroup { get; set; }
 
 		/// <summary>
 		/// fk_user_site_link_users
 		/// </summary>
-		[Association(ThisKey="f_user", OtherKey="id", CanBeNull=true, KeyName="fk_user_site_link_users", BackReferenceName="fkusersitelinks")]
+		[Association(ThisKey="f_user", OtherKey="id", CanBeNull=false, KeyName="fk_user_site_link_users", BackReferenceName="fkusersitelinks")]
 		public core_user fkusersitelinkuser { get; set; }
 
 		/// <summary>
 		/// fk_user_site_link_sites
 		/// </summary>
-		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=true, KeyName="fk_user_site_link_sites", BackReferenceName="fkusersitelinks")]
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_user_site_link_sites", BackReferenceName="fkusersitelinks")]
 		public core_site fkusersitelinksite { get; set; }
 
 		/// <summary>

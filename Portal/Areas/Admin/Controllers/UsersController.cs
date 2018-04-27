@@ -21,7 +21,8 @@ namespace Portal.Areas.Admin.Controllers
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName, 
+                Groups = _cmsRepository.GetGroups()
             };
             if (AccountInfo != null)
             {

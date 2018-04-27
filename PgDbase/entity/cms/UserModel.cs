@@ -72,5 +72,10 @@ namespace PgDbase.entity.cms
                 return $"{Surname} {Name} {Patronimyc}";
             }
         }
+
+        /// <summary>
+        /// Группа 
+        /// </summary>
+        public Guid Group { get; set; }
     }
 }

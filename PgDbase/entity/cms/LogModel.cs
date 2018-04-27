@@ -253,10 +253,16 @@ namespace PgDbase.entity
         /// Фотоальбомы
         /// </summary>
         Anketa = 16,
+
         /// <summary>
         /// новостная группа
         /// </summary>
-        MaterialGroup = 14
+        MaterialGroup = 14,
+
+        /// <summary>
+        /// Связь пользователя с сайтом
+        /// </summary>
+        UserSiteLink = 15
     }
 
     /// <summary>
