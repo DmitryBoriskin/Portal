@@ -88,7 +88,10 @@ namespace PgDbase.Repository.cms
                         Name = s.c_name,
                         Patronimyc = s.c_patronymic,
                         Disabled = s.b_disabled,
-                        TryLogin = s.d_try_login
+                        TryLogin = s.d_try_login,
+                        Group = s.fkusersitelinks
+                            .Where(w => w.f_site == _siteId)
+                            .Select(g => g.f_user_group).SingleOrDefault()
                     }).SingleOrDefault();
             }
         }
