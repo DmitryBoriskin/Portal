@@ -297,7 +297,7 @@ namespace PgDbase.Repository.cms
                     {
                         Title = s.c_title,
                         Alias = s.c_alias
-                    }).ToArray();
+                    }).ToArray();  
             }
         }
         
