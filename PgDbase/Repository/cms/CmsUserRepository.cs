@@ -174,6 +174,15 @@ namespace PgDbase.Repository.cms
                     {
                         currentLink.f_user_group = user.Group;
                         db.Update(currentLink);
+
+                        log = new LogModel
+                        {
+                            PageId = currentLink.id,
+                            PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
+                            Section = LogSection.UserSiteLink,
+                            Action = LogAction.update
+                        };
+                        InsertLog(log);
                     }
                     else
                     {
@@ -295,6 +304,7 @@ namespace PgDbase.Repository.cms
                 return db.core_user_group
                     .Select(s => new GroupsModel
                     {
+                        Id = s.id,
                         Title = s.c_title,
                         Alias = s.c_alias
                     }).ToArray();  
