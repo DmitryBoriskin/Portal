@@ -3,7 +3,7 @@
     /// <summary>
     /// Ошибка
     /// </summary>
-    public class ErrorMessageModel
+    public class ErrorMessage
     {
         /// <summary>
         /// Заголовок
