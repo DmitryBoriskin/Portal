@@ -349,17 +349,6 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Обновляет группу для пользователя на сайте
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <returns></returns>
-        public bool UpdateUserSiteLink(Guid userId, Guid groupId)
-        {
-            return false;
-        }
-
-        /// <summary>
         /// Возвращает заголовок при логировании
         /// добавления связи пользователя и сайта
         /// </summary>
