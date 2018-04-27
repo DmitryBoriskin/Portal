@@ -481,11 +481,13 @@
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
     <Compile Include="Areas\Admin\Controllers\ServicesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SitesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UsersViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -610,6 +612,7 @@
     <Content Include="Areas\Admin\Views\Account\MsgSendMail.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_popUp.cshtml" />
     <Content Include="Areas\Admin\Views\Services\ChangePass.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

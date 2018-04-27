@@ -194,10 +194,15 @@ namespace PgDbase
                 InsertLog(log);
             }
         }
-        
-
-
-
+                
+        /// <summary>
+        /// Сбросс пароля по ссылке пришедшей на почту
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <param name="Salt"></param>
+        /// <param name="Hash"></param>
+        /// <param name="IP"></param>
+        /// <returns></returns>
         public bool ChangePasByCode(Guid Code, string Salt, string Hash, string IP)
         {
             using (var db = new CMSdb(_context))
@@ -234,7 +239,10 @@ namespace PgDbase
         }
 
 
-
+        /// <summary>
+        /// логировнаие
+        /// </summary>
+        /// <param name="log"></param>
         public void InsertLog(LogModel log)
         {
             using (var db = new CMSdb(_context))
