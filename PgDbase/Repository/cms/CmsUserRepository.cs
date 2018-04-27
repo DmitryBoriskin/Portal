@@ -241,7 +241,8 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_users.Where(w => w.id == id).Any();
+                return db.core_users
+                    .Where(w => w.id == id).Any();
             }
         }
 
@@ -254,7 +255,8 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_users.Where(w => w.c_email == email.ToLower()).Any();
+                return db.core_users
+                    .Where(w => w.c_email == email.ToLower()).Any();
             }
         }
 

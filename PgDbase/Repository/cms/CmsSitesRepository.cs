@@ -20,7 +20,9 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.core_site.AsQueryable();
+                var query = db.core_sites
+                    .AsQueryable();
+
                 if (filter.Disabled != null)
                 {
                     query = query.Where(w => w.b_disabled == filter.Disabled);
@@ -66,7 +68,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_site
+                return db.core_sites
                          .Where(w => w.id == id)
                          .Select(s => new SitesModel
                          {
@@ -86,7 +88,8 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_site.Where(w => w.id == id).Any();
+                return db.core_sites
+                    .Where(w => w.id == id).Any();
             }
         }
 
@@ -105,7 +108,7 @@ namespace PgDbase.Repository.cms
                         Action = LogAction.update
                     });
 
-                    bool result = db.core_site
+                    bool result = db.core_sites
                                   .Where(w => w.id == site.Id)
                                   .Set(s => s.c_name, site.Title)
                                   .Update() > 0;
@@ -128,11 +131,13 @@ namespace PgDbase.Repository.cms
                         Section = LogSection.Sites,
                         Action = LogAction.insert
                     });
-                    bool result = db.core_site.Insert(() => new core_site
-                    {
-                        id = site.Id,
-                        c_name = site.Title
-                    }) > 0;
+                    bool result = db.core_sites
+                        .Insert(
+                        () => new core_sites
+                            {
+                                id = site.Id,
+                                c_name = site.Title
+                            }) > 0;
                     tr.Commit();
                     return result;
                 }
@@ -147,7 +152,7 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var site = db.core_site.Where(w => w.id == id).SingleOrDefault();
+                    var site = db.core_sites.Where(w => w.id == id).SingleOrDefault();
                     if (site != null)
                     {
                         InsertLog(new LogModel
