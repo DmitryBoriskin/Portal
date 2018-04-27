@@ -23,11 +23,10 @@ namespace Portal.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 string NewPass = model.Password.Password;
-
                 Cripto pass = new Cripto(NewPass.ToCharArray());
                 string NewSalt = pass.Salt;
                 string NewHash = pass.Hash;
-                //_cmsRepository.ChangePassword(id, NewSalt, NewHash); 
+                _cmsRepository.ChangePassword(id, NewSalt, NewHash);
                 ViewBag.SuccesAlert = "Пароль изменен";
             }
 

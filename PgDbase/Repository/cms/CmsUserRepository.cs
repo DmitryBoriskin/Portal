@@ -113,7 +113,7 @@ namespace PgDbase.Repository.cms
                     };
                     InsertLog(log);
 
-                    return db.core_user.Insert(() => new core_user
+                    bool result = db.core_user.Insert(() => new core_user
                     {
                         id = user.Id,
                         c_email = user.Email,
@@ -124,6 +124,9 @@ namespace PgDbase.Repository.cms
                         c_patronymic = user.Patronimyc,
                         b_disabled = user.Disabled
                     }) > 0;
+
+                    tr.Commit();
+                    return result;
                 }
             }
         }
@@ -148,7 +151,7 @@ namespace PgDbase.Repository.cms
                     };
                     InsertLog(log);
 
-                    return db.core_user
+                    bool result = db.core_user
                         .Where(w => w.id == user.Id)
                         .Set(s => s.c_email, user.Email)
                         .Set(s => s.c_name, user.Name)
@@ -156,6 +159,43 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.c_patronymic, user.Patronimyc)
                         .Set(s => s.b_disabled, user.Disabled)
                         .Update() > 0;
+
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Меняет пароль
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="salt"></param>
+        /// <param name="hash"></param>
+        public void ChangePassword(Guid id, string salt, string hash)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var user = db.core_user.Where(w => w.id == id).SingleOrDefault();
+
+                    var log = new LogModel
+                    {
+                        PageId = id,
+                        PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
+                        Section = LogSection.Users,
+                        Action = LogAction.change_pass
+                    };
+                    InsertLog(log);
+
+                    db.core_user
+                        .Where(w => w.id == id)
+                        .Set(s => s.c_salt, salt)
+                        .Set(s => s.c_hash, hash)
+                        .Update();
+
+                    tr.Commit();
                 }
             }
         }

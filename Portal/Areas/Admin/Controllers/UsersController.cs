@@ -1,6 +1,7 @@
 ﻿using PgDbase.Services;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
@@ -41,6 +42,17 @@ namespace Portal.Areas.Admin.Controllers
         {
             model.Item = _cmsRepository.GetUser(id);
             return View("Item", model);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
+        public ActionResult Insert()
+        {
+            //  При создании записи сбрасываем номер страницы
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "page", String.Empty);
+
+            return Redirect(StartUrl + "Item/" + Guid.NewGuid() + "/" + query);
         }
     }
 }

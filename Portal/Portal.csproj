@@ -470,7 +470,9 @@
     <Content Include="Scripts\cms\disly_5_popup.js" />
     <Content Include="Scripts\popUp_script.js" />
     <Content Include="Scripts\uc_script.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -482,6 +484,8 @@
     <Compile Include="Areas\Admin\Controllers\SitesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
+    <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UsersViewModel.cs" />
