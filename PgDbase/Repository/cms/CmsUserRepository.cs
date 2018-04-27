@@ -163,6 +163,25 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.b_disabled, user.Disabled)
                         .Update() > 0;
 
+                    // группа
+                    var currentLink = db.core_user_site_link
+                        .Where(w => w.f_user == user.Id)
+                        .Where(w => w.f_site == _siteId)
+                        .Where(w => w.f_user_group == user.Group)
+                        .SingleOrDefault();
+
+                    bool isExistsGroupOnThisSite = currentLink != null;
+
+                    if (isExistsGroupOnThisSite)
+                    {
+                        currentLink.f_user_group = user.Group;
+                        db.Update(currentLink);
+                    }
+                    else
+                    {
+                        InsertUserSiteLink(user.Id, user.Group);
+                    }
+
                     tr.Commit();
                     return result;
                 }
@@ -283,38 +302,22 @@ namespace PgDbase.Repository.cms
                     }).ToArray();
             }
         }
-
+        
         /// <summary>
         /// Добавляет связь пользователя с сайтом
         /// </summary>
         /// <returns></returns>
-        public bool InsertUserSiteLink(Guid siteId, Guid userId, Guid groupId)
+        public bool InsertUserSiteLink(Guid userId, Guid groupId)
         {
             using (var db = new CMSdb(_context))
             {
                 using (var tr = db.BeginTransaction())
                 {
                     Guid id = Guid.NewGuid();
-
-                    string user = db.core_user
-                        .Where(w => w.id == userId)
-                        .Select(s => $"{s.c_surname} {s.c_name}")
-                        .SingleOrDefault();
-
-                    string domain = db.core_site
-                        .Where(w => w.id == siteId)
-                        .Select(s => s.c_name)
-                        .SingleOrDefault();
-
-                    string group = db.core_user_group
-                        .Where(w => w.id == groupId)
-                        .Select(s => s.c_title)
-                        .SingleOrDefault();
-
                     var log = new LogModel
                     {
                         PageId = id,
-                        PageName = $"{user} {group} {domain}",
+                        PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
                         Section = LogSection.UserSiteLink,
                         Action = LogAction.insert
                     };
@@ -324,7 +327,7 @@ namespace PgDbase.Repository.cms
                         .Insert(() => new core_user_site_link
                         {
                             id = id,
-                            f_site = siteId,
+                            f_site = _siteId,
                             f_user = userId,
                             f_user_group = groupId
                         }) > 0;
@@ -333,6 +336,42 @@ namespace PgDbase.Repository.cms
                     return result;
                 }
             }
+        }
+
+        /// <summary>
+        /// Обновляет группу для пользователя на сайте
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        public bool UpdateUserSiteLink(Guid userId, Guid groupId)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Возвращает заголовок при логировании
+        /// добавления связи пользователя и сайта
+        /// </summary>
+        /// <returns></returns>
+        private string GetLogTitleForUserSiteLink(Guid userId, Guid groupId, CMSdb db)
+        {
+            string user = db.core_user
+                .Where(w => w.id == userId)
+                .Select(s => $"{s.c_surname} {s.c_name}")
+                .SingleOrDefault();
+
+            string domain = db.core_site
+                .Where(w => w.id == _siteId)
+                .Select(s => s.c_name)
+                .SingleOrDefault();
+
+            string group = db.core_user_group
+                .Where(w => w.id == groupId)
+                .Select(s => s.c_title)
+                .SingleOrDefault();
+
+            return $"{user} {group} {domain}";
         }
     }
 }
