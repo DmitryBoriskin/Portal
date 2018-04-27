@@ -217,7 +217,7 @@ namespace PgDbase.Repository.cms
                             .Set(s => s.c_hash, hash)
                             .Update();
 
-                        tr.Commit();
+                        tr.Commit(); 
                     }
                 }
             }
