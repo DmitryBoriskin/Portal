@@ -6,9 +6,7 @@ using System.Web.UI;
 using System.Data;
 using Portal.Areas.Admin.Models;
 using System.Text.RegularExpressions;
-using PgDbase;
 using PgDbase.entity;
-using PgDbase.entity.cms;
 
 
 /// <summary>

@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -439,7 +440,6 @@
     <Content Include="Content\plugins\tinymce\themes\inlite\theme.min.js" />
     <Content Include="Content\plugins\tinymce\themes\modern\theme.min.js" />
     <Content Include="Content\plugins\tinymce\tinymce.min.js" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Account\LogIn.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_login.cshtml" />
@@ -482,12 +482,14 @@
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
     <Compile Include="Areas\Admin\Controllers\ServicesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SitesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ModulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ModuleViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UsersViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -506,9 +508,6 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Main\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\fonts\fontello\fontello.eot" />
     <Content Include="Content\fonts\fontello\fontello.ttf" />
     <Content Include="Content\fonts\fontello\fontello.woff" />
@@ -625,7 +624,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Core\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />

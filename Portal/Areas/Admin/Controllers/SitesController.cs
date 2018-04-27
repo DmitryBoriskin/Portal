@@ -1,17 +1,15 @@
-﻿using PgDbase.Services;
+﻿using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Portal.Areas.Admin.Controllers
+namespace Portal.Areas.Admin
 {
     public class SitesController : CoreController
     {
         SitesViewModel model;
-        FilterParams filter;
+        FilterModel filter;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -35,7 +33,7 @@ namespace Portal.Areas.Admin.Controllers
         // GET: Admin/Sites
         public ActionResult Index()
         {
-            FilterParams filter = GetFilter();
+            PgDbase.entity.FilterModel filter = GetFilter();
             model.List = _cmsRepository.GetSitesList(filter);
 
             return View(model);

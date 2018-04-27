@@ -1,5 +1,4 @@
-﻿using PgDbase.entity.cms;
-using System;
+﻿using System;
 
 namespace PgDbase.entity
 {

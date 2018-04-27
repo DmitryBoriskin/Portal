@@ -1,8 +1,6 @@
 ﻿using LinqToDB;
 using PgDbase.entity;
-using PgDbase.entity.cms;
 using PgDbase.models;
-using PgDbase.Services;
 using System;
 using System.Linq;
 
@@ -18,7 +16,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter">параметры для фильтрации</param>
         /// <returns></returns>
-        public PagedEnumerable<SitesModel> GetSitesList(FilterParams filter)
+        public Paged<SitesModel> GetSitesList(FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -53,7 +51,7 @@ namespace PgDbase.Repository.cms
                                     Id = s.id,
                                     Title = s.c_name
                                 });
-                    return new PagedEnumerable<SitesModel>(List.ToArray(), filter.Size, filter.Page, ItemCount);
+                    return new Paged<SitesModel>(List.ToArray(), filter.Size, filter.Page, ItemCount);
                 }
             }
             return null;

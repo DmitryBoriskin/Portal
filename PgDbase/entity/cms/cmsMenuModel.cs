@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PgDbase.entity.cms
+namespace PgDbase.entity
 {
     public class CmsMenuModel
     {
@@ -23,6 +19,7 @@ namespace PgDbase.entity.cms
         /// </summary>
         public CmsMenuItem[] GroupItems { get; set; }
     }
+
     public class CmsMenuItem
     {
         /// <summary>

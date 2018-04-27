@@ -1,9 +1,9 @@
-﻿namespace PgDbase.Services
+﻿namespace PgDbase.entity
 {
     /// <summary>
     /// Пейджер
     /// </summary>
-    public class Pager
+    public class PagerModel
     {
         /// <summary>
         /// Номер страницы
@@ -36,7 +36,7 @@
         /// <param name="pageSize"></param>
         /// <param name="pageNum"></param>
         /// <param name="totalCount"></param>
-        public Pager(int pageSize, int pageNum, int totalCount)
+        public PagerModel(int pageSize, int pageNum, int totalCount)
         {
             PageSize = PageSize;
             PageNum = pageNum;

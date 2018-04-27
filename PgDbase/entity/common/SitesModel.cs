@@ -1,4 +1,4 @@
-﻿using PgDbase.Services;
+﻿using PgDbase.entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,7 +21,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Пейджер
         /// </summary>
-        public Pager Pager;
+        public PagerModel Pager;
 
         public int CountAllSites;
         public int CountOrgSites;
