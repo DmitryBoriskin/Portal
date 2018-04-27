@@ -936,6 +936,7 @@ a.button.icon-cancel{
 .icon-newspaper:before { content: '\e99c'; }        /* Мониторинг новостей */
 .icon-chart-line:before{content:'\e948';}           /* Статистика */
 .icon-users:before {content: '\e830'}               /*Пользователи*/
+.icon-puzzle:before { content: '\e986'; }           /*Модули*/
 
 .icon-menu:before {
     content:'\ed81';

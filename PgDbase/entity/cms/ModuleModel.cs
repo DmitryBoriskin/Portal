@@ -8,69 +8,29 @@ namespace PgDbase.entity
     public class ModuleModel
     {
         /// <summary>
-        /// Идентификатор
+        /// Идентификатор в бд
         /// </summary>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Email
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Соль пароля
-        /// </summary>
-        public string Salt { get; set; }
-
-        /// <summary>
-        /// Хэш-пароля
-        /// </summary>
-        public string Hash { get; set; }
-
-        /// <summary>
-        /// Код для смены пароля
-        /// </summary>
-        public Guid ChangePassCode { get; set; }
-
-        /// <summary>
-        /// Фамилия
-        /// </summary>
-        public string Surname { get; set; }
-
-        /// <summary>
-        /// Имя
+        /// Имя модуля
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Отчество
+        /// Имя контроллера
         /// </summary>
-        public string Patronimyc { get; set; }
+        public string Controller { get; set; }
 
         /// <summary>
-        /// Запрещеность
+        /// Имя Экшена
         /// </summary>
-        public bool Disabled { get; set; }
+        public string Action { get; set; }
 
         /// <summary>
-        /// Кол-во неудачных попыток авторизации
+        /// Вью, если не указана то берется по умолчанию
         /// </summary>
-        public int ErrorCount { get; set; }
+        public string View { get; set; }
 
-        /// <summary>
-        /// Последнее время авторизации
-        /// </summary>
-        public DateTime? TryLogin { get; set; }
-
-        /// <summary>
-        /// Полное имя
-        /// </summary>
-        public string FullName
-        {
-            get
-            {
-                return $"{Surname} {Name} {Patronimyc}";
-            }
-        }
     }
 }
