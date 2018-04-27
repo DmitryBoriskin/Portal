@@ -19,30 +19,59 @@ namespace Portal.Areas.Admin.Controllers
     public class CoreController : Controller
     {
         //protected Logger cmsLogger = null;
+
         /// <summary>
-        /// Контекст доступа к базе данных
+        /// Репозиторий для работы с авторизацией
         /// </summary>
         protected AccountRepository _accountRepository { get; private set; }
+
+        /// <summary>
+        /// Репозиторий для работы с сущностями
+        /// </summary>
         protected CmsRepository _cmsRepository { get; private set; }
 
+        /// <summary>
+        /// Домен
+        /// </summary>
         public string Domain;
+
+        /// <summary>
+        /// Идентификатор сайта
+        /// </summary>
         public Guid SiteId;
+
+        /// <summary>
+        /// Путь из адресной строки
+        /// </summary>
         public string StartUrl;
+
+        /// <summary>
+        /// Авторизованный пользователь
+        /// </summary>
         public AccountModel AccountInfo;
+
+        /// <summary>
+        /// Настройки
+        /// </summary>
         public SettingsModel SettingsInfo;
+
+        /// <summary>
+        /// Контроллер
+        /// </summary>
         public string ControllerName;
+
+        /// <summary>
+        /// Действие
+        /// </summary>
         public string ActionName;
-
-
-
+        
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
             ControllerName = filterContext.RouteData.Values["Controller"].ToString().ToLower();
             ActionName = filterContext.RouteData.Values["Action"].ToString().ToLower();
-
-
+            
             try
             {
                 SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));                
@@ -68,9 +97,10 @@ namespace Portal.Areas.Admin.Controllers
             AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
             #endregion
         }
-
-
-
+        
+        /// <summary>
+        /// Конструктор
+        /// </summary>
         public CoreController()
         {
             _accountRepository = new AccountRepository("dbConnection",RequestUserInfo.IP, SiteId);

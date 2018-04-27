@@ -55,6 +55,6 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Ошибка
         /// </summary>
-        public ErrorMessageModel ErrorInfo { get; set; }
+        public ErrorMessage ErrorInfo { get; set; }
     }
 }

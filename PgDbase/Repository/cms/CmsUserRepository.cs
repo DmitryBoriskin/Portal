@@ -180,22 +180,86 @@ namespace PgDbase.Repository.cms
                 {
                     var user = db.core_user.Where(w => w.id == id).SingleOrDefault();
 
-                    var log = new LogModel
+                    if (user != null)
                     {
-                        PageId = id,
-                        PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                        Section = LogSection.Users,
-                        Action = LogAction.change_pass
-                    };
-                    InsertLog(log);
+                        var log = new LogModel
+                        {
+                            PageId = id,
+                            PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
+                            Section = LogSection.Users,
+                            Action = LogAction.change_pass
+                        };
+                        InsertLog(log);
 
-                    db.core_user
-                        .Where(w => w.id == id)
-                        .Set(s => s.c_salt, salt)
-                        .Set(s => s.c_hash, hash)
-                        .Update();
+                        db.core_user
+                            .Where(w => w.id == id)
+                            .Set(s => s.c_salt, salt)
+                            .Set(s => s.c_hash, hash)
+                            .Update();
 
-                    tr.Commit();
+                        tr.Commit();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Проверяет существование пользователя по id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CheckUserExists(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_user.Where(w => w.id == id).Any();
+            }
+        }
+
+        /// <summary>
+        /// Проверяет существование пользователя по email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public bool CheckUserExists(string email)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_user.Where(w => w.c_email == email.ToLower()).Any();
+            }
+        }
+
+        /// <summary>
+        /// Удаляет пользователя
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteUser(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    bool result = false;
+
+                    var user = db.core_user.Where(w => w.id == id).SingleOrDefault();
+                    if (user != null)
+                    {
+                        var log = new LogModel
+                        {
+                            PageId = id,
+                            PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
+                            Section = LogSection.Users,
+                            Action = LogAction.delete
+                        };
+                        InsertLog(log);
+
+                        result = db.Delete(user) > 0;
+
+                        tr.Commit();
+                    }
+
+                    return result;
                 }
             }
         }
