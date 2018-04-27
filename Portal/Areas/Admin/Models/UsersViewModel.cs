@@ -1,4 +1,5 @@
-﻿using PgDbase.entity.cms;
+﻿using PgDbase.entity;
+using PgDbase.entity.cms;
 using PgDbase.Services;
 
 namespace Portal.Areas.Admin.Models
@@ -22,5 +23,10 @@ namespace Portal.Areas.Admin.Models
         /// Пароль
         /// </summary>
         public PasswordModel Password { get; set; }
+
+        /// <summary>
+        /// Группы
+        /// </summary>
+        public GroupListModel[] Groups { get; set; }
     }
 }

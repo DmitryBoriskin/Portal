@@ -222,15 +222,17 @@ namespace Portal.Areas.Admin.Controllers
                 Disabled = null
             };
 
+            var disabled = false;
             if (!String.IsNullOrEmpty(Request.QueryString["disabled"]))
             {
-                bool.TryParse(Request.QueryString["disabled"], out bool disabled);
+                bool.TryParse(Request.QueryString["disabled"], out disabled);
                 filter.Disabled = disabled;
             }
 
+            int page = 1;
             if (!String.IsNullOrEmpty(Request.QueryString["page"]))
             {
-                int.TryParse(Request.QueryString["page"], out int page);
+                int.TryParse(Request.QueryString["page"], out page);
                 if (page > 1)
                     filter.Page = page;
             }
