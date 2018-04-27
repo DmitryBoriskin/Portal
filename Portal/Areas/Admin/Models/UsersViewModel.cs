@@ -25,6 +25,6 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Группы
         /// </summary>
-        public GroupListModel[] Groups { get; set; }
+        public GroupsModel[] Groups { get; set; }
     }
 }

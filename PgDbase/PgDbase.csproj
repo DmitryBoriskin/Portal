@@ -52,12 +52,12 @@
   <ItemGroup>
     <Compile Include="Entity\cms\AccountModel.cs" />
     <Compile Include="Entity\cms\CmsMenuModel.cs" />
+    <Compile Include="Entity\cms\GroupsModel.cs" />
     <Compile Include="Entity\cms\LogModel.cs" />
     <Compile Include="Entity\cms\PasswordModel.cs" />
     <Compile Include="Entity\cms\SettingsModel.cs" />
     <Compile Include="Entity\cms\ModuleModel.cs" />
     <Compile Include="Entity\cms\UserModel.cs" />
-	 <Compile Include="entity\GroupListModel.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />

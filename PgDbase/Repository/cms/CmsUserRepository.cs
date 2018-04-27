@@ -269,12 +269,12 @@ namespace PgDbase.Repository.cms
         /// Возвращает список групп
         /// </summary>
         /// <returns></returns>
-        public GroupListModel[] GetGroups()
+        public GroupsModel[] GetGroups()
         {
             using (var db = new CMSdb(_context))
             {
                 return db.core_user_group
-                    .Select(s => new GroupListModel
+                    .Select(s => new GroupsModel
                     {
                         Title = s.c_title,
                         Alias = s.c_alias
