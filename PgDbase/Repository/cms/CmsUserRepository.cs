@@ -179,7 +179,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = currentLink.id,
                             PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
-                            Section = LogSection.UserSiteLink,
+                            Section = LogSection.UserSiteLinks,
                             Action = LogAction.update
                         };
                         InsertLog(log);
@@ -328,7 +328,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = id,
                         PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                        Section = LogSection.UserSiteLink,
+                        Section = LogSection.UserSiteLinks,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
