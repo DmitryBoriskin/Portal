@@ -48,9 +48,9 @@ namespace PgDbase
         {
             using (var db = new CMSdb(_context))
             {
-                var data = db.core_user.
-                    Where(w => w.c_email == Email).
-                    Select(s => new AccountModel
+                var data = db.core_users
+                    .Where(w => w.c_email == Email)
+                    .Select(s => new AccountModel
                     {
                         Id = s.id,
                         Mail = s.c_email,
@@ -71,9 +71,9 @@ namespace PgDbase
         {
             using (var db = new CMSdb(_context))
             {
-                var data = db.core_user.
-                   Where(w => w.id == Id).
-                   Select(s => new AccountModel {
+                var data = db.core_users
+                   .Where(w => w.id == Id)
+                   .Select(s => new AccountModel {
                        Id=s.id,
                        Mail=s.c_email,
                        Salt=s.c_salt,
@@ -93,8 +93,9 @@ namespace PgDbase
                             .Where(w => w.f_user == UserId)
                             .Select(s => new DomainList()
                             {
-                                SiteName = s.fkusersitelinksite.c_name,
-                                DomainName = s.fkusersitelinksite.fkdomains.Where(w1 => w1.b_default).Select(s1 => s1.c_domain).SingleOrDefault().ToString()
+                                SiteName = s.fkusersitelinksites.c_name,
+                                DomainName = s.fkusersitelinksites
+                                .fkdomainss.Where(w1 => w1.b_default).Select(s1 => s1.c_domain).SingleOrDefault().ToString()
                             });
                             
                 
@@ -115,7 +116,8 @@ namespace PgDbase
             {
                 bool result = false;
 
-                int count = db.core_user.Where(w => w.c_change_pass_code == Code).Count();
+                int count = db.core_users
+                    .Where(w => w.c_change_pass_code == Code).Count();
                 if (count > 0) result = true;
 
                 return result;
@@ -128,7 +130,8 @@ namespace PgDbase
             {
                 Guid? change_pass_code = null;
 
-                var data = db.core_user.Where(w => w.id == id)
+                var data = db.core_users
+                        .Where(w => w.id == id)
                         .Set(u => u.n_error_count, 0)
                         .Set(u => u.d_try_login, DateTime.Now)
                         .Set(u => u.c_change_pass_code, change_pass_code)
@@ -154,9 +157,11 @@ namespace PgDbase
         {
             using (var db = new CMSdb(_context))
             {
-                int Num = db.core_user.Where(w => w.id == id).ToArray().First().n_error_count + 1;
+                int Num = db.core_users
+                    .Where(w => w.id == id).ToArray().First().n_error_count + 1;
 
-                var data = db.core_user.Where(w => w.id == id)
+                var data = db.core_users
+                    .Where(w => w.id == id)
                         .Set(u => u.n_error_count, Num)
                         .Set(u => u.d_try_login, DateTime.Now)
                         .Update();
@@ -184,7 +189,8 @@ namespace PgDbase
         {
             using (var db = new CMSdb(_context))
             {
-                var data = db.core_user.Where(w => w.id == id)
+                var data = db.core_users
+                    .Where(w => w.id == id)
                     .Set(u => u.c_change_pass_code, Code)
                     .Update();
 
@@ -214,7 +220,8 @@ namespace PgDbase
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var query = db.core_user.Where(w => w.c_change_pass_code == Code);
+                    var query = db.core_users
+                        .Where(w => w.c_change_pass_code == Code);
                     if (query.Any())
                     {
                         string LogTitle = query.First().c_surname + " " + query.First().c_name;
@@ -252,7 +259,7 @@ namespace PgDbase
         {
             using (var db = new CMSdb(_context))
             {
-                db.core_log.Insert(() => new core_log
+                db.core_logs.Insert(() => new core_logs
                 {
                     d_date = DateTime.Now,
                     f_page = log.PageId,
@@ -278,7 +285,7 @@ namespace PgDbase
             {
                 using (var db = new CMSdb(_context))
                 {
-                    var query = db.core_sites_domains.Where(w => w.c_domain == domainUrl).FirstOrDefault();//.fksitesdomainssite;//
+                    var query = db.core_site_domains.Where(w => w.c_domain == domainUrl).FirstOrDefault();//.fksitesdomainssite;//
                     if (query != null)
                     {
                         return Guid.Parse(query.f_site.ToString());

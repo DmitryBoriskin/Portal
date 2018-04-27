@@ -19,7 +19,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.core_user.AsQueryable();
+                var query = db.core_users.AsQueryable();
 
                 if (filter.Disabled.HasValue)
                 {
@@ -76,7 +76,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_user
+                return db.core_users
                     .Where(w => w.id == id)
                     .Select(s => new UserModel
                     {
@@ -114,7 +114,7 @@ namespace PgDbase.Repository.cms
                     };
                     InsertLog(log);
 
-                    bool result = db.core_user.Insert(() => new core_user
+                    bool result = db.core_users.Insert(() => new core_users
                     {
                         id = user.Id,
                         c_email = user.Email,
@@ -152,7 +152,7 @@ namespace PgDbase.Repository.cms
                     };
                     InsertLog(log);
 
-                    bool result = db.core_user
+                    bool result = db.core_users
                         .Where(w => w.id == user.Id)
                         .Set(s => s.c_email, user.Email)
                         .Set(s => s.c_name, user.Name)
@@ -174,6 +174,15 @@ namespace PgDbase.Repository.cms
                     {
                         currentLink.f_user_group = user.Group;
                         db.Update(currentLink);
+
+                        log = new LogModel
+                        {
+                            PageId = currentLink.id,
+                            PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
+                            Section = LogSection.UserSiteLink,
+                            Action = LogAction.update
+                        };
+                        InsertLog(log);
                     }
                     else
                     {
@@ -198,7 +207,7 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var user = db.core_user.Where(w => w.id == id).SingleOrDefault();
+                    var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
 
                     if (user != null)
                     {
@@ -211,13 +220,13 @@ namespace PgDbase.Repository.cms
                         };
                         InsertLog(log);
 
-                        db.core_user
+                        db.core_users
                             .Where(w => w.id == id)
                             .Set(s => s.c_salt, salt)
                             .Set(s => s.c_hash, hash)
                             .Update();
 
-                        tr.Commit();
+                        tr.Commit(); 
                     }
                 }
             }
@@ -232,7 +241,8 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_user.Where(w => w.id == id).Any();
+                return db.core_users
+                    .Where(w => w.id == id).Any();
             }
         }
 
@@ -245,7 +255,8 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_user.Where(w => w.c_email == email.ToLower()).Any();
+                return db.core_users
+                    .Where(w => w.c_email == email.ToLower()).Any();
             }
         }
 
@@ -262,7 +273,7 @@ namespace PgDbase.Repository.cms
                 {
                     bool result = false;
 
-                    var user = db.core_user.Where(w => w.id == id).SingleOrDefault();
+                    var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
                     if (user != null)
                     {
                         var log = new LogModel
@@ -292,12 +303,13 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_user_group
+                return db.core_user_groups
                     .Select(s => new GroupsModel
                     {
+                        Id = s.id,
                         Title = s.c_title,
                         Alias = s.c_alias
-                    }).ToArray();
+                    }).ToArray();  
             }
         }
         
@@ -354,17 +366,17 @@ namespace PgDbase.Repository.cms
         /// <returns></returns>
         private string GetLogTitleForUserSiteLink(Guid userId, Guid groupId, CMSdb db)
         {
-            string user = db.core_user
+            string user = db.core_users
                 .Where(w => w.id == userId)
                 .Select(s => $"{s.c_surname} {s.c_name}")
                 .SingleOrDefault();
 
-            string domain = db.core_site
+            string domain = db.core_sites
                 .Where(w => w.id == _siteId)
                 .Select(s => s.c_name)
                 .SingleOrDefault();
 
-            string group = db.core_user_group
+            string group = db.core_user_groups
                 .Where(w => w.id == groupId)
                 .Select(s => s.c_title)
                 .SingleOrDefault();
