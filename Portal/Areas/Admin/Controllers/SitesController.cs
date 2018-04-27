@@ -11,6 +11,7 @@ namespace Portal.Areas.Admin
         SitesViewModel model;
         FilterModel filter;
 
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
