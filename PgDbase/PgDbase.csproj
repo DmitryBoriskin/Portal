@@ -50,16 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="entity\AccountModel.cs" />
+    <Compile Include="entity\cms\AccountModel.cs" />
     <Compile Include="entity\cms\CmsMenuModel.cs" />
     <Compile Include="entity\cms\LogModel.cs" />
     <Compile Include="entity\cms\PasswordModel.cs" />
     <Compile Include="entity\cms\SettingsModel.cs" />
-    <Compile Include="entity\cms\SitesModel.cs" />
     <Compile Include="entity\cms\UserModel.cs" />
+    <Compile Include="entity\SitesModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\cms\CmsSitesRepository.cs" />
     <Compile Include="Repository\cms\CmsUserRepository.cs" />
     <Compile Include="Services\FilterParams.cs" />
     <Compile Include="Services\PagedEnumerable.cs" />

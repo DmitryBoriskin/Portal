@@ -1,11 +1,12 @@
-﻿using System;
+﻿using PgDbase.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PgDbase.entity.cms
+namespace PgDbase.entity
 {
     /// <summary>
     /// Модель, описывающая список сайтов и пейджер
@@ -17,7 +18,10 @@ namespace PgDbase.entity.cms
         /// </summary>
         public SitesModel[] Data;
 
-   
+        /// <summary>
+        /// Пейджер
+        /// </summary>
+        public Pager Pager;
 
         public int CountAllSites;
         public int CountOrgSites;
@@ -59,7 +63,10 @@ namespace PgDbase.entity.cms
         /// </summary>
         public string Type { get; set; }
 
-        
+        /// <summary>
+        /// Идентификатор контента
+        /// </summary>
+        public Guid ContentId { get; set; }    
 
         /// <summary>
         /// Адрес
@@ -90,21 +97,33 @@ namespace PgDbase.entity.cms
         /// Рабочее время
         /// </summary>
         public string Worktime { get; set; }
-
-        /// <summary>
-        /// Логотип
-        /// </summary>
-        //public Photo Logo { get; set; }
-
+             
         /// <summary>
         /// Пользовательские скрипты
         /// </summary>
         public string Scripts { get; set; }
 
         /// <summary>
+        /// домен сайта отмечанный в списке его доменов
+        /// </summary>
+        public string MainDomain { get; set; }
+
+        /// <summary>
         /// Список доменов
         /// </summary>
         public Domain[] DomainList { get; set; }
+
+
+        /// <summary>
+        /// Список дополнительных доменов в виде строки
+        /// </summary>
+        public string DomainListString { get; set; }
+
+        /// <summary>
+        /// Список дополнительных доменов
+        /// </summary>
+        public IEnumerable<string> DomainListArray { get; set; }
+
 
         /// <summary>
         /// Флаг отключенного сайта
@@ -136,25 +155,12 @@ namespace PgDbase.entity.cms
         /// </summary>
         public string Twitter { get; set; }
 
-        /// <summary>
-        /// Список дополнительных доменов в виде строки
-        /// </summary>
-        public string DomainListString { get; set; }
-
-        /// <summary>
-        /// Список дополнительных доменов
-        /// </summary>
-        public IEnumerable<string> DomainListArray { get; set; }
+ 
 
         /// <summary>
         /// Тема
         /// </summary>
-        public string Theme { get; set; }
-
-        /// <summary>
-        /// Изображение под слайдером
-        /// </summary>
-        //public Photo BackGroundImg { get; set; }
+        public string Theme { get; set; }               
 
         public string DefaultDomain { get; set; }
     }

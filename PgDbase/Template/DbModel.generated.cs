@@ -387,8 +387,9 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="sites")]
 	public partial class core_site
 	{
-		[PrimaryKey, NotNull] public Guid   id     { get; set; } // uuid
-		[Column,     NotNull] public string c_name { get; set; } // character varying(512)
+		[PrimaryKey, NotNull] public Guid   id         { get; set; } // uuid
+		[Column,     NotNull] public string c_name     { get; set; } // character varying(512)
+		[Column,     NotNull] public bool   b_disabled { get; set; } // boolean
 
 		#region Associations
 
