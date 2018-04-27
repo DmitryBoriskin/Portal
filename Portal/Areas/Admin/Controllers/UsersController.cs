@@ -1,5 +1,4 @@
-﻿using PgDbase.entity;
-using Portal.Areas.Admin.Models;
+﻿using Portal.Areas.Admin.Models;
 using System;
 using System.Web;
 using System.Web.Mvc;
@@ -57,8 +56,8 @@ namespace Portal.Areas.Admin
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "page", String.Empty);
-
-            return Redirect(StartUrl + "item/" + Guid.NewGuid() + "/" + query);
+            
+            return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
         }
 
         [HttpPost]
@@ -98,7 +97,7 @@ namespace Portal.Areas.Admin
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
-                    new ErrorMessageBtnModel { Url = "#", Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
                 };
             }
             else
@@ -106,7 +105,7 @@ namespace Portal.Areas.Admin
                 message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
-                    new ErrorMessageBtnModel { Url = "#", Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
                 };
             }
 
@@ -134,7 +133,7 @@ namespace Portal.Areas.Admin
                 Info = "Запись удалена",
                 Buttons = new ErrorMessageBtnModel[]
                 {
-                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}{Request.Url.Query}", Text = "ок", Action = "false" }
                 }
             };
 
