@@ -18,7 +18,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter">параметры для фильтрации</param>
         /// <returns></returns>
-        public SitesList GetSitesList(FilterParams filter)
+        public PagedEnumerable<SitesModel> GetSitesList(FilterParams filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -27,24 +27,32 @@ namespace PgDbase.Repository.cms
                 {
                     query = query.Where(w => w.b_disabled == filter.Disabled);
                 }
-                if (filter.SearchText != null)
+                if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
-                    query = query.Where(w => w.c_name.Contains(filter.SearchText));
+                    string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (search != null && search.Count() > 0)
+                    {
+                        foreach (string p in filter.SearchText.Split(' '))
+                        {
+                            if (!String.IsNullOrWhiteSpace(p))
+                            {
+                                query = query.Where(w => w.c_name.Contains(p));
+                            }
+                        }
+                    }
                 }
                 query = query.OrderBy(o => new { o.c_name });
                 if (query.Any())
                 {
+                    int ItemCount = query.Count();
                     var List = query
-                          .Select(s => new SitesModel
-                          {
-                              Id = s.id,
-                              Title = s.c_name                              
-                          })
-                          .Skip(filter.Size * (filter.Page - 1))
-                          .Take(filter.Size);
-
-                    SitesModel[] sitesInfo = List.ToArray();
-
+                                .Skip(filter.Size * (filter.Page - 1))
+                                .Take(filter.Size)
+                                .Select(s => new SitesModel {
+                                    Id=s.id,
+                                    Title=s.c_name
+                                });
+                    return new PagedEnumerable<SitesModel>(List.ToArray(), filter.Size, filter.Page, ItemCount);
                 }
             }
             return null;

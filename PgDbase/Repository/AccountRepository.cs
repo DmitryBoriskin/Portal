@@ -91,12 +91,17 @@ namespace PgDbase
             {
                 var query = db.core_user_site_link
                             .Where(w => w.f_user == UserId)
-                            .Select(s => s.fkusersitelinksite.fkdomains.Where(ww => ww.b_default));
-                //if (query.Any()) return query.ToArray();
+                            .Select(s => new DomainList()
+                            {
+                                SiteName = s.fkusersitelinksite.c_name,
+                                DomainName = s.fkusersitelinksite.fkdomains.Where(w1 => w1.b_default).Select(s1 => s1.c_domain).SingleOrDefault().ToString()
+                            });
+                            
+                
+                if (query.Any()) return query.ToArray();
                 return null;
             }
         }
-
 
 
         /// <summary>

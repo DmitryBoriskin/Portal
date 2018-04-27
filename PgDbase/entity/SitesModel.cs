@@ -50,7 +50,10 @@ namespace PgDbase.entity
         /// Длинное название
         /// </summary>
         public string LongTitle { get; set; }
-
+        /// <summary>
+        /// пр
+        /// </summary>
+        public bool Disabled { get; set; }
         /// <summary>
         /// Алиас
         /// </summary>

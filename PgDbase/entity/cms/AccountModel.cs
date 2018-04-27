@@ -92,6 +92,7 @@ namespace PgDbase.entity
         /// Название домена
         /// </summary>
         public string DomainName { get; set; }
+        public string SiteName { get; set; }
     }
 }
 
