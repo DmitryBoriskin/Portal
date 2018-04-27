@@ -69,7 +69,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                db.core_log.Insert(() => new core_log
+                db.core_logs.Insert(() => new core_logs
                 {
                     d_date = DateTime.Now,
                     f_page = log.PageId,
@@ -92,7 +92,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_log
+                return db.core_logs
                     .Where(w => w.f_page == id)
                     .Select(s => new LogModel
                     {
@@ -100,9 +100,9 @@ namespace PgDbase.Repository.cms
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
                         User = new UserModel
                         {
-                            Id = s.fkuser.id,
-                            Surname = s.fkuser.c_surname,
-                            Name = s.fkuser.c_name
+                            Id = s.fklogusers.id,
+                            Surname = s.fklogusers.c_surname,
+                            Name = s.fklogusers.c_name
                         }
                     }).ToArray();
             }
@@ -117,7 +117,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_log
+                return db.core_logs
                     .Where(w => w.f_user == id)
                     .Select(s => new LogModel
                     {
@@ -125,9 +125,9 @@ namespace PgDbase.Repository.cms
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
                         User = new UserModel
                         {
-                            Id = s.fkuser.id,
-                            Surname = s.fkuser.c_surname,
-                            Name = s.fkuser.c_name
+                            Id = s.fklogusers.id,
+                            Surname = s.fklogusers.c_surname,
+                            Name = s.fklogusers.c_name
                         }
                     }).ToArray();
             }
@@ -138,7 +138,7 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
 #warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
-                var data = db.core_cms_menu_group
+                var data = db.core_cms_menu_groups
                             .Select(s => new CmsMenuModel() {
                                 Alias = s.c_alias,
                                 GroupName = s.c_title,
