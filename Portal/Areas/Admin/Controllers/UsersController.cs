@@ -56,7 +56,7 @@ namespace Portal.Areas.Admin.Controllers
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
-        public ActionResult Save(Guid id, UsersViewModel model)
+        public ActionResult Save(Guid id, UsersViewModel backModel)
         {
             ErrorMessage message = new ErrorMessage
             {
@@ -64,8 +64,8 @@ namespace Portal.Areas.Admin.Controllers
             };
             if (ModelState.IsValid)
             {
-                model.Item.Id = id;
-                if (_cmsRepository.CheckUserExists(model.Item.Email))
+                backModel.Item.Id = id;
+                if (_cmsRepository.CheckUserExists(backModel.Item.Email))
                 {
                     message.Info = "Пользователь с таким Email адресом уже существует";
                 }
@@ -73,20 +73,20 @@ namespace Portal.Areas.Admin.Controllers
                 {
                     if (_cmsRepository.CheckUserExists(id))
                     {
-                        _cmsRepository.UpdateUser(model.Item);
+                        _cmsRepository.UpdateUser(backModel.Item);
                         message.Info = "Запись обновлена";
                     }
                     else
                     {
-                        char[] _pass = model.Password.Password.ToCharArray();
+                        char[] _pass = backModel.Password.Password.ToCharArray();
                         Cripto password = new Cripto(_pass);
                         string NewSalt = password.Salt;
                         string NewHash = password.Hash;
 
-                        model.Item.Hash = NewHash;
-                        model.Item.Salt = NewSalt;
+                        backModel.Item.Hash = NewHash;
+                        backModel.Item.Salt = NewSalt;
 
-                        _cmsRepository.InsertUser(model.Item);
+                        _cmsRepository.InsertUser(backModel.Item);
 
                         message.Info = "Запись добавлена";
                     }

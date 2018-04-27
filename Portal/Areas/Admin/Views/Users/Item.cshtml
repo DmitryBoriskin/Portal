@@ -1,5 +1,5 @@
 ﻿@model UsersViewModel
-@using (Html.BeginForm())
+@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
 {
     @*if (Model.UserResolution.Write)*@
     if (true)
