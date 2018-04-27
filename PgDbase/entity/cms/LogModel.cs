@@ -261,7 +261,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Связь пользователя с сайтом
         /// </summary>
-        UserSiteLink = 18
+        UserSiteLinks = 18
     }
 
     /// <summary>
