@@ -10,9 +10,9 @@ using Portal.Areas.Admin.Models;
 using PgDbase.Repository.cms;
 using System.Configuration;
 using Portal.Code;
-using PgDbase.entity.cms;
 
-namespace Portal.Areas.Admin.Controllers
+
+namespace Portal.Areas.Admin
 {
     [AllowAnonymous]
     public class AccountController : Controller
@@ -23,7 +23,7 @@ namespace Portal.Areas.Admin.Controllers
 
         public Guid SiteId;
 
-        protected int maxLoginError = 5;        
+        protected int maxLoginError = 5;
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -35,12 +35,12 @@ namespace Portal.Areas.Admin.Controllers
             {
                 if (Request.Url.Host.ToLower().Replace("www.", "") != ConfigurationManager.AppSettings["BaseURL"])
                     filterContext.Result = Redirect("/Error/");
-                
+
 
                 AppLogger.Debug("CoreController: Не получилось определить Domain", ex);
             }
 
-            _accountRepository = new AccountRepository("dbConnection",RequestUserInfo.IP, SiteId);
+            _accountRepository = new AccountRepository("dbConnection", RequestUserInfo.IP, SiteId);
 
             try
             {
@@ -49,7 +49,7 @@ namespace Portal.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 if (Request.Url.Host.ToLower().Replace("www.", "") != ConfigurationManager.AppSettings["BaseURL"])
-                    filterContext.Result = Redirect("/Error/");                
+                    filterContext.Result = Redirect("/Error/");
 
                 AppLogger.Debug("CoreController: Не получилось определить Domain", ex);
             }
@@ -126,7 +126,7 @@ namespace Portal.Areas.Admin.Controllers
                 string _login = model.Login;
                 string _pass = model.Pass;
                 bool _remember = model.RememberMe;
-           
+
                 AccountModel AccountInfo = _accountRepository.getCmsAccount(_login);
 
                 // Если пользователь найден
@@ -384,10 +384,10 @@ namespace Portal.Areas.Admin.Controllers
                 PageId = Guid.NewGuid(),
                 PageName = "Выход из CMS",
                 Section = LogSection.Account,
-                Action =LogAction.log_off
+                Action = LogAction.log_off
             };
             _accountRepository.InsertLog(log);
-            
+
 
             HttpCookie MyCookie = new HttpCookie(".ASPXAUTHMORE")
             {

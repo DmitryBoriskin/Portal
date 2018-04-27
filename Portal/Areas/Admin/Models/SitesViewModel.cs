@@ -1,5 +1,4 @@
 ﻿using PgDbase.entity;
-using PgDbase.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Постраничный список
         /// </summary>
-        public PagedEnumerable<SitesModel> List { get; set; }
+        public Paged<SitesModel> List { get; set; }
 
         /// <summary>
         /// Сайт

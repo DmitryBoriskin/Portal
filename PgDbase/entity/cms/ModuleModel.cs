@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Пользователь
     /// </summary>
-    public class UserModel
+    public class ModuleModel
     {
         /// <summary>
         /// Идентификатор
@@ -72,10 +72,5 @@ namespace PgDbase.entity
                 return $"{Surname} {Name} {Patronimyc}";
             }
         }
-
-        /// <summary>
-        /// Группа 
-        /// </summary>
-        public Guid Group { get; set; }
     }
 }

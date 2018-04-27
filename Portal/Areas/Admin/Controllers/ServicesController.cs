@@ -3,7 +3,7 @@ using Portal.Areas.Admin.Models;
 using System;
 using System.Web.Mvc;
 
-namespace Portal.Areas.Admin.Controllers
+namespace Portal.Areas.Admin
 {
     public class ServicesController : CoreController
     {

@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Список групп
     /// </summary>
-    public class GroupListModel
+    public class GroupsModel
     {
         /// <summary>
         /// Идентификатор
