@@ -57,6 +57,7 @@
     <Compile Include="Entity\cms\SettingsModel.cs" />
     <Compile Include="Entity\cms\ModuleModel.cs" />
     <Compile Include="Entity\cms\UserModel.cs" />
+	 <Compile Include="entity\GroupListModel.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />

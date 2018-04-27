@@ -59,26 +59,7 @@ namespace PgDbase.Repository.cms
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
 
-        /// <summary>
-        /// Возвращает идентификатор сайта
-        /// </summary>
-        /// <param name="domainUrl"></param>
-        /// <returns></returns>
-        public Guid GetSiteGuid(string domainUrl)
-        {
-            try
-            {
-                using (var db = new CMSdb(_context))
-                {
-                    return db.core_sites_domains.Where(w => w.c_domain == domainUrl).SingleOrDefault().fksitesdomainssite.id;
-                }
-
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + domainUrl + ") " + ex);
-            }
-        }
+      
 
         /// <summary>
         /// Логирование
@@ -102,6 +83,55 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// Возвращает логи для страницы
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public LogModel[] GetPageLogs(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_log
+                    .Where(w => w.f_page == id)
+                    .Select(s => new LogModel
+                    {
+                        Date = s.d_date,
+                        Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
+                        User = new UserModel
+                        {
+                            Id = s.fkuser.id,
+                            Surname = s.fkuser.c_surname,
+                            Name = s.fkuser.c_name
+                        }
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает логи пользователя
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public LogModel[] GetUserLogs(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_log
+                    .Where(w => w.f_user == id)
+                    .Select(s => new LogModel
+                    {
+                        Date = s.d_date,
+                        Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
+                        User = new UserModel
+                        {
+                            Id = s.fkuser.id,
+                            Surname = s.fkuser.c_surname,
+                            Name = s.fkuser.c_name
+                        }
+                    }).ToArray();
+            }
+        }
 
         public CmsMenuModel[] GetCmsMenu(Guid UserId)
         {

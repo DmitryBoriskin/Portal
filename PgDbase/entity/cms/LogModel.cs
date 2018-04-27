@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PgDbase.entity.cms;
+using System;
 
 namespace PgDbase.entity
 {
@@ -41,6 +42,16 @@ namespace PgDbase.entity
         /// Текст, характеризующий изменяемую запись
         /// </summary>
         public string PageName { get; set; }
+
+        /// <summary>
+        /// Дата
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        /// <summary>
+        /// Пользователь
+        /// </summary>
+        public UserModel User { get; set; }
     }
     /// <summary>
     /// Действие для логирования
@@ -242,10 +253,16 @@ namespace PgDbase.entity
         /// Фотоальбомы
         /// </summary>
         Anketa = 16,
+
         /// <summary>
         /// новостная группа
         /// </summary>
-        MaterialGroup = 14
+        MaterialGroup = 14,
+
+        /// <summary>
+        /// Связь пользователя с сайтом
+        /// </summary>
+        UserSiteLink = 15
     }
 
     /// <summary>

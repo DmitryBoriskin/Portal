@@ -86,7 +86,10 @@ namespace PgDbase.Repository.cms
                         Name = s.c_name,
                         Patronimyc = s.c_patronymic,
                         Disabled = s.b_disabled,
-                        TryLogin = s.d_try_login
+                        TryLogin = s.d_try_login,
+                        Group = s.fkusersitelinks
+                            .Where(w => w.f_site == _siteId)
+                            .Select(g => g.f_user_group).SingleOrDefault()
                     }).SingleOrDefault();
             }
         }
@@ -257,6 +260,74 @@ namespace PgDbase.Repository.cms
                         tr.Commit();
                     }
 
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список групп
+        /// </summary>
+        /// <returns></returns>
+        public GroupListModel[] GetGroups()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_user_group
+                    .Select(s => new GroupListModel
+                    {
+                        Title = s.c_title,
+                        Alias = s.c_alias
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Добавляет связь пользователя с сайтом
+        /// </summary>
+        /// <returns></returns>
+        public bool InsertUserSiteLink(Guid siteId, Guid userId, Guid groupId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    Guid id = Guid.NewGuid();
+
+                    string user = db.core_user
+                        .Where(w => w.id == userId)
+                        .Select(s => $"{s.c_surname} {s.c_name}")
+                        .SingleOrDefault();
+
+                    string domain = db.core_site
+                        .Where(w => w.id == siteId)
+                        .Select(s => s.c_name)
+                        .SingleOrDefault();
+
+                    string group = db.core_user_group
+                        .Where(w => w.id == groupId)
+                        .Select(s => s.c_title)
+                        .SingleOrDefault();
+
+                    var log = new LogModel
+                    {
+                        PageId = id,
+                        PageName = $"{user} {group} {domain}",
+                        Section = LogSection.UserSiteLink,
+                        Action = LogAction.insert
+                    };
+                    InsertLog(log);
+
+                    bool result = db.core_user_site_link
+                        .Insert(() => new core_user_site_link
+                        {
+                            id = id,
+                            f_site = siteId,
+                            f_user = userId,
+                            f_user_group = groupId
+                        }) > 0;
+
+                    tr.Commit();
                     return result;
                 }
             }

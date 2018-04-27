@@ -57,9 +57,9 @@ namespace PgDbase.entity
         /// <summary>
         /// Алиас
         /// </summary>
-        [Required(ErrorMessage = "Поле «Доменное имя» не должно быть пустым.")]
-        [RegularExpression(@"^[^-]([a-zA-Z0-9-]+)$", ErrorMessage = "Поле «Доменное имя» может содержать только буквы латинского алфавита и символ - (дефис). Доменное имя не может начинаться с дефиса.")]
-        public string Alias { get; set; }
+        //[Required(ErrorMessage = "Поле «Доменное имя» не должно быть пустым.")]
+        //[RegularExpression(@"^[^-]([a-zA-Z0-9-]+)$", ErrorMessage = "Поле «Доменное имя» может содержать только буквы латинского алфавита и символ - (дефис). Доменное имя не может начинаться с дефиса.")]
+        //public string Alias { get; set; }
 
         /// <summary>
         /// Тип

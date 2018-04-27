@@ -70,18 +70,7 @@ namespace Portal.Areas.Admin
             ControllerName = filterContext.RouteData.Values["Controller"].ToString().ToLower();
             ActionName = filterContext.RouteData.Values["Action"].ToString().ToLower();
             
-            try
-            {
-                SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));                
-            }
-            catch (Exception ex)
-            {
-                if (Request.Url.Host.ToLower().Replace("www.", "") != ConfigurationManager.AppSettings["BaseURL"])
-                    filterContext.Result = Redirect("/Error/");
-                else Domain = String.Empty;
-
-                AppLogger.Debug("CoreController: Не получилось определить Domain", ex);
-            }
+            
             StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
 
 
@@ -101,7 +90,6 @@ namespace Portal.Areas.Admin
         /// </summary>
         public CoreController()
         {
-            _accountRepository = new AccountRepository("dbConnection",RequestUserInfo.IP, SiteId);
 
             Guid userId = Guid.Empty;
             var domainUrl = "";
@@ -125,6 +113,19 @@ namespace Portal.Areas.Admin
                     }
                 }
             }
+
+            _accountRepository = new AccountRepository("dbConnection",RequestUserInfo.IP, SiteId);
+
+            try
+            {
+                SiteId = _accountRepository.GetSiteGuid(domainUrl);
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("CoreController: Не получилось определить id сайта", ex);
+            }
+
+
             _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
         }
 

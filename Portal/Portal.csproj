@@ -612,6 +612,9 @@
     <Content Include="Areas\Admin\Views\Shared\_popUp.cshtml" />
     <Content Include="Areas\Admin\Views\Services\ChangePass.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\Part\SearchFilter.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\Log.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

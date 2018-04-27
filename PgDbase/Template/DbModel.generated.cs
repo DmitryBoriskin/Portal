@@ -136,17 +136,23 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="log")]
 	public partial class core_log
 	{
-		[PrimaryKey, NotNull    ] public Guid            id            { get; set; } // uuid
-		[Column,        Nullable] public Guid?           f_page        { get; set; } // uuid
-		[Column,        Nullable] public string          c_page_name   { get; set; } // character varying(512)
-		[Column,        Nullable] public Guid?           f_site        { get; set; } // uuid
-		[Column,     NotNull    ] public string          f_logsections { get; set; } // character varying(64)
-		[Column,     NotNull    ] public Guid            f_user        { get; set; } // uuid
-		[Column,        Nullable] public DateTimeOffset? d_date        { get; set; } // timestamp (6) with time zone
-		[Column,     NotNull    ] public string          f_action      { get; set; } // character varying(32)
-		[Column,     NotNull    ] public string          c_ip          { get; set; } // character varying(16)
+		[PrimaryKey, NotNull    ] public Guid     id            { get; set; } // uuid
+		[Column,     NotNull    ] public Guid     f_page        { get; set; } // uuid
+		[Column,        Nullable] public string   c_page_name   { get; set; } // character varying(512)
+		[Column,        Nullable] public Guid?    f_site        { get; set; } // uuid
+		[Column,     NotNull    ] public string   f_logsections { get; set; } // character varying(64)
+		[Column,     NotNull    ] public Guid     f_user        { get; set; } // uuid
+		[Column,     NotNull    ] public DateTime d_date        { get; set; } // timestamp (6) without time zone
+		[Column,     NotNull    ] public string   f_action      { get; set; } // character varying(32)
+		[Column,     NotNull    ] public string   c_ip          { get; set; } // character varying(16)
 
 		#region Associations
+
+		/// <summary>
+		/// fk_log_users
+		/// </summary>
+		[Association(ThisKey="f_user", OtherKey="id", CanBeNull=false, KeyName="fk_log_users", BackReferenceName="fklogs")]
+		public core_user fkuser { get; set; }
 
 		/// <summary>
 		/// fk_log_log_sections
@@ -517,6 +523,12 @@ namespace PgDbase.models
 		[Association(ThisKey="id", OtherKey="f_user", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_user_site_link> fkusersitelinks { get; set; }
 
+		/// <summary>
+		/// fk_log_users_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_user", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_log> fklogs { get; set; }
+
 		#endregion
 	}
 
@@ -547,29 +559,29 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="user_site_link")]
 	public partial class core_user_site_link
 	{
-		[PrimaryKey, NotNull    ] public Guid  id           { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_site       { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_user       { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_user_group { get; set; } // uuid
+		[PrimaryKey, NotNull] public Guid id           { get; set; } // uuid
+		[Column,     NotNull] public Guid f_site       { get; set; } // uuid
+		[Column,     NotNull] public Guid f_user       { get; set; } // uuid
+		[Column,     NotNull] public Guid f_user_group { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
 		/// fk_user_site_link_user_group
 		/// </summary>
-		[Association(ThisKey="f_user_group", OtherKey="id", CanBeNull=true, KeyName="fk_user_site_link_user_group", BackReferenceName="fkusersitelinkusergroups")]
+		[Association(ThisKey="f_user_group", OtherKey="id", CanBeNull=false, KeyName="fk_user_site_link_user_group", BackReferenceName="fkusersitelinkusergroups")]
 		public core_user_group fkusersitelinkusergroup { get; set; }
 
 		/// <summary>
 		/// fk_user_site_link_users
 		/// </summary>
-		[Association(ThisKey="f_user", OtherKey="id", CanBeNull=true, KeyName="fk_user_site_link_users", BackReferenceName="fkusersitelinks")]
+		[Association(ThisKey="f_user", OtherKey="id", CanBeNull=false, KeyName="fk_user_site_link_users", BackReferenceName="fkusersitelinks")]
 		public core_user fkusersitelinkuser { get; set; }
 
 		/// <summary>
 		/// fk_user_site_link_sites
 		/// </summary>
-		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=true, KeyName="fk_user_site_link_sites", BackReferenceName="fkusersitelinks")]
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_user_site_link_sites", BackReferenceName="fkusersitelinks")]
 		public core_site fkusersitelinksite { get; set; }
 
 		/// <summary>

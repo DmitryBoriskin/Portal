@@ -21,12 +21,19 @@ namespace Portal.Areas.Admin
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName, 
+                Groups = _cmsRepository.GetGroups()
             };
             if (AccountInfo != null)
             {
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
             }
+
+            #region Метатеги
+            //ViewBag.Title = UserResolutionInfo.Title;
+            ViewBag.Description = "";
+            ViewBag.KeyWords = "";
+            #endregion
         }
 
         // GET: Admin/Users
@@ -65,33 +72,30 @@ namespace Portal.Areas.Admin
             if (ModelState.IsValid)
             {
                 backModel.Item.Id = id;
-                if (_cmsRepository.CheckUserExists(backModel.Item.Email))
+                if (_cmsRepository.CheckUserExists(id))
+                {
+                    _cmsRepository.UpdateUser(backModel.Item);
+                    message.Info = "Запись обновлена";
+                }
+                else if (_cmsRepository.CheckUserExists(backModel.Item.Email))
                 {
                     message.Info = "Пользователь с таким Email адресом уже существует";
                 }
                 else
                 {
-                    if (_cmsRepository.CheckUserExists(id))
-                    {
-                        _cmsRepository.UpdateUser(backModel.Item);
-                        message.Info = "Запись обновлена";
-                    }
-                    else
-                    {
-                        char[] _pass = backModel.Password.Password.ToCharArray();
-                        Cripto password = new Cripto(_pass);
-                        string NewSalt = password.Salt;
-                        string NewHash = password.Hash;
+                    char[] _pass = backModel.Password.Password.ToCharArray();
+                    Cripto password = new Cripto(_pass);
+                    string NewSalt = password.Salt;
+                    string NewHash = password.Hash;
 
-                        backModel.Item.Hash = NewHash;
-                        backModel.Item.Salt = NewSalt;
+                    backModel.Item.Hash = NewHash;
+                    backModel.Item.Salt = NewSalt;
 
-                        _cmsRepository.InsertUser(backModel.Item);
+                    _cmsRepository.InsertUser(backModel.Item);
 
-                        message.Info = "Запись добавлена";
-                    }
+                    message.Info = "Запись добавлена";
                 }
-                message.Buttons = new ErrorMessageBtnModel[] 
+                message.Buttons = new ErrorMessageBtnModel[]
                 {
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
                     new ErrorMessageBtnModel { Url = "#", Text = "ок", Action = "false" }
@@ -123,7 +127,7 @@ namespace Portal.Areas.Admin
         public ActionResult Delete(Guid Id)
         {
             _cmsRepository.DeleteUser(Id);
-            
+
             ErrorMessage message = new ErrorMessage
             {
                 Title = "Информация",
@@ -133,10 +137,30 @@ namespace Portal.Areas.Admin
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "ок", Action = "false" }
                 }
             };
-            
+
             model.ErrorInfo = message;
 
             return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string searchtext, bool enabled, string size)
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
+
+            return Redirect(StartUrl + query);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
+        {
+            return Redirect(StartUrl);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Portal.Areas.Admin
             base.OnActionExecuting(filterContext);
             try
             {
-                SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));
+                SiteId = _accountRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));
             }
             catch (Exception ex)
             {
@@ -44,7 +44,7 @@ namespace Portal.Areas.Admin
 
             try
             {
-                SiteId = _cmsRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));
+                SiteId = _accountRepository.GetSiteGuid(Request.Url.Host.ToLower().Replace("www.", ""));
             }
             catch (Exception ex)
             {

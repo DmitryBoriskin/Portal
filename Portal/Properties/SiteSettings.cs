@@ -25,7 +25,13 @@ public class Settings
     /// Основной домейн
     /// </summary>
     public static string GeneralDomain = ConfigurationManager.AppSettings["GeneralDomain"];
-    
+
+
+    public static string EmtyList = ConfigurationManager.AppSettings["EmtyList"];
+    public static string EmtyListFilter = ConfigurationManager.AppSettings["EmtyListFilter"];
+    public static string NoResolut = ConfigurationManager.AppSettings["NoResolut"];
+
+
     /// <summary>
     /// Ключ капчи
     /// </summary>

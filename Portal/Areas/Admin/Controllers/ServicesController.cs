@@ -1,4 +1,5 @@
-﻿using Portal.Areas.Admin.Models;
+﻿using PgDbase.entity;
+using Portal.Areas.Admin.Models;
 using System;
 using System.Web.Mvc;
 
@@ -6,6 +7,22 @@ namespace Portal.Areas.Admin
 {
     public class ServicesController : CoreController
     {
+        public ActionResult Log(Guid id, string type)
+        {
+            LogModel[] model = null;
+            switch (type)
+            {
+                case "page":
+                    model = _cmsRepository.GetPageLogs(id);
+                    break;
+                case "user":
+                    model = _cmsRepository.GetUserLogs(id);
+                    break;
+            }
+
+            return PartialView("Log", model);
+        }
+
         public ActionResult ChangePass(Guid id)
         {
             UsersViewModel model = new UsersViewModel()
