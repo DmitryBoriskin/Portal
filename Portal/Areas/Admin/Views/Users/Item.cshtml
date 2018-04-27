@@ -8,10 +8,10 @@
             <h1>Данные пользователя</h1>
             <div class="row">
                 <div class="col-xs-4">
-                    @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @Title = "Фамилия", @placeholder = "Фамилия", MaxLength = "128", data_help = "12" })
+                    @Html.TextBoxFor(m => Model.Item.Surname, new { @required = "", @Title = "Фамилия", @placeholder = "Фамилия", MaxLength = "128", data_help = "12" })
                 </div>
                 <div class="col-xs-4">
-                    @Html.TextBoxFor(m => Model.Item.Surname, new { @required = "", @Title = "Имя", @placeholder = "Имя", @MaxLength = "128" })
+                    @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @Title = "Имя", @placeholder = "Имя", @MaxLength = "128" })
                 </div>
                 <div class="col-xs-4">
                     @Html.TextBoxFor(m => Model.Item.Patronimyc, new { @Title = "Отчество", @placeholder = "Отчество", @MaxLength = "128" })
@@ -33,8 +33,8 @@
             @if (Model.Item != null)
             {
                 @Html.ActionLink("Изменить пароль", "ChangePass", "services", new { @id = Model.Item.Id }, new { @id = "ChengePass", @class = "button pop-up_frame icon-key-1", @data_class = "ChengePass", @title = "Изменить пароль" })
-                @Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
-                @Html.ActionLink("Активность пользователя", "log", "services", new { @id = Model.Item.Id }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
+                @Html.ActionLink("Журнал изменений", "Log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
+                @Html.ActionLink("Активность пользователя", "Log", "services", new { @id = Model.Item.Id, @type = "user" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
             }
         </div>
     }

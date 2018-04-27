@@ -103,6 +103,55 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// Возвращает логи для страницы
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public LogModel[] GetPageLogs(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_log
+                    .Where(w => w.f_page == id)
+                    .Select(s => new LogModel
+                    {
+                        Date = s.d_date,
+                        Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
+                        User = new UserModel
+                        {
+                            Id = s.fkuser.id,
+                            Surname = s.fkuser.c_surname,
+                            Name = s.fkuser.c_name
+                        }
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает логи пользователя
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public LogModel[] GetUserLogs(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_log
+                    .Where(w => w.f_user == id)
+                    .Select(s => new LogModel
+                    {
+                        Date = s.d_date,
+                        Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
+                        User = new UserModel
+                        {
+                            Id = s.fkuser.id,
+                            Surname = s.fkuser.c_surname,
+                            Name = s.fkuser.c_name
+                        }
+                    }).ToArray();
+            }
+        }
 
         public CmsMenuModel[] GetCmsMenu(Guid UserId)
         {
