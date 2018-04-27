@@ -266,5 +266,30 @@ namespace PgDbase
             }
         }
 
+
+        /// <summary>
+        /// Возвращает идентификатор сайта
+        /// </summary>
+        /// <param name="domainUrl"></param>
+        /// <returns></returns>
+        public Guid GetSiteGuid(string domainUrl)
+        {
+            try
+            {
+                using (var db = new CMSdb(_context))
+                {
+                    var query = db.core_sites_domains.Where(w => w.c_domain == domainUrl).FirstOrDefault();//.fksitesdomainssite;//
+                    if (query != null)
+                    {
+                        return Guid.Parse(query.f_site.ToString());
+                    }
+                    return Guid.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + domainUrl + ") " + ex);
+            }
+        }
     }
 }

@@ -60,26 +60,7 @@ namespace PgDbase.Repository.cms
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
 
-        /// <summary>
-        /// Возвращает идентификатор сайта
-        /// </summary>
-        /// <param name="domainUrl"></param>
-        /// <returns></returns>
-        public Guid GetSiteGuid(string domainUrl)
-        {
-            try
-            {
-                using (var db = new CMSdb(_context))
-                {
-                    return db.core_sites_domains.Where(w => w.c_domain == domainUrl).SingleOrDefault().fksitesdomainssite.id;
-                }
-
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + domainUrl + ") " + ex);
-            }
-        }
+      
 
         /// <summary>
         /// Логирование
