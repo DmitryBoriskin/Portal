@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Пользователь
     /// </summary>
-    public class UserModel
+    public class ModuleModel
     {
         /// <summary>
         /// Идентификатор

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PgDbase.entity.cms
+namespace PgDbase.entity
 {
     /// <summary>
     /// Пароль

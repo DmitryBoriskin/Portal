@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace PgDbase.Services
+namespace PgDbase.entity
 {
     /// <summary>
     /// Постраничный вывод сущностей
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PagedEnumerable<T>
+    public class Paged<T>
     {
         /// <summary>
         /// Список сущностей
@@ -16,7 +16,7 @@ namespace PgDbase.Services
         /// <summary>
         /// Пейджер
         /// </summary>
-        public Pager Pager { get; set; }
+        public PagerModel Pager { get; set; }
 
         /// <summary>
         /// Конструктор
@@ -25,10 +25,10 @@ namespace PgDbase.Services
         /// <param name="pageSize"></param>
         /// <param name="pageNum"></param>
         /// <param name="totalCount"></param>
-        public PagedEnumerable(IEnumerable<T> items, int pageSize, int pageNum, int totalCount)
+        public Paged(IEnumerable<T> items, int pageSize, int pageNum, int totalCount)
         {
             Items = items;
-            Pager = new Pager(pageSize, pageNum, totalCount);
+            Pager = new PagerModel(pageSize, pageNum, totalCount);
         }
     }
 }

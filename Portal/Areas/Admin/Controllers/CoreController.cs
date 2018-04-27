@@ -1,8 +1,6 @@
 ﻿using PgDbase;
 using PgDbase.entity;
-using PgDbase.entity.cms;
 using PgDbase.Repository.cms;
-using PgDbase.Services;
 using Portal.Code;
 using System;
 using System.Collections.Generic;
@@ -13,7 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace Portal.Areas.Admin.Controllers
+namespace Portal.Areas.Admin
 {
     [Authorize]
     public class CoreController : Controller
@@ -206,9 +204,9 @@ namespace Portal.Areas.Admin.Controllers
         /// </summary>
         /// <param name="defaultPageSize"></param>
         /// <returns></returns>
-        protected FilterParams GetFilter(int defaultPageSize = 20)
+        protected FilterModel GetFilter(int defaultPageSize = 20)
         {
-            FilterParams filter = new FilterParams()
+            var filter = new FilterModel()
             {
                 Domain = Domain,
                 Type = Request.QueryString["type"],

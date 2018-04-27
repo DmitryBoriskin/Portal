@@ -6,16 +6,16 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin
 {
-    public class UsersController : CoreController
+    public class ModulesController : CoreController
     {
-        UsersViewModel model;
-        PgDbase.entity.FilterModel filter;
+        ModuleViewModel model;
+        FilterModel filter;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
-            model = new UsersViewModel
+            /*model = new UsersViewModel
             {
                 DomainName = Domain,
                 Account = AccountInfo,
@@ -26,21 +26,21 @@ namespace Portal.Areas.Admin
             if (AccountInfo != null)
             {
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-            }
+            }*/
         }
 
         // GET: Admin/Users
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetUsers(filter);
+            //model.List = _cmsRepository.GetUsers(filter);
             return View(model);
         }
 
         // GET: Admin/Users/<id>
         public ActionResult Item(Guid id)
         {
-            model.Item = _cmsRepository.GetUser(id);
+            //model.Item = _cmsRepository.GetUser(id);
             return View("Item", model);
         }
 
@@ -106,7 +106,7 @@ namespace Portal.Areas.Admin
                 };
             }
 
-            model.Item = _cmsRepository.GetUser(id);
+            //model.Item = _cmsRepository.GetUser(id);
             model.ErrorInfo = message;
             return View("item", model);
         }

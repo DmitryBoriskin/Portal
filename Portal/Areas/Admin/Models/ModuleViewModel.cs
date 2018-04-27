@@ -1,11 +1,12 @@
 ﻿using PgDbase.entity;
 
+
 namespace Portal.Areas.Admin.Models
 {
     /// <summary>
     /// Модель пользователей для представления
     /// </summary>
-    public class UsersViewModel : CoreViewModel
+    public class ModuleViewModel : CoreViewModel
     {
         /// <summary>
         /// Постраничный список
@@ -15,11 +16,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Пользователь
         /// </summary>
-        public UserModel Item { get; set; }
+        public ModuleModel Item { get; set; }
 
-        /// <summary>
-        /// Пароль
-        /// </summary>
-        public PasswordModel Password { get; set; }
     }
 }

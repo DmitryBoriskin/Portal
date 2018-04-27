@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PgDbase.entity.cms
+namespace PgDbase.entity
 {
     public class SettingsModel
     {

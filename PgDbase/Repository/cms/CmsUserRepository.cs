@@ -1,8 +1,6 @@
 ﻿using LinqToDB;
 using PgDbase.entity;
-using PgDbase.entity.cms;
 using PgDbase.models;
-using PgDbase.Services;
 using System;
 using System.Linq;
 
@@ -17,7 +15,7 @@ namespace PgDbase.Repository.cms
         /// Возвращает постраничный список пользователей
         /// </summary>
         /// <returns></returns>
-        public PagedEnumerable<UserModel> GetUsers(FilterParams filter)
+        public Paged<UserModel> GetUsers(FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -63,7 +61,7 @@ namespace PgDbase.Repository.cms
                             TryLogin = s.d_try_login
                         });
 
-                    return new PagedEnumerable<UserModel>(list.ToArray(), filter.Size, filter.Page, itemCount);
+                    return new Paged<UserModel>(list.ToArray(), filter.Size, filter.Page, itemCount);
                 }
                 return null;
             }

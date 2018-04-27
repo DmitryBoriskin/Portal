@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace PgDbase.Services
+namespace PgDbase.entity
 {
     /// <summary>
     /// Фильтр
     /// </summary>
-    public class FilterParams
+    public class FilterModel
     {
         /// <summary>
         /// Id
@@ -67,8 +67,8 @@ namespace PgDbase.Services
         /// </summary>
         public string Lang { get; set; }
 
-        public static T Extend<T>(FilterParams f)
-            where T : FilterParams, new()
+        public static T Extend<T>(FilterModel f)
+            where T : FilterModel, new()
         {
             return new T()
             {

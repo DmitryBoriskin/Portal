@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Portal.Areas.Admin.Controllers
+namespace Portal.Areas.Admin
 {
     public class MainController : CoreController
     {
