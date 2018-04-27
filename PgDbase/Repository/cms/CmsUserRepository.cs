@@ -179,7 +179,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = currentLink.id,
                             PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
-                            Section = LogSection.UserSiteLink,
+                            Section = LogSection.UserSiteLinks,
                             Action = LogAction.update
                         };
                         InsertLog(log);
@@ -328,7 +328,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = id,
                         PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                        Section = LogSection.UserSiteLink,
+                        Section = LogSection.UserSiteLinks,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
@@ -346,17 +346,6 @@ namespace PgDbase.Repository.cms
                     return result;
                 }
             }
-        }
-
-        /// <summary>
-        /// Обновляет группу для пользователя на сайте
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <returns></returns>
-        public bool UpdateUserSiteLink(Guid userId, Guid groupId)
-        {
-            return false;
         }
 
         /// <summary>
