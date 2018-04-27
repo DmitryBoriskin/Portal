@@ -256,12 +256,12 @@ namespace PgDbase.entity
         /// <summary>
         /// новостная группа
         /// </summary>
-        MaterialGroup = 14,
+        MaterialGroup = 17,
 
         /// <summary>
         /// Связь пользователя с сайтом
         /// </summary>
-        UserSiteLink = 15
+        UserSiteLink = 18
     }
 
     /// <summary>
