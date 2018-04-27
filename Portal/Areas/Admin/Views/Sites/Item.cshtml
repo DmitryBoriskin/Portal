@@ -8,6 +8,16 @@
     <div class="content">
         <h1>Все сайты портала</h1>
         @Html.TextBoxFor(m=>Model.Item.Title, new { @required = "", @Title = "Название", @placeholder = "Название", MaxLength = "512" })
+
+        @if (Model.Item != null)
+        {
+            <div class="group-block open" title="Доменные имена">
+                <div class="row">
+                    <div class="alert alert-info" role="alert">Чтобы сайт отображался на другом домене, в его настройках DNS необходимо прописать запись типа А указав ip: @Request.ServerVariables["LOCAL_ADDR"] и добавить домен:</div>
+
+                </div>
+            </div>
+        }
     </div>       
 
     }
