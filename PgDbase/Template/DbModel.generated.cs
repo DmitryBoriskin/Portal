@@ -381,10 +381,10 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="site_domains")]
 	public partial class core_site_domains
 	{
-		[PrimaryKey, Identity   ] public int    id        { get; set; } // integer
 		[Column,        Nullable] public Guid?  f_site    { get; set; } // uuid
 		[Column,     NotNull    ] public string c_domain  { get; set; } // character varying(256)
 		[Column,     NotNull    ] public bool   b_default { get; set; } // boolean
+		[PrimaryKey, NotNull    ] public Guid   id        { get; set; } // uuid
 
 		#region Associations
 
@@ -681,7 +681,7 @@ namespace PgDbase.models
 				t.id == id);
 		}
 
-		public static core_site_domains Find(this ITable<core_site_domains> table, int id)
+		public static core_site_domains Find(this ITable<core_site_domains> table, Guid id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);
