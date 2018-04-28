@@ -19,7 +19,11 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.core_users.AsQueryable();
+                Paged<UserModel> result = new Paged<UserModel>();
+
+                var query = db.core_users
+                    .Where(w => w.fkusersitelinks.Any(a => a.f_site == _siteId))
+                    .AsQueryable();
 
                 if (filter.Disabled.HasValue)
                 {
@@ -61,9 +65,13 @@ namespace PgDbase.Repository.cms
                             TryLogin = s.d_try_login
                         });
 
-                    return new Paged<UserModel>(list.ToArray(), filter.Size, filter.Page, itemCount);
+                    result = new Paged<UserModel>
+                    {
+                        Items = list.ToArray(),
+                        Pager = new PagerModel(filter.Size, filter.Page, itemCount)
+                    }; 
                 }
-                return null;
+                return result;
             }
         }
 
@@ -126,6 +134,8 @@ namespace PgDbase.Repository.cms
                         b_disabled = user.Disabled
                     }) > 0;
 
+                    InsertUserSiteLink(user.Id, user.Group);
+
                     tr.Commit();
                     return result;
                 }
@@ -165,7 +175,6 @@ namespace PgDbase.Repository.cms
                     var currentLink = db.core_user_site_link
                         .Where(w => w.f_user == user.Id)
                         .Where(w => w.f_site == _siteId)
-                        .Where(w => w.f_user_group == user.Group)
                         .SingleOrDefault();
 
                     bool isExistsGroupOnThisSite = currentLink != null;
@@ -283,7 +292,7 @@ namespace PgDbase.Repository.cms
                             Section = LogSection.Users,
                             Action = LogAction.delete
                         };
-                        InsertLog(log);
+                        InsertLog(log, user);
 
                         result = db.Delete(user) > 0;
 

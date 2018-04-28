@@ -53,7 +53,11 @@ namespace PgDbase.Repository.cms
                                     Id = s.id,
                                     Title = s.c_name
                                 });
-                    return new Paged<SitesModel>(List.ToArray(), filter.Size, filter.Page, ItemCount);
+                    return new Paged<SitesModel>
+                    {
+                        Items = List.ToArray(),
+                        Pager = new PagerModel(filter.Size, filter.Page, ItemCount)
+                    };
                 }
             }
             return null;
