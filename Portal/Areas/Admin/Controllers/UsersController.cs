@@ -1,4 +1,5 @@
-﻿using Portal.Areas.Admin.Models;
+﻿using PgDbase.entity;
+using Portal.Areas.Admin.Models;
 using System;
 using System.Web;
 using System.Web.Mvc;
@@ -8,7 +9,7 @@ namespace Portal.Areas.Admin
     public class UsersController : CoreController
     {
         UsersViewModel model;
-        PgDbase.entity.FilterModel filter;
+        FilterModel filter;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {

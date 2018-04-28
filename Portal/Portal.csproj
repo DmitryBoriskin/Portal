@@ -635,7 +635,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
-      <Project>{CF9AD0C6-218B-47F4-B8A3-85D13329BBB6}</Project>
+      <Project>{cf9ad0c6-218b-47f4-b8a3-85d13329bbb6}</Project>
       <Name>PgDbase</Name>
     </ProjectReference>
   </ItemGroup>
