@@ -53,7 +53,11 @@ namespace PgDbase.Repository.cms
                                     Id = s.id,
                                     Title = s.c_name
                                 });
-                    return new Paged<SitesModel>(List.ToArray(), filter.Size, filter.Page, ItemCount);
+                    return new Paged<SitesModel>
+                    {
+                        Items = List.ToArray(),
+                        Pager = new PagerModel(filter.Size, filter.Page, ItemCount)
+                    };
                 }
             }
             return null;
@@ -68,14 +72,22 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_sites
+                var query = db.core_sites
                          .Where(w => w.id == id)
                          .Select(s => new SitesModel
                          {
                              Id = s.id,
-                             Title = s.c_name
-                         })
-                         .SingleOrDefault();
+                             Title = s.c_name,
+                             DomainList = s.fkdomainss.Select(d => new Domain()
+                             {
+                                 DomainName = d.c_domain,
+                                 id = d.id,
+                                 IsDefault = d.b_default
+                             }).ToArray()                             
+                         });
+                if (query.Any()) return query.SingleOrDefault();
+                return null;
+
             }
         }
 
@@ -118,6 +130,11 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// добавление сайта
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
         public bool InsertSites(SitesModel site)
         {
             using (var db = new CMSdb(_context))
@@ -145,7 +162,11 @@ namespace PgDbase.Repository.cms
         }
 
 
-
+        /// <summary>
+        /// удаление сайта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteSite(Guid id)
         {
             using (var db = new CMSdb(_context))
@@ -160,7 +181,7 @@ namespace PgDbase.Repository.cms
                             PageId = site.id,
                             PageName = site.c_name,
                             Section = LogSection.Sites,
-                            Action = LogAction.update
+                            Action = LogAction.delete
                         });
                         db.Delete(site);
                         tr.Commit();
@@ -168,6 +189,39 @@ namespace PgDbase.Repository.cms
                     }
                     return false;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NewDomain"></param>
+        /// <returns></returns>
+        public bool InsertDomain(string NewDomain)
+        {
+            if (string.IsNullOrWhiteSpace(NewDomain))
+                return false;
+
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    NewDomain = NewDomain.Trim().ToLower();
+                    //если у сайта нет основного домена, то новый домен автоматически делаем основным
+                    var bdefault = !db.core_site_domains.Where(w=>w.f_site==_siteId && w.b_default).Any();
+                    if (NewDomain == "localhost")
+                    {
+                        db.core_site_domains.Where(w => w.c_domain == NewDomain).Delete();                        
+                    }
+                    db.core_site_domains.Insert(() => new core_site_domains
+                    {
+                        b_default = bdefault,
+                        c_domain = NewDomain,
+                        f_site = _siteId
+                    });
+                    tr.Commit();
+                    return true;
+                }                
             }
         }
     }

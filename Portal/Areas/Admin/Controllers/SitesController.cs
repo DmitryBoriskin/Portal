@@ -125,5 +125,33 @@ namespace Portal.Areas.Admin
             model.ErrorInfo = message;
             return RedirectToAction("index");
         }
+
+
+        /// <summary>
+        /// Добавление домена
+        /// </summary>
+        /// <returns>перезагружает страницу</returns>
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "add-new-domain")]
+        public ActionResult AddDomain()
+        {
+            try
+            {
+                Guid id = Guid.Parse(Request["Item.Id"]);                
+                string Domain = Request["new_domain"].Replace(" ", "");
+
+                _cmsRepository.InsertDomain(Domain);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("SitesController > AddDomain: " + ex);
+            }
+
+            return Redirect(((System.Web.HttpRequestWrapper)Request).RawUrl);
+        }
+
+
+
+
     }
 }

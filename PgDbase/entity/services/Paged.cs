@@ -17,18 +17,5 @@ namespace PgDbase.entity
         /// Пейджер
         /// </summary>
         public PagerModel Pager { get; set; }
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="items"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageNum"></param>
-        /// <param name="totalCount"></param>
-        public Paged(IEnumerable<T> items, int pageSize, int pageNum, int totalCount)
-        {
-            Items = items;
-            Pager = new PagerModel(pageSize, pageNum, totalCount);
-        }
     }
 }

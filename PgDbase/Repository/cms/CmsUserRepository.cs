@@ -61,7 +61,11 @@ namespace PgDbase.Repository.cms
                             TryLogin = s.d_try_login
                         });
 
-                    return new Paged<UserModel>(list.ToArray(), filter.Size, filter.Page, itemCount);
+                    return new Paged<UserModel>
+                    {
+                        Items = list.ToArray(),
+                        Pager = new PagerModel(filter.Size, filter.Page, itemCount)
+                    }; 
                 }
                 return null;
             }
@@ -125,6 +129,8 @@ namespace PgDbase.Repository.cms
                         c_patronymic = user.Patronimyc,
                         b_disabled = user.Disabled
                     }) > 0;
+
+                    InsertUserSiteLink(user.Id, user.Group);
 
                     tr.Commit();
                     return result;
