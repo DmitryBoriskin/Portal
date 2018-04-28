@@ -135,6 +135,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string   f_action      { get; set; } // character varying(32)
 		[Column,     NotNull    ] public string   c_ip          { get; set; } // character varying(16)
 		[Column,        Nullable] public string   c_json        { get; set; } // text
+		[Column,        Nullable] public string   c_comment     { get; set; } // character varying(1024)
 
 		#region Associations
 

@@ -209,7 +209,6 @@ namespace Portal.Areas.Admin
         {
             var filter = new FilterModel()
             {
-                Domain = Domain,
                 Type = Request.QueryString["type"],
                 Category = Request.QueryString["category"],
                 Group = Request.QueryString["group"],

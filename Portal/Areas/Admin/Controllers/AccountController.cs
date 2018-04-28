@@ -325,7 +325,7 @@ namespace Portal.Areas.Admin
                 string NewSalt = pass.Salt;
                 string NewHash = pass.Hash;
 
-                _accountRepository.ChangePasByCode(id, NewSalt, NewHash, RequestUserInfo.IP);
+                _accountRepository.ChangePassByCode(id, NewSalt, NewHash, RequestUserInfo.IP);
 
                 return RedirectToAction("MsgResult", "Account");
             }
@@ -383,8 +383,8 @@ namespace Portal.Areas.Admin
             {
                 PageId = Guid.NewGuid(),
                 PageName = "Выход из CMS",
-                Section = LogSection.Account,
-                Action = LogAction.log_off
+                Section = LogModule.Account,
+                Action = LogAction.logoff
             };
             _accountRepository.InsertLog(log);
 

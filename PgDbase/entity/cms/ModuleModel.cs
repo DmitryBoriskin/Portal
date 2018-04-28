@@ -13,6 +13,11 @@ namespace PgDbase.entity
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Идентификатор родителя
+        /// </summary>
+        public Guid? ParentId { get; set; }
+
+        /// <summary>
         /// Имя модуля
         /// </summary>
         public string Name { get; set; }
@@ -30,7 +35,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Вью, если не указана то берется по умолчанию
         /// </summary>
-        public string View { get; set; }
+        public Guid View { get; set; }
 
     }
 }

@@ -60,7 +60,6 @@ namespace PgDbase.Repository.cms
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
 
-      
 
         /// <summary>
         /// Логирование
@@ -76,6 +75,8 @@ namespace PgDbase.Repository.cms
                     f_page = log.PageId,
                     c_page_name = log.PageName,
                     f_logsections = log.Section.ToString(),
+                    c_comment = log.Comment,
+
                     f_site = _siteId,
                     f_user = _currentUserId,
                     c_ip = _ip,
@@ -100,7 +101,7 @@ namespace PgDbase.Repository.cms
                     {
                         Date = s.d_date,
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
-                        Section = (LogSection)Enum.Parse(typeof(LogSection), s.f_logsections),
+                        Section = (LogModule)Enum.Parse(typeof(LogModule), s.f_logsections),
                         User = new UserModel
                         {
                             Id = s.fklogusers.id,
@@ -126,7 +127,7 @@ namespace PgDbase.Repository.cms
                     {
                         Date = s.d_date,
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
-                        Section = (LogSection)Enum.Parse(typeof(LogSection), s.f_logsections),
+                        Section = (LogModule)Enum.Parse(typeof(LogModule), s.f_logsections),
                         PageName = s.c_page_name
                     }).ToArray();
             }
@@ -137,11 +138,12 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
 #warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
-                var data = db.core_cms_menu_groups
+                var data = db.core_menu
+                            .Where(s => s.f_parent == null)
                             .Select(s => new CmsMenuModel() {
                                 Alias = s.c_alias,
                                 GroupName = s.c_title,
-                                GroupItems = s.fkcmsmenucmsmenugroups.Select(m => new CmsMenuItem() {
+                                GroupItems = s.fk_menu_parent_BackReferences.Select(m => new CmsMenuItem() {
                                     Alias = m.c_alias,
                                     Title = m.c_title,
                                     Class = m.c_class
@@ -151,6 +153,5 @@ namespace PgDbase.Repository.cms
                 return null;
             }
         }
-
     }
 }
