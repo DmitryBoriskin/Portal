@@ -14,7 +14,7 @@ namespace PgDbase
         /// </summary>
         private string _context = null;
 
-        
+
         /// <summary>
         /// Идентифкатор сайта
         /// </summary>
@@ -55,7 +55,7 @@ namespace PgDbase
                         Id = s.id,
                         Mail = s.c_email,
                         Salt = s.c_salt,
-                        Hash = s.c_hash,                        
+                        Hash = s.c_hash,
                         Surname = s.c_surname,
                         Name = s.c_name,
                         Patronymic = s.c_patronymic,
@@ -66,20 +66,21 @@ namespace PgDbase
                 if (data.Any()) return data.First();
                 return null;
             }
-        }        
+        }
         public AccountModel getCmsAccount(Guid Id)
         {
             using (var db = new CMSdb(_context))
             {
                 var data = db.core_users
                    .Where(w => w.id == Id)
-                   .Select(s => new AccountModel {
-                       Id=s.id,
-                       Mail=s.c_email,
-                       Salt=s.c_salt,
-                       Hash=s.c_hash,
-                       Name=s.c_name,
-                       Surname=s.c_surname
+                   .Select(s => new AccountModel
+                   {
+                       Id = s.id,
+                       Mail = s.c_email,
+                       Salt = s.c_salt,
+                       Hash = s.c_hash,
+                       Name = s.c_name,
+                       Surname = s.c_surname
                    });
                 if (data.Any()) return data.First();
                 return null;
@@ -97,8 +98,8 @@ namespace PgDbase
                                 DomainName = s.fkusersitelinksites
                                 .fkdomainss.Where(w1 => w1.b_default).Select(s1 => s1.c_domain).SingleOrDefault().ToString()
                             });
-                            
-                
+
+
                 if (query.Any()) return query.ToArray();
                 return null;
             }
@@ -123,7 +124,7 @@ namespace PgDbase
                 return result;
             }
         }
-        
+
         public void SuccessLogin(Guid id, string IP)
         {
             using (var db = new CMSdb(_context))
@@ -138,11 +139,12 @@ namespace PgDbase
                         .Update();
 
                 // Логирование
-                var log = new LogModel{
-                    PageId=id,
-                    PageName= "Авторизация в CMS",
-                    Section=LogSection.Account,
-                    Action= LogAction.login
+                var log = new LogModel
+                {
+                    PageId = id,
+                    PageName = "Авторизация в CMS",
+                    Section = LogModule.Account,
+                    Action = LogAction.login
                 };
                 InsertLog(log);
             }
@@ -189,23 +191,34 @@ namespace PgDbase
         {
             using (var db = new CMSdb(_context))
             {
-                var data = db.core_users
-                    .Where(w => w.id == id)
-                    .Set(u => u.c_change_pass_code, Code)
-                    .Update();
-
-                // Логирование
-                var log = new LogModel
+                using (var tran = db.BeginTransaction())
                 {
-                    PageId = id,
-                    UserId = id,
-                    Action = LogAction.reqest_change_pass,
-                    Section = LogSection.Account
-                };
-                InsertLog(log);
+                    var data = db.core_users
+                                            .Where(w => w.id == id);
+
+                    if (data.Any())
+                    {
+                        var user = data.Single();
+                        var res = data.Set(u => u.c_change_pass_code, Code)
+                                      .Update();
+
+                        // Логирование
+                        var log = new LogModel
+                        {
+                            PageId = id,
+                            UserId = id,
+                            Action = LogAction.recovery,
+                            Section = LogModule.Account,
+                            Comment = string.Format("Код востановления пароля для пользователя {0} {1} {2}", user.c_surname, user.c_name, user.c_patronymic)
+                        };
+                        InsertLog(log);
+
+                        tran.Commit();
+                    }
+                }
             }
         }
-                
+
         /// <summary>
         /// Сбросс пароля по ссылке пришедшей на почту
         /// </summary>
@@ -214,7 +227,7 @@ namespace PgDbase
         /// <param name="Hash"></param>
         /// <param name="IP"></param>
         /// <returns></returns>
-        public bool ChangePasByCode(Guid Code, string Salt, string Hash, string IP)
+        public bool ChangePassByCode(Guid Code, string Salt, string Hash, string IP)
         {
             using (var db = new CMSdb(_context))
             {
@@ -222,6 +235,7 @@ namespace PgDbase
                 {
                     var query = db.core_users
                         .Where(w => w.c_change_pass_code == Code);
+
                     if (query.Any())
                     {
                         string LogTitle = query.First().c_surname + " " + query.First().c_name;
@@ -239,8 +253,8 @@ namespace PgDbase
                         {
                             PageId = accountId,
                             PageName = "Авторизация в CMS",
-                            Section = LogSection.Account,
-                            Action = LogAction.change_pass
+                            Section = LogModule.Account,
+                            Action = LogAction.update
                         };
                         InsertLog(log);
                         return true;

@@ -10,12 +10,12 @@ namespace PgDbase.entity
         /// <summary>
         /// Идентификатор в бд
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Идентификатор родителя
         /// </summary>
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
         /// <summary>
         /// Имя модуля

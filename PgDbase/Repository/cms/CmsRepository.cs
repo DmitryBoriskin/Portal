@@ -137,11 +137,12 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
 #warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
-                var data = db.core_cms_menu_groups
+                var data = db.core_menu
+                            .Where(s => s.f_parent == null)
                             .Select(s => new CmsMenuModel() {
                                 Alias = s.c_alias,
                                 GroupName = s.c_title,
-                                GroupItems = s.fkcmsmenucmsmenugroups.Select(m => new CmsMenuItem() {
+                                GroupItems = s.fk_menu_parent_BackReferences.Select(m => new CmsMenuItem() {
                                     Alias = m.c_alias,
                                     Title = m.c_title,
                                     Class = m.c_class

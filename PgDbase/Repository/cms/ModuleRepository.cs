@@ -67,7 +67,7 @@ namespace PgDbase.Repository.cms
                         Action = s.c_action_name,
                         View = s.c_default_view
                     });
-                return data;
+                return data.SingleOrDefault();
             }
         }
 
@@ -82,7 +82,7 @@ namespace PgDbase.Repository.cms
             {
                 using (var tran = db.BeginTransaction())
                 {
-                    var newController = new core_controllers
+                    var cdController = new core_controllers
                     {
                         id = module.Id,
                         pid = module.ParentId,
@@ -91,13 +91,13 @@ namespace PgDbase.Repository.cms
                         c_action_name = module.Action,
                         c_default_view = module.View
                     };
-                    db.Insert(newController);
+                    db.Insert(cdController);
 
                     var log = new LogModel
                     {
                         PageId = Guid.NewGuid(),
                         PageName = module.Name,
-                        Section = LogSection.Module,
+                        Section = LogModule.Module,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
@@ -117,122 +117,38 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                using (var tr = db.BeginTransaction())
+                using (var tran = db.BeginTransaction())
                 {
-                    var log = new LogModel
+                    var data = db.core_controllers
+                        .Where(s => s.id == module.Id);
+
+                    if(data.Any())
                     {
-                        PageId = user.Id,
-                        PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
-                        Section = LogSection.Users,
-                        Action = LogAction.update
-                    };
-                    InsertLog(log);
+                        var cdController = data.SingleOrDefault();
+                        cdController.id = module.Id;
+                        cdController.pid = module.ParentId;
+                        cdController.c_name = module.Name;
+                        cdController.c_controller_name = module.Controller;
+                        cdController.c_action_name = module.Action;
+                        cdController.c_default_view = module.View;
 
-                    bool result = db.core_users
-                        .Where(w => w.id == user.Id)
-                        .Set(s => s.c_email, user.Email)
-                        .Set(s => s.c_name, user.Name)
-                        .Set(s => s.c_surname, user.Surname)
-                        .Set(s => s.c_patronymic, user.Patronimyc)
-                        .Set(s => s.b_disabled, user.Disabled)
-                        .Update() > 0;
+                        db.Update(cdController);
 
-                    // группа
-                    var currentLink = db.core_user_site_link
-                        .Where(w => w.f_user == user.Id)
-                        .Where(w => w.f_site == _siteId)
-                        .Where(w => w.f_user_group == user.Group)
-                        .SingleOrDefault();
 
-                    bool isExistsGroupOnThisSite = currentLink != null;
-
-                    if (isExistsGroupOnThisSite)
-                    {
-                        currentLink.f_user_group = user.Group;
-                        db.Update(currentLink);
-
-                        log = new LogModel
+                        var log = new LogModel
                         {
-                            PageId = currentLink.id,
-                            PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
-                            Section = LogSection.UserSiteLinks,
+                            PageId = Guid.NewGuid(),
+                            PageName = module.Name,
+                            Section = LogModule.Module,
                             Action = LogAction.update
                         };
                         InsertLog(log);
-                    }
-                    else
-                    {
-                        InsertUserSiteLink(user.Id, user.Group);
-                    }
 
-                    tr.Commit();
-                    return result;
+                        tran.Commit();
+                        return true;
+                    };
+                    return false;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Меняет пароль
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="salt"></param>
-        /// <param name="hash"></param>
-        public void ChangePassword(Guid id, string salt, string hash)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
-
-                    if (user != null)
-                    {
-                        var log = new LogModel
-                        {
-                            PageId = id,
-                            PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                            Section = LogSection.Users,
-                            Action = LogAction.change_pass
-                        };
-                        InsertLog(log);
-
-                        db.core_users
-                            .Where(w => w.id == id)
-                            .Set(s => s.c_salt, salt)
-                            .Set(s => s.c_hash, hash)
-                            .Update();
-
-                        tr.Commit(); 
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Проверяет существование пользователя по id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public bool CheckUserExists(Guid id)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.core_users
-                    .Where(w => w.id == id).Any();
-            }
-        }
-
-        /// <summary>
-        /// Проверяет существование пользователя по email
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public bool CheckUserExists(string email)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.core_users
-                    .Where(w => w.c_email == email.ToLower()).Any();
             }
         }
 
@@ -241,112 +157,40 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteUser(Guid id)
+        public bool DeleteModule(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
-                using (var tr = db.BeginTransaction())
+                using (var tran = db.BeginTransaction())
                 {
-                    bool result = false;
 
-                    var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
-                    if (user != null)
+                    var data = db.core_controllers
+                        .Where(s => s.id == id);
+                        
+                    if (data.Any())
                     {
+                        var cdController = data.Single();
+                            
+                            db.Delete(cdController);
+
                         var log = new LogModel
                         {
-                            PageId = id,
-                            PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                            Section = LogSection.Users,
-                            Action = LogAction.delete
+                            PageId = Guid.NewGuid(),
+                            PageName = String.Format("{0}/{1}", cdController.c_controller_name, cdController.c_action_name),
+                            Section = LogModule.Module,
+                            Action = LogAction.delete,
+                            Comment = "Удален модуль" + String.Format("{0}/{1}", cdController.c_controller_name, cdController.c_action_name)
                         };
                         InsertLog(log);
 
-                        result = db.Delete(user) > 0;
-
-                        tr.Commit();
+                        tran.Commit();
+                        return true;
                     }
 
-                    return result;
+                    return false;
                 }
             }
         }
 
-        /// <summary>
-        /// Возвращает список групп
-        /// </summary>
-        /// <returns></returns>
-        public GroupsModel[] GetGroups()
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.core_user_groups
-                    .Select(s => new GroupsModel
-                    {
-                        Id = s.id,
-                        Title = s.c_title,
-                        Alias = s.c_alias
-                    }).ToArray();  
-            }
-        }
-        
-        /// <summary>
-        /// Добавляет связь пользователя с сайтом
-        /// </summary>
-        /// <returns></returns>
-        public bool InsertUserSiteLink(Guid userId, Guid groupId)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    Guid id = Guid.NewGuid();
-                    var log = new LogModel
-                    {
-                        PageId = id,
-                        PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                        Section = LogSection.UserSiteLinks,
-                        Action = LogAction.insert
-                    };
-                    InsertLog(log);
-
-                    bool result = db.core_user_site_link
-                        .Insert(() => new core_user_site_link
-                        {
-                            id = id,
-                            f_site = _siteId,
-                            f_user = userId,
-                            f_user_group = groupId
-                        }) > 0;
-
-                    tr.Commit();
-                    return result;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Возвращает заголовок при логировании
-        /// добавления связи пользователя и сайта
-        /// </summary>
-        /// <returns></returns>
-        private string GetLogTitleForUserSiteLink(Guid userId, Guid groupId, CMSdb db)
-        {
-            string user = db.core_users
-                .Where(w => w.id == userId)
-                .Select(s => $"{s.c_surname} {s.c_name}")
-                .SingleOrDefault();
-
-            string domain = db.core_sites
-                .Where(w => w.id == _siteId)
-                .Select(s => s.c_name)
-                .SingleOrDefault();
-
-            string group = db.core_user_groups
-                .Where(w => w.id == groupId)
-                .Select(s => s.c_title)
-                .SingleOrDefault();
-
-            return $"{user} {group} {domain}";
-        }
     }
 }

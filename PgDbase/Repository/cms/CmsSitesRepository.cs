@@ -44,8 +44,8 @@ namespace PgDbase.Repository.cms
                 query = query.OrderBy(o => new { o.c_name });
                 if (query.Any())
                 {
-                    int ItemCount = query.Count();
-                    var List = query
+                    int itemsCount = query.Count();
+                    var list = query
                                 .Skip(filter.Size * (filter.Page - 1))
                                 .Take(filter.Size)
                                 .Select(s => new SitesModel
@@ -55,8 +55,13 @@ namespace PgDbase.Repository.cms
                                 });
                     return new Paged<SitesModel>
                     {
-                        Items = List.ToArray(),
-                        Pager = new PagerModel(filter.Size, filter.Page, ItemCount)
+                        Items = list.ToArray(),
+                        Pager = new PagerModel()
+                        {
+                            PageNum = filter.Page,
+                            PageSize = filter.Size,
+                            TotalCount = itemsCount
+                        }
                     };
                 }
             }
@@ -83,7 +88,7 @@ namespace PgDbase.Repository.cms
                                  DomainName = d.c_domain,
                                  id = d.id,
                                  IsDefault = d.b_default
-                             }).ToArray()                             
+                             }).ToArray()
                          });
                 if (query.Any()) return query.SingleOrDefault();
                 return null;
@@ -116,7 +121,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = site.Id,
                         PageName = site.Title,
-                        Section = LogSection.Sites,
+                        Section = LogModule.Sites,
                         Action = LogAction.update
                     });
 
@@ -145,16 +150,16 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = site.Id,
                         PageName = site.Title,
-                        Section = LogSection.Sites,
+                        Section = LogModule.Sites,
                         Action = LogAction.insert
                     });
                     bool result = db.core_sites
                         .Insert(
                         () => new core_sites
-                            {
-                                id = site.Id,
-                                c_name = site.Title
-                            }) > 0;
+                        {
+                            id = site.Id,
+                            c_name = site.Title
+                        }) > 0;
                     tr.Commit();
                     return result;
                 }
@@ -180,7 +185,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = site.id,
                             PageName = site.c_name,
-                            Section = LogSection.Sites,
+                            Section = LogModule.Sites,
                             Action = LogAction.delete
                         });
                         db.Delete(site);
@@ -208,10 +213,10 @@ namespace PgDbase.Repository.cms
                 {
                     NewDomain = NewDomain.Trim().ToLower();
                     //если у сайта нет основного домена, то новый домен автоматически делаем основным
-                    var bdefault = !db.core_site_domains.Where(w=>w.f_site==_siteId && w.b_default).Any();
+                    var bdefault = !db.core_site_domains.Where(w => w.f_site == _siteId && w.b_default).Any();
                     if (NewDomain == "localhost")
                     {
-                        db.core_site_domains.Where(w => w.c_domain == NewDomain).Delete();                        
+                        db.core_site_domains.Where(w => w.c_domain == NewDomain).Delete();
                     }
                     db.core_site_domains.Insert(() => new core_site_domains
                     {
@@ -221,7 +226,7 @@ namespace PgDbase.Repository.cms
                     });
                     tr.Commit();
                     return true;
-                }                
+                }
             }
         }
     }
