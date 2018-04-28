@@ -30,17 +30,5 @@
             }
         }
 
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="pageSize"></param>
-        /// <param name="pageNum"></param>
-        /// <param name="totalCount"></param>
-        public PagerModel(int pageSize, int pageNum, int totalCount)
-        {
-            PageSize = PageSize;
-            PageNum = pageNum;
-            TotalCount = totalCount;
-        }
     }
 }

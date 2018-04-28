@@ -8,16 +8,6 @@ namespace PgDbase.entity
     public class FilterModel
     {
         /// <summary>
-        /// Id
-        /// </summary>
-        public Guid[] Id { get; set; }
-
-        /// <summary>
-        /// Домен
-        /// </summary>
-        public string Domain { get; set; }
-
-        /// <summary>
         /// Страница
         /// </summary>
         public int Page { get; set; }
@@ -72,8 +62,6 @@ namespace PgDbase.entity
         {
             return new T()
             {
-                Id = f.Id,
-                Domain = f.Domain,
                 Page = f.Page,
                 Size = f.Size,
                 Disabled = f.Disabled,

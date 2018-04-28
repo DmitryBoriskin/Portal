@@ -38,7 +38,7 @@ namespace PgDbase.Repository.cms
                         {
                             if (!String.IsNullOrWhiteSpace(p))
                             {
-                                query = query.Where(w => w.c_surname.Contains(p) 
+                                query = query.Where(w => w.c_surname.Contains(p)
                                                     || w.c_name.Contains(p)
                                                     || w.c_patronymic.Contains(p)
                                                     || w.c_email.Contains(p));
@@ -48,30 +48,32 @@ namespace PgDbase.Repository.cms
                 }
                 query = query.OrderBy(o => new { o.c_surname, o.c_name });
 
-                if (query.Any())
-                {
-                    int itemCount = query.Count();
+                int itemsCount = query.Count();
 
-                    var list = query.Skip(filter.Size * (filter.Page - 1))
-                        .Take(filter.Size).Select(s => new UserModel
-                        {
-                            Id = s.id,
-                            Email = s.c_email,
-                            Surname = s.c_surname,
-                            Name = s.c_name,
-                            Patronimyc = s.c_patronymic,
-                            Disabled = s.b_disabled,
-                            ErrorCount = s.n_error_count,
-                            TryLogin = s.d_try_login
-                        });
-
-                    result = new Paged<UserModel>
+                var list = query.Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size).Select(s => new UserModel
                     {
-                        Items = list.ToArray(),
-                        Pager = new PagerModel(filter.Size, filter.Page, itemCount)
-                    }; 
-                }
-                return result;
+                        Id = s.id,
+                        Email = s.c_email,
+                        Surname = s.c_surname,
+                        Name = s.c_name,
+                        Patronimyc = s.c_patronymic,
+                        Disabled = s.b_disabled,
+                        ErrorCount = s.n_error_count,
+                        TryLogin = s.d_try_login
+                    });
+
+
+                return new Paged<UserModel>()
+                {
+                    Items = list.ToArray(),
+                    Pager = new PagerModel()
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
             }
         }
 
@@ -117,7 +119,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = user.Id,
                         PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
-                        Section = LogSection.Users,
+                        Section = LogModule.Users,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
@@ -157,7 +159,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = user.Id,
                         PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
-                        Section = LogSection.Users,
+                        Section = LogModule.Users,
                         Action = LogAction.update
                     };
                     InsertLog(log);
@@ -188,7 +190,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = currentLink.id,
                             PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
-                            Section = LogSection.UserSiteLinks,
+                            Section = LogModule.UserSiteLinks,
                             Action = LogAction.update
                         };
                         InsertLog(log);
@@ -224,8 +226,8 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = id,
                             PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                            Section = LogSection.Users,
-                            Action = LogAction.change_pass
+                            Section = LogModule.Users,
+                            Action = LogAction.update
                         };
                         InsertLog(log);
 
@@ -235,7 +237,7 @@ namespace PgDbase.Repository.cms
                             .Set(s => s.c_hash, hash)
                             .Update();
 
-                        tr.Commit(); 
+                        tr.Commit();
                     }
                 }
             }
@@ -289,7 +291,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = id,
                             PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                            Section = LogSection.Users,
+                            Section = LogModule.Users,
                             Action = LogAction.delete
                         };
                         InsertLog(log, user);
@@ -318,10 +320,10 @@ namespace PgDbase.Repository.cms
                         Id = s.id,
                         Title = s.c_title,
                         Alias = s.c_alias
-                    }).ToArray();  
+                    }).ToArray();
             }
         }
-        
+
         /// <summary>
         /// Добавляет связь пользователя с сайтом
         /// </summary>
@@ -333,26 +335,28 @@ namespace PgDbase.Repository.cms
                 using (var tr = db.BeginTransaction())
                 {
                     Guid id = Guid.NewGuid();
-                    var log = new LogModel
-                    {
-                        PageId = id,
-                        PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                        Section = LogSection.UserSiteLinks,
-                        Action = LogAction.insert
-                    };
-                    InsertLog(log);
+                   
 
-                    bool result = db.core_user_site_link
+                    db.core_user_site_link
                         .Insert(() => new core_user_site_link
                         {
                             id = id,
                             f_site = _siteId,
                             f_user = userId,
                             f_user_group = groupId
-                        }) > 0;
+                        });
+
+                    var log = new LogModel
+                    {
+                        PageId = id,
+                        PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
+                        Section = LogModule.UserSiteLinks,
+                        Action = LogAction.insert
+                    };
+                    InsertLog(log);
 
                     tr.Commit();
-                    return result;
+                    return true;
                 }
             }
         }

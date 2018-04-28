@@ -11,7 +11,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Постраничный список
         /// </summary>
-        public Paged<UserModel> List { get; set; }
+        public Paged<ModuleModel> List { get; set; }
 
         /// <summary>
         /// Пользователь

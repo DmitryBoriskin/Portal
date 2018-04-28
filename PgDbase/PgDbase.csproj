@@ -60,10 +60,12 @@
     <Compile Include="Entity\cms\ModuleModel.cs" />
     <Compile Include="Entity\cms\UserModel.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
+    <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\cms\CmsSitesRepository.cs" />
+    <Compile Include="Repository\cms\ModuleRepository.cs" />
     <Compile Include="Repository\cms\CmsUserRepository.cs" />
     <Compile Include="Entity\services\Filters\FilterModel.cs" />
     <Compile Include="Entity\services\Paged.cs" />

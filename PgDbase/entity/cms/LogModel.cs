@@ -25,7 +25,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Раздел сайта, в котором произошли изменения
         /// </summary>
-        public LogSection Section { get; set; }
+        public LogModule Section { get; set; }
 
         /// <summary>
         /// Тип изменений
@@ -51,6 +51,11 @@ namespace PgDbase.entity
         /// Пользователь
         /// </summary>
         public UserModel User { get; set; }
+
+        /// <summary>
+        /// Дополнительная информация
+        /// </summary>
+        public string Comment { get; set; }
     }
     /// <summary>
     /// Действие для логирования
@@ -68,25 +73,19 @@ namespace PgDbase.entity
         insert,
 
         /// <summary>
-        /// Удаление
-        /// </summary>
-        delete,
-
-        /// <summary>
         /// Изменение
         /// </summary>
         update,
 
         /// <summary>
+        /// Удаление
+        /// </summary>
+        delete,
+
+        /// <summary>
         /// Восстановление
         /// </summary>
         recovery,
-
-        /// <summary>
-        /// Заблокировано
-        /// </summary>
-        admin_lock,
-
 
         /// <summary>
         /// Авторизация
@@ -96,77 +95,27 @@ namespace PgDbase.entity
         /// <summary>
         /// Выход из системы
         /// </summary>
-        log_off,
-
+        logoff,
         /// <summary>
         /// Неудачная попытка входа
         /// </summary>
-        failed_login,
+        loginfailed,
 
         /// <summary>
         /// Блокировка аккаунта
         /// </summary>
-        account_lockout,
-
-        /// <summary>
-        /// Изменение пароля
-        /// </summary>
-        change_pass,
-
-        /// <summary>
-        /// Запрос на востановление пароля
-        /// </summary>
-        reqest_change_pass,
-
-        /// <summary>
-        /// Добавление домена
-        /// </summary>
-        insert_domain,
-
-        /// <summary>
-        /// Удаление домена
-        /// </summary>
-        delete_domain,
-
-        /// <summary>
-        /// Создание связи пользователя и сайта
-        /// </summary>
-        insert_sitelink,
-
-        /// <summary>
-        /// Удаление связи пользователя и сайта
-        /// </summary>
-        delete_sitelink,
+        lockout,
 
         /// <summary>
         /// Изменение прав доступа
         /// </summary>
-        change_resolutions,
-
-        /// <summary>
-        /// Отправлен ответ
-        /// </summary>
-        mail_answer,
-
-        /// <summary>
-        /// Сообщение прочитано
-        /// </summary>
-        mail_read,
-
-        /// <summary>
-        ///  Удаление телефона депртамента
-        /// </summary>
-        delete_phone_derpart,
-
-        /// <summary>
-        /// Добавление телефона департменту
-        /// </summary>
-        insert_phone_depart
+        resolutions,
     }
+
     /// <summary>
     /// Секция для логирования
     /// </summary>
-    public enum LogSection
+    public enum LogModule
     {
         /// <summary>
         /// Неопределена
@@ -236,7 +185,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Разделы сайта
         /// </summary>
-        SiteSection = 13,
+        Module = 13,
 
         /// <summary>
         /// Голосование

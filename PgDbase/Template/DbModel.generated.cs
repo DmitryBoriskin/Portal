@@ -20,8 +20,6 @@ namespace PgDbase.models
 	/// </summary>
 	public partial class CMSdb : LinqToDB.Data.DataConnection
 	{
-		public ITable<core_cms_menu_groups>        core_cms_menu_groups        { get { return this.GetTable<core_cms_menu_groups>(); } }
-		public ITable<core_cms_menus>              core_cms_menus              { get { return this.GetTable<core_cms_menus>(); } }
 		public ITable<core_controllers>            core_controllers            { get { return this.GetTable<core_controllers>(); } }
 		public ITable<core_log_actions>            core_log_actions            { get { return this.GetTable<core_log_actions>(); } }
 		public ITable<core_log_sections>           core_log_sections           { get { return this.GetTable<core_log_sections>(); } }
@@ -29,6 +27,7 @@ namespace PgDbase.models
 		public ITable<core_material_categories>    core_material_categories    { get { return this.GetTable<core_material_categories>(); } }
 		public ITable<core_material_category_link> core_material_category_link { get { return this.GetTable<core_material_category_link>(); } }
 		public ITable<core_materials>              core_materials              { get { return this.GetTable<core_materials>(); } }
+		public ITable<core_menu>                   core_menu                   { get { return this.GetTable<core_menu>(); } }
 		public ITable<core_pages>                  core_pages                  { get { return this.GetTable<core_pages>(); } }
 		public ITable<core_site_controllers>       core_site_controllers       { get { return this.GetTable<core_site_controllers>(); } }
 		public ITable<core_site_domains>           core_site_domains           { get { return this.GetTable<core_site_domains>(); } }
@@ -55,51 +54,6 @@ namespace PgDbase.models
 		partial void InitDataContext();
 	}
 
-	[Table(Schema="core", Name="cms_menu_groups")]
-	public partial class core_cms_menu_groups
-	{
-		[PrimaryKey, Identity   ] public int    id      { get; set; } // integer
-		[Column,     NotNull    ] public string c_title { get; set; } // character varying(32)
-		[Column,        Nullable] public string c_alias { get; set; } // character varying(16)
-
-		#region Associations
-
-		/// <summary>
-		/// fk_cms_menu_cms_menu_group_BackReference
-		/// </summary>
-		[Association(ThisKey="c_alias", OtherKey="f_menu_group", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_cms_menus> fkcmsmenucmsmenugroups { get; set; }
-
-		#endregion
-	}
-
-	[Table(Schema="core", Name="cms_menus")]
-	public partial class core_cms_menus
-	{
-		[PrimaryKey, NotNull    ] public Guid   id           { get; set; } // uuid
-		[Column,        Nullable] public string c_title      { get; set; } // character varying(128)
-		[Column,     NotNull    ] public string c_alias      { get; set; } // character varying(32)
-		[Column,        Nullable] public string c_class      { get; set; } // character varying(50)
-		[Column,        Nullable] public string f_menu_group { get; set; } // character varying(16)
-		[Column,        Nullable] public int?   n_sort       { get; set; } // integer
-
-		#region Associations
-
-		/// <summary>
-		/// fk_cms_menu_cms_menu_group
-		/// </summary>
-		[Association(ThisKey="f_menu_group", OtherKey="c_alias", CanBeNull=true, KeyName="fk_cms_menu_cms_menu_group", BackReferenceName="fkcmsmenucmsmenugroups")]
-		public core_cms_menu_groups fkcmsmenucmsmenugroup { get; set; }
-
-		/// <summary>
-		/// fk_resolution_group_cms_menu_BackReference
-		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_cmsmenu", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_user_group_resolutions> fkresolutiongroupcmsmenus { get; set; }
-
-		#endregion
-	}
-
 	[Table(Schema="core", Name="controllers")]
 	public partial class core_controllers
 	{
@@ -123,6 +77,12 @@ namespace PgDbase.models
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="pid", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_controllers> fk_controller_parent_id_BackReferences { get; set; }
+
+		/// <summary>
+		/// fk_site_controllers__controllers_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_controller", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_site_controllers> fksites { get; set; }
 
 		#endregion
 	}
@@ -175,6 +135,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string   f_action      { get; set; } // character varying(32)
 		[Column,     NotNull    ] public string   c_ip          { get; set; } // character varying(16)
 		[Column,        Nullable] public string   c_json        { get; set; } // text
+		[Column,        Nullable] public string   c_comment     { get; set; } // character varying(1024)
 
 		#region Associations
 
@@ -284,30 +245,57 @@ namespace PgDbase.models
 		#endregion
 	}
 
+	[Table(Schema="core", Name="menu")]
+	public partial class core_menu
+	{
+		[PrimaryKey, NotNull    ] public Guid   id       { get; set; } // uuid
+		[Column,        Nullable] public string c_title  { get; set; } // character varying(128)
+		[Column,     NotNull    ] public string c_alias  { get; set; } // character varying(32)
+		[Column,        Nullable] public string c_class  { get; set; } // character varying(50)
+		[Column,        Nullable] public int?   n_sort   { get; set; } // integer
+		[Column,        Nullable] public Guid?  f_parent { get; set; } // uuid
+
+		#region Associations
+
+		/// <summary>
+		/// fk_menu_parent
+		/// </summary>
+		[Association(ThisKey="f_parent", OtherKey="id", CanBeNull=true, KeyName="fk_menu_parent", BackReferenceName="fk_menu_parent_BackReferences")]
+		public core_menu fkparent { get; set; }
+
+		/// <summary>
+		/// fk_menu_parent_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_parent", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_menu> fk_menu_parent_BackReferences { get; set; }
+
+		/// <summary>
+		/// fk_user_group_resolutions__menu_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_menu", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_user_group_resolutions> fkusergroupresolutionss { get; set; }
+
+		#endregion
+	}
+
 	[Table(Schema="core", Name="pages")]
 	public partial class core_pages
 	{
 		[PrimaryKey, NotNull    ] public Guid   gid                { get; set; } // uuid
 		[Column,     NotNull    ] public string c_name             { get; set; } // character varying(512)
-		[Column,        Nullable] public Guid?  pgid               { get; set; } // uuid
+		[Column,     NotNull    ] public Guid   pgid               { get; set; } // uuid
 		[Column,        Nullable] public string c_path             { get; set; } // character varying(1024)
 		[Column,        Nullable] public string c_alias            { get; set; } // character varying(128)
 		[Column,        Nullable] public string c_text             { get; set; } // text
 		[Column,        Nullable] public string c_url              { get; set; } // character varying(256)
 		[Column,     NotNull    ] public int    n_sort             { get; set; } // integer
 		[Column,     NotNull    ] public Guid   f_site             { get; set; } // uuid
-		[Column,        Nullable] public bool?  b_disabled         { get; set; } // boolean
+		[Column,     NotNull    ] public bool   b_disabled         { get; set; } // boolean
 		[Column,        Nullable] public string c_keyw             { get; set; } // character varying(512)
 		[Column,        Nullable] public string c_desc             { get; set; } // character varying(1024)
 		[Column,        Nullable] public int?   f_sites_controller { get; set; } // integer
 
 		#region Associations
-
-		/// <summary>
-		/// fk_page_sites_contreller
-		/// </summary>
-		[Association(ThisKey="f_sites_controller", OtherKey="id", CanBeNull=true, KeyName="fk_page_sites_contreller", BackReferenceName="fkpagesitescontrellers")]
-		public core_site_controllers fkpagesitescontreller { get; set; }
 
 		/// <summary>
 		/// fk_page_sites
@@ -333,36 +321,30 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="site_controllers")]
 	public partial class core_site_controllers
 	{
-		[PrimaryKey, Identity] public int  id           { get; set; } // integer
-		[Column,     NotNull ] public Guid f_site       { get; set; } // uuid
-		[Column,     NotNull ] public int  f_controller { get; set; } // integer
-		[Column,     NotNull ] public int  f_view       { get; set; } // integer
+		[PrimaryKey, NotNull    ] public Guid  id           { get; set; } // uuid
+		[Column,     NotNull    ] public Guid  f_site       { get; set; } // uuid
+		[Column,        Nullable] public Guid? f_controller { get; set; } // uuid
+		[Column,        Nullable] public Guid? f_view       { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
-		/// fk_controllers_to_site
+		/// fk_site_controllers__view
 		/// </summary>
-		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_controllers_to_site", BackReferenceName="fkcontrollerstosites")]
-		public core_sites fkcontrollerstosite { get; set; }
+		[Association(ThisKey="f_view", OtherKey="id", CanBeNull=true, KeyName="fk_site_controllers__view", BackReferenceName="fksitecontrollersviews")]
+		public core_views fksitecontrollersview { get; set; }
 
 		/// <summary>
-		/// fk_view_to_site
+		/// fk_site_controllers__sites
 		/// </summary>
-		[Association(ThisKey="f_view", OtherKey="id", CanBeNull=false, KeyName="fk_view_to_site", BackReferenceName="fkviewtosites")]
-		public core_views fkviewtosite { get; set; }
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_site_controllers__sites", BackReferenceName="fksitecontrollerss")]
+		public core_sites fksitecontrollerssites { get; set; }
 
 		/// <summary>
-		/// fk_page_sites_contreller_BackReference
+		/// fk_site_controllers__controllers
 		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_sites_controller", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_pages> fkpagesitescontrellers { get; set; }
-
-		/// <summary>
-		/// fk_resolution_user_stescontroller_BackReference
-		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_sites_controller", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_user_resolutions> fkresolutionuserstescontrollers { get; set; }
+		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=true, KeyName="fk_site_controllers__controllers", BackReferenceName="fksites")]
+		public core_controllers fksitecontrollerscontrollers { get; set; }
 
 		#endregion
 	}
@@ -397,12 +379,6 @@ namespace PgDbase.models
 		#region Associations
 
 		/// <summary>
-		/// fk_controllers_to_site_BackReference
-		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_site_controllers> fkcontrollerstosites { get; set; }
-
-		/// <summary>
 		/// fk_sites_domains_sites_BackReference
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
@@ -427,6 +403,12 @@ namespace PgDbase.models
 		public IEnumerable<core_user_site_link> fkusersitelinks { get; set; }
 
 		/// <summary>
+		/// fk_site_controllers__sites_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_site_controllers> fksitecontrollerss { get; set; }
+
+		/// <summary>
 		/// fk_materials_categories_sites_BackReference
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
@@ -444,15 +426,15 @@ namespace PgDbase.models
 		[Column,        Nullable] public bool? b_write     { get; set; } // boolean
 		[Column,        Nullable] public bool? b_change    { get; set; } // boolean
 		[Column,        Nullable] public bool? b_delete    { get; set; } // boolean
-		[Column,     NotNull    ] public Guid  f_cmsmenu   { get; set; } // uuid
+		[Column,     NotNull    ] public Guid  f_menu      { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
-		/// fk_resolution_group_cms_menu
+		/// fk_user_group_resolutions__menu
 		/// </summary>
-		[Association(ThisKey="f_cmsmenu", OtherKey="id", CanBeNull=false, KeyName="fk_resolution_group_cms_menu", BackReferenceName="fkresolutiongroupcmsmenus")]
-		public core_cms_menus fkresolutiongroupcmsmenu { get; set; }
+		[Association(ThisKey="f_menu", OtherKey="id", CanBeNull=false, KeyName="fk_user_group_resolutions__menu", BackReferenceName="fkusergroupresolutionss")]
+		public core_menu fkusergroupresolutionsmenu { get; set; }
 
 		/// <summary>
 		/// fk_resolution_group_user_group
@@ -490,21 +472,15 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="user_resolutions")]
 	public partial class core_user_resolutions
 	{
-		[PrimaryKey, NotNull    ] public Guid  id                 { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_usersitelink     { get; set; } // uuid
-		[Column,     NotNull    ] public int   f_sites_controller { get; set; } // integer
-		[Column,        Nullable] public bool? b_read             { get; set; } // boolean
-		[Column,        Nullable] public bool? b_write            { get; set; } // boolean
-		[Column,        Nullable] public bool? b_change           { get; set; } // boolean
-		[Column,        Nullable] public bool? b_delete           { get; set; } // boolean
+		[PrimaryKey, NotNull    ] public Guid  id               { get; set; } // uuid
+		[Column,        Nullable] public Guid? f_usersitelink   { get; set; } // uuid
+		[Column,        Nullable] public bool? b_read           { get; set; } // boolean
+		[Column,        Nullable] public bool? b_write          { get; set; } // boolean
+		[Column,        Nullable] public bool? b_change         { get; set; } // boolean
+		[Column,        Nullable] public bool? b_delete         { get; set; } // boolean
+		[Column,        Nullable] public Guid? f_sitecontroller { get; set; } // uuid
 
 		#region Associations
-
-		/// <summary>
-		/// fk_resolution_user_stescontroller
-		/// </summary>
-		[Association(ThisKey="f_sites_controller", OtherKey="id", CanBeNull=false, KeyName="fk_resolution_user_stescontroller", BackReferenceName="fkresolutionuserstescontrollers")]
-		public core_site_controllers fkresolutionuserstescontroller { get; set; }
 
 		/// <summary>
 		/// fk_resolution_user
@@ -587,36 +563,24 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="views")]
 	public partial class core_views
 	{
-		[PrimaryKey, Identity   ] public int    id           { get; set; } // integer
+		[PrimaryKey, NotNull    ] public Guid   id           { get; set; } // uuid
 		[Column,     NotNull    ] public string c_name       { get; set; } // character varying(128)
-		[Column,        Nullable] public int?   f_controller { get; set; } // integer
 		[Column,     NotNull    ] public string c_path       { get; set; } // character varying(512)
+		[Column,        Nullable] public Guid?  f_controller { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
-		/// fk_view_to_site_BackReference
+		/// fk_site_controllers__view_BackReference
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_view", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_site_controllers> fkviewtosites { get; set; }
+		public IEnumerable<core_site_controllers> fksitecontrollersviews { get; set; }
 
 		#endregion
 	}
 
 	public static partial class TableExtensions
 	{
-		public static core_cms_menu_groups Find(this ITable<core_cms_menu_groups> table, int id)
-		{
-			return table.FirstOrDefault(t =>
-				t.id == id);
-		}
-
-		public static core_cms_menus Find(this ITable<core_cms_menus> table, Guid id)
-		{
-			return table.FirstOrDefault(t =>
-				t.id == id);
-		}
-
 		public static core_controllers Find(this ITable<core_controllers> table, Guid id)
 		{
 			return table.FirstOrDefault(t =>
@@ -659,13 +623,19 @@ namespace PgDbase.models
 				t.gid == gid);
 		}
 
+		public static core_menu Find(this ITable<core_menu> table, Guid id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id == id);
+		}
+
 		public static core_pages Find(this ITable<core_pages> table, Guid gid)
 		{
 			return table.FirstOrDefault(t =>
 				t.gid == gid);
 		}
 
-		public static core_site_controllers Find(this ITable<core_site_controllers> table, int id)
+		public static core_site_controllers Find(this ITable<core_site_controllers> table, Guid id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);
@@ -713,7 +683,7 @@ namespace PgDbase.models
 				t.id == id);
 		}
 
-		public static core_views Find(this ITable<core_views> table, int id)
+		public static core_views Find(this ITable<core_views> table, Guid id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);
