@@ -52,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\cms\AccountModel.cs" />
+    <Compile Include="Entity\cms\BreadCrumb.cs" />
+    <Compile Include="Entity\cms\CatalogList.cs" />
     <Compile Include="Entity\cms\CmsMenuModel.cs" />
     <Compile Include="Entity\cms\GroupsModel.cs" />
     <Compile Include="Entity\cms\LogModel.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="Entity\cms\UserModel.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
-    <Compile Include="Entity\services\Filters\SiteMapFilterModel.cs" />
+    <Compile Include="Entity\services\Filters\PageFilterModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />

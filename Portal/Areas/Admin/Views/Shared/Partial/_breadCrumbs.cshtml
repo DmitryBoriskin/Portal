@@ -1,0 +1,13 @@
+﻿@model BreadCrumb
+<ol class="breadcrumb">
+    <li><a href="@Model.DefaultUrl">@Model.Title</a></li>
+    @if (Model.Items != null)
+    {
+        foreach (var item in Model.Items)
+        {
+            <li>
+                @Html.ActionLink(item.Title, "item", new { area = "admin", id = item.Id })
+            </li>
+        }
+    }
+</ol>

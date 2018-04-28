@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Фильтр для карты сайта
     /// </summary>
-    public class SiteMapFilterModel : FilterModel
+    public class PageFilterModel : FilterModel
     {
         /// <summary>
         /// Родитель
