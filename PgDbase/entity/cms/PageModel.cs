@@ -66,5 +66,20 @@ namespace PgDbase.entity
         /// Идентификатор контроллера
         /// </summary>
         public int? SiteController { get; set; }
+
+        /// <summary>
+        /// Кол-во дочерних эл-тов
+        /// </summary>
+        public int CountChilds { get; set; }
+
+        /// <summary>
+        /// Удаляемость
+        /// </summary>
+        public bool IsDeleteble { get; set; }
+
+        /// <summary>
+        /// Дочерние эл-ты
+        /// </summary>
+        public PageModel[] Childrens { get; set; }
     }
 }
