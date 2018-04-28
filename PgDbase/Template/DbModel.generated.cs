@@ -92,7 +92,8 @@ namespace PgDbase.models
 	{
 		[PrimaryKey, NotNull    ] public string c_action      { get; set; } // character varying(32)
 		[Column,        Nullable] public string c_action_name { get; set; } // character varying(100)
-		[Column,        Nullable] public int?   id            { get; set; } // integer
+		[Column,        Nullable] public int?   id_old        { get; set; } // integer
+		[Identity               ] public int    id            { get; set; } // integer
 
 		#region Associations
 
@@ -294,6 +295,7 @@ namespace PgDbase.models
 		[Column,        Nullable] public string c_keyw             { get; set; } // character varying(512)
 		[Column,        Nullable] public string c_desc             { get; set; } // character varying(1024)
 		[Column,        Nullable] public int?   f_sites_controller { get; set; } // integer
+		[Column,     NotNull    ] public bool   b_deleteble        { get; set; } // boolean
 
 		#region Associations
 
@@ -321,10 +323,11 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="site_controllers")]
 	public partial class core_site_controllers
 	{
-		[PrimaryKey, NotNull    ] public Guid  id           { get; set; } // uuid
-		[Column,     NotNull    ] public Guid  f_site       { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_controller { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_view       { get; set; } // uuid
+		[PrimaryKey, NotNull    ] public Guid   id           { get; set; } // uuid
+		[Column,     NotNull    ] public Guid   f_site       { get; set; } // uuid
+		[Column,        Nullable] public Guid?  f_controller { get; set; } // uuid
+		[Column,        Nullable] public Guid?  f_view       { get; set; } // uuid
+		[Column,        Nullable] public string c_desc       { get; set; } // text
 
 		#region Associations
 
@@ -567,6 +570,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string c_name       { get; set; } // character varying(128)
 		[Column,     NotNull    ] public string c_path       { get; set; } // character varying(512)
 		[Column,        Nullable] public Guid?  f_controller { get; set; } // uuid
+		[Column,        Nullable] public string c_img        { get; set; } // character varying(1024)
 
 		#region Associations
 
