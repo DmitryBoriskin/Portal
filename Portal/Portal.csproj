@@ -480,6 +480,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\PagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ServicesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SitesController.cs" />
@@ -488,6 +489,7 @@
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
+    <Compile Include="Areas\Admin\Models\MenuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PageViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
@@ -623,6 +625,7 @@
     <Content Include="Areas\Admin\Views\Shared\Partial\_filter.cshtml" />
     <Content Include="Areas\Admin\Views\Pages\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Partial\_breadCrumbs.cshtml" />
+    <Content Include="Areas\Admin\Views\Menu\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

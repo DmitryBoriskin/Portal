@@ -51,7 +51,8 @@ namespace PgDbase.Repository.cms
                                 .Select(s => new SitesModel
                                 {
                                     Id = s.id,
-                                    Title = s.c_name
+                                    Title = s.c_name,
+                                    Disabled=s.b_disabled
                                 });
                     return new Paged<SitesModel>
                     {
@@ -83,6 +84,7 @@ namespace PgDbase.Repository.cms
                          {
                              Id = s.id,
                              Title = s.c_name,
+                             Disabled=s.b_disabled,
                              DomainList = s.fkdomainss.OrderBy(o=>o.num).Select(d => new Domain()
                              {
                                  DomainName = d.c_domain,
@@ -128,6 +130,7 @@ namespace PgDbase.Repository.cms
                     bool result = db.core_sites
                                   .Where(w => w.id == site.Id)
                                   .Set(s => s.c_name, site.Title)
+                                  .Set(s => s.b_disabled, site.Disabled)
                                   .Update() > 0;
                     tr.Commit();
                     return result;
@@ -158,7 +161,8 @@ namespace PgDbase.Repository.cms
                         () => new core_sites
                         {
                             id = site.Id,
-                            c_name = site.Title
+                            c_name = site.Title,
+                            b_disabled=site.Disabled
                         }) > 0;
                     tr.Commit();
                     return result;
