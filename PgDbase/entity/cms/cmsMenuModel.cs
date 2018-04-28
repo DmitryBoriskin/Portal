@@ -5,7 +5,8 @@ namespace PgDbase.entity
 {
     public class CmsMenuModel
     {
-        public int Num { get; set; }
+        public int Num { get; set; }        
+        public Guid Id { get; set; }
         /// <summary>
         /// Название группы меню
         /// </summary>
@@ -26,6 +27,7 @@ namespace PgDbase.entity
         /// Id записи
         /// </summary>
         public Guid id { get; set; }
+        public Guid Pid { get; set; }
         /// <summary>
         /// Позиция в списке
         /// </summary>

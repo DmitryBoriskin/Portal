@@ -26,6 +26,10 @@ namespace Portal.Areas.Admin.Controllers
             {
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
             }
+            //ViewBag.StartUrl = StartUrl;
+
+
+            ViewBag.Title = "Структура CMS";
         }
 
 
@@ -34,7 +38,26 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Index()
         {
             model.MenuList = _cmsRepository.GetCmsMenu();
-            return View();
+            return View(model);
+        }
+
+
+        //GET: Admin/Menu/item/{GUID}
+        public ActionResult Item(Guid id)
+        {
+            model.MenuItem = _cmsRepository.GetCmsMenuItem(id);
+            model.MenuGroup = _cmsRepository.GetMenuGroup();
+            return View("Item", model);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
+        public ActionResult Insert()
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "page", String.Empty);
+
+            return Redirect(StartUrl + "item/" + Guid.NewGuid() + "/" + query);
         }
     }
 }

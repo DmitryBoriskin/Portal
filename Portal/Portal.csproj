@@ -620,6 +620,7 @@
     <Content Include="Areas\Admin\Views\Modules\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Modules\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Menu\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Menu\Item.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
