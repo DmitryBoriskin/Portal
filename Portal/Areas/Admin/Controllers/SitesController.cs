@@ -140,17 +140,33 @@ namespace Portal.Areas.Admin
                 Guid id = Guid.Parse(Request["Item.Id"]);                
                 string Domain = Request["new_domain"].Replace(" ", "");
 
-                _cmsRepository.InsertDomain(Domain);
+                _cmsRepository.InsertDomain(Domain, id);
             }
             catch (Exception ex)
             {
                 throw new Exception("SitesController > AddDomain: " + ex);
             }
-
             return Redirect(((System.Web.HttpRequestWrapper)Request).RawUrl);
         }
 
 
+        [HttpPost]
+        public ActionResult SetDomainDefault(Guid id)
+        {
+            var res = _cmsRepository.SetDomainDefault(id);
+            if (res)
+                return Json("Success");
+
+            return Json("An Error Has occourred");
+        }
+
+        [HttpPost]
+        public ActionResult DelDomain(Guid id)
+        {
+            if(_cmsRepository.DeleteDomain(id)) return null;
+            return Json("default");
+
+        }
 
 
     }

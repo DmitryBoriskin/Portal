@@ -74,7 +74,7 @@ namespace PgDbase.Repository.cms
                          {
                              Id = s.id,
                              Title = s.c_name,
-                             DomainList = s.fkdomainss.Select(d => new Domain()
+                             DomainList = s.fkdomainss.OrderBy(o=>o.num).Select(d => new Domain()
                              {
                                  DomainName = d.c_domain,
                                  id = d.id,
@@ -189,11 +189,12 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// 
+        /// добавление домена сайту
         /// </summary>
         /// <param name="NewDomain"></param>
+        /// <param name="SiteId">идентифкатор сайт к которому будет подключен домен</param>
         /// <returns></returns>
-        public bool InsertDomain(string NewDomain)
+        public bool InsertDomain(string NewDomain, Guid SiteId)
         {
             if (string.IsNullOrWhiteSpace(NewDomain))
                 return false;
@@ -203,8 +204,8 @@ namespace PgDbase.Repository.cms
                 using (var tr = db.BeginTransaction())
                 {
                     NewDomain = NewDomain.Trim().ToLower();
-                    //если у сайта нет основного домена, то новый домен автоматически делаем основным
-                    var bdefault = !db.core_site_domains.Where(w=>w.f_site==_siteId && w.b_default).Any();
+                    //если у сайта нет основного домена, то новый домен автоматически делаем основным                    
+                    var bdefault = !db.core_site_domains.Where(w => w.f_site == SiteId && w.b_default).Any();
                     if (NewDomain == "localhost")
                     {
                         db.core_site_domains.Where(w => w.c_domain == NewDomain).Delete();                        
@@ -213,12 +214,95 @@ namespace PgDbase.Repository.cms
                     {
                         b_default = bdefault,
                         c_domain = NewDomain,
-                        f_site = _siteId
+                        f_site = SiteId
                     });
+
+                    InsertLog(new LogModel
+                    {
+                        PageId = SiteId,
+                        //PageName = site.Title,
+                        Section = LogSection.Sites,
+                        Action = LogAction.insert_domain
+                    });
+
                     tr.Commit();
                     return true;
                 }                
             }
         }
+
+
+        /// <summary>
+        /// Меняет домен по умолчанию
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool SetDomainDefault(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var data = db.core_site_domains
+                                 .Where(w => w.id == id);
+                    if (data.Any())
+                    {
+                        var site = data.Single();
+                    //все другие домены сайта делаем неосновными                    
+                    db.core_site_domains
+                            .Where(w => w.f_site == site.f_site && w.id!=id)
+                            .Set(d => d.b_default, false)
+                            .Update();
+                    
+                    db.core_site_domains
+                                .Where(w => w.id == id)
+                                .Set(p => p.b_default, true)
+                                .Update();
+
+                    InsertLog(new LogModel
+                        {
+                            PageId = site.f_site,
+                            PageName = "Изьменен домен по умолчанию",
+                            Section = LogSection.Sites,
+                            Action = LogAction.update
+                        });
+
+                    }
+                    tr.Commit();
+                    return true;
+                }
+            }
+        }
+
+
+        public bool DeleteDomain(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.core_site_domains
+                                  .Where(w => w.id == id && w.b_default!=true);                    
+                    if (query.Any())
+                    {
+                        var site = query.Single();
+                        query.Delete();
+                        InsertLog(new LogModel
+                        {
+                            PageId = site.f_site,
+                            PageName = "Удален домен"+ site.c_domain,
+                            Section = LogSection.Sites,
+                            Action = LogAction.update
+                        });
+                        tr.Commit();
+                        return true;
+                    }
+                    return false;
+                    
+                }
+            }
+        }
+
+
     }
 }

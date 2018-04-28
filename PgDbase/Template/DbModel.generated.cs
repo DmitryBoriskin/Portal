@@ -103,32 +103,26 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="controllers")]
 	public partial class core_controllers
 	{
-		[PrimaryKey, Identity   ] public int    id                { get; set; } // integer
-		[Column,        Nullable] public int?   pid               { get; set; } // integer
 		[Column,        Nullable] public string c_name            { get; set; } // character varying(128)
 		[Column,     NotNull    ] public string c_controller_name { get; set; } // character varying(128)
 		[Column,        Nullable] public string c_action_name     { get; set; } // character varying(128)
 		[Column,     NotNull    ] public Guid   c_default_view    { get; set; } // uuid
+		[PrimaryKey, NotNull    ] public Guid   id                { get; set; } // uuid
+		[Column,        Nullable] public Guid?  pid               { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
-		/// fk_controller_id_pid
+		/// fk_controller_parent_id
 		/// </summary>
-		[Association(ThisKey="pid", OtherKey="id", CanBeNull=true, KeyName="fk_controller_id_pid", BackReferenceName="fk_controller_id_pid_BackReferences")]
-		public core_controllers fkcontrolleridpid { get; set; }
+		[Association(ThisKey="pid", OtherKey="id", CanBeNull=true, KeyName="fk_controller_parent_id", BackReferenceName="fk_controller_parent_id_BackReferences")]
+		public core_controllers fkcontrollerparentid { get; set; }
 
 		/// <summary>
-		/// fk_site_to_controllers_BackReference
-		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_controller", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_site_controllers> fksitetos { get; set; }
-
-		/// <summary>
-		/// fk_controller_id_pid_BackReference
+		/// fk_controller_parent_id_BackReference
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="pid", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_controllers> fk_controller_id_pid_BackReferences { get; set; }
+		public IEnumerable<core_controllers> fk_controller_parent_id_BackReferences { get; set; }
 
 		#endregion
 	}
@@ -138,6 +132,7 @@ namespace PgDbase.models
 	{
 		[PrimaryKey, NotNull    ] public string c_action      { get; set; } // character varying(32)
 		[Column,        Nullable] public string c_action_name { get; set; } // character varying(100)
+		[Column,        Nullable] public int?   id            { get; set; } // integer
 
 		#region Associations
 
@@ -179,7 +174,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public DateTime d_date        { get; set; } // timestamp (6) without time zone
 		[Column,     NotNull    ] public string   f_action      { get; set; } // character varying(32)
 		[Column,     NotNull    ] public string   c_ip          { get; set; } // character varying(16)
-		[Column,        Nullable] public object   c_json        { get; set; } // json
+		[Column,        Nullable] public string   c_json        { get; set; } // text
 
 		#region Associations
 
@@ -352,12 +347,6 @@ namespace PgDbase.models
 		public core_sites fkcontrollerstosite { get; set; }
 
 		/// <summary>
-		/// fk_site_to_controllers
-		/// </summary>
-		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=false, KeyName="fk_site_to_controllers", BackReferenceName="fksitetos")]
-		public core_controllers fksitetocontrollers { get; set; }
-
-		/// <summary>
 		/// fk_view_to_site
 		/// </summary>
 		[Association(ThisKey="f_view", OtherKey="id", CanBeNull=false, KeyName="fk_view_to_site", BackReferenceName="fkviewtosites")]
@@ -381,17 +370,18 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="site_domains")]
 	public partial class core_site_domains
 	{
-		[Column,        Nullable] public Guid?  f_site    { get; set; } // uuid
-		[Column,     NotNull    ] public string c_domain  { get; set; } // character varying(256)
-		[Column,     NotNull    ] public bool   b_default { get; set; } // boolean
-		[PrimaryKey, NotNull    ] public Guid   id        { get; set; } // uuid
+		[Column,     NotNull] public Guid   f_site    { get; set; } // uuid
+		[Column,     NotNull] public string c_domain  { get; set; } // character varying(256)
+		[Column,     NotNull] public bool   b_default { get; set; } // boolean
+		[PrimaryKey, NotNull] public Guid   id        { get; set; } // uuid
+		[Identity           ] public int    num       { get; set; } // integer
 
 		#region Associations
 
 		/// <summary>
 		/// fk_sites_domains_sites
 		/// </summary>
-		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=true, KeyName="fk_sites_domains_sites", BackReferenceName="fkdomainss")]
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_sites_domains_sites", BackReferenceName="fkdomainss")]
 		public core_sites fksitesdomainssites { get; set; }
 
 		#endregion
@@ -627,7 +617,7 @@ namespace PgDbase.models
 				t.id == id);
 		}
 
-		public static core_controllers Find(this ITable<core_controllers> table, int id)
+		public static core_controllers Find(this ITable<core_controllers> table, Guid id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);
