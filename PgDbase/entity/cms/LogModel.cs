@@ -236,7 +236,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Разделы сайта
         /// </summary>
-        SiteSection = 13,
+        Module = 13,
 
         /// <summary>
         /// Голосование

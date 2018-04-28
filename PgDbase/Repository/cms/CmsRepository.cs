@@ -59,7 +59,6 @@ namespace PgDbase.Repository.cms
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
 
-      
 
         /// <summary>
         /// Логирование
@@ -75,10 +74,10 @@ namespace PgDbase.Repository.cms
                     f_page = log.PageId,
                     c_page_name = log.PageName,
                     f_logsections = log.Section.ToString(),
+                    f_action = log.Action.ToString(),
                     f_site = _siteId,
                     f_user = _currentUserId,
-                    c_ip = _ip,
-                    f_action = log.Action.ToString()
+                    c_ip = _ip
                 });
             }
         }

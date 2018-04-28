@@ -33,7 +33,8 @@ namespace Portal.Areas.Admin
         public ActionResult Index()
         {
             filter = GetFilter();
-            //model.List = _cmsRepository.GetUsers(filter);
+            var mfilter = FilterModel.Extend<ModuleFilter>(filter);
+            model.List = _cmsRepository.GetModules(mfilter);
             return View(model);
         }
 

@@ -615,6 +615,8 @@
     <Content Include="Areas\Admin\Views\Sites\Part\SearchFilter.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Services\Log.cshtml" />
+    <Content Include="Areas\Admin\Views\Modules\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Modules\Item.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
