@@ -397,7 +397,12 @@ $(document).ready(function () {
             data: { id: idDomain },
             error: function () { alert("error"); },
             success: function (data) {
-                $Container.remove();
+                if (data == "default") {
+                    alert("Нельзя удалять основной домен.");
+                }
+                else {
+                    $Container.remove();
+                }                
                 location.reload();
             }
             
