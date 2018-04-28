@@ -135,6 +135,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string   f_action      { get; set; } // character varying(32)
 		[Column,     NotNull    ] public string   c_ip          { get; set; } // character varying(16)
 		[Column,        Nullable] public string   c_json        { get; set; } // text
+		[Column,        Nullable] public string   c_comment     { get; set; } // character varying(1024)
 
 		#region Associations
 
@@ -282,14 +283,14 @@ namespace PgDbase.models
 	{
 		[PrimaryKey, NotNull    ] public Guid   gid                { get; set; } // uuid
 		[Column,     NotNull    ] public string c_name             { get; set; } // character varying(512)
-		[Column,        Nullable] public Guid?  pgid               { get; set; } // uuid
+		[Column,     NotNull    ] public Guid   pgid               { get; set; } // uuid
 		[Column,        Nullable] public string c_path             { get; set; } // character varying(1024)
 		[Column,        Nullable] public string c_alias            { get; set; } // character varying(128)
 		[Column,        Nullable] public string c_text             { get; set; } // text
 		[Column,        Nullable] public string c_url              { get; set; } // character varying(256)
 		[Column,     NotNull    ] public int    n_sort             { get; set; } // integer
 		[Column,     NotNull    ] public Guid   f_site             { get; set; } // uuid
-		[Column,        Nullable] public bool?  b_disabled         { get; set; } // boolean
+		[Column,     NotNull    ] public bool   b_disabled         { get; set; } // boolean
 		[Column,        Nullable] public string c_keyw             { get; set; } // character varying(512)
 		[Column,        Nullable] public string c_desc             { get; set; } // character varying(1024)
 		[Column,        Nullable] public int?   f_sites_controller { get; set; } // integer

@@ -230,8 +230,9 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = SiteId,
                         //PageName = site.Title,
-                        Section = LogSection.Sites,
-                        Action = LogAction.insert_domain
+                        Section = LogModule.Sites,
+                        Action = LogAction.insert,
+                        Comment = "Добавлен домен " + NewDomain
                     });
 
                     tr.Commit();
@@ -272,7 +273,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = site.f_site,
                             PageName = "Изьменен домен по умолчанию",
-                            Section = LogSection.Sites,
+                            Section = LogModule.Sites,
                             Action = LogAction.update
                         });
 
@@ -296,13 +297,15 @@ namespace PgDbase.Repository.cms
                     {
                         var site = query.Single();
                         query.Delete();
+
                         InsertLog(new LogModel
                         {
                             PageId = site.f_site,
                             PageName = "Удален домен"+ site.c_domain,
-                            Section = LogSection.Sites,
+                            Section = LogModule.Sites,
                             Action = LogAction.update
                         });
+
                         tr.Commit();
                         return true;
                     }

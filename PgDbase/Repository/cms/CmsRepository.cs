@@ -75,11 +75,12 @@ namespace PgDbase.Repository.cms
                     f_page = log.PageId,
                     c_page_name = log.PageName,
                     f_logsections = log.Section.ToString(),
+                    c_comment = log.Comment,
+
                     f_site = _siteId,
                     f_user = _currentUserId,
                     c_ip = _ip,
                     f_action = log.Action.ToString(),
-                    
                     c_json = new JavaScriptSerializer().Serialize(obj)
                 });
             }
@@ -100,7 +101,7 @@ namespace PgDbase.Repository.cms
                     {
                         Date = s.d_date,
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
-                        Section = (LogSection)Enum.Parse(typeof(LogSection), s.f_logsections),
+                        Section = (LogModule)Enum.Parse(typeof(LogModule), s.f_logsections),
                         User = new UserModel
                         {
                             Id = s.fklogusers.id,
@@ -126,7 +127,7 @@ namespace PgDbase.Repository.cms
                     {
                         Date = s.d_date,
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
-                        Section = (LogSection)Enum.Parse(typeof(LogSection), s.f_logsections),
+                        Section = (LogModule)Enum.Parse(typeof(LogModule), s.f_logsections),
                         PageName = s.c_page_name
                     }).ToArray();
             }
