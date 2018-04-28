@@ -201,7 +201,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Карта сайта
         /// </summary>
-        SiteMap = 6,
+        Page = 6,
 
         /// <summary>
         /// Сайты

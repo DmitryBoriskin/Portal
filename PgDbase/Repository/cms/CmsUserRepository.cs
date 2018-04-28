@@ -22,8 +22,7 @@ namespace PgDbase.Repository.cms
                 Paged<UserModel> result = new Paged<UserModel>();
 
                 var query = db.core_users
-                    .Where(w => w.fkusersitelinks.Any(a => a.f_site == _siteId))
-                    .AsQueryable();
+                    .Where(w => w.fkusersitelinks.Any(a => a.f_site == _siteId));
 
                 if (filter.Disabled.HasValue)
                 {
