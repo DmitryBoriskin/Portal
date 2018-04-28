@@ -100,6 +100,7 @@ namespace PgDbase.Repository.cms
                     {
                         Date = s.d_date,
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
+                        Section = (LogSection)Enum.Parse(typeof(LogSection), s.f_logsections),
                         User = new UserModel
                         {
                             Id = s.fklogusers.id,
@@ -125,12 +126,8 @@ namespace PgDbase.Repository.cms
                     {
                         Date = s.d_date,
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
-                        User = new UserModel
-                        {
-                            Id = s.fklogusers.id,
-                            Surname = s.fklogusers.c_surname,
-                            Name = s.fklogusers.c_name
-                        }
+                        Section = (LogSection)Enum.Parse(typeof(LogSection), s.f_logsections),
+                        PageName = s.c_page_name
                     }).ToArray();
             }
         }
