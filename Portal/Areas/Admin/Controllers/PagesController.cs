@@ -63,6 +63,12 @@ namespace Portal.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 backModel.Item.Id = id;
+                if (String.IsNullOrWhiteSpace(backModel.Item.Alias))
+                {
+                    backModel.Item.Alias = backModel.Item.Name;
+                }
+                backModel.Item.Alias = Transliteration.Translit(backModel.Item.Alias);
+
                 if (_cmsRepository.CheckPageExists(id))
                 {
                     _cmsRepository.UpdatePage(backModel.Item);
