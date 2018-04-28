@@ -171,7 +171,6 @@ namespace PgDbase.Repository.cms
                     var currentLink = db.core_user_site_link
                         .Where(w => w.f_user == user.Id)
                         .Where(w => w.f_site == _siteId)
-                        .Where(w => w.f_user_group == user.Group)
                         .SingleOrDefault();
 
                     bool isExistsGroupOnThisSite = currentLink != null;
@@ -289,7 +288,7 @@ namespace PgDbase.Repository.cms
                             Section = LogSection.Users,
                             Action = LogAction.delete
                         };
-                        InsertLog(log);
+                        InsertLog(log, user);
 
                         result = db.Delete(user) > 0;
 

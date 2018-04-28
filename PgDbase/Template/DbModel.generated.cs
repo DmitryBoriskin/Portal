@@ -138,6 +138,7 @@ namespace PgDbase.models
 	{
 		[PrimaryKey, NotNull    ] public string c_action      { get; set; } // character varying(32)
 		[Column,        Nullable] public string c_action_name { get; set; } // character varying(100)
+		[Column,        Nullable] public int?   id            { get; set; } // integer
 
 		#region Associations
 
@@ -179,7 +180,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public DateTime d_date        { get; set; } // timestamp (6) without time zone
 		[Column,     NotNull    ] public string   f_action      { get; set; } // character varying(32)
 		[Column,     NotNull    ] public string   c_ip          { get; set; } // character varying(16)
-		[Column,        Nullable] public object   c_json        { get; set; } // json
+		[Column,        Nullable] public string   c_json        { get; set; } // text
 
 		#region Associations
 
@@ -381,17 +382,17 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="site_domains")]
 	public partial class core_site_domains
 	{
-		[Column,        Nullable] public Guid?  f_site    { get; set; } // uuid
-		[Column,     NotNull    ] public string c_domain  { get; set; } // character varying(256)
-		[Column,     NotNull    ] public bool   b_default { get; set; } // boolean
-		[PrimaryKey, NotNull    ] public Guid   id        { get; set; } // uuid
+		[Column,     NotNull] public Guid   f_site    { get; set; } // uuid
+		[Column,     NotNull] public string c_domain  { get; set; } // character varying(256)
+		[Column,     NotNull] public bool   b_default { get; set; } // boolean
+		[PrimaryKey, NotNull] public Guid   id        { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
 		/// fk_sites_domains_sites
 		/// </summary>
-		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=true, KeyName="fk_sites_domains_sites", BackReferenceName="fkdomainss")]
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_sites_domains_sites", BackReferenceName="fkdomainss")]
 		public core_sites fksitesdomainssites { get; set; }
 
 		#endregion
