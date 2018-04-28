@@ -61,6 +61,7 @@
     <Compile Include="Entity\cms\ModuleModel.cs" />
     <Compile Include="Entity\cms\UserModel.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
+    <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
     <Compile Include="Entity\services\Filters\SiteMapFilterModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />

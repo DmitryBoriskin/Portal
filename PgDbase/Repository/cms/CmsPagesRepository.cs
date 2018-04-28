@@ -76,7 +76,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = page.Id,
                         PageName = page.Name,
-                        Section = LogSection.Page,
+                        Section = LogModule.Page,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
@@ -119,7 +119,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = page.Id,
                         PageName = page.Name,
-                        Section = LogSection.Page,
+                        Section = LogModule.Page,
                         Action = LogAction.update
                     };
                     InsertLog(log);
