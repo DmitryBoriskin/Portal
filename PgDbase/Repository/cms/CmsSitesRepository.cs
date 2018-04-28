@@ -208,12 +208,18 @@ namespace PgDbase.Repository.cms
                 using (var tr = db.BeginTransaction())
                 {
                     NewDomain = NewDomain.Trim().ToLower();
+
                     //если у сайта нет основного домена, то новый домен автоматически делаем основным                    
                     var bdefault = !db.core_site_domains.Where(w => w.f_site == SiteId && w.b_default).Any();
                     if (NewDomain == "localhost")
                     {
                         db.core_site_domains.Where(w => w.c_domain == NewDomain).Delete();                        
                     }
+
+                    //недопускаем повторяющихся доменов
+                    if (db.core_site_domains.Where(w => w.c_domain == NewDomain).Any()) return false;
+
+
                     db.core_site_domains.Insert(() => new core_site_domains
                     {
                         b_default = bdefault,
@@ -224,7 +230,7 @@ namespace PgDbase.Repository.cms
                     InsertLog(new LogModel
                     {
                         PageId = SiteId,
-                        //PageName = site.Title,
+                        PageName = "Добавлен домен "+ NewDomain,
                         Section = LogSection.Sites,
                         Action = LogAction.insert_domain
                     });
