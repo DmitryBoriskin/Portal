@@ -20,7 +20,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Фильтр
         /// </summary>
-        public PageFilterModel Filter { get; set; }
+        public FilterModel Filter { get; set; }
 
         /// <summary>
         /// Хлебные крошки

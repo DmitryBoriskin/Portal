@@ -37,8 +37,9 @@ namespace Portal.Areas.Admin.Controllers
         // GET: Admin/Pages
         public ActionResult Index()
         {
-            var mfilter = FilterModel.Extend<ModuleFilter>(filter);
-            model.List = _cmsRepository.GetPages(model.Filter);
+            filter = GetFilter();
+            var mfilter = FilterModel.Extend<PageFilterModel>(filter);
+            model.List = _cmsRepository.GetPages(mfilter);
             return View(model);
         }
 
@@ -49,6 +50,75 @@ namespace Portal.Areas.Admin.Controllers
             model.Item = _cmsRepository.GetPage(id);
             GetBreadCrumbs(id);
             return View(model);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
+        public ActionResult Item(Guid id, PageViewModel backModel)
+        {
+            ErrorMessage message = new ErrorMessage
+            {
+                Title = "Информация"
+            };
+            if (ModelState.IsValid)
+            {
+                backModel.Item.Id = id;
+                if (_cmsRepository.CheckPageExists(id))
+                {
+                    _cmsRepository.UpdatePage(backModel.Item);
+                    message.Info = "Запись обновлена";
+                }
+                else
+                {
+                    _cmsRepository.InsertPage(backModel.Item);
+                    message.Info = "Запись добавлена";
+                }
+                message.Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
+                };
+            }
+            else
+            {
+                message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
+                message.Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
+                };
+            }
+
+            model.Item = _cmsRepository.GetPage(id);
+            model.ErrorInfo = message;
+            return View("item", model);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
+        public ActionResult Cancel()
+        {
+            return Redirect(StartUrl + Request.Url.Query);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
+        public ActionResult Delete(Guid Id)
+        {
+            _cmsRepository.DeletePage(Id);
+
+            ErrorMessage message = new ErrorMessage
+            {
+                Title = "Информация",
+                Info = "Запись удалена",
+                Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}{Request.Url.Query}", Text = "ок", Action = "false" }
+                }
+            };
+
+            model.ErrorInfo = message;
+
+            return RedirectToAction("index");
         }
 
         /// <summary>

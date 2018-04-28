@@ -227,5 +227,19 @@ namespace PgDbase.Repository.cms
                     Title = s.c_name
                 }).SingleOrDefault();
         }
+
+        /// <summary>
+        /// Проверяет существование эл-ты карты сайта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CheckPageExists(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_pages
+                    .Where(w => w.gid == id).Any();
+            }
+        }
     }
 }
