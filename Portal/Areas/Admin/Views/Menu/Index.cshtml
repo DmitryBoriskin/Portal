@@ -1,0 +1,29 @@
+﻿@model MenuViewModel
+<div class="content">
+    <h1>@ViewBag.Title</h1>
+    @if (Model.MenuList != null)
+    {
+        foreach (var Group in Model.MenuList)
+        {
+            <a href="/admin/menu/item/@Group.Id" class="cms_menu-title">@Group.GroupName</a>
+
+            if (Group.GroupItems != null)
+            {
+                <div class="sortable ui-sortable" data-service="/Admin/Services/ChangePermit?group=cmsMenu">
+                    @foreach (CmsMenuItem Item in Group.GroupItems)
+                    {
+                        <div class="cms_menu-item ui-sortable-handle" data-id="@Item.id">
+                            @Html.ActionLink(@Item.Title, "item", new { area = "admin", controller = "menu", Id = @Item.id })
+                        </div>
+                    }
+                </div>                
+            }
+        }
+    }
+</div>
+<div class="buttons">
+    @using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+    {
+        <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+    }
+</div>

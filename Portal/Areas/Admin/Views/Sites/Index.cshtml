@@ -19,7 +19,11 @@
     </div>
     <div class="dop_info-block">
         <div class="dop-caption">Фильтр</div>
+    @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
+    {
         @Html.Partial("Part/SearchFilter")
+    }
+        
     </div>
     <div class="buttons">
         @*@if (Model.UserResolution.Write)*@

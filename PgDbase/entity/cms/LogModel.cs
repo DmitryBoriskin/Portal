@@ -130,7 +130,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Карта сайта
         /// </summary>
-        Pages,
+        SiteMap = 6,
 
         /// <summary>
         /// Сайты

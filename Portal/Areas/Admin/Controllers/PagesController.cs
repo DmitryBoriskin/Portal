@@ -1,62 +1,60 @@
 ﻿using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
-using System.Web;
 using System.Web.Mvc;
 
-namespace Portal.Areas.Admin
+namespace Portal.Areas.Admin.Controllers
 {
-    public class UsersController : CoreController
+    public class PagesController : CoreController
     {
-        UsersViewModel model;
+        PageViewModel model;
         FilterModel filter;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
-            model = new UsersViewModel()
+            model = new PageViewModel
             {
-                PageName = "Пользователи",
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName, 
-                Groups = _cmsRepository.GetGroups()
+                ActionName = ActionName
             };
             if (AccountInfo != null)
+            {
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+            }
+
+            #region Метатеги
+            //ViewBag.Title = UserResolutionInfo.Title;
+            ViewBag.Description = "";
+            ViewBag.KeyWords = "";
+            #endregion
         }
 
-        // GET: Admin/Users
+        // GET: Admin/Pages
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetUsers(filter);
+            var mfilter = FilterModel.Extend<PageFilterModel>(filter);
+            model.List = _cmsRepository.GetPages(mfilter);
             return View(model);
         }
 
-        // GET: Admin/Users/<id>
+        // GET: Admin/Pages/<id>
+        [HttpGet]
         public ActionResult Item(Guid id)
         {
-            model.Item = _cmsRepository.GetUser(id);
-            return View("Item", model);
-        }
-
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
-        public ActionResult Insert()
-        {
-            string query = HttpUtility.UrlDecode(Request.Url.Query);
-            query = AddFilterParam(query, "page", String.Empty);
-            
-            return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
+            model.Item = _cmsRepository.GetPage(id);
+            GetBreadCrumbs(id);
+            return View(model);
         }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
-        public ActionResult Save(Guid id, UsersViewModel backModel)
+        public ActionResult Item(Guid id, PageViewModel backModel)
         {
             ErrorMessage message = new ErrorMessage
             {
@@ -65,27 +63,20 @@ namespace Portal.Areas.Admin
             if (ModelState.IsValid)
             {
                 backModel.Item.Id = id;
-                if (_cmsRepository.CheckUserExists(id))
+                if (String.IsNullOrWhiteSpace(backModel.Item.Alias))
                 {
-                    _cmsRepository.UpdateUser(backModel.Item);
-                    message.Info = "Запись обновлена";
+                    backModel.Item.Alias = backModel.Item.Name;
                 }
-                else if (_cmsRepository.CheckUserExists(backModel.Item.Email))
+                backModel.Item.Alias = Transliteration.Translit(backModel.Item.Alias);
+
+                if (_cmsRepository.CheckPageExists(id))
                 {
-                    message.Info = "Пользователь с таким Email адресом уже существует";
+                    _cmsRepository.UpdatePage(backModel.Item);
+                    message.Info = "Запись обновлена";
                 }
                 else
                 {
-                    char[] _pass = backModel.Password.Password.ToCharArray();
-                    Cripto password = new Cripto(_pass);
-                    string NewSalt = password.Salt;
-                    string NewHash = password.Hash;
-
-                    backModel.Item.Hash = NewHash;
-                    backModel.Item.Salt = NewSalt;
-
-                    _cmsRepository.InsertUser(backModel.Item);
-
+                    _cmsRepository.InsertPage(backModel.Item);
                     message.Info = "Запись добавлена";
                 }
                 message.Buttons = new ErrorMessageBtnModel[]
@@ -103,7 +94,7 @@ namespace Portal.Areas.Admin
                 };
             }
 
-            model.Item = _cmsRepository.GetUser(id);
+            model.Item = _cmsRepository.GetPage(id);
             model.ErrorInfo = message;
             return View("item", model);
         }
@@ -119,7 +110,7 @@ namespace Portal.Areas.Admin
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
         public ActionResult Delete(Guid Id)
         {
-            _cmsRepository.DeleteUser(Id);
+            _cmsRepository.DeletePage(Id);
 
             ErrorMessage message = new ErrorMessage
             {
@@ -136,24 +127,19 @@ namespace Portal.Areas.Admin
             return RedirectToAction("index");
         }
 
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string searchtext, bool enabled, string size)
+        /// <summary>
+        /// Возвращает хлебные крошки
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private void GetBreadCrumbs(Guid id)
         {
-            string query = HttpUtility.UrlDecode(Request.Url.Query);
-            query = AddFilterParam(query, "searchtext", searchtext);
-            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
-            query = AddFilterParam(query, "page", String.Empty);
-            query = AddFilterParam(query, "size", size);
-
-            return Redirect(StartUrl + query);
-        }
-
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
-        public ActionResult ClearFiltr()
-        {
-            return Redirect(StartUrl);
+            model.BreadCrumbs = new BreadCrumb
+            {
+                Title = "Главная",
+                DefaultUrl = StartUrl,
+                Items = _cmsRepository.GetBreadCrumbs(id)
+            };
         }
     }
 }

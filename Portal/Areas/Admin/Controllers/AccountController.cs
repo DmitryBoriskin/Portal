@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PgDbase.entity;
 using System.Web.Security;
-using PgDbase;
 using Portal.Areas.Admin.Models;
-using PgDbase.Repository.cms;
 using System.Configuration;
 using Portal.Code;
-
+using PgDbase.Repository.cms;
+using PgDbase;
 
 namespace Portal.Areas.Admin
 {

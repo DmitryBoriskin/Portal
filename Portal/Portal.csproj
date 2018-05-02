@@ -482,6 +482,8 @@
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ServicesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SitesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ModulesController.cs" />
@@ -489,8 +491,10 @@
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
+    <Compile Include="Areas\Admin\Models\MenuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TemplateViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\PageViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ModuleViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UsersViewModel.cs" />
@@ -620,6 +624,12 @@
     <Content Include="Areas\Admin\Views\Services\Log.cshtml" />
     <Content Include="Areas\Admin\Views\Modules\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Modules\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Pages\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Partial\_filter.cshtml" />
+    <Content Include="Areas\Admin\Views\Pages\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Partial\_breadCrumbs.cshtml" />
+    <Content Include="Areas\Admin\Views\Menu\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Menu\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Modules\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
@@ -640,7 +650,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
-      <Project>{CF9AD0C6-218B-47F4-B8A3-85D13329BBB6}</Project>
+      <Project>{cf9ad0c6-218b-47f4-b8a3-85d13329bbb6}</Project>
       <Name>PgDbase</Name>
     </ProjectReference>
   </ItemGroup>
