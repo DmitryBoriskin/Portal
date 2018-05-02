@@ -5,7 +5,7 @@
     if (true)
     {
         <div class="content">
-            <h1>Данные пользователя</h1>
+            <h1>@Model.PageName</h1>
             <div class="row">
                 <div class="col-xs-4">
                     @Html.TextBoxFor(m => Model.Item.Surname, new { @required = "", @Title = "Фамилия", @placeholder = "Фамилия", MaxLength = "128", data_help = "12" })

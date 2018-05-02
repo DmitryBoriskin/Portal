@@ -144,6 +144,7 @@
     <Content Include="Content\fonts\Ubuntu\ubuntu_italic.svg" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.svg" />
     <Content Include="Content\img\preloader.svg" />
+    <Content Include="Content\img\modules\module1\tmpl1.png" />
     <Content Include="Content\js\menu.js" />
     <Content Include="Content\js\script.js" />
     <Content Include="Content\plugins\bootstrap\css\bootstrap-select.css" />
@@ -480,6 +481,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ServicesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SitesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ModulesController.cs" />
@@ -488,6 +490,7 @@
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TemplateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ModuleViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UsersViewModel.cs" />
@@ -602,7 +605,7 @@
     <Content Include="Areas\Admin\Views\Account\RestorePass.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Partial\_pager.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\Part\SearchFilter.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Users\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Account\ChangePass.cshtml" />
     <Content Include="Areas\Admin\Views\Account\LogOff.cshtml" />
@@ -617,7 +620,12 @@
     <Content Include="Areas\Admin\Views\Services\Log.cshtml" />
     <Content Include="Areas\Admin\Views\Modules\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Modules\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Modules\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\Item.cshtml" />
     <None Include="packages.config" />
+    <Content Include="Views\Module\Default.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,4 +1,4 @@
-﻿@model ModuleViewModel
+﻿@model TemplateViewModel
 
 @*@if (Model.UserResolution.Read)*@
 @if (true)
@@ -7,13 +7,26 @@
         <h1>@Model.PageName</h1>
         @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
         {
-            foreach (var item in Model.List.Items)
-            {
-                <div class="list-item">
-                    <a title="" class="li-caption" href="/admin/modules/item/@item.Id/@ViewBag.urlQuery">@item.Title</a>
-                    <div class="li-desc">@item.Desc</div>
-                </div>
-            }
+            <div class="row">
+                @foreach (var item in Model.List.Items)
+                {
+                    <div class="col-md-6">
+                        <a title="" class="li-caption" href="/admin/templates/item/@item.Id/@ViewBag.urlQuery">
+                            <img src="@item.Image" title="@item.Title" /><br />
+                            @item.Title
+                        </a><br />
+
+                        @if (item.Controller != null && item.Controller.Id != Guid.Empty)
+                        {
+                            <a href="/Admin/Modules/item/@item.Controller.Id">Контроллер: @item.Controller.Title</a>
+                        }
+                        else
+                        {
+                            <div class="text-danger">Контроллер: Не указан!</div>
+                        }
+                    </div>
+                }
+            </div>
             if (Model.List != null && Model.List.Pager != null)
             {
                 @Html.Partial("Partial/_pager", Model.List.Pager)
@@ -26,6 +39,7 @@
     </div>
     <div class="dop_info-block">
         <div class="dop-caption">Фильтр</div>
+
         @Html.Partial("Part/Filter")
     </div>
     <div class="buttons">

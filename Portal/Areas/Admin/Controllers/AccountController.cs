@@ -80,11 +80,6 @@ namespace Portal.Areas.Admin
 
             _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
 
-            #region Метатеги
-            ViewBag.Title = "Авторизация";
-            ViewBag.Description = "";
-            ViewBag.KeyWords = "";
-            #endregion
         }
 
         /// <summary>
@@ -379,7 +374,7 @@ namespace Portal.Areas.Admin
             AccountModel AccountInfo = _accountRepository.getCmsAccount(new Guid(User.Identity.Name));
 
             // Логирование
-            var log = new LogModel
+            var log = new LogModel()
             {
                 PageId = Guid.NewGuid(),
                 PageName = "Выход из CMS",

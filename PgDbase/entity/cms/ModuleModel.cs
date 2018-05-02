@@ -20,7 +20,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Имя модуля
         /// </summary>
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Имя контроллера
@@ -33,9 +33,14 @@ namespace PgDbase.entity
         public string Action { get; set; }
 
         /// <summary>
-        /// Вью, если не указана то берется по умолчанию
+        /// Вью
         /// </summary>
         public Guid View { get; set; }
+
+        /// <summary>
+        /// Описание модуля
+        /// </summary>
+        public string Desc { get; set; }
 
     }
 }

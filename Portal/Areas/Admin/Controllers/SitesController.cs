@@ -16,8 +16,9 @@ namespace Portal.Areas.Admin
         {
             base.OnActionExecuting(filterContext);
 
-            model = new SitesViewModel
+            model = new SitesViewModel()
             {
+                PageName = "Все сайты",
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
@@ -25,17 +26,15 @@ namespace Portal.Areas.Admin
                 ActionName = ActionName
             };
             if (AccountInfo != null)
-            {
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
 
-            }
         }
 
 
         // GET: Admin/Sites
         public ActionResult Index()
         {
-            PgDbase.entity.FilterModel filter = GetFilter();
+            filter = GetFilter();
             model.List = _cmsRepository.GetSitesList(filter);
 
             return View(model);

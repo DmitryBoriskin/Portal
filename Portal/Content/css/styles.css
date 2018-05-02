@@ -937,6 +937,9 @@ a.button.icon-cancel{
 .icon-chart-line:before{content:'\e948';}           /* Статистика */
 .icon-users:before {content: '\e830'}               /*Пользователи*/
 .icon-puzzle:before { content: '\e986'; }           /*Модули*/
+.icon-codeopen:before { content: '\e9b2'; }
+.icon-language:before { content: '\e98b'; } /* '' */
+
 
 .icon-menu:before {
     content:'\ed81';

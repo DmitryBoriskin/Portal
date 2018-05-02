@@ -140,17 +140,22 @@ namespace PgDbase.Repository.cms
 #warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
                 var data = db.core_menu
                             .Where(s => s.f_parent == null)
-                            .Select(s => new CmsMenuModel() {
+                            .OrderBy(s => s.n_sort)
+                            .Select(s => new CmsMenuModel()
+                            {
                                 Alias = s.c_alias,
                                 GroupName = s.c_title,
-                                GroupItems = s.fk_menu_parent_BackReferences.Select(m => new CmsMenuItem() {
-                                    Alias = m.c_alias,
-                                    Title = m.c_title,
-                                    Class = m.c_class
-                                }).ToArray()
+                                GroupItems = s.fk_menu_parent_BackReferences
+                                                .OrderBy(m => m.n_sort)
+                                                .Select(m => new CmsMenuItem()
+                                                {
+                                                    Alias = m.c_alias,
+                                                    Title = m.c_title,
+                                                    Class = m.c_class
+                                                }).ToArray()
                             });
-                if (data.Any()) return data.ToArray();
-                return null;
+
+                return data.ToArray();
             }
         }
     }
