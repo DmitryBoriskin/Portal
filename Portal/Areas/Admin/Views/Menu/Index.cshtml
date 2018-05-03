@@ -9,11 +9,11 @@
 
             if (Group.GroupItems != null)
             {
-                <div class="sortable ui-sortable" data-service="/Admin/Services/ChangePermit?group=cmsMenu">
+                <div class="sortable ui-sortable" data-service="/Admin/Services/ChangePosition?group=cmsMenu">
                     @foreach (CmsMenuItem Item in Group.GroupItems)
                     {
-                        <div class="cms_menu-item ui-sortable-handle" data-id="@Item.id">
-                            @Html.ActionLink(@Item.Title, "item", new { area = "admin", controller = "menu", Id = @Item.id })
+                        <div class="cms_menu-item ui-sortable-handle" data-id="@Item.Id">
+                            @Html.ActionLink(@Item.Title, "item", new { area = "admin", controller = "menu", Id = @Item.Id })
                         </div>
                     }
                 </div>                

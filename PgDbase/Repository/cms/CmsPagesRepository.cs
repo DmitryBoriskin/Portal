@@ -1,4 +1,5 @@
 ﻿using LinqToDB;
+using LinqToDB.Data;
 using PgDbase.entity;
 using PgDbase.models;
 using System;
@@ -21,6 +22,7 @@ namespace PgDbase.Repository.cms
                 return db.core_pages
                     .Where(w => w.fkpagesites.id == _siteId)
                     .Where(w => w.pgid == filter.Parent)
+                    .OrderBy(o => o.n_sort)
                     .Select(s => new PageModel
                     {
                         Id = s.gid,
@@ -56,11 +58,29 @@ namespace PgDbase.Repository.cms
                         Text = s.c_text,
                         Url = s.c_url,
                         IsDisabled = s.b_disabled,
+                        IsDeleteble = s.b_deleteble,
                         Keywords = s.c_keyw,
                         Desc = s.c_desc,
                         SiteController = s.f_sites_controller,
-                        Childrens = GetPages(new PageFilterModel { Parent = s.gid })
+                        Childrens = GetPages(new PageFilterModel { Parent = s.gid }),
+                        MenuGroups = s.fkpagegrouplinkpages.Select(g => g.f_page_group).ToArray()
                     }).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает родительский идентификатор
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Guid GetPageParentId(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_pages
+                    .Where(w => w.gid == id)
+                    .Select(s => s.pgid)
+                    .SingleOrDefault();
             }
         }
 
@@ -84,11 +104,11 @@ namespace PgDbase.Repository.cms
                     };
                     InsertLog(log);
 
-                    int sort = db.core_pages
+                    var maxSort = db.core_pages
                         .Where(w => w.f_site == _siteId)
-                        .Where(w => w.pgid == page.ParentId)
-                        .Select(s => s.n_sort)
-                        .Max() + 1;
+                        .Where(w => w.pgid == page.ParentId);
+
+                    int sort = maxSort.Any() ? maxSort.Select(s => s.n_sort).Max() + 1 : 1;
 
                     bool result = db.core_pages.Insert(() => new core_pages
                     {
@@ -106,6 +126,22 @@ namespace PgDbase.Repository.cms
                         c_desc = page.Desc,
                         f_sites_controller = page.SiteController
                     }) > 0;
+
+                    // группы меню
+                    if (page.MenuGroups != null)
+                    {
+                        List<core_page_group_links> groups = new List<core_page_group_links>();
+                        foreach (var g in page.MenuGroups)
+                        {
+                            groups.Add(new core_page_group_links
+                            {
+                                id = Guid.NewGuid(),
+                                f_page = page.Id,
+                                f_page_group = g
+                            });
+                        }
+                        db.BulkCopy(groups);
+                    }
 
                     tr.Commit();
                     return result;
@@ -147,6 +183,24 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.f_sites_controller, page.SiteController)
                         .Update() > 0;
 
+                    // группы меню
+                    db.core_page_group_links.Where(w => w.f_page == page.Id).Delete();
+
+                    if (page.MenuGroups != null)
+                    {
+                        List<core_page_group_links> groups = new List<core_page_group_links>();
+                        foreach (var g in page.MenuGroups)
+                        {
+                            groups.Add(new core_page_group_links
+                            {
+                                id = Guid.NewGuid(),
+                                f_page = page.Id,
+                                f_page_group = g
+                            });
+                        }
+                        db.BulkCopy(groups);
+                    }
+
                     tr.Commit();
                     return result;
                 }
@@ -158,13 +212,13 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeletePage(Guid id)
+        public string DeletePage(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    bool result = false;
+                    string result = null;
 
                     var page = db.core_pages.Where(w => w.gid == id).SingleOrDefault();
                     if (page != null)
@@ -178,8 +232,9 @@ namespace PgDbase.Repository.cms
                         };
                         InsertLog(log, page);
 
-                        result = db.Delete(page) > 0;
+                        db.Delete(page);
 
+                        result = page.pgid != Guid.Empty ? $"item/{page.pgid.ToString()}" : null;
                         tr.Commit();
                     }
                     return result;
@@ -197,13 +252,14 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 List<GroupsModel> list = new List<GroupsModel>();
-                if (id != Guid.Empty)
+                var parent = db.core_pages.Where(w => w.gid == id).Select(s => s.pgid).SingleOrDefault();
+                if (parent != Guid.Empty)
                 {
-                    var item = GetBreadCrumb(id, db);
-                    while (item != null)
+                    var item = GetBreadCrumb(parent, db);
+                    while (item != null && item.Id != Guid.Empty)
                     {
                         list.Add(item);
-                        item = GetBreadCrumb(item.Id, db);
+                        item = GetBreadCrumb(item.Parent, db);
                     }
 
                     list.Reverse();
@@ -215,16 +271,17 @@ namespace PgDbase.Repository.cms
         /// <summary>
         /// Возвращает эл-т хлебной крошки
         /// </summary>
-        /// <param name="parent"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        private GroupsModel GetBreadCrumb(Guid parent, CMSdb db)
+        private GroupsModel GetBreadCrumb(Guid id, CMSdb db)
         {
             return db.core_pages
-                .Where(w => w.pgid == parent)
+                .Where(w => w.gid == id)
                 .Select(s => new GroupsModel
                 {
                     Id = s.gid,
-                    Title = s.c_name
+                    Title = s.c_name,
+                    Parent = s.pgid
                 }).SingleOrDefault();
         }
 
@@ -239,6 +296,146 @@ namespace PgDbase.Repository.cms
             {
                 return db.core_pages
                     .Where(w => w.gid == id).Any();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает эл-ты для фильтра групп меню
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetPageGroups()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_page_groups
+                    .Where(w => w.f_site == _siteId)
+                    .OrderBy(o => o.n_sort)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает группу меню карты сайта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public GroupsModel GetPageGroup(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_page_groups
+                    .Where(w => w.id == id)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name
+                    })
+                    .SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Сохраняет меню карты сайта
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool SavePageGroup(GroupsModel item)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_page_groups
+                    .Where(w => w.f_site == _siteId);
+
+                if (query.Where(w => w.id == item.Id).Any())
+                {
+                    return query.Set(s => s.c_name, item.Title)
+                         .Update() > 0;
+                }
+                else
+                {
+                    int sort = query.Any() ? query.Select(s => s.n_sort).Max() : 1;
+
+                    return db.core_page_groups.Insert(() => new core_page_groups
+                    {
+                        id = item.Id,
+                        c_name = item.Title,
+                        f_site = _siteId,
+                        n_sort = sort
+                    }) > 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Удаляет меню карты сайта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeletePageGroup(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_page_groups
+                    .Where(w => w.id == id).Delete() > 0;
+            }
+        }
+
+        /// <summary>
+        /// Меняет порядок сортировки
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newNum"></param>
+        /// <returns></returns>
+        public bool ChangePositionPages(Guid id, int newNum)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    bool result = false;
+
+                    var query = db.core_pages.Where(w => w.gid == id);
+                    if (query.Any())
+                    {
+                        var data = query.SingleOrDefault();
+                        Guid parent = data.pgid;
+                        int actualNum = data.n_sort;
+                        if (newNum != actualNum)
+                        {
+                            if (newNum > actualNum)
+                            {
+                                db.core_pages
+                                    .Where(w => w.pgid == parent)
+                                    .Where(w => w.n_sort > actualNum)
+                                    .Where(w => w.n_sort <= newNum)
+                                    .Where(w => w.f_site == _siteId)
+                                    .Set(s => s.n_sort, s => s.n_sort - 1)
+                                    .Update();
+                            }
+                            else
+                            {
+                                db.core_pages
+                                    .Where(w => w.pgid == parent)
+                                    .Where(w => w.n_sort < actualNum)
+                                    .Where(w => w.n_sort >= newNum)
+                                    .Where(w => w.f_site == _siteId)
+                                    .Set(s => s.n_sort, s => s.n_sort + 1)
+                                    .Update();
+                            }
+                            result = db.core_pages
+                                .Where(w => w.gid == id)
+                                .Set(s => s.n_sort, newNum)
+                                .Update() > 0;
+
+                        tr.Commit();
+                        }
+                    }
+                    return result;
+                }
             }
         }
     }

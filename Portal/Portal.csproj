@@ -491,6 +491,7 @@
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
+    <Compile Include="Areas\Admin\Models\FilterTreeModel.cs" />
     <Compile Include="Areas\Admin\Models\MenuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TemplateViewModel.cs" />
@@ -636,6 +637,7 @@
     <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Modal\ModuleTemplates.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\FilterTreeItem.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <None Include="Web.Debug.config">

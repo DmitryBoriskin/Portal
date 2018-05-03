@@ -21,5 +21,10 @@ namespace PgDbase.entity
         /// Псевдоним
         /// </summary>
         public string Alias { get; set; }
+
+        /// <summary>
+        /// Родитель
+        /// </summary>
+        public Guid Parent { get; set; }
     }
 }
