@@ -109,14 +109,17 @@ namespace Portal.Areas.Admin
         [HttpPost]
         public ActionResult ChangePosition(string group, string menusort, Guid id, int position)
         {
-            bool Result = false;
+            bool result = false;
             switch (group.ToLower())
             {
                 case "cmsmenu":
                     _cmsRepository.ChangePositionMenu(id, position);
                     break;
+                case "pages":
+                    result = _cmsRepository.ChangePositionPages(id, position);
+                    break;
             }
-            return Content(Result.ToString());
+            return Content(result.ToString());
 
         }
     }
