@@ -26,8 +26,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Id записи
         /// </summary>
-        public Guid id { get; set; }
-        public Guid Pid { get; set; }
+        public Guid Id { get; set; }
+        /// <summary>
+        /// Родительский Id
+        /// </summary>
+        public Guid? Pid { get; set; }
         /// <summary>
         /// Позиция в списке
         /// </summary>
@@ -51,10 +54,10 @@ namespace PgDbase.entity
         /// В данное поле вписывается class элемента, в котором хранится символ из шрифта Fontello
         /// </summary>
         public string Class { get; set; }
-        /// <summary>
-        /// Группа. Определяет, в каком разделе будет отображен данный пункт меню.
-        /// </summary>
-        [Required(ErrorMessage = "Поле «Сайт отключен» не должно быть пустым.")]
-        public string Group { get; set; }
+        ///// <summary>
+        ///// Группа. Определяет, в каком разделе будет отображен данный пункт меню.
+        ///// </summary>
+        //[Required(ErrorMessage = "Поле «Сайт отключен» не должно быть пустым.")]
+        //public string Group { get; set; }
     }
 }
