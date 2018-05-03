@@ -43,40 +43,37 @@
                 @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "300", data_dir = ViewBag.DataPath })
             </div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <h4 class="nesting_title">Список вложенностей</h4>
                 </div>
 
                 @*@if (Model.UserResolution.Write)*@
-                @if (true)
-                {
-                    if (!String.IsNullOrEmpty(Model.Item.Alias))
+                <div class="col-sm-6">
+                    @if (true)
                     {
-                        <div class="col-sm-4">
+                        if (!String.IsNullOrEmpty(Model.Item.Alias))
+                        {
                             <div class="bubble_but">
                                 <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
                             </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="col-sm-12">
+
+                        }
+                        else
+                        {
                             <div class="alert alert-info">
                                 <span class="icon-info"></span>Добавить вложенный элемент возможно только после сохранения записи!
                             </div>
-                        </div>
+                        }
+
                     }
 
-                }
-
-                @if (Model.Item.Childrens != null && Model.Item.Childrens.Count() > 1)
-                {
-                    <div class="col-sm-4">
+                    @if (Model.Item.Childrens != null && Model.Item.Childrens.Count() > 1)
+                    {
                         <div class="bubble_but">
                             <a class="button icon-sort" data-action="noPreloader-accept" id="sorting_element" title="Добавляет возможность сортировки элементов списка">Сортировать</a>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
 
             @if (Model.Item.Childrens != null && Model.Item.Childrens.Count() > 0)
