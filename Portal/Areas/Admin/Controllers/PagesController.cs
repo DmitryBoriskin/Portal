@@ -172,7 +172,7 @@ namespace Portal.Areas.Admin.Controllers
                     Icon = "icon-th-list-3",
                     BtnName = "Новая группа меню",
                     Url = editGroupUrl,
-                    IsReadOnly = true,
+                    IsReadOnly = false,
                     //AccountGroup = (model.Account != null) ? model.Account.Group : "",
                     Items = model.MenuGroups.Select(p =>
                         new CatalogList()
@@ -180,7 +180,7 @@ namespace Portal.Areas.Admin.Controllers
                             Title = p.Title,
                             Alias = p.Id.ToString(),
                             Link = AddFilterParam(link, alias, p.Id.ToString()),
-                            Url = $"{editGroupUrl}{p.Id}/",
+                            Url = $"{editGroupUrl}&id={p.Id}",
                             IsSelected = active == p.Id.ToString()
                         }).ToArray(),
                     Link = "/admin/pages"

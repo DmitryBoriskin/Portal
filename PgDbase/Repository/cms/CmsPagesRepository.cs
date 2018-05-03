@@ -280,5 +280,71 @@ namespace PgDbase.Repository.cms
                     }).ToArray();
             }
         }
+
+        /// <summary>
+        /// Возвращает группу меню карты сайта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public GroupsModel GetPageGroup(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_page_groups
+                    .Where(w => w.id == id)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name
+                    })
+                    .SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Сохраняет меню карты сайта
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool SavePageGroup(GroupsModel item)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_page_groups
+                    .Where(w => w.f_site == _siteId);
+
+                if (query.Where(w => w.id == item.Id).Any())
+                {
+                    return query.Set(s => s.c_name, item.Title)
+                         .Update() > 0;
+                }
+                else 
+                {
+                    int sort = query.Any() ? query.Select(s => s.n_sort).Max() : 1;
+
+                    return db.core_page_groups.Insert(() => new core_page_groups
+                    {
+                        id = item.Id,
+                        c_name = item.Title,
+                        f_site = _siteId,
+                        n_sort = sort
+                    }) > 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Удаляет меню карты сайта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeletePageGroup(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_page_groups
+                    .Where(w => w.id == id).Delete() > 0;
+            }
+        }
     }
 }

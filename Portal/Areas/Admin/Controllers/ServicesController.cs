@@ -56,9 +56,53 @@ namespace Portal.Areas.Admin
             return PartialView("ChangePass", model);
         }
         
-        public ActionResult AddFilterTree(string section)
+        public ActionResult AddFilterTree(string section, string id)
         {
-            return PartialView("FilterTreeItem", new GroupsModel());
+            var model = new GroupsModel();
+            if (id != null)
+            {
+                switch (section)
+                {
+                    case "pages":
+                        model = _cmsRepository.GetPageGroup(Guid.Parse(id));
+                        break;
+                }
+            }
+            model.Alias = section;
+            return PartialView("FilterTreeItem", model);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "save-filter-tree-btn")]
+        public ActionResult SaveFilterTreeItem(GroupsModel item)
+        {
+            if (ModelState.IsValid)
+            {
+                if (item.Id == Guid.Empty)
+                {
+                    item.Id = Guid.NewGuid();
+                }
+                switch (item.Alias)
+                {
+                    case "pages":
+                        _cmsRepository.SavePageGroup(item);
+                        break;
+                }
+            }
+            return Redirect($"/admin/{item.Alias}");
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-filter-tree-btn")]
+        public ActionResult DeleteFilterTreeItem(GroupsModel item)
+        {
+            switch (item.Alias)
+            {
+                case "pages":
+                    _cmsRepository.DeletePageGroup(item.Id);
+                    break;
+            }
+            return Redirect($"/admin/{item.Alias}");
         }
 
 
@@ -70,7 +114,7 @@ namespace Portal.Areas.Admin
         //        case "cmsmenu":
         //            break;
         //    }
-            
+
         //}
     }
 }
