@@ -508,6 +508,7 @@
     <Compile Include="Properties\RequestUserInfo.cs" />
     <Compile Include="Properties\SiteLogger.cs" />
     <Compile Include="Properties\SiteSettings.cs" />
+    <Compile Include="Properties\Transliteration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
