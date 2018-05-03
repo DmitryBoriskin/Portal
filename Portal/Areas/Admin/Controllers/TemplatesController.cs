@@ -1,61 +1,61 @@
 ﻿using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin
 {
-    public class SitesController : CoreController
+    public class TemplatesController : CoreController
     {
-        SitesViewModel model;
+        TemplateViewModel model;
         FilterModel filter;
-
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
-            model = new SitesViewModel()
+            model = new TemplateViewModel()
             {
-                PageName = "Все сайты",
+                PageName = "Шаблоны",
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName
             };
+
             if (AccountInfo != null)
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-
         }
 
-
-        // GET: Admin/Sites
+        // GET: Admin/Templates
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetSitesList(filter);
+            var tfilter = FilterModel.Extend<TemplateFilter>(filter);
+
+            var controller = Guid.Empty;
+            if (!string.IsNullOrEmpty(filter.Group) && Guid.TryParse(filter.Group, out controller))
+                tfilter.Controller = controller;
+
+            model.List = _cmsRepository.GetTemplates(tfilter);
+
+            model.Modules = _cmsRepository.GetModulesList();
+
+            ViewBag.SearchText = filter.SearchText;
+            ViewBag.Group = filter.Group;
 
             return View(model);
         }
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string searchtext, bool enabled, string size)
-        {
-            string query = HttpUtility.UrlDecode(Request.Url.Query);
-            query = AddFilterParam(query, "searchtext", searchtext);
-            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
-            query = AddFilterParam(query, "page", String.Empty);
-            query = AddFilterParam(query, "size", size);
 
-            return Redirect(StartUrl + query);
-        }
-
-        //GET: Admin/Sites/item/{GUID}
+        // GET: Admin/Templates/<id>
         public ActionResult Item(Guid id)
         {
-            model.Item = _cmsRepository.GetSites(id);
+            model.Item = _cmsRepository.GetTemplate(id);
+            model.Modules = _cmsRepository.GetModulesList();
+
             return View("Item", model);
         }
 
@@ -71,30 +71,31 @@ namespace Portal.Areas.Admin
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
-        public ActionResult Save(Guid id, SitesViewModel backModel)
+        public ActionResult Save(Guid id, TemplateViewModel backModel)
         {
             ErrorMessage message = new ErrorMessage
             {
                 Title = "Информация"
             };
-
             if (ModelState.IsValid)
             {
                 backModel.Item.Id = id;
-                if (_cmsRepository.CheckSiteExist(id))
+
+                if (_cmsRepository.TemplateExists(id))
                 {
-                    _cmsRepository.UpdateSite(backModel.Item);
+                    _cmsRepository.UpdateTemplate(backModel.Item);
                     message.Info = "Запись обновлена";
                 }
                 else
                 {
-                    _cmsRepository.InsertSites(backModel.Item);
+                    _cmsRepository.InsertTemplate(backModel.Item);
                     message.Info = "Запись добавлена";
                 }
+
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
-                    new ErrorMessageBtnModel { Url = StartUrl+"item/"+id, Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
                 };
             }
             else
@@ -102,15 +103,14 @@ namespace Portal.Areas.Admin
                 message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
-                    new ErrorMessageBtnModel { Url = "#", Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
                 };
             }
 
+            //model.Item = _cmsRepository.GetUser(id);
             model.ErrorInfo = message;
             return View("item", model);
         }
-
-
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
@@ -121,9 +121,10 @@ namespace Portal.Areas.Admin
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
-        public ActionResult Delete(Guid id)
+        public ActionResult Delete(Guid Id)
         {
-            _cmsRepository.DeleteSite(id);
+            _cmsRepository.DeleteTemplate(Id);
+
             ErrorMessage message = new ErrorMessage
             {
                 Title = "Информация",
@@ -133,52 +134,30 @@ namespace Portal.Areas.Admin
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "ок", Action = "false" }
                 }
             };
+
             model.ErrorInfo = message;
+
             return RedirectToAction("index");
         }
 
-
-        /// <summary>
-        /// Добавление домена
-        /// </summary>
-        /// <returns>перезагружает страницу</returns>
         [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "add-new-domain")]
-        public ActionResult AddDomain()
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string searchtext, string group, string size)
         {
-            try
-            {
-                Guid id = Guid.Parse(Request["Item.Id"]);                
-                string Domain = Request["new_domain"].Replace(" ", "");
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "group", group);
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
 
-                _cmsRepository.InsertDomain(Domain, id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("SitesController > AddDomain: " + ex);
-            }
-            return Redirect(((System.Web.HttpRequestWrapper)Request).RawUrl);
-        }
-
-
-        [HttpPost]
-        public ActionResult SetDomainDefault(Guid id)
-        {
-            var res = _cmsRepository.SetDomainDefault(id);
-            if (res)
-                return Json("Success");
-
-            return Json("An Error Has occourred");
+            return Redirect(StartUrl + query);
         }
 
         [HttpPost]
-        public ActionResult DelDomain(Guid id)
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
         {
-            if(_cmsRepository.DeleteDomain(id)) return null;
-            return Json("default");
-
+            return Redirect(StartUrl);
         }
-
-
     }
 }

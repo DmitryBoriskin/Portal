@@ -154,6 +154,15 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
+                    db.core_users
+                        .Where(w => w.id == user.Id)
+                        .Set(s => s.c_email, user.Email)
+                        .Set(s => s.c_name, user.Name)
+                        .Set(s => s.c_surname, user.Surname)
+                        .Set(s => s.c_patronymic, user.Patronimyc)
+                        .Set(s => s.b_disabled, user.Disabled)
+                        .Update();
+
                     var log = new LogModel
                     {
                         PageId = user.Id,
@@ -162,15 +171,6 @@ namespace PgDbase.Repository.cms
                         Action = LogAction.update
                     };
                     InsertLog(log);
-
-                    bool result = db.core_users
-                        .Where(w => w.id == user.Id)
-                        .Set(s => s.c_email, user.Email)
-                        .Set(s => s.c_name, user.Name)
-                        .Set(s => s.c_surname, user.Surname)
-                        .Set(s => s.c_patronymic, user.Patronimyc)
-                        .Set(s => s.b_disabled, user.Disabled)
-                        .Update() > 0;
 
                     // группа
                     var currentLink = db.core_user_site_link
@@ -184,13 +184,13 @@ namespace PgDbase.Repository.cms
                     {
                         currentLink.f_user_group = user.Group;
                         db.Update(currentLink);
-
                         log = new LogModel
                         {
-                            PageId = currentLink.id,
+                            PageId = user.Id,
                             PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
-                            Section = LogModule.UserSiteLinks,
-                            Action = LogAction.update
+                            Section = LogModule.Users,
+                            Action = LogAction.update,
+                            Comment = "Изменена связь пользователя с сайтами"
                         };
                         InsertLog(log);
                     }
@@ -200,7 +200,7 @@ namespace PgDbase.Repository.cms
                     }
 
                     tr.Commit();
-                    return result;
+                    return true;
                 }
             }
         }
@@ -334,7 +334,6 @@ namespace PgDbase.Repository.cms
                 using (var tr = db.BeginTransaction())
                 {
                     Guid id = Guid.NewGuid();
-                   
 
                     db.core_user_site_link
                         .Insert(() => new core_user_site_link
@@ -349,7 +348,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = id,
                         PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                        Section = LogModule.UserSiteLinks,
+                        Section = LogModule.Users,
                         Action = LogAction.insert
                     };
                     InsertLog(log);

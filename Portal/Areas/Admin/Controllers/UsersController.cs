@@ -15,8 +15,9 @@ namespace Portal.Areas.Admin
         {
             base.OnActionExecuting(filterContext);
 
-            model = new UsersViewModel
+            model = new UsersViewModel()
             {
+                PageName = "Пользователи",
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
@@ -25,15 +26,7 @@ namespace Portal.Areas.Admin
                 Groups = _cmsRepository.GetGroups()
             };
             if (AccountInfo != null)
-            {
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-            }
-
-            #region Метатеги
-            //ViewBag.Title = UserResolutionInfo.Title;
-            ViewBag.Description = "";
-            ViewBag.KeyWords = "";
-            #endregion
         }
 
         // GET: Admin/Users

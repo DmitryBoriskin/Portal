@@ -6,22 +6,22 @@ namespace Portal.Areas.Admin.Models
     /// <summary>
     /// Модель пользователей для представления
     /// </summary>
-    public class ModuleViewModel : CoreViewModel
+    public class TemplateViewModel : CoreViewModel
     {
         /// <summary>
         /// Постраничный список
         /// </summary>
-        public Paged<ModuleModel> List { get; set; }
+        public Paged<TemplateModel> List { get; set; }
 
         /// <summary>
-        /// Пользователь
+        /// 
         /// </summary>
-        public ModuleModel Item { get; set; }
+        public TemplateModel Item { get; set; }
 
         /// <summary>
-        /// Список шаблонов
+        /// Модули
         /// </summary>
-        public TemplateModel[] Templates { get; set; }
+        public ModuleModel[] Modules { get; set; }
 
     }
 }

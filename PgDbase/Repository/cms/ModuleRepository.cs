@@ -7,19 +7,322 @@ using System.Linq;
 namespace PgDbase.Repository.cms
 {
     /// <summary>
-    /// Репозиторий для работы с модулями системы
+    /// Репозиторий для работы с модулями системы и их шаблонами
     /// </summary>
     public partial class CmsRepository
     {
+        #region Шаблоны
+
+        /// <summary>
+        /// Проверка существует запись с id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool TemplateExists(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_views
+                    .Where(t => t.id == id);
+
+                if (data.Any())
+                    return true;
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Список шаблонов как массив
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public TemplateModel[] GetTemplatesList()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_views
+                    .Where(t => t.id != Guid.Empty);
+                   
+                var list = query
+                    .Select(s => new TemplateModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name,
+                        Controller = new ModuleModel() {
+                            Id = s.f_controller
+                        },
+                        ViewPath = s.c_path,
+                        Image = s.c_img,
+
+                    });
+
+                return list.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает постраничный список шаблонов для контроллеров
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Paged<TemplateModel> GetTemplates(TemplateFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_views
+                    .Where(t => t.id != Guid.Empty);
+
+                if (filter.Controller.HasValue)
+                    query = query.Where(t => t.f_controller == filter.Controller.Value);
+
+                if (!string.IsNullOrEmpty(filter.SearchText))
+                    query = query.Where(t => t.c_name.ToLower().Contains(filter.SearchText.ToLower()));
+
+                int itemsCount = query.Count();
+
+                var list = query
+                    .Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size).Select(s => new TemplateModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name,
+                        Controller = new ModuleModel()
+                        {
+                            Id = s.f_controller,
+                            Title = db.core_controllers
+                                                .Where(c => c.id == s.f_controller)
+                                                .First()
+                                                .c_name,
+                        },
+                        ViewPath = s.c_path,
+                        Image = s.c_img,
+
+                    });
+
+                return new Paged<TemplateModel>()
+                {
+                    Items = list.ToArray(),
+                    Pager = new PagerModel()
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        /// Возвращает постраничный список шаблонов для контроллеров
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public TemplateModel GetTemplate(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_views
+                    .Where(t => t.id == id);
+
+                var data = query
+                    .Select(s => new TemplateModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name,
+                        Controller = new ModuleModel()
+                        {
+                            Id = s.f_controller,
+                            Title = db.core_controllers
+                                                .Where(c => c.id == s.f_controller)
+                                                .First()
+                                                .c_name,
+                        },
+                        ViewPath = s.c_path,
+                        Image = s.c_img,
+
+                    });
+
+                return data.SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Добавляет запись о шаблоне
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        public bool InsertTemplate(TemplateModel template)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var cdTemplate = new core_views
+                    {
+                        id = template.Id,
+                        c_name = template.Title,
+                        c_path = template.ViewPath,
+                        c_img = template.Image,
+                        f_controller = Guid.Empty
+                    };
+                    db.Insert(cdTemplate);
+
+                    var log = new LogModel
+                    {
+                        PageId = Guid.NewGuid(),
+                        PageName = template.Title,
+                        Section = LogModule.Templates,
+                        Action = LogAction.insert
+                    };
+                    InsertLog(log);
+
+                    tran.Commit();
+                    return true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Изменения модуля
+        /// </summary>
+        /// <param name="module"></param>
+        /// <returns></returns>
+        public bool UpdateTemplate(TemplateModel template)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var data = db.core_views
+                        .Where(s => s.id == template.Id);
+
+                    if (data.Any())
+                    {
+                        var cdTemplate = data.SingleOrDefault();
+                        cdTemplate.c_name = template.Title;
+                        cdTemplate.c_path = template.ViewPath;
+                        cdTemplate.c_img = template.Image;
+                        cdTemplate.f_controller = (template.Controller != null) ? template.Controller.Id : Guid.Empty;
+
+                        db.Update(cdTemplate);
+
+                        var log = new LogModel
+                        {
+                            PageId = template.Id,
+                            PageName = template.Title,
+                            Section = LogModule.Templates,
+                            Action = LogAction.update
+                        };
+                        InsertLog(log);
+
+                        tran.Commit();
+                        return true;
+                    };
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Удаляет шаблон
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteTemplate(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var data = db.core_views
+                        .Where(s => s.id == id);
+
+                    if (data.Any())
+                    {
+                        var cdTemplate = data.Single();
+                        db.Delete(cdTemplate);
+
+                        var log = new LogModel
+                        {
+                            PageId = id,
+                            PageName = String.Format("{0} ({1})", cdTemplate.c_name, cdTemplate.c_path),
+                            Section = LogModule.Modules,
+                            Action = LogAction.delete
+                        };
+                        InsertLog(log);
+
+                        tran.Commit();
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+        #endregion
+
+        #region Модуль
+
+        /// <summary>
+        /// Проверка существует запись с id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool ModuleExists(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_controllers
+                    .Where(t => t.id == id);
+
+                if (data.Any())
+                    return true;
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список модулей как массив
+        /// </summary>
+        /// <returns></returns>
+        public ModuleModel[] GetModulesList()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_controllers
+                     .Where(t => t.id != Guid.Empty);
+
+                var list = query
+                    .Select(s => new ModuleModel
+                    {
+                        Id = s.id,
+                        ParentId = s.id,
+                        Title = s.c_name,
+                        Controller = s.c_controller_name,
+                        Action = s.c_action_name,
+                        View = s.c_default_view
+                    });
+
+                return list.ToArray();
+            }
+        }
+
         /// <summary>
         /// Возвращает постраничный список модулей
         /// </summary>
+        /// <param name="filter"></param>
         /// <returns></returns>
         public Paged<ModuleModel> GetModules(ModuleFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.core_controllers.AsQueryable();
+                var query = db.core_controllers
+                     .Where(t => t.id != Guid.Empty);
+
+                if (!string.IsNullOrEmpty(filter.SearchText))
+                    query = query.Where(t => t.c_name.ToLower().Contains(filter.SearchText) || t.c_desc.ToLower().Contains(filter.SearchText));
 
                 int itemsCount = query.Count();
 
@@ -29,10 +332,11 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         ParentId = s.id,
-                        Name = s.c_name,
+                        Title = s.c_name,
                         Controller = s.c_controller_name,
                         Action = s.c_action_name,
-                        View = s.c_default_view
+                        View = s.c_default_view,
+                        Desc = s.c_desc
                     });
 
                 return new Paged<ModuleModel>()
@@ -58,23 +362,25 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 var data = db.core_controllers
+                    .Where(s => s.id == id)
                    .Select(s => new ModuleModel
-                    {
-                        Id = s.id,
-                        ParentId = s.id,
-                        Name = s.c_name,
-                        Controller = s.c_controller_name,
-                        Action = s.c_action_name,
-                        View = s.c_default_view
-                    });
+                   {
+                       Id = s.id,
+                       ParentId = s.id,
+                       Title = s.c_name,
+                       Controller = s.c_controller_name,
+                       Action = s.c_action_name,
+                       View = s.c_default_view,
+                       Desc = s.c_desc
+                   });
                 return data.SingleOrDefault();
             }
         }
 
         /// <summary>
-        /// Добавляет пользователя
+        /// Добавляет запись о модуле
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="module"></param>
         /// <returns></returns>
         public bool InsertModule(ModuleModel module)
         {
@@ -86,18 +392,19 @@ namespace PgDbase.Repository.cms
                     {
                         id = module.Id,
                         pid = module.ParentId,
-                        c_name = module.Name,
+                        c_name = module.Title,
                         c_controller_name = module.Controller,
                         c_action_name = module.Action,
-                        c_default_view = module.View
+                        c_default_view = module.View,
+                        c_desc = module.Desc
                     };
                     db.Insert(cdController);
 
                     var log = new LogModel
                     {
-                        PageId = Guid.NewGuid(),
-                        PageName = module.Name,
-                        Section = LogModule.Module,
+                        PageId = module.Id,
+                        PageName = module.Title,
+                        Section = LogModule.Modules,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
@@ -109,9 +416,9 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Обновляет пользователя
+        /// Изменения модуля
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="module"></param>
         /// <returns></returns>
         public bool UpdateModule(ModuleModel module)
         {
@@ -122,24 +429,35 @@ namespace PgDbase.Repository.cms
                     var data = db.core_controllers
                         .Where(s => s.id == module.Id);
 
-                    if(data.Any())
+                    if (data.Any())
                     {
                         var cdController = data.SingleOrDefault();
-                        cdController.id = module.Id;
                         cdController.pid = module.ParentId;
-                        cdController.c_name = module.Name;
+                        cdController.c_name = module.Title;
                         cdController.c_controller_name = module.Controller;
                         cdController.c_action_name = module.Action;
                         cdController.c_default_view = module.View;
+                        cdController.c_desc = module.Desc;
 
                         db.Update(cdController);
 
+                        //Если выбрана вьюха, мы ей присваиваем контроллер
+                        if (module.View != Guid.Empty)
+                        {
+                            var cdView = db.core_views
+                                  .Where(v => v.id == module.View)
+                                  .Single();
+
+                            cdView.f_controller = module.Id;
+
+                            db.Update(cdView);
+                        }
 
                         var log = new LogModel
                         {
-                            PageId = Guid.NewGuid(),
-                            PageName = module.Name,
-                            Section = LogModule.Module,
+                            PageId = module.Id,
+                            PageName = module.Title,
+                            Section = LogModule.Modules,
                             Action = LogAction.update
                         };
                         InsertLog(log);
@@ -153,7 +471,7 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Удаляет пользователя
+        /// Удаляет модуль
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -166,18 +484,17 @@ namespace PgDbase.Repository.cms
 
                     var data = db.core_controllers
                         .Where(s => s.id == id);
-                        
+
                     if (data.Any())
                     {
                         var cdController = data.Single();
-                            
-                            db.Delete(cdController);
+                        db.Delete(cdController);
 
                         var log = new LogModel
                         {
-                            PageId = Guid.NewGuid(),
+                            PageId = id,
                             PageName = String.Format("{0}/{1}", cdController.c_controller_name, cdController.c_action_name),
-                            Section = LogModule.Module,
+                            Section = LogModule.Modules,
                             Action = LogAction.delete,
                             Comment = "Удален модуль" + String.Format("{0}/{1}", cdController.c_controller_name, cdController.c_action_name)
                         };
@@ -192,5 +509,6 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        #endregion
     }
 }

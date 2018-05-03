@@ -17,9 +17,14 @@ namespace Portal.Areas.Admin.Models
         public string ControllerName { get; set; }
 
         /// <summary>
-        /// Название актина
+        /// Название Экшена
         /// </summary>
         public string ActionName { get; set; }
+
+        /// <summary>
+        /// Название страницы
+        /// </summary>
+        public string PageName { get; set; }
 
         /// <summary>
         /// Текущий домен

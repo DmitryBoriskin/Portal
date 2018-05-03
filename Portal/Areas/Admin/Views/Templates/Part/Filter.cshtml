@@ -1,0 +1,32 @@
+﻿@model TemplateViewModel
+@{
+    string search = ViewBag.SearchText;
+    string group = ViewBag.Group;
+}
+@using (Html.BeginForm())
+{
+<div class="row">
+    <div class="col-md-12">
+        @Html.TextBox("searchtext", search, new { @title = "Поиск по ключевым словам", @placeholder = "поиск...", @MaxLength = "512" })
+        <div class="form-group">
+            <label>Шаблон представления</label>
+            <select name="group" class="form-control">
+                <option value="">Все</option>
+                <option value="@Guid.Empty">Не указан</option>
+                @if (Model.Modules != null && Model.Modules.Count() > 0)
+                {
+                    foreach (var template in Model.Modules)
+                    {
+                        var selected = (!string.IsNullOrEmpty(group) && group == template.Id.ToString()) ? true : false; @(selected ? "selected" : "")
+                        <option value="@template.Id" @(selected ? "selected" : "")>@template.Title</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6"><button type="submit" name="action" value="search-btn" class="button btn-primary">Применить</button></div>
+    <div class="col-md-6"><button type="submit" name="action" value="clear-btn" class="button btn-default">Сбросить</button></div>
+</div>
+}

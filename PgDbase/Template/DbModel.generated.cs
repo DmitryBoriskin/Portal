@@ -28,6 +28,8 @@ namespace PgDbase.models
 		public ITable<core_material_category_link> core_material_category_link { get { return this.GetTable<core_material_category_link>(); } }
 		public ITable<core_materials>              core_materials              { get { return this.GetTable<core_materials>(); } }
 		public ITable<core_menu>                   core_menu                   { get { return this.GetTable<core_menu>(); } }
+		public ITable<core_page_group_links>       core_page_group_links       { get { return this.GetTable<core_page_group_links>(); } }
+		public ITable<core_page_groups>            core_page_groups            { get { return this.GetTable<core_page_groups>(); } }
 		public ITable<core_pages>                  core_pages                  { get { return this.GetTable<core_pages>(); } }
 		public ITable<core_site_controllers>       core_site_controllers       { get { return this.GetTable<core_site_controllers>(); } }
 		public ITable<core_site_domains>           core_site_domains           { get { return this.GetTable<core_site_domains>(); } }
@@ -63,6 +65,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public Guid   c_default_view    { get; set; } // uuid
 		[PrimaryKey, NotNull    ] public Guid   id                { get; set; } // uuid
 		[Column,        Nullable] public Guid?  pid               { get; set; } // uuid
+		[Column,        Nullable] public string c_desc            { get; set; } // text
 
 		#region Associations
 
@@ -279,6 +282,55 @@ namespace PgDbase.models
 		#endregion
 	}
 
+	[Table(Schema="core", Name="page_group_links")]
+	public partial class core_page_group_links
+	{
+		[PrimaryKey, NotNull] public Guid id           { get; set; } // uuid
+		[Column,     NotNull] public Guid f_page       { get; set; } // uuid
+		[Column,     NotNull] public Guid f_page_group { get; set; } // uuid
+
+		#region Associations
+
+		/// <summary>
+		/// fk_page_group_link_page_group
+		/// </summary>
+		[Association(ThisKey="f_page_group", OtherKey="id", CanBeNull=false, KeyName="fk_page_group_link_page_group", BackReferenceName="fkpagegrouplinkpagegroups")]
+		public core_page_groups fkpagegrouplinkpagegroup { get; set; }
+
+		/// <summary>
+		/// fk_page_group_link_page
+		/// </summary>
+		[Association(ThisKey="f_page", OtherKey="gid", CanBeNull=false, KeyName="fk_page_group_link_page", BackReferenceName="fkpagegrouplinkpages")]
+		public core_pages fkpagegrouplinkpage { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="core", Name="page_groups")]
+	public partial class core_page_groups
+	{
+		[PrimaryKey, NotNull] public Guid   id     { get; set; } // uuid
+		[Column,     NotNull] public string c_name { get; set; } // character varying(128)
+		[Column,     NotNull] public int    n_sort { get; set; } // integer
+		[Column,     NotNull] public Guid   f_site { get; set; } // uuid
+
+		#region Associations
+
+		/// <summary>
+		/// fk_page_groups_sites
+		/// </summary>
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_page_groups_sites", BackReferenceName="fkpagegroupss")]
+		public core_sites fkpagegroupssites { get; set; }
+
+		/// <summary>
+		/// fk_page_group_link_page_group_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_page_group", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_page_group_links> fkpagegrouplinkpagegroups { get; set; }
+
+		#endregion
+	}
+
 	[Table(Schema="core", Name="pages")]
 	public partial class core_pages
 	{
@@ -310,6 +362,12 @@ namespace PgDbase.models
 		/// </summary>
 		[Association(ThisKey="gid", OtherKey="pgid", CanBeNull=false, KeyName="fk_page_page", BackReferenceName="fk_page_page_BackReference")]
 		public core_pages fkpagepage { get; set; }
+
+		/// <summary>
+		/// fk_page_group_link_page_BackReference
+		/// </summary>
+		[Association(ThisKey="gid", OtherKey="f_page", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_page_group_links> fkpagegrouplinkpages { get; set; }
 
 		/// <summary>
 		/// fk_page_page_BackReference
@@ -380,6 +438,12 @@ namespace PgDbase.models
 		[Column,     NotNull] public bool   b_disabled { get; set; } // boolean
 
 		#region Associations
+
+		/// <summary>
+		/// fk_page_groups_sites_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_page_groups> fkpagegroupss { get; set; }
 
 		/// <summary>
 		/// fk_sites_domains_sites_BackReference
@@ -567,10 +631,10 @@ namespace PgDbase.models
 	public partial class core_views
 	{
 		[PrimaryKey, NotNull    ] public Guid   id           { get; set; } // uuid
-		[Column,     NotNull    ] public string c_name       { get; set; } // character varying(128)
+		[Column,     NotNull    ] public string c_name       { get; set; } // character varying(256)
 		[Column,     NotNull    ] public string c_path       { get; set; } // character varying(512)
-		[Column,        Nullable] public Guid?  f_controller { get; set; } // uuid
-		[Column,        Nullable] public string c_img        { get; set; } // character varying(1024)
+		[Column,     NotNull    ] public Guid   f_controller { get; set; } // uuid
+		[Column,        Nullable] public string c_img        { get; set; } // character varying(512)
 
 		#region Associations
 
@@ -628,6 +692,18 @@ namespace PgDbase.models
 		}
 
 		public static core_menu Find(this ITable<core_menu> table, Guid id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id == id);
+		}
+
+		public static core_page_group_links Find(this ITable<core_page_group_links> table, Guid id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id == id);
+		}
+
+		public static core_page_groups Find(this ITable<core_page_groups> table, Guid id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);

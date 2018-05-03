@@ -1,0 +1,69 @@
+﻿@model TemplateViewModel
+@{
+
+    string fileUrl = (Model.Item != null && Model.Item.Image != null) ? Model.Item.Image : null;
+}
+@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
+{
+    @*if (Model.UserResolution.Write)*@
+if (true)
+{
+    <div class="content">
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-3"></div>
+        </div>
+        <h1>@Model.PageName</h1>
+        @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @Title = "Название шаблона", @placeholder = "Шаблон2 для модуля1", MaxLength = "256" })
+        @Html.TextBoxFor(m => m.Item.Image, new { type = "file", data_posted_name = "upload", data_url = fileUrl, title = "Картинка для предпросмотра", data_help = "Размер фотографии должен быть не менне 400 точек по ширине и пропорции картинки - 4х3", accept = ".jpg,.jpeg,.png,.gif" })
+        @Html.TextBoxFor(m => Model.Item.ViewPath, new { @required = "", @Title = "Путь к шаблону", @placeholder = "~/Views/Modules/SomeModule/SomeTemplate.cshtml", MaxLength = "512" })
+    </div>
+    <div class="dop_info-block">
+        <div class="dop-caption">Настройки</div>
+        @if (Model.Item != null && Model.Item.Id != Guid.Empty)
+        {
+            <div class="form-group">
+                <label>Модуль</label>
+                <select name="Item.Controller.Id" class="form-control">
+                    <option value="@Guid.Empty"></option>
+                    @if (Model.Modules != null && Model.Modules.Count() > 0)
+                    {
+                        foreach (var module in Model.Modules)
+                        {
+                            var selected = (Model.Item.Controller != null && Model.Item.Controller.Id == module.Id) ? true : false;
+                            <option value="@module.Id" @(selected ? "selected" : "")>@module.Title</option>
+                        }
+                    }
+                </select>
+                <label>*будет доступен для выбора в качестве шаблона для выбранного модуля</label>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label>*Сохраните шаблон. А затем укажите модуль, для которго он предназначен!</label>
+            </div>
+        }
+        <div class="topIndent-20">
+            @*@Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })*@
+        </div>
+    </div>
+}
+else
+{
+    <p>@Settings.NoResolut</p>
+}
+    <div class="buttons">
+        @*@if ((Model.Item != null && Model.UserResolution.Change) || (Model.Item == null && Model.UserResolution.Write))*@
+        @if (true)
+        {
+            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+        }
+        @*@if (Model.Item != null && Model.UserResolution.Delete)*@
+        @if (true)
+        {
+            <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
+        }
+        <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
+    </div>
+}

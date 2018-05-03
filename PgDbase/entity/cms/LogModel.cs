@@ -125,92 +125,32 @@ namespace PgDbase.entity
         /// <summary>
         /// Аккаунт
         /// </summary>
-        Account = 1,
-
-        /// <summary>
-        /// Баннеры
-        /// </summary>
-        Banners = 2,
-
-        /// <summary>
-        /// структуры CMS
-        /// </summary>
-        CmsMenu = 3,
-
-        /// <summary>
-        /// Организации
-        /// </summary>
-        Orgs = 4,
-
-        /// <summary>
-        /// Пользователи портала
-        /// </summary>
-        PortalUsers = 5,
+        Account,
 
         /// <summary>
         /// Карта сайта
         /// </summary>
-        Page = 6,
+        SiteMap = 6,
 
         /// <summary>
         /// Сайты
         /// </summary>
-        Sites = 7,
+        Sites,
 
         /// <summary>
-        /// Пользователи сайтов
+        /// Пользователи
         /// </summary>
-        Users = 8,
+        Users,
 
         /// <summary>
-        /// Материалы
+        /// Модули
         /// </summary>
-        Materials = 9,
+        Modules,
 
         /// <summary>
-        /// События 
+        /// Шаблоны 
         /// </summary>
-        Events = 10,
-
-        /// <summary>
-        /// Вакансии
-        /// </summary>
-        Vacancy = 11,
-
-        /// <summary>
-        /// Группа пользователей
-        /// </summary>
-        UserGroup = 12,
-
-        /// <summary>
-        /// Разделы сайта
-        /// </summary>
-        Module = 13,
-
-        /// <summary>
-        /// Голосование
-        /// </summary>
-        Vote = 14,
-
-        /// <summary>
-        /// Фотоальбомы
-        /// </summary>
-        PhotoAlbums = 15,
-
-        /// <summary>
-        /// Фотоальбомы
-        /// </summary>
-        Anketa = 16,
-
-        /// <summary>
-        /// новостная группа
-        /// </summary>
-        MaterialGroup = 17,
-
-        /// <summary>
-        /// Связь пользователя с сайтом
-        /// </summary>
-        UserSiteLinks = 18
+        Templates,
     }
 
     /// <summary>

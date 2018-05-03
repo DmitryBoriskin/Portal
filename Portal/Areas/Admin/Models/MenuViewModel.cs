@@ -13,5 +13,7 @@ namespace Portal.Areas.Admin.Models
         /// Меню админки
         /// </summary>
         public CmsMenuModel[] MenuList { get; set; }
+        public CmsMenuItem MenuItem { get; set; }
+        public CmsMenuModel[] MenuGroup { get; set; }
     }
 }
