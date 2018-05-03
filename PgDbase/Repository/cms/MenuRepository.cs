@@ -192,7 +192,7 @@ namespace PgDbase.Repository.cms
                     var query = db.core_menu.Where(w => w.id == id);
                     if (query.Any())
                     {
-                        var data = db.core_menu.Single();
+                        var data = query.Single();
                         InsertLog(new LogModel
                         {
                             PageId = id,
@@ -200,7 +200,15 @@ namespace PgDbase.Repository.cms
                             Section = LogModule.Menu,
                             Action = LogAction.delete,
                             Comment = "Удален пункт меню" + String.Format("{0}/{1}", data.c_title, data.c_alias)
-                        });
+                        }, data);
+
+
+                        //смещаем n_sort
+                        db.core_menu
+                          .Where(w => w.f_parent == query.Single().f_parent && w.n_sort > query.Single().n_sort)
+                          .Set(p => p.n_sort, p => p.n_sort - 1)
+                          .Update();
+                        
                         query.Delete();
                         tr.Commit();
                         return true;
