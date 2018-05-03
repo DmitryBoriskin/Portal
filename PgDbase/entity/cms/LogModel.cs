@@ -151,7 +151,10 @@ namespace PgDbase.entity
         /// Шаблоны 
         /// </summary>
         Templates,
-
+        /// <summary>
+        /// Структура меню CMS
+        /// </summary>
+        Menu
     }
 
     /// <summary>

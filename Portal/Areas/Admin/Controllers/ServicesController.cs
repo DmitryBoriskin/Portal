@@ -60,5 +60,17 @@ namespace Portal.Areas.Admin
         {
             return PartialView("FilterTreeItem", new GroupsModel());
         }
+
+
+        //[HttpPost]
+        //public ActionResult ChangePosition(string group, string menusort, Guid id, int position) {
+        //    bool Result = false;
+        //    switch (group.ToLower())
+        //    {
+        //        case "cmsmenu":
+        //            break;
+        //    }
+            
+        //}
     }
 }

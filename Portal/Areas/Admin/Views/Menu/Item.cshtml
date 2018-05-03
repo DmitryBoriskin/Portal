@@ -5,14 +5,30 @@
         <h1>@ViewBag.Title</h1>
         <div class="row">
             <div class="col-xs-8">
-                @Html.TextBoxFor(m => m.MenuItem.Title, new { @class = "uc_input", @required = "", @title = "Название", @placeholder = "Название", @MaxLength = "512" })
+                @Html.TextBoxFor(m => m.Item.Title, new { @class = "uc_input", @required = "", @title = "Название", @placeholder = "Название", @MaxLength = "512" })
             </div>
             <div class="col-xs-4">
-                @Html.TextBoxFor(m => m.MenuItem.Alias, new { @class = "uc_input", @required = "", @Title = "Псевдоним", @placeholder = "Псевдоним", @MaxLength = "16", @data_help = "Уникальное имя раздела, по которому будут раздаваться права пользователям на данный раздел." })
+                @Html.TextBoxFor(m => m.Item.Alias, new { @class = "uc_input", @required = "", @Title = "Псевдоним", @placeholder = "Псевдоним", @MaxLength = "16", @data_help = "Уникальное имя раздела, по которому будут раздаваться права пользователям на данный раздел." })
             </div>
         </div>
     </div>
     <div class="dop_info-block">
         <div class="dop-caption icon-layers">Доп. параметры</div>
+        @Html.TextBoxFor(m => m.Item.Class, new { @class = "uc_input", @title = "Иконка", @placeholder = "Класс иконки", @MaxLength = "512" })
+        @Html.DropDownListFor(m=>m.Item.Pid,new SelectList(Model.MenuGroup, "Id", "GroupName",0), new {@class= "selectpicker", @title ="Группа меню"})
+
+        @if (Model.Item != null)
+        {
+            @Html.ActionLink("Журнал изменений", "Log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
+        }
+    </div>
+    <div class="buttons">
+        <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+        @*@if (Model.Item != null && Model.UserResolution.Delete)*@
+        @if (true)
+        {
+            <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
+        }
+        <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
     </div>
 }
