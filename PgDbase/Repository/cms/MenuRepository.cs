@@ -109,16 +109,39 @@ namespace PgDbase.Repository.cms
                         Section = LogModule.Menu,
                         Action = LogAction.update
                     });
+                    var q = db.core_menu.Where(w => w.id == menu.Id);
+                    if (q.Any())
+                    {
+                        //влияние n_sort при смене/назначении группы 
+                        if(q.Single().f_parent!= menu.Pid){
+                            if (q.Single().f_parent != null)
+                            {
+                                db.core_menu.Where(w => w.f_parent == q.Single().f_parent && w.n_sort>q.Single().n_sort)
+                                            .Set(p => p.n_sort, p => p.n_sort - 1)
+                                            .Update();
+                            }
+                        }
+                        //определим новый парметр сортровки для текущего значения
+                        int newsort = 0;
+                        var q2 = db.core_menu.Where(w => w.f_parent == menu.Pid);
+                        if (q2.Any())
+                        {
+                            newsort = (int)q2.Select(s => s.n_sort).Max();
+                        }
+                        newsort++;
 
-                    bool result = db.core_menu
-                                  .Where(w => w.id == menu.Id)
-                                  .Set(s => s.c_title, menu.Title)
-                                  .Set(s => s.c_alias, menu.Alias)
-                                  .Set(s => s.c_class, menu.Class)
-                                  .Set(s => s.f_parent, menu.Pid)
-                                  .Update()>0;
-                    tr.Commit();
-                    return true;
+                        bool result = db.core_menu
+                                        .Where(w => w.id == menu.Id)
+                                        .Set(s => s.c_title, menu.Title)
+                                        .Set(s => s.c_alias, menu.Alias)
+                                        .Set(s => s.c_class, menu.Class)
+                                        .Set(s => s.f_parent, menu.Pid)
+                                        .Set(s => s.n_sort, newsort)
+                                        .Update() > 0;
+                        tr.Commit();
+                        return true;
+                    }
+                    return false;                    
                 }
             }
         }
@@ -135,7 +158,15 @@ namespace PgDbase.Repository.cms
                         Section = LogModule.Menu,
                         Action = LogAction.update
                     });
+
                     int sort = 1;
+                    if (menu.Pid != null)
+                    {
+                        var q = db.core_menu.Where(w => w.f_parent == menu.Pid);
+                        if (q.Any())                        
+                        sort = (int)q.Select(s => s.n_sort).Max() + 1;                                                
+                    }
+                        
                     bool result=db.core_menu
                                   .Insert(
                                   ()=>new core_menu {
@@ -167,7 +198,8 @@ namespace PgDbase.Repository.cms
                             PageId = id,
                             PageName = data.c_title,
                             Section = LogModule.Menu,
-                            Action = LogAction.delete
+                            Action = LogAction.delete,
+                            Comment = "Удален пункт меню" + String.Format("{0}/{1}", data.c_title, data.c_alias)
                         });
                         query.Delete();
                         tr.Commit();
