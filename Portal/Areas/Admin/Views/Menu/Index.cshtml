@@ -9,7 +9,7 @@
 
             if (Group.GroupItems != null)
             {
-                <div class="sortable ui-sortable" data-service="/Admin/Services/ChangeSort?group=cmsMenu">
+                <div class="sortable ui-sortable" data-service="/Admin/Services/ChangePosition?group=cmsMenu">
                     @foreach (CmsMenuItem Item in Group.GroupItems)
                     {
                         <div class="cms_menu-item ui-sortable-handle" data-id="@Item.Id">

@@ -100,5 +100,32 @@ namespace Portal.Areas.Admin.Controllers
             return View("item", model);
         }
 
+
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
+        public ActionResult Delete(Guid id)
+        {
+            _cmsRepository.DeleteMenu(id);
+            ErrorMessage message = new ErrorMessage
+            {
+                Title = "Информация",
+                Info = "Запись удалена",
+                Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "ок", Action = "false" }
+                }
+            };
+            model.ErrorInfo = message;
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
+        public ActionResult Cancel()
+        {
+            return Redirect(StartUrl + Request.Url.Query);
+        }
+
     }
 }

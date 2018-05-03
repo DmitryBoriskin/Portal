@@ -22,7 +22,7 @@ namespace PgDbase.Repository.cms
                                 Id=s.id,
                                 Alias = s.c_alias,
                                 GroupName = s.c_title,
-                                GroupItems = s.fk_menu_parent_BackReferences.Select(m => new CmsMenuItem()
+                                GroupItems = s.fk_menu_parent_BackReferences.OrderBy(o=>o.n_sort).Select(m => new CmsMenuItem()
                                 {
                                     Id=m.id,
                                     Alias = m.c_alias,
@@ -149,6 +149,71 @@ namespace PgDbase.Repository.cms
                     tr.Commit();
                     return result;
                 }
+            }
+        }
+
+        public bool DeleteMenu(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.core_menu.Where(w => w.id == id);
+                    if (query.Any())
+                    {
+                        var data = db.core_menu.Single();
+                        InsertLog(new LogModel
+                        {
+                            PageId = id,
+                            PageName = data.c_title,
+                            Section = LogModule.Menu,
+                            Action = LogAction.delete
+                        });
+                        query.Delete();
+                        tr.Commit();
+                        return true;
+                    }
+                }                
+            }
+            return false;
+        }
+
+
+        public bool ChangePositionMenu(Guid id,int new_num)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.core_menu.Where(w => w.id == id);
+                    if (query.Any())
+                    {
+                        var data = query.Single();
+                        Guid Parent = (Guid)data.f_parent;
+                        int actual_num = (int)data.n_sort;
+                        if(new_num != actual_num)
+                        {
+                            if (new_num > actual_num)
+                            {
+                                db.core_menu
+                                    .Where(w => w.f_parent == Parent && w.n_sort > actual_num && w.n_sort <= new_num)
+                                    .Set(p => p.n_sort, p => p.n_sort - 1)
+                                    .Update();
+                            }
+                            else
+                            {
+                                db.core_menu
+                                    .Where(w => w.f_parent == Parent && w.n_sort < actual_num && w.n_sort >= new_num)
+                                    .Set(p => p.n_sort, p => p.n_sort + 1)
+                                    .Update();
+                            }
+                            db.core_menu.Where(w => w.id == id).Set(s => s.n_sort, new_num).Update();
+                        }
+                        tr.Commit();
+                        return true;
+                    }                    
+                    return false;
+                }                    
             }
         }
     }
