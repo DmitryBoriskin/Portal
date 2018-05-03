@@ -163,7 +163,7 @@ namespace Portal.Areas.Admin.Controllers
             if (model.MenuGroups != null)
             {
                 string link = Request.Url.Query;
-                string editGroupUrl = "/admin/services/sitemapmenu";
+                string editGroupUrl = "/admin/services/pagemenu";
                 string alias = "group";
                 string active = Request.QueryString[alias];
                 return new FilterTreeModel()
@@ -181,9 +181,9 @@ namespace Portal.Areas.Admin.Controllers
                             Alias = p.Id.ToString(),
                             Link = AddFilterParam(link, alias, p.Id.ToString()),
                             Url = $"{editGroupUrl}{p.Id}/",
-                            IsSelected = (active == p.Id.ToString()) ? true : false
+                            IsSelected = active == p.Id.ToString()
                         }).ToArray(),
-                    Link = AddFilterParam(link, alias, "")
+                    Link = "/admin/pages"
                 };
             }
             return null;
