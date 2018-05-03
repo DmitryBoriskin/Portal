@@ -69,6 +69,10 @@ namespace Portal.Areas.Admin.Controllers
             {
                 Title = "Информация"
             };
+
+            string _parent = backModel.Item.ParentId != Guid.Empty ? $"item/{backModel.Item.ParentId.ToString()}" : "";
+            string backToListUrl = $"{StartUrl}{_parent}{Request.Url.Query}";
+
             if (ModelState.IsValid)
             {
                 backModel.Item.Id = id;
@@ -90,7 +94,7 @@ namespace Portal.Areas.Admin.Controllers
                 }
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
-                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
+                    new ErrorMessageBtnModel { Url = backToListUrl, Text = "вернуться в список" },
                     new ErrorMessageBtnModel { Url = $"{StartUrl}item/{id}", Text = "ок", Action = "false" }
                 };
             }
@@ -111,31 +115,24 @@ namespace Portal.Areas.Admin.Controllers
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
-        public ActionResult Cancel()
+        public ActionResult Cancel(Guid id)
         {
-            return Redirect(StartUrl + Request.Url.Query);
+            string parent = Request.Form["Item.ParentId"];
+            if (parent != null && Guid.Parse(parent) != Guid.Empty)
+            {
+                parent = $"item/{Request.Form["Item.ParentId"]}";
+            }
+            else
+            {
+                parent = null;
+            }
+            return Redirect($"{StartUrl}{parent}{Request.Url.Query}");
         }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
-        public ActionResult Delete(Guid Id)
-        {
-            _cmsRepository.DeletePage(Id);
-
-            ErrorMessage message = new ErrorMessage
-            {
-                Title = "Информация",
-                Info = "Запись удалена",
-                Buttons = new ErrorMessageBtnModel[]
-                {
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}{Request.Url.Query}", Text = "ок", Action = "false" }
-                }
-            };
-
-            model.ErrorInfo = message;
-
-            return RedirectToAction("index");
-        }
+        public ActionResult Delete(Guid Id) =>
+            Redirect($"{StartUrl}{_cmsRepository.DeletePage(Id)}{Request.Url.Query}");
 
         /// <summary>
         /// Возвращает хлебные крошки

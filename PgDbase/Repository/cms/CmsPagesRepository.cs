@@ -66,6 +66,22 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Возвращает родительский идентификатор
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Guid GetPageParentId(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_pages
+                    .Where(w => w.gid == id)
+                    .Select(s => s.pgid)
+                    .SingleOrDefault();
+            }
+        }
+
+        /// <summary>
         /// Добавляет эл-т карты сайта
         /// </summary>
         /// <param name=""></param>
@@ -159,13 +175,13 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeletePage(Guid id)
+        public string DeletePage(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    bool result = false;
+                    string result = null;
 
                     var page = db.core_pages.Where(w => w.gid == id).SingleOrDefault();
                     if (page != null)
@@ -179,8 +195,9 @@ namespace PgDbase.Repository.cms
                         };
                         InsertLog(log, page);
 
-                        result = db.Delete(page) > 0;
+                        db.Delete(page);
 
+                        result = page.pgid != Guid.Empty ? $"item/{page.pgid.ToString()}" : null;
                         tr.Commit();
                     }
                     return result;
