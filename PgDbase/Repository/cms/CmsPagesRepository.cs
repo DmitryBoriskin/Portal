@@ -56,6 +56,7 @@ namespace PgDbase.Repository.cms
                         Text = s.c_text,
                         Url = s.c_url,
                         IsDisabled = s.b_disabled,
+                        IsDeleteble = s.b_deleteble,
                         Keywords = s.c_keyw,
                         Desc = s.c_desc,
                         SiteController = s.f_sites_controller,
@@ -84,11 +85,11 @@ namespace PgDbase.Repository.cms
                     };
                     InsertLog(log);
 
-                    int sort = db.core_pages
+                    var maxSort = db.core_pages
                         .Where(w => w.f_site == _siteId)
-                        .Where(w => w.pgid == page.ParentId)
-                        .Select(s => s.n_sort)
-                        .Max() + 1;
+                        .Where(w => w.pgid == page.ParentId);
+
+                    int sort = maxSort.Any() ? maxSort.Select(s => s.n_sort).Max() + 1 : 1;
 
                     bool result = db.core_pages.Insert(() => new core_pages
                     {
@@ -197,13 +198,14 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 List<GroupsModel> list = new List<GroupsModel>();
-                if (id != Guid.Empty)
+                var parent = db.core_pages.Where(w => w.gid == id).Select(s => s.pgid).SingleOrDefault();
+                if (parent != Guid.Empty)
                 {
-                    var item = GetBreadCrumb(id, db);
-                    while (item != null)
+                    var item = GetBreadCrumb(parent, db);
+                    while (item != null && item.Id != Guid.Empty)
                     {
                         list.Add(item);
-                        item = GetBreadCrumb(item.Id, db);
+                        item = GetBreadCrumb(item.Parent, db);
                     }
 
                     list.Reverse();
@@ -215,16 +217,17 @@ namespace PgDbase.Repository.cms
         /// <summary>
         /// Возвращает эл-т хлебной крошки
         /// </summary>
-        /// <param name="parent"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        private GroupsModel GetBreadCrumb(Guid parent, CMSdb db)
+        private GroupsModel GetBreadCrumb(Guid id, CMSdb db)
         {
             return db.core_pages
-                .Where(w => w.pgid == parent)
+                .Where(w => w.gid == id)
                 .Select(s => new GroupsModel
                 {
                     Id = s.gid,
-                    Title = s.c_name
+                    Title = s.c_name,
+                    Parent = s.pgid
                 }).SingleOrDefault();
         }
 

@@ -28,7 +28,7 @@
                             @*@if (Model.UserResolution.Write)*@
                             @if (true)
                             {
-                                <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()/?parent=@Guid.Empty">Добавить</a>
+                                <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()">Добавить</a>
                             }
                             @if (Model.List != null && Model.List.Count() > 1)
                             {
@@ -86,7 +86,7 @@
                                             _class = "icon-site-folder";
                                         }
 
-                                        <td class="@_class @disabled"><a href="/admin/sitemap/item/@item.Id">@item.Name</a></td>
+                                        <td class="@_class @disabled"><a href="/admin/pages/item/@item.Id">@item.Name</a></td>
                                         <td>
                                             @if (item.IsDeleteble)
                                             {

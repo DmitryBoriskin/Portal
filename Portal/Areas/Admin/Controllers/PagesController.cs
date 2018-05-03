@@ -52,7 +52,8 @@ namespace Portal.Areas.Admin.Controllers
             {
                 model.Item = new PageModel
                 {
-                    ParentId = Request.Params["parent"] != null ? Guid.Parse(Request.Params["parent"]) : Guid.Empty,
+                    ParentId = Request.Params["parent"] != null 
+                                    ? Guid.Parse(Request.Params["parent"]) : Guid.Empty,
                     IsDeleteble = true
                 };
             }
@@ -90,7 +91,7 @@ namespace Portal.Areas.Admin.Controllers
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}item/{id}", Text = "ок", Action = "false" }
                 };
             }
             else
@@ -98,7 +99,7 @@ namespace Portal.Areas.Admin.Controllers
                 message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}item/{id}", Text = "ок", Action = "false" }
                 };
             }
 
