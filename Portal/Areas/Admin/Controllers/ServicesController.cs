@@ -55,5 +55,10 @@ namespace Portal.Areas.Admin
 
             return PartialView("ChangePass", model);
         }
+        
+        public ActionResult AddFilterTree(string section)
+        {
+            return PartialView("FilterTreeItem", new GroupsModel());
+        }
     }
 }

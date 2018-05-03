@@ -163,7 +163,7 @@ namespace Portal.Areas.Admin.Controllers
             if (model.MenuGroups != null)
             {
                 string link = Request.Url.Query;
-                string editGroupUrl = "/admin/services/pagemenu";
+                string editGroupUrl = "/admin/services/addfiltertree?section=pages";
                 string alias = "group";
                 string active = Request.QueryString[alias];
                 return new FilterTreeModel()

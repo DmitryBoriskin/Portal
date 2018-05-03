@@ -1,0 +1,29 @@
+﻿@model GroupsModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_popUp.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="buttons">
+        <button type="submit" name="action" value="save-filter-tree-btn"
+                data-primary="true" class="button icon-create">
+            Coхранить
+        </button>
+        <button type="submit" name="action" value="delete-filter-tree-btn"
+                data-action="delete" class="button icon-delete">
+            Удалить
+        </button>
+        <div class="content">
+            <div class="row">
+                @Html.HiddenFor(m => m.Id)
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Alias, new { type = "text", title = "Псевдоним", @class = "form-control" })
+                </div>
+                <div class="col-md-5">
+                    @Html.TextBoxFor(m => m.Title, new { type = "text", title = "Название", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+}
