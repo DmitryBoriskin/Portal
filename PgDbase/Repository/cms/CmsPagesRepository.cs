@@ -22,6 +22,7 @@ namespace PgDbase.Repository.cms
                 return db.core_pages
                     .Where(w => w.fkpagesites.id == _siteId)
                     .Where(w => w.pgid == filter.Parent)
+                    .OrderBy(o => o.n_sort)
                     .Select(s => new PageModel
                     {
                         Id = s.gid,
@@ -167,7 +168,7 @@ namespace PgDbase.Repository.cms
                         Action = LogAction.update
                     };
                     InsertLog(log);
-                                        
+
                     bool result = db.core_pages
                         .Where(w => w.gid == page.Id)
                         .Set(s => s.c_name, page.Name)
@@ -354,7 +355,7 @@ namespace PgDbase.Repository.cms
                     return query.Set(s => s.c_name, item.Title)
                          .Update() > 0;
                 }
-                else 
+                else
                 {
                     int sort = query.Any() ? query.Select(s => s.n_sort).Max() : 1;
 
@@ -380,6 +381,61 @@ namespace PgDbase.Repository.cms
             {
                 return db.core_page_groups
                     .Where(w => w.id == id).Delete() > 0;
+            }
+        }
+
+        /// <summary>
+        /// Меняет порядок сортировки
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newNum"></param>
+        /// <returns></returns>
+        public bool ChangePositionPages(Guid id, int newNum)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    bool result = false;
+
+                    var query = db.core_pages.Where(w => w.gid == id);
+                    if (query.Any())
+                    {
+                        var data = query.SingleOrDefault();
+                        Guid parent = data.pgid;
+                        int actualNum = data.n_sort;
+                        if (newNum != actualNum)
+                        {
+                            if (newNum > actualNum)
+                            {
+                                db.core_pages
+                                    .Where(w => w.pgid == parent)
+                                    .Where(w => w.n_sort > actualNum)
+                                    .Where(w => w.n_sort <= newNum)
+                                    .Where(w => w.f_site == _siteId)
+                                    .Set(s => s.n_sort, s => s.n_sort - 1)
+                                    .Update();
+                            }
+                            else
+                            {
+                                db.core_pages
+                                    .Where(w => w.pgid == parent)
+                                    .Where(w => w.n_sort < actualNum)
+                                    .Where(w => w.n_sort >= newNum)
+                                    .Where(w => w.f_site == _siteId)
+                                    .Set(s => s.n_sort, s => s.n_sort + 1)
+                                    .Update();
+                            }
+                            result = db.core_pages
+                                .Where(w => w.gid == id)
+                                .Set(s => s.n_sort, newNum)
+                                .Update() > 0;
+
+                        tr.Commit();
+                        }
+                    }
+                    return result;
+                }
             }
         }
     }

@@ -43,7 +43,7 @@
                 @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "300", data_dir = ViewBag.DataPath })
             </div>
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <h4 class="nesting_title">Список вложенностей</h4>
                 </div>
 
@@ -52,7 +52,7 @@
                 {
                     if (!String.IsNullOrEmpty(Model.Item.Alias))
                     {
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <div class="bubble_but">
                                 <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
                             </div>
@@ -71,7 +71,7 @@
 
                 @if (Model.Item.Childrens != null && Model.Item.Childrens.Count() > 1)
                 {
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <div class="bubble_but">
                             <a class="button icon-sort" data-action="noPreloader-accept" id="sorting_element" title="Добавляет возможность сортировки элементов списка">Сортировать</a>
                         </div>
@@ -89,7 +89,7 @@
                                 <th class="map_site_attach">Вложения</th>
                             </tr>
                         </thead>
-                        <tbody data-service="/Admin/Services/ChangePermit?group=pages">
+                        <tbody data-service="/Admin/Services/ChangePosition?group=pages">
                             @foreach (var item in Model.Item.Childrens)
                             {
                                 <tr class="ui-sortable-handle" data-id="@item.Id">
