@@ -21,7 +21,8 @@ namespace Portal.Areas.Admin.Controllers
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                MenuGroups = _cmsRepository.GetPageGroups()
             };
             if (AccountInfo != null)
             {
@@ -54,7 +55,7 @@ namespace Portal.Areas.Admin.Controllers
             {
                 model.Item = new PageModel
                 {
-                    ParentId = Request.Params["parent"] != null 
+                    ParentId = Request.Params["parent"] != null
                                     ? Guid.Parse(Request.Params["parent"]) : Guid.Empty,
                     IsDeleteble = true
                 };
@@ -65,7 +66,7 @@ namespace Portal.Areas.Admin.Controllers
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
-        public ActionResult Item(Guid id, PageViewModel backModel)
+        public ActionResult Item(Guid id, PageViewModel backModel, string[] Item_MenuGroups)
         {
             ErrorMessage message = new ErrorMessage
             {
@@ -80,6 +81,10 @@ namespace Portal.Areas.Admin.Controllers
                 var parentElement = _cmsRepository.GetPage(backModel.Item.ParentId);
                 backModel.Item.Path = $"{parentElement.Path}{parentElement.Alias}/";
                 backModel.Item.Id = id;
+                if (Item_MenuGroups != null)
+                {
+                    backModel.Item.MenuGroups = Item_MenuGroups.Select(s => Guid.Parse(s)).ToArray();
+                }
                 if (String.IsNullOrWhiteSpace(backModel.Item.Alias))
                 {
                     backModel.Item.Alias = backModel.Item.Name;
@@ -104,7 +109,7 @@ namespace Portal.Areas.Admin.Controllers
             }
             else
             {
-                message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
+                message.Info = "Ошибка в заполнении формы. Поля в которых допущены ошибки - помечены цветом";
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
                     new ErrorMessageBtnModel { Url = $"{StartUrl}item/{id}", Text = "ок", Action = "false" }
@@ -152,14 +157,13 @@ namespace Portal.Areas.Admin.Controllers
                 Items = _cmsRepository.GetBreadCrumbs(id)
             };
         }
-        
+
         /// <summary>
         /// Возвращает дерево фильтрации
         /// </summary>
         /// <returns></returns>
         private FilterTreeModel GetFilterTree()
         {
-            model.MenuGroups = _cmsRepository.GetPageGroups();
             if (model.MenuGroups != null)
             {
                 string link = Request.Url.Query;

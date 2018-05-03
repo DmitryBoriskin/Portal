@@ -1,4 +1,5 @@
 ﻿using LinqToDB;
+using LinqToDB.Data;
 using PgDbase.entity;
 using PgDbase.models;
 using System;
@@ -60,7 +61,8 @@ namespace PgDbase.Repository.cms
                         Keywords = s.c_keyw,
                         Desc = s.c_desc,
                         SiteController = s.f_sites_controller,
-                        Childrens = GetPages(new PageFilterModel { Parent = s.gid })
+                        Childrens = GetPages(new PageFilterModel { Parent = s.gid }),
+                        MenuGroups = s.fkpagegrouplinkpages.Select(g => g.f_page_group).ToArray()
                     }).SingleOrDefault();
             }
         }
@@ -124,6 +126,22 @@ namespace PgDbase.Repository.cms
                         f_sites_controller = page.SiteController
                     }) > 0;
 
+                    // группы меню
+                    if (page.MenuGroups != null)
+                    {
+                        List<core_page_group_links> groups = new List<core_page_group_links>();
+                        foreach (var g in page.MenuGroups)
+                        {
+                            groups.Add(new core_page_group_links
+                            {
+                                id = Guid.NewGuid(),
+                                f_page = page.Id,
+                                f_page_group = g
+                            });
+                        }
+                        db.BulkCopy(groups);
+                    }
+
                     tr.Commit();
                     return result;
                 }
@@ -149,7 +167,7 @@ namespace PgDbase.Repository.cms
                         Action = LogAction.update
                     };
                     InsertLog(log);
-
+                                        
                     bool result = db.core_pages
                         .Where(w => w.gid == page.Id)
                         .Set(s => s.c_name, page.Name)
@@ -163,6 +181,24 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.c_desc, page.Desc)
                         .Set(s => s.f_sites_controller, page.SiteController)
                         .Update() > 0;
+
+                    // группы меню
+                    db.core_page_group_links.Where(w => w.f_page == page.Id).Delete();
+
+                    if (page.MenuGroups != null)
+                    {
+                        List<core_page_group_links> groups = new List<core_page_group_links>();
+                        foreach (var g in page.MenuGroups)
+                        {
+                            groups.Add(new core_page_group_links
+                            {
+                                id = Guid.NewGuid(),
+                                f_page = page.Id,
+                                f_page_group = g
+                            });
+                        }
+                        db.BulkCopy(groups);
+                    }
 
                     tr.Commit();
                     return result;

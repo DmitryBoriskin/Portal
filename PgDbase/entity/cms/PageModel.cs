@@ -81,5 +81,10 @@ namespace PgDbase.entity
         /// Дочерние эл-ты
         /// </summary>
         public PageModel[] Childrens { get; set; }
+
+        /// <summary>
+        /// Группы меню
+        /// </summary>
+        public Guid[] MenuGroups { get; set; }
     }
 }
