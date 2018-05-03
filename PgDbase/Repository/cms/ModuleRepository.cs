@@ -43,13 +43,14 @@ namespace PgDbase.Repository.cms
             {
                 var query = db.core_views
                     .Where(t => t.id != Guid.Empty);
-                   
+
                 var list = query
                     .Select(s => new TemplateModel
                     {
                         Id = s.id,
                         Title = s.c_name,
-                        Controller = new ModuleModel() {
+                        Controller = new ModuleModel()
+                        {
                             Id = s.f_controller
                         },
                         ViewPath = s.c_path,
@@ -497,6 +498,154 @@ namespace PgDbase.Repository.cms
                             Section = LogModule.Modules,
                             Action = LogAction.delete,
                             Comment = "Удален модуль" + String.Format("{0}/{1}", cdController.c_controller_name, cdController.c_action_name)
+                        };
+                        InsertLog(log);
+
+                        tran.Commit();
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="siteId"></param>
+        /// <returns></returns>
+        public SiteModuleModel[] GetSiteModulesList(Guid siteId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_controllers
+                     .Where(t => t.id != Guid.Empty);
+
+                var list = query
+                    .Select(s => new SiteModuleModel()
+                    {
+                        Id = s.id,
+                        ParentId = s.id,
+                        Title = s.c_name,
+                        Controller = s.c_controller_name,
+                        Action = s.c_action_name,
+                        View = (GetSiteModule(siteId,s.id) != null) ? GetSiteModule(siteId,s.id).View : s.c_default_view,
+                        Desc = s.c_desc,
+                        SiteModuleId = (GetSiteModule(siteId, s.id) != null) ? GetSiteModule(siteId, s.id).Id : (Guid?)null,
+                        Checked = (GetSiteModule(siteId,s.id) != null) ? true : false
+                    });
+
+                return list.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Модуль сайта
+        /// </summary>
+        /// <param name="siteId"></param>
+        /// <returns></returns>
+        public SiteModuleModel GetSiteModule(Guid siteId, Guid moduleId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_site_controllers
+                    .Where(s => s.f_site == siteId)
+                    .Where(s => s.f_controller == moduleId)
+                     .AsQueryable();
+
+                var data = query
+                    .Select(s => new SiteModuleModel()
+                    {
+                        Id = s.id,
+                        ParentId = s.id,
+                        Title = s.fksitecontrollerscontrollers.c_name,
+                        Controller = s.fksitecontrollerscontrollers.c_controller_name,
+                        Action = s.fksitecontrollerscontrollers.c_action_name,
+                        View = (s.f_view != null) ? s.f_view.Value : s.fksitecontrollerscontrollers.c_default_view,
+                        Desc = s.fksitecontrollerscontrollers.c_desc,
+                        Checked = true
+                    });
+
+                return data.SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Добавление Модуля сайту
+        /// </summary>
+        /// <param name="siteId"></param>
+        /// <param name="moduleId"></param>
+        /// <returns></returns>
+        public bool BindSiteModule(Guid siteId, Guid moduleId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var data = db.core_site_controllers
+                        .Where(s => s.f_site == siteId)
+                        .Where(s => s.f_controller == moduleId);
+
+                    if (!data.Any())
+                    {
+                        var cdSiteController = new core_site_controllers()
+                        {
+                            id = Guid.NewGuid(),
+                            f_site = siteId,
+                            f_controller = moduleId
+                        };
+                        db.Insert(cdSiteController);
+
+                        var module = db.core_controllers
+                                        .Where(m => m.id == moduleId)
+                                        .Single();
+
+                        var log = new LogModel
+                        {
+                            PageId = siteId,
+                            PageName = module.c_name,
+                            Section = LogModule.Sites,
+                            Action = LogAction.update,
+                            Comment = "Сайту включен модуль " + module.c_controller_name + "/" + module.c_action_name
+                        };
+                        InsertLog(log);
+
+                        tran.Commit();
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        public bool UnBindSiteModule(Guid siteId, Guid moduleId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var data = db.core_site_controllers
+                        .Where(s => s.f_site == siteId)
+                        .Where(s => s.f_controller == moduleId);
+
+                    if (data.Any())
+                    {
+                        var cdSiteModule = data.Single();
+                        db.Delete(cdSiteModule);
+
+                        var module = db.core_controllers
+                                       .Where(m => m.id == moduleId)
+                                       .Single();
+
+                        var log = new LogModel
+                        {
+                            PageId = siteId,
+                            PageName = module.c_name,
+                            Section = LogModule.Sites,
+                            Action = LogAction.update,
+                            Comment = "Сайту отключен модуль " + module.c_controller_name + "/" + module.c_action_name
                         };
                         InsertLog(log);
 

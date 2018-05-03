@@ -27,7 +27,6 @@ namespace Portal.Areas.Admin
             };
             if (AccountInfo != null)
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-
         }
 
 
@@ -35,27 +34,19 @@ namespace Portal.Areas.Admin
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetSitesList(filter);
+            model.List = _cmsRepository.GetSites(filter);
 
             return View(model);
-        }
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string searchtext, bool enabled, string size)
-        {
-            string query = HttpUtility.UrlDecode(Request.Url.Query);
-            query = AddFilterParam(query, "searchtext", searchtext);
-            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
-            query = AddFilterParam(query, "page", String.Empty);
-            query = AddFilterParam(query, "size", size);
-
-            return Redirect(StartUrl + query);
         }
 
         //GET: Admin/Sites/item/{GUID}
         public ActionResult Item(Guid id)
         {
-            model.Item = _cmsRepository.GetSites(id);
+            model.Item = _cmsRepository.GetSite(id);
+
+            if(model.Item != null)
+                model.Item.Modules = _cmsRepository.GetSiteModulesList(id);
+
             return View("Item", model);
         }
 
@@ -111,7 +102,6 @@ namespace Portal.Areas.Admin
         }
 
 
-
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel()
@@ -137,7 +127,27 @@ namespace Portal.Areas.Admin
             return RedirectToAction("index");
         }
 
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string searchtext, bool enabled, string size)
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
 
+            return Redirect(StartUrl + query);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
+        {
+            return Redirect(StartUrl);
+        }
+
+        #region Домены
         /// <summary>
         /// Добавление домена
         /// </summary>
@@ -168,7 +178,7 @@ namespace Portal.Areas.Admin
             if (res)
                 return Json("Success");
 
-            return Json("An Error Has occourred");
+            return Json("An Error Has Occourred");
         }
 
         [HttpPost]
@@ -179,6 +189,33 @@ namespace Portal.Areas.Admin
 
         }
 
+        #endregion
 
+        #region Модули
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SetSiteModule(Guid siteId, Guid moduleId)
+        {
+           var res = _cmsRepository.BindSiteModule(siteId, moduleId);
+            if (res)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
+        [HttpPost]
+        public ActionResult UnSetSiteModule(Guid siteId, Guid moduleId)
+        {
+            var res = _cmsRepository.UnBindSiteModule(siteId, moduleId);
+            if (res)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+        #endregion
     }
 }

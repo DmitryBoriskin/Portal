@@ -352,16 +352,16 @@ namespace PgDbase.models
 		#region Associations
 
 		/// <summary>
+		/// fk_page_page
+		/// </summary>
+		[Association(ThisKey="pgid", OtherKey="gid", CanBeNull=false, KeyName="fk_page_page", BackReferenceName="fk_page_page_BackReferences")]
+		public core_pages fkpagepage { get; set; }
+
+		/// <summary>
 		/// fk_page_sites
 		/// </summary>
 		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_page_sites", BackReferenceName="fkpages")]
 		public core_sites fkpagesites { get; set; }
-
-		/// <summary>
-		/// fk_page_page
-		/// </summary>
-		[Association(ThisKey="gid", OtherKey="pgid", CanBeNull=false, KeyName="fk_page_page", BackReferenceName="fk_page_page_BackReference")]
-		public core_pages fkpagepage { get; set; }
 
 		/// <summary>
 		/// fk_page_group_link_page_BackReference
@@ -372,8 +372,8 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_page_page_BackReference
 		/// </summary>
-		[Association(ThisKey="pgid", OtherKey="gid", CanBeNull=true, IsBackReference=true)]
-		public core_pages fk_page_page_BackReference { get; set; }
+		[Association(ThisKey="gid", OtherKey="pgid", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_pages> fk_page_page_BackReferences { get; set; }
 
 		#endregion
 	}
@@ -381,11 +381,10 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="site_controllers")]
 	public partial class core_site_controllers
 	{
-		[PrimaryKey, NotNull    ] public Guid   id           { get; set; } // uuid
-		[Column,     NotNull    ] public Guid   f_site       { get; set; } // uuid
-		[Column,        Nullable] public Guid?  f_controller { get; set; } // uuid
-		[Column,        Nullable] public Guid?  f_view       { get; set; } // uuid
-		[Column,        Nullable] public string c_desc       { get; set; } // text
+		[PrimaryKey, NotNull    ] public Guid  id           { get; set; } // uuid
+		[Column,     NotNull    ] public Guid  f_site       { get; set; } // uuid
+		[Column,     NotNull    ] public Guid  f_controller { get; set; } // uuid
+		[Column,        Nullable] public Guid? f_view       { get; set; } // uuid
 
 		#region Associations
 
@@ -404,7 +403,7 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_site_controllers__controllers
 		/// </summary>
-		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=true, KeyName="fk_site_controllers__controllers", BackReferenceName="fksites")]
+		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=false, KeyName="fk_site_controllers__controllers", BackReferenceName="fksites")]
 		public core_controllers fksitecontrollerscontrollers { get; set; }
 
 		#endregion
@@ -433,9 +432,10 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="sites")]
 	public partial class core_sites
 	{
-		[PrimaryKey, NotNull] public Guid   id         { get; set; } // uuid
-		[Column,     NotNull] public string c_name     { get; set; } // character varying(512)
-		[Column,     NotNull] public bool   b_disabled { get; set; } // boolean
+		[PrimaryKey, NotNull    ] public Guid   id         { get; set; } // uuid
+		[Column,     NotNull    ] public string c_name     { get; set; } // character varying(512)
+		[Column,     NotNull    ] public bool   b_disabled { get; set; } // boolean
+		[Column,        Nullable] public string c_fullname { get; set; } // character varying(4096)
 
 		#region Associations
 
@@ -444,6 +444,12 @@ namespace PgDbase.models
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_page_groups> fkpagegroupss { get; set; }
+
+		/// <summary>
+		/// fk_page_sites_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_pages> fkpages { get; set; }
 
 		/// <summary>
 		/// fk_sites_domains_sites_BackReference
@@ -456,12 +462,6 @@ namespace PgDbase.models
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_materials> fkmaterialss { get; set; }
-
-		/// <summary>
-		/// fk_page_sites_BackReference
-		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
-		public IEnumerable<core_pages> fkpages { get; set; }
 
 		/// <summary>
 		/// fk_user_site_link_sites_BackReference

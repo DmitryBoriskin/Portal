@@ -328,6 +328,41 @@ $(document).ready(function () {
         });
 
     });
+
+    $(".module-chkbx-div label").on("click", function (e) {
+        var el = $(this).closest(".input-group").children().first();
+        //текущее значение кастомного чекбокса, нам нужно измененное
+        var moduleIsOff = el.hasClass("off") ? true : false;
+        var _moduleId = $(this).closest(".module-chkbx-div").data("moduleId");
+        var _siteId = $(this).closest(".module-chkbx-div").data("siteId");
+
+        var targetUrl = "/admin/sites/UnSetSiteModule";
+        if (moduleIsOff)
+        {
+            var targetUrl = "/admin/sites/SetSiteModule";
+        }
+
+            try {
+                $.ajax({
+                    method: "POST",
+                    url: targetUrl,
+                    async: false,
+                    data: { siteId : _siteId, moduleId: _moduleId },
+                })
+                    .done(function (response) {
+                    })
+                    .fail(function (jqXHR, status) {
+                        console.log("Ошибка" + " " + status + " " + jqXHR);
+                    })
+                    .always(function (response) {
+                        //location.reload();
+                    });
+            }
+            catch (ex) {
+                console.log(ex);
+            }
+    });
+
     //Домен по умолчанию
     $(".host-chkbx-div label").on("click", function (e) {
         var el = $(this).closest(".input-group").children().first();

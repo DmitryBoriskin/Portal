@@ -159,5 +159,23 @@ namespace Portal.Areas.Admin
         {
             return Redirect(StartUrl);
         }
+
+
+        public ActionResult SiteModuleTemplatesList()
+        {
+            filter = GetFilter();
+            var tfilter = FilterModel.Extend<TemplateFilter>(filter);
+
+            var controller = Guid.Empty;
+            if (!string.IsNullOrEmpty(filter.Group) && Guid.TryParse(filter.Group, out controller))
+                tfilter.Controller = controller;
+
+            model.List = _cmsRepository.GetTemplates(tfilter);
+
+            ViewBag.SearchText = filter.SearchText;
+            ViewBag.Group = filter.Group;
+
+            return View("Areas/admin/View/Templates/Modal/ModuleTemplates.cshtml",model);
+        }
     }
 }

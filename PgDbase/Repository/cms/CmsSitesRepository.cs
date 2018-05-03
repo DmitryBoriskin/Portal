@@ -16,7 +16,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter">параметры для фильтрации</param>
         /// <returns></returns>
-        public Paged<SitesModel> GetSitesList(FilterModel filter)
+        public Paged<SitesModel> GetSites(FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -24,10 +24,9 @@ namespace PgDbase.Repository.cms
                     .AsQueryable();
 
                 if (filter.Disabled != null)
-                {
                     query = query.Where(w => w.b_disabled == filter.Disabled);
-                }
-                if (!String.IsNullOrWhiteSpace(filter.SearchText))
+
+                if (!string.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (search != null && search.Count() > 0)
@@ -36,37 +35,38 @@ namespace PgDbase.Repository.cms
                         {
                             if (!String.IsNullOrWhiteSpace(p))
                             {
-                                query = query.Where(w => w.c_name.Contains(p));
+                                query = query.Where(w => w.c_name.ToLower().Contains(p.ToLower()));
                             }
                         }
                     }
                 }
-                query = query.OrderBy(o => new { o.c_name });
-                if (query.Any())
+
+                query = query
+                    .OrderBy(s => s.c_name);
+
+                int itemsCount = query.Count();
+
+                var list = query
+                            .Skip(filter.Size * (filter.Page - 1))
+                            .Take(filter.Size)
+                            .Select(s => new SitesModel
+                            {
+                                Id = s.id,
+                                Title = s.c_name,
+                                Disabled = s.b_disabled
+                            });
+
+                return new Paged<SitesModel>
                 {
-                    int itemsCount = query.Count();
-                    var list = query
-                                .Skip(filter.Size * (filter.Page - 1))
-                                .Take(filter.Size)
-                                .Select(s => new SitesModel
-                                {
-                                    Id = s.id,
-                                    Title = s.c_name,
-                                    Disabled=s.b_disabled
-                                });
-                    return new Paged<SitesModel>
+                    Items = list.ToArray(),
+                    Pager = new PagerModel()
                     {
-                        Items = list.ToArray(),
-                        Pager = new PagerModel()
-                        {
-                            PageNum = filter.Page,
-                            PageSize = filter.Size,
-                            TotalCount = itemsCount
-                        }
-                    };
-                }
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
             }
-            return null;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public SitesModel GetSites(Guid id)
+        public SitesModel GetSite(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
@@ -84,15 +84,19 @@ namespace PgDbase.Repository.cms
                          {
                              Id = s.id,
                              Title = s.c_name,
-                             Disabled=s.b_disabled,
-                             DomainList = s.fkdomainss.OrderBy(o=>o.num).Select(d => new Domain()
-                             {
-                                 DomainName = d.c_domain,
-                                 id = d.id,
-                                 IsDefault = d.b_default
-                             }).ToArray()
+                             Disabled = s.b_disabled,
+                             DomainList = s.fkdomainss
+                                         .OrderBy(o => o.num)
+                                         .Select(d => new Domain()
+                                         {
+                                             DomainName = d.c_domain,
+                                             id = d.id,
+                                             IsDefault = d.b_default
+                                         }).ToArray()
                          });
-                if (query.Any()) return query.SingleOrDefault();
+                if (query.Any())
+                    return query.Single();
+
                 return null;
 
             }
@@ -162,7 +166,7 @@ namespace PgDbase.Repository.cms
                         {
                             id = site.Id,
                             c_name = site.Title,
-                            b_disabled=site.Disabled
+                            b_disabled = site.Disabled
                         }) > 0;
                     tr.Commit();
                     return result;
@@ -247,7 +251,7 @@ namespace PgDbase.Repository.cms
 
                     tr.Commit();
                     return true;
-                }                
+                }
             }
         }
 
@@ -268,25 +272,25 @@ namespace PgDbase.Repository.cms
                     if (data.Any())
                     {
                         var site = data.Single();
-                    //все другие домены сайта делаем неосновными                    
-                    db.core_site_domains
-                            .Where(w => w.f_site == site.f_site && w.id!=id)
-                            .Set(d => d.b_default, false)
-                            .Update();
-                    
-                    db.core_site_domains
-                                .Where(w => w.id == id)
-                                .Set(p => p.b_default, true)
+                        //все другие домены сайта делаем не основными
+                        db.core_site_domains
+                                .Where(w => w.f_site == site.f_site && w.id != id)
+                                .Set(d => d.b_default, false)
                                 .Update();
 
-                    InsertLog(new LogModel
+                        db.core_site_domains
+                                    .Where(w => w.id == id)
+                                    .Set(p => p.b_default, true)
+                                    .Update();
+
+                        InsertLog(new LogModel
                         {
                             PageId = site.f_site,
-                            PageName = "Изьменен домен по умолчанию",
+                            PageName = site.c_domain,
                             Section = LogModule.Sites,
-                            Action = LogAction.update
+                            Action = LogAction.update,
+                            Comment = "Изменен домен по умолчанию"
                         });
-
                     }
                     tr.Commit();
                     return true;
@@ -302,7 +306,7 @@ namespace PgDbase.Repository.cms
                 using (var tr = db.BeginTransaction())
                 {
                     var query = db.core_site_domains
-                                  .Where(w => w.id == id && w.b_default!=true);                    
+                                  .Where(w => w.id == id && w.b_default != true);
                     if (query.Any())
                     {
                         var site = query.Single();
@@ -311,7 +315,7 @@ namespace PgDbase.Repository.cms
                         InsertLog(new LogModel
                         {
                             PageId = site.f_site,
-                            PageName = "Удален домен"+ site.c_domain,
+                            PageName = "Удален домен" + site.c_domain,
                             Section = LogModule.Sites,
                             Action = LogAction.update
                         });
@@ -320,7 +324,7 @@ namespace PgDbase.Repository.cms
                         return true;
                     }
                     return false;
-                    
+
                 }
             }
         }
