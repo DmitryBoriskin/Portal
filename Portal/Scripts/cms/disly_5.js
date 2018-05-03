@@ -33,6 +33,7 @@ $(document).ready(function () {
 
     // Если система администрирования загружена в frame открываем её в родительском окне
     if (top !== self) {
+        console.log('test');
         top.location.href = location.href;
     }
     
@@ -688,7 +689,7 @@ function Confirm(Title, Body, Object) {
 function PopUpFrame(Object) {
     clear_modal();
 
-    $frale = $('<iframe/>', { 'class': 'modal_frame', 'frameborder': '0', 'height': '20', 'src': Object.attr("href"), 'sandbox': 'allow-same-origin allow-scripts allow-forms', 'scrolling': 'no', 'style': 'overflow: hidden; width:100%;' });
+    $frale = $('<iframe/>', { 'class': 'modal_frame', 'frameborder': '0', 'height': '20', 'src': Object.attr("href"), 'sandbox': 'allow-same-origin allow-scripts allow-forms allow-top-navigation', 'scrolling': 'no', 'style': 'overflow: hidden; width:100%;' });
 
     $modal.find('.modal-dialog').addClass(' modal-lg'),
     $modalTitle.append(Object.attr("title"));
