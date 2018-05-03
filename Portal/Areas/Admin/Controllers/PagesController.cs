@@ -75,6 +75,8 @@ namespace Portal.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                var parentElement = _cmsRepository.GetPage(backModel.Item.ParentId);
+                backModel.Item.Path = $"{parentElement.Path}{parentElement.Alias}/";
                 backModel.Item.Id = id;
                 if (String.IsNullOrWhiteSpace(backModel.Item.Alias))
                 {
