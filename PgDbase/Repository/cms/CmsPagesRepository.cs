@@ -261,5 +261,24 @@ namespace PgDbase.Repository.cms
                     .Where(w => w.gid == id).Any();
             }
         }
+
+        /// <summary>
+        /// Возвращает эл-ты для фильтра групп меню
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetPageGroups()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_page_groups
+                    .Where(w => w.f_site == _siteId)
+                    .OrderBy(o => o.n_sort)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name
+                    }).ToArray();
+            }
+        }
     }
 }

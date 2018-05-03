@@ -20,11 +20,16 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Фильтр
         /// </summary>
-        public FilterModel Filter { get; set; }
+        public FilterTreeModel Filter { get; set; }
 
         /// <summary>
         /// Хлебные крошки
         /// </summary>
         public BreadCrumb BreadCrumbs { get; set; }
+
+        /// <summary>
+        /// Группы меню
+        /// </summary>
+        public GroupsModel[] MenuGroups { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
@@ -40,6 +41,7 @@ namespace Portal.Areas.Admin.Controllers
             filter = GetFilter();
             var mfilter = FilterModel.Extend<PageFilterModel>(filter);
             model.List = _cmsRepository.GetPages(mfilter);
+            model.Filter = GetFilterTree();
             return View(model);
         }
 
@@ -149,6 +151,42 @@ namespace Portal.Areas.Admin.Controllers
                 DefaultUrl = StartUrl,
                 Items = _cmsRepository.GetBreadCrumbs(id)
             };
+        }
+        
+        /// <summary>
+        /// Возвращает дерево фильтрации
+        /// </summary>
+        /// <returns></returns>
+        private FilterTreeModel GetFilterTree()
+        {
+            model.MenuGroups = _cmsRepository.GetPageGroups();
+            if (model.MenuGroups != null)
+            {
+                string link = Request.Url.Query;
+                string editGroupUrl = "/admin/services/sitemapmenu";
+                string alias = "group";
+                string active = Request.QueryString[alias];
+                return new FilterTreeModel()
+                {
+                    Title = "Группы меню",
+                    Icon = "icon-th-list-3",
+                    BtnName = "Новая группа меню",
+                    Url = editGroupUrl,
+                    IsReadOnly = true,
+                    //AccountGroup = (model.Account != null) ? model.Account.Group : "",
+                    Items = model.MenuGroups.Select(p =>
+                        new CatalogList()
+                        {
+                            Title = p.Title,
+                            Alias = p.Id.ToString(),
+                            Link = AddFilterParam(link, alias, p.Id.ToString()),
+                            Url = $"{editGroupUrl}{p.Id}/",
+                            IsSelected = (active == p.Id.ToString()) ? true : false
+                        }).ToArray(),
+                    Link = AddFilterParam(link, alias, "")
+                };
+            }
+            return null;
         }
     }
 }
