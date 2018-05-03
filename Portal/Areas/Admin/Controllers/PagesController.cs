@@ -48,6 +48,14 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetPage(id);
+            if (model.Item == null)
+            {
+                model.Item = new PageModel
+                {
+                    ParentId = Request.Params["parent"] != null ? Guid.Parse(Request.Params["parent"]) : Guid.Empty,
+                    IsDeleteble = true
+                };
+            }
             GetBreadCrumbs(id);
             return View(model);
         }
@@ -95,6 +103,7 @@ namespace Portal.Areas.Admin.Controllers
             }
 
             model.Item = _cmsRepository.GetPage(id);
+            GetBreadCrumbs(id);
             model.ErrorInfo = message;
             return View("item", model);
         }

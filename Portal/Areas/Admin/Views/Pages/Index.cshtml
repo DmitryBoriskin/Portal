@@ -28,7 +28,7 @@
                             @*@if (Model.UserResolution.Write)*@
                             @if (true)
                             {
-                                <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()/">Добавить</a>
+                                <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()/?parent=@Guid.Empty">Добавить</a>
                             }
                             @if (Model.List != null && Model.List.Count() > 1)
                             {
