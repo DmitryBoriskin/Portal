@@ -1,4 +1,5 @@
 ﻿@model PageViewModel
+
 @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
 {
     //if (Model.UserResolution.Read)
@@ -8,32 +9,32 @@
             <h1>@ViewBag.Title</h1>
             @Html.Partial("Partial/_breadCrumbs", Model.BreadCrumbs)
             @*@if (Model.BreadCrumbs != null)
+                {
+                }*@
+            @*@if (Model.Item != null)
+                {*@
+            @if (Model.Item.IsDeleteble)
             {
-            }*@
-            @if (Model.Item != null)
-            {
-                if (Model.Item.IsDeleteble)
-                {
-                    @Html.TextBoxFor(m => m.Item.Name, new { @title = "Название", @required = "" })
-                }
-                else
-                {
-                    @Html.TextBoxFor(m => m.Item.Name, new { @title = "Название", @required = "", @readonly = "readonly" })
-                }
-                if (Model.Item.IsDeleteble)
-                {
-                    @Html.TextBoxFor(m => m.Item.Alias, new { @title = "Алиас" })
-                }
-                else
-                {
-                    @Html.TextBoxFor(m => m.Item.Alias, new { @title = "Алиас", @readonly = "readonly" })
-                }
+                @Html.TextBoxFor(m => m.Item.Name, new { @title = "Название", @required = "" })
             }
             else
             {
-                @Html.TextBoxFor(m => m.Item.Name, new { @title = "Название", @required = "" })
+                @Html.TextBoxFor(m => m.Item.Name, new { @title = "Название", @required = "", @readonly = "readonly" })
+            }
+            @if (Model.Item.IsDeleteble)
+            {
                 @Html.TextBoxFor(m => m.Item.Alias, new { @title = "Алиас" })
             }
+            else
+            {
+                @Html.TextBoxFor(m => m.Item.Alias, new { @title = "Алиас", @readonly = "readonly" })
+            }
+            @*}
+                else
+                {
+                    @Html.TextBoxFor(m => m.Item.Name, new { @title = "Название", @required = "" })
+                    @Html.TextBoxFor(m => m.Item.Alias, new { @title = "Алиас" })
+                }*@
 
             @Html.TextBoxFor(m => m.Item.Url, new { @title = "Ссылка" })
             @Html.HiddenFor(m => m.Item.ParentId)
@@ -49,11 +50,11 @@
                 @*@if (Model.UserResolution.Write)*@
                 @if (true)
                 {
-                    if (Model.Item != null && !String.IsNullOrEmpty(Model.Item.Alias))
+                    if (!String.IsNullOrEmpty(Model.Item.Alias))
                     {
                         <div class="col-sm-5">
                             <div class="bubble_but">
-                                <a class="button icon-create green" href="/admin/sitemap/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
+                                <a class="button icon-create green" href="/admin/page/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
                             </div>
                         </div>
                     }
@@ -68,7 +69,7 @@
 
                 }
 
-                @if (Model.Item != null && Model.Item.Childrens != null && Model.Item.Childrens.Count() > 1)
+                @if (Model.Item.Childrens != null && Model.Item.Childrens.Count() > 1)
                 {
                     <div class="col-sm-2">
                         <div class="bubble_but">
@@ -78,7 +79,7 @@
                 }
             </div>
 
-            @if (Model.Item != null && Model.Item.Childrens != null && Model.Item.Childrens.Count() > 0)
+            @if (Model.Item.Childrens != null && Model.Item.Childrens.Count() > 0)
             {
                 <div class="sort_list">
                     <table id="sm_list" class="table table-striped">
@@ -88,7 +89,7 @@
                                 <th class="map_site_attach">Вложения</th>
                             </tr>
                         </thead>
-                        <tbody data-service="/Admin/Services/ChangePermit?group=sitemap">
+                        <tbody data-service="/Admin/Services/ChangePermit?group=page">
                             @foreach (var item in Model.Item.Childrens)
                             {
                                 <tr class="ui-sortable-handle" data-id="@item.Id">
@@ -110,7 +111,7 @@
                                             _class = "icon-site-folder";
                                         }
 
-                                        <td class="@_class @disabled"><a href="/admin/sitemap/item/@item.Id">@item.Name</a></td>
+                                        <td class="@_class @disabled"><a href="/admin/page/item/@item.Id">@item.Name</a></td>
                                         <td class="sort-element @disabled">@item.CountChilds</td>
                                     }
                                 </tr>
@@ -121,7 +122,7 @@
             }
         </div>
         <div class="dop_info-block">
-            @if (Model.Item != null && Model.Item.IsDeleteble)
+            @if (Model.Item.IsDeleteble)
             {
                 @*@Html.DropDownListFor(m => m.Item.FrontSection, new SelectList(Model.FrontSectionList, "Value", "Text", "page"), new { @title = "Шаблон", @class = "selectpicker", @data_help = "Выбор шаблона страницы", @required = "" })*@
             }
@@ -144,7 +145,7 @@
                 @Html.TextAreaFor(m => m.Item.Keywords, new { type = "text", title = "Ключевые слова", data_help = "Данный тег используется при создании краткого описания страницы, используется поисковыми системами для индексации, а также при создании аннотации в выдаче по запросу. При отсутствии тега поисковые системы выдают в аннотации первую строку документа или отрывок, содержащий ключевые слова." })
                 @Html.TextAreaFor(m => m.Item.Desc, new { type = "text", title = "Краткое описание", data_help = "Данный метатег поисковые системы используют для того, чтобы определить релевантность ссылки. При формировании данного тега необходимо использовать только те слова, которые содержатся в самом документе. Использование тех слов, которых нет на странице, не рекомендуется. Рекомендованное количество слов в данном теге — не более десяти." })
             </div>
-            @if (Model.Item != null && Model.Item.IsDeleteble)
+            @if (Model.Item.IsDeleteble)
             {
                 @Html.CheckBoxFor(m => m.Item.IsDisabled, new { @class = "checkbox", @title = "Запретить просмотр", @data_toggle = "toggle", @data_help = "Запретить просмотр", @data_off = "Доступ разрешён", @data_on = "Доступ запрещён", @data_onstyle = "danger", @data_offstyle = "success", @data_width = "248" })
             }
@@ -157,7 +158,7 @@
             }
 
             <div class="topIndent-20">
-                @if (Model.Item != null)
+                @if (!String.IsNullOrWhiteSpace(Model.Item.Alias))
                 {
                     @Html.ActionLink("Документы", "index", "documents", new { @id = Model.Item.Id }, new { @id = "LogLists", @class = "button pop-up_frame icon-attach", @data_class = "LogList", @title = "Документы" })
                     @Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
@@ -198,7 +199,7 @@
         @*@if (Model.Item != null && Model.UserResolution.Delete)*@
         @if (true)
         {
-            if (Model.Item != null && Model.Item.IsDeleteble)
+            if (Model.Item.IsDeleteble)
             {
                 <button type="submit" name="action" value="delete-btn" data-action="delete" class="button icon-delete">Удалить</button>
             }
