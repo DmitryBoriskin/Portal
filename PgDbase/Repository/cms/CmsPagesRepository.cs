@@ -79,7 +79,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = page.Id,
                         PageName = page.Name,
-                        Section = LogModule.Page,
+                        Section = LogModule.SiteMap,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
@@ -128,7 +128,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = page.Id,
                         PageName = page.Name,
-                        Section = LogModule.Page,
+                        Section = LogModule.SiteMap,
                         Action = LogAction.update
                     };
                     InsertLog(log);
@@ -173,7 +173,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = id,
                             PageName = page.c_name,
-                            Section = LogModule.Page,
+                            Section = LogModule.SiteMap,
                             Action = LogAction.delete
                         };
                         InsertLog(log, page);
