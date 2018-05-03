@@ -154,7 +154,7 @@
             @*@if (Model.Account.Group.ToLower().Equals("developer") || Model.Account.Group.ToLower().Equals("administrator"))*@
             @if (true)
             {
-                @Html.CheckBoxFor(m => m.Item.IsDeleteble, new { type = "checkbox", title = "Запретить удаление страницы", data_toggle = "toggle", data_on = "запретить удаление", data_onstyle = "danger", data_off = "разрешить удаление", data_offstyle = "success", data_width = "248", @data_help = "Запрещает удаление страницы, а также изменение некоторых ее свойств." })
+                @Html.CheckBoxFor(m => m.Item.IsDeleteble, new { type = "checkbox", title = "Запретить удаление страницы", data_toggle = "toggle", data_on = "Запретить удаление", data_onstyle = "danger", data_off = "Разрешить удаление", data_offstyle = "success", data_width = "248", @data_help = "Запрещает удаление страницы, а также изменение некоторых ее свойств." })
             }
 
             <div class="topIndent-20">
