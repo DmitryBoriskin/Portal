@@ -54,7 +54,7 @@
                     {
                         <div class="col-sm-5">
                             <div class="bubble_but">
-                                <a class="button icon-create green" href="/admin/page/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
+                                <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
                             </div>
                         </div>
                     }
@@ -89,7 +89,7 @@
                                 <th class="map_site_attach">Вложения</th>
                             </tr>
                         </thead>
-                        <tbody data-service="/Admin/Services/ChangePermit?group=page">
+                        <tbody data-service="/Admin/Services/ChangePermit?group=pages">
                             @foreach (var item in Model.Item.Childrens)
                             {
                                 <tr class="ui-sortable-handle" data-id="@item.Id">
@@ -111,7 +111,7 @@
                                             _class = "icon-site-folder";
                                         }
 
-                                        <td class="@_class @disabled"><a href="/admin/page/item/@item.Id">@item.Name</a></td>
+                                        <td class="@_class @disabled"><a href="/admin/pages/item/@item.Id">@item.Name</a></td>
                                         <td class="sort-element @disabled">@item.CountChilds</td>
                                     }
                                 </tr>
@@ -154,7 +154,7 @@
             @*@if (Model.Account.Group.ToLower().Equals("developer") || Model.Account.Group.ToLower().Equals("administrator"))*@
             @if (true)
             {
-                @Html.CheckBoxFor(m => m.Item.IsDeleteble, new { type = "checkbox", title = "Запретить удаление страницы", data_toggle = "toggle", data_on = "запретить удаление", data_onstyle = "danger", data_off = "разрешить удаление", data_offstyle = "success", data_width = "248", @data_help = "Запрещает удаление страницы, а также изменение некоторых ее свойств." })
+                @Html.CheckBoxFor(m => m.Item.IsDeleteble, new { type = "checkbox", title = "Запретить удаление страницы", data_toggle = "toggle", data_on = "Запретить удаление", data_onstyle = "danger", data_off = "Разрешить удаление", data_offstyle = "success", data_width = "248", @data_help = "Запрещает удаление страницы, а также изменение некоторых ее свойств." })
             }
 
             <div class="topIndent-20">

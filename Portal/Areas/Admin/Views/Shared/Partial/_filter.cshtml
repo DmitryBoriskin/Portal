@@ -1,7 +1,7 @@
-﻿@model FilterModel
+﻿@model FilterTreeModel
 @{
     Layout = null;
-    string active = (Model.Items != null) ? Model.Items.Where(p => p.Selected).Any() ? "" : "now" : "";
+    string active = (Model.Items != null) ? Model.Items.Where(p => p.IsSelected).Any() ? "" : "now" : "";
 }
 
 <div class="topIndent-20">
@@ -21,7 +21,7 @@
                 {
                     <div class="filtr-item @(Item.IsSelected? "now":"")">
                         <div class="filtr-item_link">
-                            @if (!Model.ReadOnly || Model.AccountGroup.Equals("developer"))
+                            @if (!Model.IsReadOnly)
                             {
                                 <a class="tree-btn pop-up_frame edit" href="@Item.Url" title="Редактирование @Model.Title.ToLower()"> </a>
                             }
@@ -32,7 +32,8 @@
             }
         </div>
     </div>
-    @if (Model.AccountGroup.ToLower().Equals("developer"))
+    @*@if (Model.AccountGroup.ToLower().Equals("developer"))*@
+    @if (true)
     {
         <a class="button pop-up_frame" href="@Model.Url" title="@Model.BtnName">@Model.BtnName</a>
     }

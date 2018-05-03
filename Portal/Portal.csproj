@@ -491,6 +491,7 @@
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
+    <Compile Include="Areas\Admin\Models\FilterTreeModel.cs" />
     <Compile Include="Areas\Admin\Models\MenuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TemplateViewModel.cs" />
@@ -620,7 +621,7 @@
     <Content Include="Areas\Admin\Views\Shared\_popUp.cshtml" />
     <Content Include="Areas\Admin\Views\Services\ChangePass.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Sites\Part\SearchFilter.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Services\Log.cshtml" />
     <Content Include="Areas\Admin\Views\Modules\Index.cshtml" />

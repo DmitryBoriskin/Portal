@@ -120,7 +120,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Неопределена
         /// </summary>
-        Undefined = 0,
+        Undefined,
 
         /// <summary>
         /// Аккаунт
@@ -130,7 +130,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Карта сайта
         /// </summary>
-        SiteMap = 6,
+        Pages,
 
         /// <summary>
         /// Сайты

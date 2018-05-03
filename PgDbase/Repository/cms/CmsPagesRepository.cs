@@ -56,11 +56,28 @@ namespace PgDbase.Repository.cms
                         Text = s.c_text,
                         Url = s.c_url,
                         IsDisabled = s.b_disabled,
+                        IsDeleteble = s.b_deleteble,
                         Keywords = s.c_keyw,
                         Desc = s.c_desc,
                         SiteController = s.f_sites_controller,
                         Childrens = GetPages(new PageFilterModel { Parent = s.gid })
                     }).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает родительский идентификатор
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Guid GetPageParentId(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_pages
+                    .Where(w => w.gid == id)
+                    .Select(s => s.pgid)
+                    .SingleOrDefault();
             }
         }
 
@@ -79,16 +96,16 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = page.Id,
                         PageName = page.Name,
-                        Section = LogModule.SiteMap,
+                        Section = LogModule.Pages,
                         Action = LogAction.insert
                     };
                     InsertLog(log);
 
-                    int sort = db.core_pages
+                    var maxSort = db.core_pages
                         .Where(w => w.f_site == _siteId)
-                        .Where(w => w.pgid == page.ParentId)
-                        .Select(s => s.n_sort)
-                        .Max() + 1;
+                        .Where(w => w.pgid == page.ParentId);
+
+                    int sort = maxSort.Any() ? maxSort.Select(s => s.n_sort).Max() + 1 : 1;
 
                     bool result = db.core_pages.Insert(() => new core_pages
                     {
@@ -128,7 +145,7 @@ namespace PgDbase.Repository.cms
                     {
                         PageId = page.Id,
                         PageName = page.Name,
-                        Section = LogModule.SiteMap,
+                        Section = LogModule.Pages,
                         Action = LogAction.update
                     };
                     InsertLog(log);
@@ -158,13 +175,13 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeletePage(Guid id)
+        public string DeletePage(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    bool result = false;
+                    string result = null;
 
                     var page = db.core_pages.Where(w => w.gid == id).SingleOrDefault();
                     if (page != null)
@@ -173,13 +190,14 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = id,
                             PageName = page.c_name,
-                            Section = LogModule.SiteMap,
+                            Section = LogModule.Pages,
                             Action = LogAction.delete
                         };
                         InsertLog(log, page);
 
-                        result = db.Delete(page) > 0;
+                        db.Delete(page);
 
+                        result = page.pgid != Guid.Empty ? $"item/{page.pgid.ToString()}" : null;
                         tr.Commit();
                     }
                     return result;
@@ -197,13 +215,14 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 List<GroupsModel> list = new List<GroupsModel>();
-                if (id != Guid.Empty)
+                var parent = db.core_pages.Where(w => w.gid == id).Select(s => s.pgid).SingleOrDefault();
+                if (parent != Guid.Empty)
                 {
-                    var item = GetBreadCrumb(id, db);
-                    while (item != null)
+                    var item = GetBreadCrumb(parent, db);
+                    while (item != null && item.Id != Guid.Empty)
                     {
                         list.Add(item);
-                        item = GetBreadCrumb(item.Id, db);
+                        item = GetBreadCrumb(item.Parent, db);
                     }
 
                     list.Reverse();
@@ -215,16 +234,17 @@ namespace PgDbase.Repository.cms
         /// <summary>
         /// Возвращает эл-т хлебной крошки
         /// </summary>
-        /// <param name="parent"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        private GroupsModel GetBreadCrumb(Guid parent, CMSdb db)
+        private GroupsModel GetBreadCrumb(Guid id, CMSdb db)
         {
             return db.core_pages
-                .Where(w => w.pgid == parent)
+                .Where(w => w.gid == id)
                 .Select(s => new GroupsModel
                 {
                     Id = s.gid,
-                    Title = s.c_name
+                    Title = s.c_name,
+                    Parent = s.pgid
                 }).SingleOrDefault();
         }
 
@@ -239,6 +259,25 @@ namespace PgDbase.Repository.cms
             {
                 return db.core_pages
                     .Where(w => w.gid == id).Any();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает эл-ты для фильтра групп меню
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetPageGroups()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_page_groups
+                    .Where(w => w.f_site == _siteId)
+                    .OrderBy(o => o.n_sort)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name
+                    }).ToArray();
             }
         }
     }
