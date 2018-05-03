@@ -756,7 +756,7 @@ function Sorting_init(Object) {
                 type: "POST",
                 async: true,
                 url: _ServiceUrl,
-                data: { id: _Id, permit: _Num },
+                data: { id: _Id, position: _Num },
                 error: function () { Content = '<div>Error!</div>'; },
                 success: function (data) { }
             });
