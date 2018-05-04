@@ -1,12 +1,13 @@
 ﻿using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class UsersController : CoreController
+    public class AllUsersController : CoreController
     {
         UsersViewModel model;
         FilterModel filter;
@@ -17,23 +18,24 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new UsersViewModel()
             {
-                PageName = "Администраторы",
+                PageName = "Все администраторы",
                 //DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName, 
+                ActionName = ActionName,
                 Groups = _cmsRepository.GetGroups()
             };
             if (AccountInfo != null)
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
         }
 
-        // GET: Admin/Users
+        // GET: Admin/Groups
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetUsers(filter);
+            model.List = _cmsRepository.GetAllUsers(filter);
+            model.Filter = GetFilterTree();
             return View(model);
         }
 
@@ -50,7 +52,7 @@ namespace Portal.Areas.Admin.Controllers
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "page", String.Empty);
-            
+
             return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
         }
 
@@ -154,6 +156,40 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult ClearFiltr()
         {
             return Redirect(StartUrl);
+        }
+
+        /// <summary>
+        /// Возвращает дерево фильтрации
+        /// </summary>
+        /// <returns></returns>
+        private FilterTreeModel GetFilterTree()
+        {
+            if (model.Groups != null)
+            {
+                string link = Request.Url.Query;
+                string editGroupUrl = "/admin/services/groupclaims/";
+                string alias = "group";
+                string active = Request.QueryString[alias];
+                return new FilterTreeModel()
+                {
+                    Title = "Группы пользователей",
+                    Icon = "icon-th-list-3",
+                    //Url = editGroupUrl,
+                    IsReadOnly = false,
+                    //AccountGroup = (model.Account != null) ? model.Account.Group : "",
+                    Items = model.Groups.Select(p =>
+                        new CatalogList()
+                        {
+                            Title = p.Title,
+                            Alias = p.Id.ToString(),
+                            Link = AddFilterParam(link, alias, p.Id.ToString()),
+                            Url = $"{editGroupUrl}{p.Id}",
+                            IsSelected = active == p.Id.ToString()
+                        }).ToArray(),
+                    Link = "/admin/allusers"
+                };
+            }
+            return null;
         }
     }
 }

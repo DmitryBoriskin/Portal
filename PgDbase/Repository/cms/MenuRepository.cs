@@ -121,6 +121,7 @@ namespace PgDbase.Repository.cms
                                             .Update();
                             }
                         }
+
                         //определим новый парметр сортровки для текущего значения
                         int newsort = 0;
                         var q2 = db.core_menu.Where(w => w.f_parent == menu.Pid);
@@ -136,7 +137,7 @@ namespace PgDbase.Repository.cms
                                         .Set(s => s.c_alias, menu.Alias)
                                         .Set(s => s.c_class, menu.Class)
                                         .Set(s => s.f_parent, menu.Pid)
-                                        .Set(s => s.n_sort, newsort)
+                                        .Set(s => s.n_sort, (q.Single().f_parent==null)? q.Single().n_sort : newsort)
                                         .Update() > 0;
                         tr.Commit();
                         return true;

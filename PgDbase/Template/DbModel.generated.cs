@@ -494,13 +494,13 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="user_group_resolutions")]
 	public partial class core_user_group_resolutions
 	{
-		[PrimaryKey, Identity] public int  id          { get; set; } // integer
-		[Column,     NotNull ] public Guid f_usergroup { get; set; } // uuid
-		[Column,     NotNull ] public bool b_read      { get; set; } // boolean
-		[Column,     NotNull ] public bool b_write     { get; set; } // boolean
-		[Column,     NotNull ] public bool b_change    { get; set; } // boolean
-		[Column,     NotNull ] public bool b_delete    { get; set; } // boolean
-		[Column,     NotNull ] public Guid f_menu      { get; set; } // uuid
+		[Column, NotNull] public Guid f_usergroup { get; set; } // uuid
+		[Column, NotNull] public bool b_read      { get; set; } // boolean
+		[Column, NotNull] public bool b_write     { get; set; } // boolean
+		[Column, NotNull] public bool b_change    { get; set; } // boolean
+		[Column, NotNull] public bool b_delete    { get; set; } // boolean
+		[Column, NotNull] public Guid f_menu      { get; set; } // uuid
+		[Column, NotNull] public Guid id          { get; set; } // uuid
 
 		#region Associations
 
@@ -742,12 +742,6 @@ namespace PgDbase.models
 		}
 
 		public static core_sites Find(this ITable<core_sites> table, Guid id)
-		{
-			return table.FirstOrDefault(t =>
-				t.id == id);
-		}
-
-		public static core_user_group_resolutions Find(this ITable<core_user_group_resolutions> table, int id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);

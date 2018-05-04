@@ -27,5 +27,9 @@ namespace Portal.Areas.Admin.Models
         /// </summary>
         public GroupsModel[] Groups { get; set; }
 
+        /// <summary>
+        /// Фильтр
+        /// </summary>
+        public FilterTreeModel Filter { get; set; }
     }
 }

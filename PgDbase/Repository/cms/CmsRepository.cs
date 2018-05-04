@@ -132,12 +132,17 @@ namespace PgDbase.Repository.cms
                     }).ToArray();
             }
         }
-
+        /// <summary>
+        /// Возвращает пункты меню из структуры CMS га которые есит права
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
         public CmsMenuModel[] GetCmsMenu(Guid UserId)
         {
             using (var db = new CMSdb(_context))
             {
-#warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
+                #warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
+
                 var data = db.core_menu
                             .Where(s => s.f_parent == null)
                             .OrderBy(s => s.n_sort)
@@ -158,5 +163,16 @@ namespace PgDbase.Repository.cms
                 return data.ToArray();
             }
         }
+
+        //public CmsMenuModel[] GetModulMenu(Guid UserId)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        var query=db.core_user_resolutions
+        //                    .Where(w=>w.)
+        //                    .Select(s=>s.)
+                            
+        //    }
+        //}
     }
 }

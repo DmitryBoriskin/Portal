@@ -59,7 +59,13 @@ namespace PgDbase.Repository.cms
                         Patronimyc = s.c_patronymic,
                         Disabled = s.b_disabled,
                         ErrorCount = s.n_error_count,
-                        TryLogin = s.d_try_login
+                        TryLogin = s.d_try_login,
+                        Group = new GroupsModel
+                        {
+                            Title = s.fkusersitelinks
+                                .Select(g => g.fkusersitelinkusergroup.c_title)
+                                .SingleOrDefault()
+                        }
                     });
 
 
@@ -96,9 +102,12 @@ namespace PgDbase.Repository.cms
                         Patronimyc = s.c_patronymic,
                         Disabled = s.b_disabled,
                         TryLogin = s.d_try_login,
-                        Group = s.fkusersitelinks
-                            .Where(w => w.f_site == _siteId)
-                            .Select(g => g.f_user_group).SingleOrDefault()
+                        Group = new GroupsModel
+                        {
+                            Id = s.fkusersitelinks
+                                .Where(w => w.f_site == _siteId)
+                                .Select(g => g.f_user_group).SingleOrDefault()
+                        }
                     }).SingleOrDefault();
             }
         }
@@ -135,7 +144,10 @@ namespace PgDbase.Repository.cms
                         b_disabled = user.Disabled
                     }) > 0;
 
-                    InsertUserSiteLink(user.Id, user.Group);
+                    if (user.Group != null)
+                    {
+                        InsertUserSiteLink(user.Id, user.Group.Id);
+                    }
 
                     tr.Commit();
                     return result;
@@ -173,30 +185,33 @@ namespace PgDbase.Repository.cms
                     InsertLog(log);
 
                     // группа
-                    var currentLink = db.core_user_site_link
-                        .Where(w => w.f_user == user.Id)
-                        .Where(w => w.f_site == _siteId)
-                        .SingleOrDefault();
-
-                    bool isExistsGroupOnThisSite = currentLink != null;
-
-                    if (isExistsGroupOnThisSite)
+                    if (user.Group != null)
                     {
-                        currentLink.f_user_group = user.Group;
-                        db.Update(currentLink);
-                        log = new LogModel
+                        var currentLink = db.core_user_site_link
+                            .Where(w => w.f_user == user.Id)
+                            .Where(w => w.f_site == _siteId)
+                            .SingleOrDefault();
+
+                        bool isExistsGroupOnThisSite = currentLink != null;
+
+                        if (isExistsGroupOnThisSite)
                         {
-                            PageId = user.Id,
-                            PageName = GetLogTitleForUserSiteLink(user.Id, user.Group, db),
-                            Section = LogModule.Users,
-                            Action = LogAction.update,
-                            Comment = "Изменена связь пользователя с сайтами"
-                        };
-                        InsertLog(log);
-                    }
-                    else
-                    {
-                        InsertUserSiteLink(user.Id, user.Group);
+                            currentLink.f_user_group = user.Group.Id;
+                            db.Update(currentLink);
+                            log = new LogModel
+                            {
+                                PageId = user.Id,
+                                PageName = GetLogTitleForUserSiteLink(user.Id, user.Group.Id, db),
+                                Section = LogModule.Users,
+                                Action = LogAction.update,
+                                Comment = "Изменена связь пользователя с сайтами"
+                            };
+                            InsertLog(log);
+                        }
+                        else
+                        {
+                            InsertUserSiteLink(user.Id, user.Group.Id);
+                        }
                     }
 
                     tr.Commit();
@@ -358,7 +373,7 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
-
+        
         /// <summary>
         /// Возвращает заголовок при логировании
         /// добавления связи пользователя и сайта

@@ -23,7 +23,7 @@
             <div class="dop-caption">Настройки</div>
             <div class="group-block rules open" title="Права авторизации">
                 @Html.TextBoxFor(m => m.Item.Email, new { required = "", type = "email", maxlength = "128", autocomplete = "off", title = "Email адрес", @data_help = "123" })
-                @Html.DropDownListFor(m => m.Item.Group.Id, new SelectList(Model.Groups, "Id", "Title"), new { @title = "Группа", @class = "selectpicker", @data_help = "123", @required = "required" })
+                @*@Html.DropDownListFor(m => m.Item.Group.Id, new SelectList(Model.Groups, "Id", "Title"), new { @title = "Группа", @class = "selectpicker", @data_help = "123", @required = "required" })*@
                 @if (Model.Item == null)
                 {
                     @Html.TextBoxFor(m => Model.Password.Password, new { @required = "", type = "password", minlength = "6", maxlength = "16", autocomplete = "off", @title = "Пароль", @data_help = "Пароль должен содержать латинские буквы и не менее одной цифры. Длина пароля должна быть от 6 до 16 символов" })
