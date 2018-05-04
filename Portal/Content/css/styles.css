@@ -1339,3 +1339,7 @@ button.rss_delete {border:none; background:none;}
     font-weight: bold;
     color: #345a73;
 }
+
+.template-item{
+    min-height:450px;
+}

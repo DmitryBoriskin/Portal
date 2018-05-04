@@ -14,7 +14,7 @@ if (true)
         @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @Title = "Название Модуля", @placeholder = "Название", MaxLength = "512" })
         @Html.TextAreaFor(m => Model.Item.Desc, new { type = "text",  @Title = "Описание", MaxLength = "4096" })
         @Html.TextBoxFor(m => Model.Item.Controller, new { @required = "", @Title = "Контроллер", @placeholder = "SomeController", MaxLength = "512" })
-        @Html.TextBoxFor(m => Model.Item.Action, new { @required = "", @Title = "Метод контроллера", @placeholder = "SomeAction", MaxLength = "512" })
+        @Html.TextBoxFor(m => Model.Item.Action, new { @Title = "Метод контроллера", @placeholder = "SomeAction", MaxLength = "512" })
     </div>
     <div class="dop_info-block">
         <div class="dop-caption">Настройки</div>
