@@ -360,6 +360,30 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Возвращает права пользователя 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public UserResolution[] GetUserResolutions(Guid user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_user_resolutions
+                    .Where(w => w.fkresolutionuser.f_user == user)
+                    .Where(w => w.fkresolutionuser.f_site == _siteId)
+                    .Select(s => new UserResolution
+                    {
+                        Id = s.id,
+                        IsRead = s.b_read,
+                        IsWrite = s.b_write,
+                        IsChange = s.b_change,
+                        IsDelete = s.b_delete,
+                        SiteController = s.f_sitecontroller
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
         /// Возвращает заголовок при логировании
         /// добавления связи пользователя и сайта
         /// </summary>
