@@ -64,7 +64,7 @@ namespace PgDbase.models
 		[Column,        Nullable] public string c_action_name     { get; set; } // character varying(128)
 		[Column,     NotNull    ] public Guid   c_default_view    { get; set; } // uuid
 		[PrimaryKey, NotNull    ] public Guid   id                { get; set; } // uuid
-		[Column,        Nullable] public Guid?  pid               { get; set; } // uuid
+		[Column,        Nullable] public Guid?  f_parent          { get; set; } // uuid
 		[Column,        Nullable] public string c_desc            { get; set; } // text
 		[Column,        Nullable] public int?   n_sort            { get; set; } // integer
 
@@ -73,13 +73,13 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_controller_parent_id
 		/// </summary>
-		[Association(ThisKey="pid", OtherKey="id", CanBeNull=true, KeyName="fk_controller_parent_id", BackReferenceName="fk_controller_parent_id_BackReferences")]
+		[Association(ThisKey="f_parent", OtherKey="id", CanBeNull=true, KeyName="fk_controller_parent_id", BackReferenceName="fk_controller_parent_id_BackReferences")]
 		public core_controllers fkcontrollerparentid { get; set; }
 
 		/// <summary>
 		/// fk_controller_parent_id_BackReference
 		/// </summary>
-		[Association(ThisKey="id", OtherKey="pid", CanBeNull=true, IsBackReference=true)]
+		[Association(ThisKey="id", OtherKey="f_parent", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_controllers> fk_controller_parent_id_BackReferences { get; set; }
 
 		/// <summary>
@@ -494,13 +494,13 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="user_group_resolutions")]
 	public partial class core_user_group_resolutions
 	{
-		[PrimaryKey, Identity] public int  id          { get; set; } // integer
-		[Column,     NotNull ] public Guid f_usergroup { get; set; } // uuid
-		[Column,     NotNull ] public bool b_read      { get; set; } // boolean
-		[Column,     NotNull ] public bool b_write     { get; set; } // boolean
-		[Column,     NotNull ] public bool b_change    { get; set; } // boolean
-		[Column,     NotNull ] public bool b_delete    { get; set; } // boolean
-		[Column,     NotNull ] public Guid f_menu      { get; set; } // uuid
+		[Column, NotNull] public Guid f_usergroup { get; set; } // uuid
+		[Column, NotNull] public bool b_read      { get; set; } // boolean
+		[Column, NotNull] public bool b_write     { get; set; } // boolean
+		[Column, NotNull] public bool b_change    { get; set; } // boolean
+		[Column, NotNull] public bool b_delete    { get; set; } // boolean
+		[Column, NotNull] public Guid f_menu      { get; set; } // uuid
+		[Column, NotNull] public Guid id          { get; set; } // uuid
 
 		#region Associations
 
@@ -742,12 +742,6 @@ namespace PgDbase.models
 		}
 
 		public static core_sites Find(this ITable<core_sites> table, Guid id)
-		{
-			return table.FirstOrDefault(t =>
-				t.id == id);
-		}
-
-		public static core_user_group_resolutions Find(this ITable<core_user_group_resolutions> table, int id)
 		{
 			return table.FirstOrDefault(t =>
 				t.id == id);
