@@ -11,7 +11,7 @@
             {
                 string disabled = (item.Disabled) ? "disabled" : String.Empty;
                 <div class="list-item @disabled">
-                    <a title="" class="li-caption" href="/admin/users/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
+                    <a title="" class="li-caption" href="/admin/allusers/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
                     <div class="li-desc"><span>Группа:</span> @item.Group.Title</div>
                     <div class="li-desc"><span>E-mail:</span> @item.Email</div>
                 </div>
@@ -29,7 +29,10 @@
 
     <div class="dop_info-block">
         <div class="dop-caption">Фильтр</div>
-        @Html.Partial("Part/Filter")
+        @if (Model.Filter != null)
+        {
+            @Html.Partial("Partial/_filter", Model.Filter)
+        }
     </div>
 
     <div class="buttons">
@@ -40,7 +43,6 @@
             {
                 <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
             }
-            @*<a href="@Model.ControllerName/item/@Guid.NewGuid()" class="button icon-create">Создать</a>*@
         }
     </div>
 }

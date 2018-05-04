@@ -3,7 +3,7 @@ using Portal.Areas.Admin.Models;
 using System;
 using System.Web.Mvc;
 
-namespace Portal.Areas.Admin
+namespace Portal.Areas.Admin.Controllers
 {
     public class ServicesController : CoreController
     {
@@ -121,6 +121,19 @@ namespace Portal.Areas.Admin
             }
             return Content(result.ToString());
 
+        }
+
+        [HttpGet]
+        public ActionResult GroupClaims(string id)
+        {
+            UserGroupResolution[] model = null;
+            
+            if (!String.IsNullOrWhiteSpace(id))
+            {
+                Guid groupId = Guid.Parse(id);
+                model = _cmsRepository.GetGroupResolutions(groupId);
+            }
+            return PartialView("GroupClaims", model);
         }
     }
 }

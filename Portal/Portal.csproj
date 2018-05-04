@@ -488,6 +488,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AllUsersController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
@@ -647,6 +648,9 @@
     <Content Include="Areas\Admin\Views\Templates\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Modal\ModuleTemplates.cshtml" />
     <Content Include="Areas\Admin\Views\Services\FilterTreeItem.cshtml" />
+    <Content Include="Areas\Admin\Views\AllUsers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AllUsers\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\GroupClaims.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -661,6 +665,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Views\Core\" />
+    <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

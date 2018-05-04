@@ -76,6 +76,6 @@ namespace PgDbase.entity
         /// <summary>
         /// Группа 
         /// </summary>
-        public Guid Group { get; set; }
+        public GroupsModel Group { get; set; }
     }
 }

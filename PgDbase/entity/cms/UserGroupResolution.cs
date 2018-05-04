@@ -10,7 +10,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Группа пользователей
@@ -20,6 +20,6 @@ namespace PgDbase.entity
         /// <summary>
         /// Меню
         /// </summary>
-        public Guid Menu { get; set; }
+        public GroupsModel Menu { get; set; }
     }
 }

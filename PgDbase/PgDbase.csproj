@@ -74,6 +74,7 @@
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\cms\CmsResolutionsRepository.cs" />
     <Compile Include="Repository\cms\MenuRepository.cs" />
     <Compile Include="Repository\cms\CmsSitesRepository.cs" />
     <Compile Include="Repository\cms\ModuleRepository.cs" />
