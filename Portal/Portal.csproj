@@ -143,6 +143,13 @@
     <Content Include="Content\fonts\Ubuntu\ubuntu_700italic.svg" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_italic.svg" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.svg" />
+    <Content Include="Content\img\modules\aboutNews.png" />
+    <Content Include="Content\img\modules\aboutProduct.png" />
+    <Content Include="Content\img\modules\gallery.png" />
+    <Content Include="Content\img\modules\news.png" />
+    <Content Include="Content\img\modules\products.png" />
+    <Content Include="Content\img\modules\reviews.png" />
+    <Content Include="Content\img\modules\sertificates.png" />
     <Content Include="Content\img\preloader.svg" />
     <Content Include="Content\img\modules\module1\tmpl1.png" />
     <Content Include="Content\js\menu.js" />
