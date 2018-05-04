@@ -10,8 +10,19 @@
             foreach (var item in Model.List.Items)
             {
                 <div class="list-item">
-                    <a title="" class="li-caption" href="/admin/modules/item/@item.Id/@ViewBag.urlQuery">@item.Title</a>
-                    <div class="li-desc">@item.Desc</div>
+                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/modules/item/@item.Id">@item.Title</a>
+                    <span class="description">(@item.ControllerName)</span>
+                    @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
+                    {
+                        foreach (var part in item.ModuleParts)
+                        {
+                        <div class="list-item-part">
+                            <a title="@part.Desc" class="li-caption" href="/admin/modules/item/@part.Id">@part.Title</a>
+                            <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
+                        </div>
+                        }
+                    }
+
                 </div>
             }
             if (Model.List != null && Model.List.Pager != null)

@@ -1,53 +1,113 @@
 ﻿@model ModuleViewModel
-
+@{
+    var isModulePart = (Model.Item != null && Model.Item.ParentId.HasValue) ? true : false;
+}
 @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
 {
     @*if (Model.UserResolution.Write)*@
 if (true)
 {
     <div class="content">
-        <div class="row">
-            <div class="col-md-8"></div>
-            <div class="col-md-3"></div>
-        </div>
         <h1>@Model.PageName</h1>
-        @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @Title = "Название Модуля", @placeholder = "Название", MaxLength = "512" })
-        @Html.TextAreaFor(m => Model.Item.Desc, new { type = "text",  @Title = "Описание", MaxLength = "4096" })
-        @Html.TextBoxFor(m => Model.Item.Controller, new { @required = "", @Title = "Контроллер", @placeholder = "SomeController", MaxLength = "512" })
-        @Html.TextBoxFor(m => Model.Item.Action, new { @Title = "Метод контроллера", @placeholder = "SomeAction", MaxLength = "512" })
+        <div class="row">
+            <div class="col-md-12">
+                @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @title = "Название Модуля", @placeholder = "Название", MaxLength = "512" })
+                @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер", @placeholder = "SomeController", MaxLength = "512" })
+
+                @if (isModulePart)
+                {
+                    @Html.HiddenFor(m => Model.Item.ParentId)
+                    @Html.TextBoxFor(m => Model.Item.ActionName, new { @required = "", @title = "Название метода", @placeholder = "SomeAction", MaxLength = "512" })
+                    @Html.TextAreaFor(m => Model.Item.Desc, new { @class = "uc_input", @type = "text", @title = "Описание, возможности", @rows = "15" })
+                }
+            </div>
+        </div>
+
+        @*Если Модуль*@
+        @if (Model.Item != null && !Model.Item.ParentId.HasValue)
+        {
+            <div class="row  topIndent-20">
+                <div class="col-sm-6">
+                    <h4 class="nesting_title">Компоненты</h4>
+                </div>
+                @*@if (Model.UserResolution.Write)*@
+                @if (true)
+                {
+                    <div class="col-sm-3">
+                        <div class="bubble_but">
+                            <a class="button icon-create green" href="/admin/modules/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
+                        </div>
+                    </div>
+                }
+                @if (Model.Item != null && Model.Item.ModuleParts != null && Model.Item.ModuleParts.Count() > 1)
+                {
+                    <div class="col-sm-3">
+                        <div class="bubble_but">
+                            <a class="button icon-sort" data-action="noPreloader-accept" id="sorting_element" title="Добавляет возможность сортировки элементов списка">Сортировать</a>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            if (Model.Item != null && Model.Item.ModuleParts != null && Model.Item.ModuleParts.Count() > 0)
+            {
+                <div class="sort_list topIndent-20">
+                    <table id="sm_list" class="table table-striped table-condensed">
+                        <tbody data-service="">
+                            @*/Admin/Services/ChangePosition?group=pages*@
+                            @foreach (var part in Model.Item.ModuleParts)
+                            {
+                                <tr class="ui-sortable-handle" data-id="@part.Id">
+                                    <td>
+                                        <span class="icon-puzzle" style="color:#999;"></span>
+                                        <a title="@part.Desc" class="li-caption" href="/admin/modules/item/@part.Id">@part.Title</a>
+                                        <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+
+
     </div>
     <div class="dop_info-block">
         <div class="dop-caption">Настройки</div>
+        @if (isModulePart)
+        {
         <div class="form-group">
-            <label>Шаблон</label>
-            <select name="Item.View" class="form-control">
-                <option value="@Guid.Empty"></option>
-                @if (Model.Templates != null && Model.Templates.Count() > 0)
-                {
-                    foreach (var template in Model.Templates)
+                <label>Шаблон</label>
+                <select name="Item.View" class="form-control" required>
+                    <option value="" selected disabled></option>
+                    @if (Model.Templates != null && Model.Templates.Count() > 0)
                     {
-                        var selected = (Model.Item.View == template.Id) ? true : false;
-                        <option value="@template.Id" @(selected? "selected":"")>@template.Title</option>
+                        foreach (var template in Model.Templates)
+                        {
+                            var selected = (Model.Item.View == template.Id) ? true : false;
+                            <option value="@template.Id" @(selected? "selected":"")>@template.Title</option>
+                            }
                         }
-                    }
-            </select>
-            <label>*будет применяться по умолчанию для данного модуля</label>
-        </div>
+                </select>
+                <label>*будет применяться по умолчанию для данного модуля</label>
+            </div>
+        }
         @*@Html.TextBoxFor(m => m.Item.Date, new { required = "", data_type = "datetime", title = "Дата публикации", value = ViewBag.Date })*@
 
         @*@Html.DropDownListFor(m => m.Item.GroupsId, (MultiSelectList)ViewBag.GroupsValues, new { @title = "Группа", @class = "selectpicker", @multiple = "multiple" })*@
         @*<div class="form-group">
-            <label for="itemGroups-select">Категория новости:</label>
-            <select name="Item.GroupsId" id="itemGroups-select" class="form-control select2" multiple>
-                @if (Model.Item != null && ViewBag.AllGroups != null)
-                    {
-                        foreach (var group in ViewBag.AllGroups)
+                <label for="itemGroups-select">Категория новости:</label>
+                <select name="Item.GroupsId" id="itemGroups-select" class="form-control select2" multiple>
+                    @if (Model.Item != null && ViewBag.AllGroups != null)
                         {
-                        <option value="@group.Id" @(Model.Item != null && Model.Item.Groups != null && Model.Item.Groups.Any(s => s.Id == group.Id) ? "selected" : null)>@group.Title</option>
+                            foreach (var group in ViewBag.AllGroups)
+                            {
+                            <option value="@group.Id" @(Model.Item != null && Model.Item.Groups != null && Model.Item.Groups.Any(s => s.Id == group.Id) ? "selected" : null)>@group.Title</option>
+                        }
                     }
-                }
-            </select>
-        </div>*@
+                </select>
+            </div>*@
 
         @*@Html.CheckBoxFor(m => m.Item.Important, new { type = "checkbox", title = "Главная новость", data_toggle = "toggle", data_on = "Да", data_onstyle = "success", data_off = "Нет", data_offstyle = "danger", data_width = "248" })*@
 

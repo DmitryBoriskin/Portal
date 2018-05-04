@@ -15,14 +15,14 @@
                             <img src="@item.Image" title="@item.Title" /><br />
                             @item.Title
                         </a><br />
-
+                        <span class="description">Модуль:</span>
                         @if (item.Controller != null && item.Controller.Id != Guid.Empty)
                         {
-                            <a href="/Admin/Modules/item/@item.Controller.Id">Контроллер: @item.Controller.Title</a>
+                            <a href="/Admin/Modules/item/@item.Controller.Id">@item.Controller.Title</a>
                         }
                         else
                         {
-                            <div class="text-danger">Контроллер: Не указан!</div>
+                            <span class="text-danger">Не указан!</span>
                         }
                     </div>
                 }

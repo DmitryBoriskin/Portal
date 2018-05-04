@@ -47,7 +47,7 @@ namespace PgDbase.Repository.cms
                 query = query.OrderBy(t => t.n_sort);
 
                 var list = query
-                    .Select(s => new TemplateModel
+                    .Select(s => new TemplateModel()
                     {
                         Id = s.id,
                         Title = s.c_name,
@@ -88,7 +88,7 @@ namespace PgDbase.Repository.cms
 
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
-                    .Take(filter.Size).Select(s => new TemplateModel
+                    .Take(filter.Size).Select(s => new TemplateModel()
                     {
                         Id = s.id,
                         Title = s.c_name,
@@ -131,7 +131,7 @@ namespace PgDbase.Repository.cms
                     .Where(t => t.id == id);
 
                 var data = query
-                    .Select(s => new TemplateModel
+                    .Select(s => new TemplateModel()
                     {
                         Id = s.id,
                         Title = s.c_name,
@@ -163,7 +163,7 @@ namespace PgDbase.Repository.cms
             {
                 using (var tran = db.BeginTransaction())
                 {
-                    var cdTemplate = new core_views
+                    var cdTemplate = new core_views()
                     {
                         id = template.Id,
                         c_name = template.Title,
@@ -173,7 +173,7 @@ namespace PgDbase.Repository.cms
                     };
                     db.Insert(cdTemplate);
 
-                    var log = new LogModel
+                    var log = new LogModel()
                     {
                         PageId = Guid.NewGuid(),
                         PageName = template.Title,
@@ -212,7 +212,7 @@ namespace PgDbase.Repository.cms
 
                         db.Update(cdTemplate);
 
-                        var log = new LogModel
+                        var log = new LogModel()
                         {
                             PageId = template.Id,
                             PageName = template.Title,
@@ -248,7 +248,7 @@ namespace PgDbase.Repository.cms
                         var cdTemplate = data.Single();
                         db.Delete(cdTemplate);
 
-                        var log = new LogModel
+                        var log = new LogModel()
                         {
                             PageId = id,
                             PageName = String.Format("{0} ({1})", cdTemplate.c_name, cdTemplate.c_path),
@@ -267,10 +267,10 @@ namespace PgDbase.Repository.cms
         }
         #endregion
 
-        #region Модуль
+        #region Модуль и его компоненты
 
         /// <summary>
-        /// Проверка существует запись с id
+        /// Проверка: существует ли модуль или компонент с id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -297,19 +297,29 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_controllers
-                     .Where(t => t.id != Guid.Empty);
+                     .Where(t => t.id != Guid.Empty)
+                     .Where(t => t.f_parent == null);
 
                 query = query.OrderBy(t => t.n_sort);
 
                 var list = query
-                    .Select(s => new ModuleModel
+                    .Select(s => new ModuleModel()
                     {
                         Id = s.id,
-                        ParentId = s.id,
                         Title = s.c_name,
-                        Controller = s.c_controller_name,
-                        Action = s.c_action_name,
-                        View = s.c_default_view
+                        ControllerName = s.c_controller_name,
+                        ModuleParts = db.core_controllers
+                                        .Where(m => m.f_parent == s.id)
+                                        .Select(m => new ModuleModel()
+                                        {
+                                            Id = m.id,
+                                            Title = m.c_name,
+                                            ControllerName = m.c_controller_name,
+                                            ActionName = m.c_action_name,
+                                            ParentId = m.f_parent,
+                                            Desc = m.c_desc,
+                                            View = m.c_default_view
+                                        }).ToArray()
                     });
 
                 return list.ToArray();
@@ -317,7 +327,7 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Возвращает постраничный список модулей
+        /// Возвращает постраничный список модулей с компонентами
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -327,7 +337,7 @@ namespace PgDbase.Repository.cms
             {
                 var query = db.core_controllers
                      .Where(t => t.id != Guid.Empty)
-                     .Where(t => t.pid != null);
+                     .Where(t => t.f_parent == null);
 
                 if (!string.IsNullOrEmpty(filter.SearchText))
                     query = query.Where(t => t.c_name.ToLower().Contains(filter.SearchText) || t.c_desc.ToLower().Contains(filter.SearchText));
@@ -338,15 +348,23 @@ namespace PgDbase.Repository.cms
 
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
-                    .Take(filter.Size).Select(s => new ModuleModel
+                    .Take(filter.Size).Select(s => new ModuleModel()
                     {
                         Id = s.id,
-                        ParentId = s.id,
                         Title = s.c_name,
-                        Controller = s.c_controller_name,
-                        Action = s.c_action_name,
-                        View = s.c_default_view,
-                        Desc = s.c_desc
+                        ControllerName = s.c_controller_name,
+                        ModuleParts = db.core_controllers
+                                        .Where(m => m.f_parent == s.id)
+                                        .Select(m => new ModuleModel()
+                                        {
+                                            Id = m.id,
+                                            Title = m.c_name,
+                                            ControllerName = m.c_controller_name,
+                                            ActionName = m.c_action_name,
+                                            ParentId = m.f_parent,
+                                            Desc = m.c_desc,
+                                            View = m.c_default_view
+                                        }).ToArray()
                     });
 
                 return new Paged<ModuleModel>()
@@ -363,7 +381,7 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Возвращает модуль
+        /// Возвращает модуль, либо компонент
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -373,22 +391,34 @@ namespace PgDbase.Repository.cms
             {
                 var data = db.core_controllers
                     .Where(s => s.id == id)
-                   .Select(s => new ModuleModel
+                   .Select(s => new ModuleModel()
                    {
                        Id = s.id,
-                       ParentId = s.id,
+                       ParentId = s.f_parent,
                        Title = s.c_name,
-                       Controller = s.c_controller_name,
-                       Action = s.c_action_name,
+                       ControllerName = s.c_controller_name,
+                       ActionName = s.c_action_name,
                        View = s.c_default_view,
-                       Desc = s.c_desc
+                       Desc = s.c_desc,
+                       ModuleParts = db.core_controllers
+                                        .Where(m => m.f_parent == s.id)
+                                        .Select(m => new ModuleModel()
+                                        {
+                                            Id = m.id,
+                                            Title = m.c_name,
+                                            ControllerName = m.c_controller_name,
+                                            ActionName = m.c_action_name,
+                                            ParentId = m.id,
+                                            Desc = m.c_desc,
+                                            View = m.c_default_view
+                                        }).ToArray()
                    });
                 return data.SingleOrDefault();
             }
         }
 
         /// <summary>
-        /// Добавляет запись о модуле
+        /// Добавляет модуль или компонент
         /// </summary>
         /// <param name="module"></param>
         /// <returns></returns>
@@ -398,26 +428,83 @@ namespace PgDbase.Repository.cms
             {
                 using (var tran = db.BeginTransaction())
                 {
-                    var cdController = new core_controllers
+                    var cdModule = new core_controllers()
                     {
                         id = module.Id,
-                        pid = module.ParentId,
                         c_name = module.Title,
-                        c_controller_name = module.Controller,
-                        c_action_name = module.Action,
-                        c_default_view = module.View,
-                        c_desc = module.Desc
+                        c_controller_name = module.ControllerName
                     };
-                    db.Insert(cdController);
 
-                    var log = new LogModel
+                    //Если это компонент модуля
+                    if (module.ParentId.HasValue)
+                    {
+                        //Инфо о модуле, которому принадлежит компонент
+                        var parentModuleData = db.core_controllers
+                            .Where(m => m.id == module.ParentId.Value);
+
+                        if (!parentModuleData.Any())
+                            return false;
+
+                        var parentModule = parentModuleData.Single();
+
+                        cdModule.f_parent = module.ParentId;
+                        cdModule.c_action_name = module.ActionName;
+                        cdModule.c_default_view = module.View;
+                        cdModule.c_desc = module.Desc;
+
+                        //Не разрешаем вводить имя контроллера, отличное от родительского
+                        cdModule.c_controller_name = parentModule.c_controller_name;
+
+
+                        //Устанавливаем выбранному шаблону тип
+                        #region
+
+                        var cdViewData = db.core_views
+                              .Where(v => v.id == module.View);
+
+                        if (!cdViewData.Any())
+                            return false;
+
+                        var cdView = cdViewData.Single();
+                        cdView.f_controller = module.Id;
+
+                        db.Update(cdView);
+
+                        #endregion
+
+                        //Дополнительное логирование
+                        #region
+
+                        var parentlog = new LogModel()
+                        {
+                            PageId = parentModule.id,
+                            PageName = module.Title,
+                            Section = LogModule.Modules,
+                            Action = LogAction.insert,
+                            Comment = $"Добавлен компонент '{module.Title}' ({module.ControllerName}/{module.ActionName})"
+                                        + " к модулю '{parentModule.c_name}' ({parentModule.c_controller_name})"
+                        };
+                        InsertLog(parentlog);
+                        #endregion
+
+                    }
+
+                    db.Insert(cdModule);
+
+                    //Логируем
+                    #region
+
+                    var log = new LogModel()
                     {
                         PageId = module.Id,
                         PageName = module.Title,
                         Section = LogModule.Modules,
-                        Action = LogAction.insert
+                        Action = LogAction.insert,
+                        Comment = $"Добавлен модуль '{module.Title}' ({module.ControllerName})"
                     };
                     InsertLog(log);
+
+                    #endregion
 
                     tran.Commit();
                     return true;
@@ -426,7 +513,7 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Изменения модуля
+        /// Изменение модуля или компонента
         /// </summary>
         /// <param name="module"></param>
         /// <returns></returns>
@@ -442,43 +529,90 @@ namespace PgDbase.Repository.cms
                     if (data.Any())
                     {
                         var cdController = data.SingleOrDefault();
-                        cdController.pid = module.ParentId;
+
                         cdController.c_name = module.Title;
-                        cdController.c_controller_name = module.Controller;
-                        cdController.c_action_name = module.Action;
-                        cdController.c_default_view = module.View;
-                        cdController.c_desc = module.Desc;
+                        cdController.c_controller_name = module.ControllerName;
 
-                        db.Update(cdController);
-
-                        //Если выбрана вьюха, мы ей присваиваем контроллер
-                        if (module.View != Guid.Empty)
+                        if (module.ParentId.HasValue)
                         {
-                            var cdView = db.core_views
-                                  .Where(v => v.id == module.View)
-                                  .Single();
+                            //Поля которые нельзя менять для компонента модуля
+                            //cdController.f_parent;
+                            //cdController.c_controller_name;
 
+                            cdController.c_name = module.Title;
+                            cdController.c_action_name = module.ActionName;
+                            cdController.c_default_view = module.View;
+                            cdController.c_desc = module.Desc;
+
+
+                            //Устанавливаем выбранному шаблону тип модуля
+                            #region
+
+                            var cdViewData = db.core_views
+                                  .Where(v => v.id == module.View);
+
+                            if (!cdViewData.Any())
+                                return false;
+
+                            var cdView = cdViewData.Single();
                             cdView.f_controller = module.Id;
 
                             db.Update(cdView);
+
+                            #endregion
+
+                            //Дополнительное логирование
+                            #region
+
+                            //Инфо о модуле, которому принадлежит компонент
+                            var parentModuleData = db.core_controllers
+                                .Where(m => m.id == module.ParentId.Value);
+
+                            if (parentModuleData.Any())
+                            {
+                                var parentModule = parentModuleData.Single();
+
+                                var parentlog = new LogModel()
+                                {
+                                    PageId = parentModule.id,
+                                    PageName = module.Title,
+                                    Section = LogModule.Modules,
+                                    Action = LogAction.insert,
+                                    Comment = $"Изменен компонент '{module.Title}' ({module.ControllerName}/{module.ActionName})"
+                                                + " к модулю '{parentModule.c_name}' ({parentModule.c_controller_name})"
+                                };
+                                InsertLog(parentlog);
+                            }
+
+                            #endregion
                         }
 
-                        var log = new LogModel
+                        db.Update(cdController);
+
+                        //Логирование
+                        #region
+
+                        var log = new LogModel()
                         {
                             PageId = module.Id,
                             PageName = module.Title,
                             Section = LogModule.Modules,
-                            Action = LogAction.update
+                            Action = LogAction.update,
+                            Comment = $"Изменен модуль '{module.Title}' ({module.ControllerName})"
                         };
                         InsertLog(log);
 
+                        #endregion
+
                         tran.Commit();
                         return true;
-                    };
+                    }
+
                     return false;
                 }
             }
         }
+
 
         /// <summary>
         /// Удаляет модуль
@@ -497,18 +631,62 @@ namespace PgDbase.Repository.cms
 
                     if (data.Any())
                     {
+                        //Не удаляем модуль, пока у него есть компоненты
+                        if (data.Any(s => s.id == s.fkcontrollerparentid.f_parent))
+                            return false;
+
                         var cdController = data.Single();
+
+                        //При удалении модуля, у всех привязанных шаблонов изменяем тип на дефолтный
+                        #region
+
+                        var cdViewData = db.core_views
+                              .Where(v => v.id == cdController.c_default_view)
+                              .Set(v => v.f_controller, Guid.Empty)
+                              .Update();
+
+                        #endregion
+
+                        //Дополнительное логирование
+                        #region
+
+                        //Инфо о модуле, которому принадлежит компонент
+                        var parentModuleData = db.core_controllers
+                            .Where(m => m.id == cdController.f_parent);
+
+                        if (parentModuleData.Any())
+                        {
+                            var parentModule = parentModuleData.Single();
+
+                            var parentlog = new LogModel()
+                            {
+                                PageId = parentModule.id,
+                                PageName = cdController.c_name,
+                                Section = LogModule.Modules,
+                                Action = LogAction.insert,
+                                Comment = $"Удален компонент '{cdController.c_name}' ({cdController.c_controller_name}/{cdController.c_action_name})"
+                                        + " модуля '{parentModule.c_name}'({ parentModule.c_controller_name })"
+                            };
+                            InsertLog(parentlog);
+                        }
+
+                        #endregion
+
                         db.Delete(cdController);
 
-                        var log = new LogModel
+                        //Логируем
+                        #region
+
+                        var log = new LogModel()
                         {
                             PageId = id,
-                            PageName = String.Format("{0}/{1}", cdController.c_controller_name, cdController.c_action_name),
+                            PageName = cdController.c_name,
                             Section = LogModule.Modules,
                             Action = LogAction.delete,
-                            Comment = "Удален модуль" + String.Format("{0}/{1}", cdController.c_controller_name, cdController.c_action_name)
+                            Comment = $"Удален модуль '{cdController.c_name}' ({cdController.c_controller_name})"
                         };
                         InsertLog(log);
+                        #endregion
 
                         tran.Commit();
                         return true;
@@ -528,21 +706,30 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.core_controllers
-                     .Where(t => t.id != Guid.Empty);
+                var query = db.core_site_controllers
+                     .Where(t => t.f_site == siteId)
+                     .Where(t => t.fksitecontrollerscontrollers.f_parent == null);
 
                 var list = query
                     .Select(s => new SiteModuleModel()
                     {
                         Id = s.id,
-                        ParentId = s.id,
-                        Title = s.c_name,
-                        Controller = s.c_controller_name,
-                        Action = s.c_action_name,
-                        View = (GetSiteModule(siteId,s.id) != null) ? GetSiteModule(siteId,s.id).View : s.c_default_view,
-                        Desc = s.c_desc,
-                        SiteModuleId = (GetSiteModule(siteId, s.id) != null) ? GetSiteModule(siteId, s.id).Id : (Guid?)null,
-                        Checked = (GetSiteModule(siteId,s.id) != null) ? true : false
+                        SiteId = siteId,
+                        ModuleId = s.f_controller,
+                        Title = s.fksitecontrollerscontrollers.c_name,
+                        ControllerName = s.fksitecontrollerscontrollers.c_controller_name,
+                        ModuleParts = db.core_site_controllers
+                                        .Where(m => m.fksitecontrollerscontrollers.f_parent == s.fksitecontrollerscontrollers.id)
+                                        .Select(m => new ModuleModel()
+                                        {
+                                            Id = m.id,
+                                            Title = m.fksitecontrollerscontrollers.c_name,
+                                            ControllerName = m.fksitecontrollerscontrollers.c_controller_name,
+                                            ActionName = m.fksitecontrollerscontrollers.c_action_name,
+                                            ParentId = m.fksitecontrollerscontrollers.f_parent,
+                                            Desc = m.fksitecontrollerscontrollers.c_desc,
+                                            View = (m.f_view != null) ? m.f_view.Value : m.fksitecontrollerscontrollers.c_default_view
+                                        }).ToArray()
                     });
 
                 return list.ToArray();
@@ -554,26 +741,34 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="siteId"></param>
         /// <returns></returns>
-        public SiteModuleModel GetSiteModule(Guid siteId, Guid moduleId)
+        public SiteModuleModel GetSiteModule(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_site_controllers
-                    .Where(s => s.f_site == siteId)
-                    .Where(s => s.f_controller == moduleId)
-                     .AsQueryable();
+                    .Where(s => s.id == id);
 
                 var data = query
                     .Select(s => new SiteModuleModel()
                     {
                         Id = s.id,
-                        ParentId = s.id,
+                        SiteId = s.f_site,
+                        ModuleId = s.f_controller,
                         Title = s.fksitecontrollerscontrollers.c_name,
-                        Controller = s.fksitecontrollerscontrollers.c_controller_name,
-                        Action = s.fksitecontrollerscontrollers.c_action_name,
-                        View = (s.f_view != null) ? s.f_view.Value : s.fksitecontrollerscontrollers.c_default_view,
-                        Desc = s.fksitecontrollerscontrollers.c_desc,
-                        Checked = true
+                        ControllerName = s.fksitecontrollerscontrollers.c_controller_name,
+                        ModuleParts = db.core_site_controllers
+                                        .Where(m => m.fksitecontrollerscontrollers.f_parent == s.fksitecontrollerscontrollers.id)
+                                        .Select(m => new ModuleModel()
+                                        {
+                                            Id = m.id,
+                                            Title = m.fksitecontrollerscontrollers.c_name,
+                                            ControllerName = m.fksitecontrollerscontrollers.c_controller_name,
+                                            ActionName = m.fksitecontrollerscontrollers.c_action_name,
+                                            ParentId = m.fksitecontrollerscontrollers.id,
+                                            Desc = m.fksitecontrollerscontrollers.c_desc,
+                                            View = (m.f_view != null) ? m.f_view.Value : m.fksitecontrollerscontrollers.c_default_view
+                                        }).ToArray()
+
                     });
 
                 return data.SingleOrDefault();
@@ -610,7 +805,7 @@ namespace PgDbase.Repository.cms
                                         .Where(m => m.id == moduleId)
                                         .Single();
 
-                        var log = new LogModel
+                        var log = new LogModel()
                         {
                             PageId = siteId,
                             PageName = module.c_name,
@@ -654,7 +849,7 @@ namespace PgDbase.Repository.cms
                                        .Where(m => m.id == moduleId)
                                        .Single();
 
-                        var log = new LogModel
+                        var log = new LogModel()
                         {
                             PageId = siteId,
                             PageName = module.c_name,

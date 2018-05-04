@@ -64,7 +64,7 @@ namespace PgDbase.models
 		[Column,        Nullable] public string c_action_name     { get; set; } // character varying(128)
 		[Column,     NotNull    ] public Guid   c_default_view    { get; set; } // uuid
 		[PrimaryKey, NotNull    ] public Guid   id                { get; set; } // uuid
-		[Column,        Nullable] public Guid?  pid               { get; set; } // uuid
+		[Column,        Nullable] public Guid?  f_parent          { get; set; } // uuid
 		[Column,        Nullable] public string c_desc            { get; set; } // text
 		[Column,        Nullable] public int?   n_sort            { get; set; } // integer
 
@@ -73,13 +73,13 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_controller_parent_id
 		/// </summary>
-		[Association(ThisKey="pid", OtherKey="id", CanBeNull=true, KeyName="fk_controller_parent_id", BackReferenceName="fk_controller_parent_id_BackReferences")]
+		[Association(ThisKey="f_parent", OtherKey="id", CanBeNull=true, KeyName="fk_controller_parent_id", BackReferenceName="fk_controller_parent_id_BackReferences")]
 		public core_controllers fkcontrollerparentid { get; set; }
 
 		/// <summary>
 		/// fk_controller_parent_id_BackReference
 		/// </summary>
-		[Association(ThisKey="id", OtherKey="pid", CanBeNull=true, IsBackReference=true)]
+		[Association(ThisKey="id", OtherKey="f_parent", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_controllers> fk_controller_parent_id_BackReferences { get; set; }
 
 		/// <summary>
@@ -407,6 +407,12 @@ namespace PgDbase.models
 		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=false, KeyName="fk_site_controllers__controllers", BackReferenceName="fksites")]
 		public core_controllers fksitecontrollerscontrollers { get; set; }
 
+		/// <summary>
+		/// fk_resolution_sitecontroller_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_sitecontroller", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_user_resolutions> fkresolutionsitecontrollers { get; set; }
+
 		#endregion
 	}
 
@@ -549,6 +555,12 @@ namespace PgDbase.models
 		[Column,     NotNull] public Guid f_sitecontroller { get; set; } // uuid
 
 		#region Associations
+
+		/// <summary>
+		/// fk_resolution_sitecontroller
+		/// </summary>
+		[Association(ThisKey="f_sitecontroller", OtherKey="id", CanBeNull=false, KeyName="fk_resolution_sitecontroller", BackReferenceName="fkresolutionsitecontrollers")]
+		public core_site_controllers fkresolutionsitecontroller { get; set; }
 
 		/// <summary>
 		/// fk_resolution_user

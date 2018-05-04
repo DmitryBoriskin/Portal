@@ -9,19 +9,20 @@ namespace Portal.Areas.Admin.Models
     public class ModuleViewModel : CoreViewModel
     {
         /// <summary>
-        /// Постраничный список
+        /// Постраничный список модулей
         /// </summary>
         public Paged<ModuleModel> List { get; set; }
 
         /// <summary>
-        /// Пользователь
+        /// Модуль
         /// </summary>
         public ModuleModel Item { get; set; }
 
         /// <summary>
-        /// Список шаблонов
+        /// Список доступных шаблонов
         /// </summary>
         public TemplateModel[] Templates { get; set; }
 
     }
+
 }

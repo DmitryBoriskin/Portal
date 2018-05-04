@@ -392,9 +392,21 @@ a.link-close:before {
 }
 .list-item {
     overflow: hidden;
-    border-bottom: solid 1px #dfe4ec;
     padding: 20px 0 18px;
 }
+.list-item:not(:last-child){
+     border-bottom: solid 1px #dfe4ec;
+}
+
+.list-item-part{
+    overflow: hidden;
+    padding: 15px 13px;
+    margin-left: 50px;
+}
+.list-item-part:not(:last-child){
+    border-bottom: solid 1px #dfe4ec;
+}
+
 .li-image{
     display:block;
     float:left;

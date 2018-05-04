@@ -15,6 +15,7 @@
                 <option value="@Guid.Empty">Не указан</option>
                 @if (Model.Modules != null && Model.Modules.Count() > 0)
                 {
+                    
                     foreach (var template in Model.Modules)
                     {
                         var selected = (!string.IsNullOrEmpty(group) && group == template.Id.ToString()) ? true : false; @(selected ? "selected" : "")
