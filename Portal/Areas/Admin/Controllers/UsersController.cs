@@ -4,7 +4,7 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Portal.Areas.Admin
+namespace Portal.Areas.Admin.Controllers
 {
     public class UsersController : CoreController
     {
@@ -18,7 +18,7 @@ namespace Portal.Areas.Admin
             model = new UsersViewModel()
             {
                 PageName = "Пользователи",
-                DomainName = Domain,
+                //DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

@@ -9,7 +9,7 @@ using Portal.Code;
 using PgDbase.Repository.cms;
 using PgDbase;
 
-namespace Portal.Areas.Admin
+namespace Portal.Areas.Admin.Controllers
 {
     [AllowAnonymous]
     public class AccountController : Controller

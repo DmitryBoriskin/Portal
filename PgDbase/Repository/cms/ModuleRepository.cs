@@ -44,6 +44,8 @@ namespace PgDbase.Repository.cms
                 var query = db.core_views
                     .Where(t => t.id != Guid.Empty);
 
+                query = query.OrderBy(t => t.n_sort);
+
                 var list = query
                     .Select(s => new TemplateModel
                     {
@@ -79,6 +81,8 @@ namespace PgDbase.Repository.cms
 
                 if (!string.IsNullOrEmpty(filter.SearchText))
                     query = query.Where(t => t.c_name.ToLower().Contains(filter.SearchText.ToLower()));
+
+                query = query.OrderBy(t => t.n_sort);
 
                 int itemsCount = query.Count();
 
@@ -295,6 +299,8 @@ namespace PgDbase.Repository.cms
                 var query = db.core_controllers
                      .Where(t => t.id != Guid.Empty);
 
+                query = query.OrderBy(t => t.n_sort);
+
                 var list = query
                     .Select(s => new ModuleModel
                     {
@@ -320,10 +326,13 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_controllers
-                     .Where(t => t.id != Guid.Empty);
+                     .Where(t => t.id != Guid.Empty)
+                     .Where(t => t.pid != null);
 
                 if (!string.IsNullOrEmpty(filter.SearchText))
                     query = query.Where(t => t.c_name.ToLower().Contains(filter.SearchText) || t.c_desc.ToLower().Contains(filter.SearchText));
+
+                query = query.OrderBy(t => t.n_sort);
 
                 int itemsCount = query.Count();
 
@@ -620,6 +629,12 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="siteId"></param>
+        /// <param name="moduleId"></param>
+        /// <returns></returns>
         public bool UnBindSiteModule(Guid siteId, Guid moduleId)
         {
             using (var db = new CMSdb(_context))
