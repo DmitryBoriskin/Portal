@@ -638,6 +638,7 @@
     <Content Include="Areas\Admin\Views\Templates\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Templates\Modal\ModuleTemplates.cshtml" />
     <Content Include="Areas\Admin\Views\Services\FilterTreeItem.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />

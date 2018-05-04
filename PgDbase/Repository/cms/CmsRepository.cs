@@ -81,7 +81,7 @@ namespace PgDbase.Repository.cms
                     f_user = _currentUserId,
                     c_ip = _ip,
                     f_action = log.Action.ToString(),
-                    c_json = new JavaScriptSerializer().Serialize(obj)
+                    c_json = obj != null ? new JavaScriptSerializer().Serialize(obj) : null
                 });
             }
         }

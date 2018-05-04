@@ -50,10 +50,18 @@ namespace PgDbase.entity
         /// Длинное название
         /// </summary>
         public string LongTitle { get; set; }
+
+#warning Чем отличаются Disabled и SiteOff?   
         /// <summary>
-        /// пр
+        /// 
         /// </summary>
         public bool Disabled { get; set; }
+
+        /// <summary>
+        /// Флаг отключенного сайта
+        /// </summary>
+        public bool SiteOff { get; set; }
+
         /// <summary>
         /// Алиас
         /// </summary>
@@ -67,55 +75,33 @@ namespace PgDbase.entity
         public string Type { get; set; }
 
         /// <summary>
+        /// Тема
+        /// </summary>
+        public string Theme { get; set; }
+
+        /// <summary>
         /// Идентификатор контента
         /// </summary>
         public Guid ContentId { get; set; }    
 
         /// <summary>
-        /// Адрес
-        /// </summary>
-        public string Adress { get; set; }
-
-        /// <summary>
-        /// Телефон
-        /// </summary>
-        public string Phone { get; set; }
-
-        /// <summary>
-        /// Факс
-        /// </summary>
-        public string Fax { get; set; }
-
-        /// <summary>
-        /// Email
-        /// </summary>
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Ссылка на сайт
-        /// </summary>
-        public string Site { get; set; }
-
-        /// <summary>
-        /// Рабочее время
-        /// </summary>
-        public string Worktime { get; set; }
-             
-        /// <summary>
         /// Пользовательские скрипты
         /// </summary>
         public string Scripts { get; set; }
 
+#warning Чем отличаются MainDomain и DefaultDomain?
         /// <summary>
         /// домен сайта отмечанный в списке его доменов
         /// </summary>
         public string MainDomain { get; set; }
 
+        public string DefaultDomain { get; set; }
+
+#warning Чем отличаются DomainList, DomainListString и DomainListArray?
         /// <summary>
         /// Список доменов
         /// </summary>
         public Domain[] DomainList { get; set; }
-
 
         /// <summary>
         /// Список дополнительных доменов в виде строки
@@ -127,45 +113,12 @@ namespace PgDbase.entity
         /// </summary>
         public IEnumerable<string> DomainListArray { get; set; }
 
-
         /// <summary>
-        /// Флаг отключенного сайта
+        /// Ссылки на соц сети
         /// </summary>
-        public bool SiteOff { get; set; }
+        public SocialShare SocialShareBtns { get; set; }
 
-        /// <summary>
-        /// facebook link
-        /// </summary>
-        public string Facebook { get; set; }
-
-        /// <summary>
-        /// vk link
-        /// </summary>
-        public string Vk { get; set; }
-
-        /// <summary>
-        /// instagramm link
-        /// </summary>
-        public string Instagramm { get; set; }
-
-        /// <summary>
-        /// odnoklassniki link
-        /// </summary>
-        public string Odnoklassniki { get; set; }
-
-        /// <summary>
-        /// twitter link
-        /// </summary>
-        public string Twitter { get; set; }
-
- 
-
-        /// <summary>
-        /// Тема
-        /// </summary>
-        public string Theme { get; set; }               
-
-        public string DefaultDomain { get; set; }
+        public SiteModuleModel[] Modules { get; set; }
     }
 
     /// <summary>
@@ -230,4 +183,52 @@ namespace PgDbase.entity
         /// </summary>
         public bool IsDefault { get; set; }
     }
+
+    /// <summary>
+    /// Ссылки на соц сети
+    /// </summary>
+    public class SocialShare
+    {
+        /// <summary>
+        /// facebook link
+        /// </summary>
+        public string Facebook { get; set; }
+
+        /// <summary>
+        /// vk link
+        /// </summary>
+        public string Vk { get; set; }
+
+        /// <summary>
+        /// instagramm link
+        /// </summary>
+        public string Instagramm { get; set; }
+
+        /// <summary>
+        /// odnoklassniki link
+        /// </summary>
+        public string Odnoklassniki { get; set; }
+
+        /// <summary>
+        /// twitter link
+        /// </summary>
+        public string Twitter { get; set; }
+    }
+
+    /// <summary>
+    /// Модуль по отношению к сайту
+    /// </summary>
+    public class SiteModuleModel: ModuleModel
+    {
+        /// <summary>
+        /// Id записи модуля конкретного сайта
+        /// </summary>
+        public Guid? SiteModuleId { get; set; }
+        /// <summary>
+        /// Модуль подключен к сайту (оплачен)
+        /// </summary>
+        public bool Checked { get; set; }
+
+    }
+
 }

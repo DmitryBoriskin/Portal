@@ -381,11 +381,10 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="site_controllers")]
 	public partial class core_site_controllers
 	{
-		[PrimaryKey, NotNull    ] public Guid   id           { get; set; } // uuid
-		[Column,     NotNull    ] public Guid   f_site       { get; set; } // uuid
-		[Column,        Nullable] public Guid?  f_controller { get; set; } // uuid
-		[Column,        Nullable] public Guid?  f_view       { get; set; } // uuid
-		[Column,        Nullable] public string c_desc       { get; set; } // text
+		[PrimaryKey, NotNull    ] public Guid  id           { get; set; } // uuid
+		[Column,     NotNull    ] public Guid  f_site       { get; set; } // uuid
+		[Column,     NotNull    ] public Guid  f_controller { get; set; } // uuid
+		[Column,        Nullable] public Guid? f_view       { get; set; } // uuid
 
 		#region Associations
 
@@ -404,7 +403,7 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_site_controllers__controllers
 		/// </summary>
-		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=true, KeyName="fk_site_controllers__controllers", BackReferenceName="fksites")]
+		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=false, KeyName="fk_site_controllers__controllers", BackReferenceName="fksites")]
 		public core_controllers fksitecontrollerscontrollers { get; set; }
 
 		#endregion

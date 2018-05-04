@@ -1327,3 +1327,15 @@ button.rss_delete {border:none; background:none;}
 .select2 {
     width:270px !important;
 }
+
+.description{
+    font: 11px Verdana;
+    font-weight: normal;
+    color: #999999;
+}
+
+.admin-pannel-table th{
+    font: 11px Verdana;
+    font-weight: bold;
+    color: #345a73;
+}

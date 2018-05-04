@@ -45,9 +45,11 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetModule(id);
-            model.Templates = _cmsRepository.GetTemplatesList()
+            if(model.Item != null)
+                model.Templates = _cmsRepository.GetTemplatesList()
                                 .Where(t => t.Controller.Id == Guid.Empty || t.Controller.Id == model.Item.Id)
                                 .ToArray();
+
             return View("Item", model); 
         }
 
