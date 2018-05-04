@@ -66,6 +66,7 @@ namespace PgDbase.models
 		[PrimaryKey, NotNull    ] public Guid   id                { get; set; } // uuid
 		[Column,        Nullable] public Guid?  pid               { get; set; } // uuid
 		[Column,        Nullable] public string c_desc            { get; set; } // text
+		[Column,        Nullable] public int?   n_sort            { get; set; } // integer
 
 		#region Associations
 
@@ -406,6 +407,12 @@ namespace PgDbase.models
 		[Association(ThisKey="f_controller", OtherKey="id", CanBeNull=false, KeyName="fk_site_controllers__controllers", BackReferenceName="fksites")]
 		public core_controllers fksitecontrollerscontrollers { get; set; }
 
+		/// <summary>
+		/// fk_resolution_sitecontroller_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_sitecontroller", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_user_resolutions> fkresolutionsitecontrollers { get; set; }
+
 		#endregion
 	}
 
@@ -487,13 +494,13 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="user_group_resolutions")]
 	public partial class core_user_group_resolutions
 	{
-		[PrimaryKey, Identity   ] public int   id          { get; set; } // integer
-		[Column,        Nullable] public Guid? f_usergroup { get; set; } // uuid
-		[Column,        Nullable] public bool? b_read      { get; set; } // boolean
-		[Column,        Nullable] public bool? b_write     { get; set; } // boolean
-		[Column,        Nullable] public bool? b_change    { get; set; } // boolean
-		[Column,        Nullable] public bool? b_delete    { get; set; } // boolean
-		[Column,     NotNull    ] public Guid  f_menu      { get; set; } // uuid
+		[PrimaryKey, Identity] public int  id          { get; set; } // integer
+		[Column,     NotNull ] public Guid f_usergroup { get; set; } // uuid
+		[Column,     NotNull ] public bool b_read      { get; set; } // boolean
+		[Column,     NotNull ] public bool b_write     { get; set; } // boolean
+		[Column,     NotNull ] public bool b_change    { get; set; } // boolean
+		[Column,     NotNull ] public bool b_delete    { get; set; } // boolean
+		[Column,     NotNull ] public Guid f_menu      { get; set; } // uuid
 
 		#region Associations
 
@@ -506,7 +513,7 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_resolution_group_user_group
 		/// </summary>
-		[Association(ThisKey="f_usergroup", OtherKey="id", CanBeNull=true, KeyName="fk_resolution_group_user_group", BackReferenceName="fkresolutiongroupusergroups")]
+		[Association(ThisKey="f_usergroup", OtherKey="id", CanBeNull=false, KeyName="fk_resolution_group_user_group", BackReferenceName="fkresolutiongroupusergroups")]
 		public core_user_groups fkresolutiongroupusergroup { get; set; }
 
 		#endregion
@@ -539,20 +546,26 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="user_resolutions")]
 	public partial class core_user_resolutions
 	{
-		[PrimaryKey, NotNull    ] public Guid  id               { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_usersitelink   { get; set; } // uuid
-		[Column,        Nullable] public bool? b_read           { get; set; } // boolean
-		[Column,        Nullable] public bool? b_write          { get; set; } // boolean
-		[Column,        Nullable] public bool? b_change         { get; set; } // boolean
-		[Column,        Nullable] public bool? b_delete         { get; set; } // boolean
-		[Column,        Nullable] public Guid? f_sitecontroller { get; set; } // uuid
+		[PrimaryKey, NotNull] public Guid id               { get; set; } // uuid
+		[Column,     NotNull] public Guid f_usersitelink   { get; set; } // uuid
+		[Column,     NotNull] public bool b_read           { get; set; } // boolean
+		[Column,     NotNull] public bool b_write          { get; set; } // boolean
+		[Column,     NotNull] public bool b_change         { get; set; } // boolean
+		[Column,     NotNull] public bool b_delete         { get; set; } // boolean
+		[Column,     NotNull] public Guid f_sitecontroller { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
+		/// fk_resolution_sitecontroller
+		/// </summary>
+		[Association(ThisKey="f_sitecontroller", OtherKey="id", CanBeNull=false, KeyName="fk_resolution_sitecontroller", BackReferenceName="fkresolutionsitecontrollers")]
+		public core_site_controllers fkresolutionsitecontroller { get; set; }
+
+		/// <summary>
 		/// fk_resolution_user
 		/// </summary>
-		[Association(ThisKey="f_usersitelink", OtherKey="id", CanBeNull=true, KeyName="fk_resolution_user", BackReferenceName="fkresolutionusers")]
+		[Association(ThisKey="f_usersitelink", OtherKey="id", CanBeNull=false, KeyName="fk_resolution_user", BackReferenceName="fkresolutionusers")]
 		public core_user_site_link fkresolutionuser { get; set; }
 
 		#endregion
@@ -635,6 +648,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string c_path       { get; set; } // character varying(512)
 		[Column,     NotNull    ] public Guid   f_controller { get; set; } // uuid
 		[Column,        Nullable] public string c_img        { get; set; } // character varying(512)
+		[Column,        Nullable] public int?   n_sort       { get; set; } // integer
 
 		#region Associations
 
