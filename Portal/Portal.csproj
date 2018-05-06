@@ -650,6 +650,8 @@
     <Content Include="Areas\Admin\Views\AllUsers\Index.cshtml" />
     <Content Include="Areas\Admin\Views\AllUsers\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Services\GroupClaims.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\Part\Modules.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\Part\Domens.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

@@ -171,7 +171,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Доменное имя

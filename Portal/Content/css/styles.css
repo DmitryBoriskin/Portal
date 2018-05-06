@@ -342,10 +342,6 @@ a.link-close:before {
     color:#fff;
 }
 
-.select2-container--default .select2-selection--multiple .locked-tag .select2-selection__choice__remove{
-    display:none;
-}
-
 /* Разработчик */
 .developer-block{
     position: absolute;
@@ -1028,8 +1024,6 @@ a.button.icon-cancel{
     content: '\e88d';
 }
 .icon-attention-circled:before { content: '\e885'; }
-/*  */
-}
 
  /* Деградация */
  .lt-ie9 del.cross {
@@ -1064,18 +1058,24 @@ a.button.icon-cancel{
 /*sites*/
 #site_org,#site_people,#site_event{display:none;}
 
-.del_domain{display:block;cursor:pointer;}
-.del_domain:hover{text-decoration:none;}
-.del_domain:before{content:'\ec5b';font-family:fontello;color:red;}
-.del_domain:hover:before{color:#c50505;}
+a.delete-item-link{display:block;cursor:pointer;}
+a.delete-item-link:hover{text-decoration:none;}
+a.delete-item-link:before{content:'\ec5b';font-family:fontello;color:red;}
+a.delete-item-link:hover:before{color:#c50505;}
+
+a.item-settings-link{display:block;cursor:pointer;}
+a.item-settings-link:hover{text-decoration:none;}
+a.item-settings-link:before{content:'\e8a4';font-family:fontello;color:#005c99;}
+a.item-settings-link:hover:before{color:#005c99;}
 
 
-.del_dop_address{display:block;cursor:pointer;}
-.del_dop_address:hover{text-decoration:none;}
-.del_dop_address:before{content:'\ec5b';font-family:fontello;color:red;}
-.del_dop_address:hover:before{color:#c50505;}
+a.item-default-link{display:block;cursor:pointer;}
+a.item-default-link:hover{text-decoration:none;}
+a.item-default-link:before{content:'\e82b';font-family:fontello;color:#eee;}
+a.item-default-link:hover:before{color:#eee;}
 
-
+a.item-default-link.active:before{content:'\e82b';font-family:fontello;color:#005c99;}
+a.item-default-link.active:hover:before{color:#005c99;}
 
 /*banners*/
 .list_img_preview{
@@ -1336,9 +1336,6 @@ button.rss_delete {border:none; background:none;}
 .statistics_btn_block .button{
     margin:0;
 }
-.select2 {
-    width:270px !important;
-}
 
 .description{
     font: 11px Verdana;
@@ -1355,3 +1352,19 @@ button.rss_delete {border:none; background:none;}
 .template-item{
     min-height:450px;
 }
+
+/*select2 styles*/
+
+.dop_info-block .select2 {
+    width:270px !important;
+}
+
+.select2-container--default .select2-selection--multiple .locked-tag .select2-selection__choice__remove{
+    display:none;
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #dae1e6;
+    color: #555555;
+}
+

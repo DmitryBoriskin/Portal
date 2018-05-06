@@ -11,92 +11,15 @@ if (true)
         <h1>@Model.PageName</h1>
         <div class="row">
             <div class="col-md-12">
+                @Html.HiddenFor(m => m.Item.Id)
                 @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @Title = "Название", @placeholder = "Название", MaxLength = "512" })
             </div>
         </div>
-
+       
         @if (Model.Item != null)
         {
-            <div class="row topIndent-20">
-                <div class="col-md-12">
-                    <div class="group-block open" title="Доменные имена">
-                        @*<div class="alert alert-info" role="alert">Чтобы сайт отображался на другом домене, в его настройках DNS необходимо прописать запись типа А указав ip: @Request.ServerVariables["LOCAL_ADDR"] и добавить домен:</div>*@
-                        @if (Model.Item.DomainList != null && Model.Item.DomainList.Count() > 0)
-                        {
-                            <table class="table table-condensed admin-pannel-table">
-                                <thead>
-                                    <tr>
-                                        <th>Основной</th>
-                                        <th width="90%">Доменное_имя</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.Item.DomainList)
-                                    {
-                                        <tr>
-                                            <td>
-                                                <div class="host-chkbx-div" data-domain-id="@item.id" data-site-id="">
-                                                    <input name="domainName" type="checkbox" class="checkbox" title="" data-toggle="toggle" data-off="Нет" data-on="Да" data-onstyle="success" data-offstyle="danger" data-width="50" @(item.IsDefault ? "checked" : "") />
-                                                </div>
-                                            </td>
-                                            <td>@item.DomainName</td>
-                                            <td class="text-right">
-                                                <span id="domain_@(item.DomainName)" data-container="body" data-toggle="popover" data-placement="left" data-content=""></span>
-                                                <a class="del_domain" data-id="@item.id" data-domain-name="@item.DomainName" data-url="/admin/orgs/DelPhoneDepart" data-init="false"></a>
-                                            </td>
-                                        </tr>
-                                        i++;
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                        @Html.HiddenFor(m => m.Item.Id)
-                        <div class="col-md-4">
-                            <input type="text" title="Домен" name="new_domain" placeholder="example.ru" />
-                        </div>
-                        <div class="col-md-4">
-                            <button style="margin-top: 23px;" class="button icon-create green pull-right" type="submit" name="action" value="add-new-domain">Добавить</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row topIndent-20">
-                <div class="col-md-12">
-                    <div class="group-block open" title="Модули">
-                        @if (Model.Item.Modules != null && Model.Item.Modules.Count() > 0)
-                        {
-                            <table class="table table-condensed admin-pannel-table">
-                                <thead>
-                                    <tr>
-                                        <th>Вкл.</th>
-                                        <th width="90%">Название_модуля</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var module in Model.Item.Modules)
-                                    {
-                                        <tr>
-                                            <td class="module-chkbx-div" data-module-id="@module.Id" data-site-id="@Model.Item.Id">
-                                                @*<input type="checkbox" class="checkbox" title="" data-toggle="toggle" data-off="Нет" data-on="Да" data-onstyle="success" data-offstyle="danger" data-width="50" @(module.Checked ? "checked" : "") />*@
-                                            </td>
-                                            <td>
-                                                @module.Title
-                                                <div class="description">@module.Desc</div>
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Настроить", "SiteModuleTemplatesList", "Templates", new { @siteId = Model.Item.Id, @moduleId = module.Id }, new { @id = "ModuleSettings", @class = "button pop-up_frame icon-cog", @data_class = "LogList", @title = "Настройки модуля" })
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("Part/Domens")
+            @Html.Partial("Part/Modules")
         }
     </div>
 

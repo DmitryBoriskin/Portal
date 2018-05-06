@@ -50,10 +50,15 @@ namespace Portal.Areas.Admin.Controllers
                 Guid parentId = Guid.Empty;
                 var res = Guid.TryParse(Request.Params["parent"], out parentId);
                 if (res)
-                    model.Item = new ModuleModel()
-                    {
-                        ParentId = parentId
-                    };
+                {
+                    var parentModule = _cmsRepository.GetModule(parentId);
+                    if (parentModule != null)
+                        model.Item = new ModuleModel()
+                        {
+                            ParentId = parentId,
+                            ControllerName = parentModule.ControllerName
+                        };
+                }
 
             }
             

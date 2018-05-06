@@ -30,8 +30,16 @@ if (true)
                     {
                         foreach (var module in Model.Modules)
                         {
-                            var selected = (Model.Item.Controller != null && Model.Item.Controller.Id == module.Id) ? true : false;
-                            <option value="@module.Id" @(selected ? "selected" : "")>@module.Title</option>
+                            <optgroup label="@module.Title">
+                                @if (module.ModuleParts != null && module.ModuleParts.Count() > 0)
+                                {
+                                    foreach (var modulePart in module.ModuleParts)
+                                    {
+                                        var selected = (Model.Item != null && Model.Item.Controller!= null && Model.Item.Controller.Id == modulePart.Id) ? true : false;
+                                        <option value="@modulePart.Id" @(selected ? "selected" : "")>@modulePart.Title</option>
+                                    }
+                                }
+                            </optgroup>
                         }
                     }
                 </select>

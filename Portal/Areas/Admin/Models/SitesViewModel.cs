@@ -22,6 +22,9 @@ namespace Portal.Areas.Admin.Models
         /// </summary>
         public SitesModel Item { get; set; }
 
-
+        /// <summary>
+        /// Все доступные модули
+        /// </summary>
+        public ModuleModel[] Modules { get; set; }
     }
 }

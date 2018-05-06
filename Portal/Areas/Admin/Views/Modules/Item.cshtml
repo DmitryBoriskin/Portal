@@ -12,13 +12,18 @@ if (true)
         <div class="row">
             <div class="col-md-12">
                 @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @title = "Название Модуля", @placeholder = "Название", MaxLength = "512" })
-                @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер", @placeholder = "SomeController", MaxLength = "512" })
-
+                
                 @if (isModulePart)
                 {
+                    @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер", @placeholder = "SomeController", MaxLength = "512", @readonly="readonly" })
+
                     @Html.HiddenFor(m => Model.Item.ParentId)
                     @Html.TextBoxFor(m => Model.Item.ActionName, new { @required = "", @title = "Название метода", @placeholder = "SomeAction", MaxLength = "512" })
                     @Html.TextAreaFor(m => Model.Item.Desc, new { @class = "uc_input", @type = "text", @title = "Описание, возможности", @rows = "15" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер", @placeholder = "SomeController", MaxLength = "512" })
                 }
             </div>
         </div>
@@ -77,7 +82,7 @@ if (true)
         <div class="dop-caption">Настройки</div>
         @if (isModulePart)
         {
-        <div class="form-group">
+            <div class="form-group">
                 <label>Шаблон</label>
                 <select name="Item.View" class="form-control" required>
                     <option value="" selected disabled></option>
@@ -86,9 +91,9 @@ if (true)
                         foreach (var template in Model.Templates)
                         {
                             var selected = (Model.Item.View == template.Id) ? true : false;
-                            <option value="@template.Id" @(selected? "selected":"")>@template.Title</option>
-                            }
+                            <option value="@template.Id" @(selected ? "selected" : "")>@template.Title</option>
                         }
+                    }
                 </select>
                 <label>*будет применяться по умолчанию для данного модуля</label>
             </div>

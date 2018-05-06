@@ -781,7 +781,7 @@ namespace PgDbase.Repository.cms
         /// <param name="siteId"></param>
         /// <param name="moduleId"></param>
         /// <returns></returns>
-        public bool BindSiteModule(Guid siteId, Guid moduleId)
+        public bool InsertSiteModuleLink(Guid siteId, Guid moduleId)
         {
             using (var db = new CMSdb(_context))
             {
@@ -830,15 +830,14 @@ namespace PgDbase.Repository.cms
         /// <param name="siteId"></param>
         /// <param name="moduleId"></param>
         /// <returns></returns>
-        public bool UnBindSiteModule(Guid siteId, Guid moduleId)
+        public bool DeleteSiteModuleLink(Guid linkId)
         {
             using (var db = new CMSdb(_context))
             {
                 using (var tran = db.BeginTransaction())
                 {
                     var data = db.core_site_controllers
-                        .Where(s => s.f_site == siteId)
-                        .Where(s => s.f_controller == moduleId);
+                        .Where(s => s.id == linkId);
 
                     if (data.Any())
                     {
@@ -846,12 +845,12 @@ namespace PgDbase.Repository.cms
                         db.Delete(cdSiteModule);
 
                         var module = db.core_controllers
-                                       .Where(m => m.id == moduleId)
+                                       .Where(m => m.id == cdSiteModule.f_controller)
                                        .Single();
 
                         var log = new LogModel()
                         {
-                            PageId = siteId,
+                            PageId = cdSiteModule.f_site,
                             PageName = module.c_name,
                             Section = LogModule.Sites,
                             Action = LogAction.update,

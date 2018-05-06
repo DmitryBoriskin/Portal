@@ -7,25 +7,25 @@ $(document).ready(function () {
     if ($('#itemGroups-select').length > 0) {
         var NewInMedicin = $('#NewInMedicin');
         SpotNewInMedicin();
-        $('#itemGroups-select').change(function() {
+        $('#itemGroups-select').change(function () {
             SpotNewInMedicin();
-        });  
+        });
         function SpotNewInMedicin() {
             NewInMedicin.hide();
-            $('#itemGroups-select').find('option:selected').each(function() {
-                if ($(this).attr('value') == '6303b7c5-5404-4ec0-aed2-1c308992c78a') {
+            $('#itemGroups-select').find('option:selected').each(function () {
+                if ($(this).attr('value') === '6303b7c5-5404-4ec0-aed2-1c308992c78a') {
                     NewInMedicin.show();
                 }
             });
         }
-     }   
+    }
 
-    
+
 
     $('#DomainSelect').change(function () {
         window.location.href = this.options[this.selectedIndex].value
     });
-    
+
     $modal = $('.modal');
     $modalTitle = $('.modal .modal-title');
     $modalBody = $('.modal .modal-body');
@@ -36,7 +36,7 @@ $(document).ready(function () {
         console.log('test');
         top.location.href = location.href;
     }
-    
+
     //locked removed in v > 4.0 (it was in v3.5.2)
     //<option locked="locked">
     $(".select2").select2({
@@ -55,7 +55,7 @@ $(document).ready(function () {
             return tag.text;
         }
     })
-    .on('select2:unselecting', function(e){
+    .on('select2:unselecting', function (e) {
         // before removing tag we check option element of tag and 
         // if it has property 'locked' we will create error to prevent all select2 functionality
         if ($(e.params.args.data.element).attr('locked')) {
@@ -76,9 +76,9 @@ $(document).ready(function () {
     // Полоса прокрутки
     $('.scrollbar').mCustomScrollbar();
 
-    
 
-     //События Кнопок
+
+    //События Кнопок
     $('input[type=submit], .button').bind({
         mousedown: function () {
             //логика всплывающих окон
@@ -116,11 +116,9 @@ $(document).ready(function () {
             var dataAction = $(this).attr('data-action');
             var req_count = $('form input[required]:invalid').length
 
-            if (req_count > 0 && btn_class === 'save-btn')
-            {
+            if (req_count > 0 && btn_class === 'save-btn') {
             }
-            else if (dataAction === 'noPreloader-accept')
-            {
+            else if (dataAction === 'noPreloader-accept') {
             }
             else {
                 // показываем preloader при клике на кнопку
@@ -160,7 +158,7 @@ $(document).ready(function () {
     $('input[data-type=date').datepicker({ onSelect: function (dateText, inst) { $(this).attr('value', dateText); } });
     // инициализаация TinyMCE
     $('textarea[type=editor]').each(function () {
-        InitTinyMCE_new($(this).attr('id'), 0, $(this).attr('height'), $(this).attr('data-dir') );//"/UserFiles/"
+        InitTinyMCE_new($(this).attr('id'), 0, $(this).attr('height'), $(this).attr('data-dir'));//"/UserFiles/"
     });
     $('textarea[type=liteeditor]').each(function () {
         InitLiteTinyMCE($(this).attr('id'), 0, 200);
@@ -183,8 +181,8 @@ $(document).ready(function () {
         }
         else {
             $('.photoalbum').addClass('Sortable');
-            $('.Sortable').each(function () { sortingPhotoInit($(this)); });        
-        }        
+            $('.Sortable').each(function () { sortingPhotoInit($(this)); });
+        }
     });
 
     if ($('.list-rss').length > 0) {
@@ -204,9 +202,9 @@ $(document).ready(function () {
                 }
             });
 
-        });        
+        });
 
-               
+
     }
     $('.rss_delete').click(function (e) {
         e.preventDefault();
@@ -248,7 +246,7 @@ $(document).ready(function () {
                 data: false,
                 error: function () { elem.parent().remove() },
                 success: function (result) {
-                    if (result == "true") {
+                    if (result === "true") {
                         elem.parent().remove()
                     }
                     else {
@@ -257,7 +255,7 @@ $(document).ready(function () {
                 }
             });
 
-            
+
         });
     }
 
@@ -330,92 +328,96 @@ $(document).ready(function () {
 
     });
 
-    $(".module-chkbx-div label").on("click", function (e) {
-        var el = $(this).closest(".input-group").children().first();
-        //текущее значение кастомного чекбокса, нам нужно измененное
-        var moduleIsOff = el.hasClass("off") ? true : false;
-        var _moduleId = $(this).closest(".module-chkbx-div").data("moduleId");
-        var _siteId = $(this).closest(".module-chkbx-div").data("siteId");
-
-        var targetUrl = "/admin/sites/UnSetSiteModule";
-        if (moduleIsOff)
-        {
-            var targetUrl = "/admin/sites/SetSiteModule";
-        }
-
-            try {
-                $.ajax({
-                    method: "POST",
-                    url: targetUrl,
-                    async: false,
-                    data: { siteId : _siteId, moduleId: _moduleId },
+    //Добавляет связь сайт-модуль
+    $("#add-module-btn").on("click", function (e) {
+        e.preventDefault();
+        var _moduleId = $("#itemModule-select").val();
+        var _siteId = $(this).data("siteId");
+        var _action = $(this).data("url");
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { siteId: _siteId, moduleId: _moduleId },
+            })
+                .done(function (response) {
                 })
-                    .done(function (response) {
-                    })
-                    .fail(function (jqXHR, status) {
-                        console.log("Ошибка" + " " + status + " " + jqXHR);
-                    })
-                    .always(function (response) {
-                        //location.reload();
-                    });
-            }
-            catch (ex) {
-                console.log(ex);
-            }
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+    //Удаляет связь сайт-модуль
+    $(".delete-module-btn").on("click", function (e) {
+        e.preventDefault();
+        var _linkId = $(this).data("linkId");
+        var _action = $(this).data("url");
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { linkId: _linkId },
+            })
+                .done(function (response) {
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
     });
 
     //Домен по умолчанию
-    $(".host-chkbx-div label").on("click", function (e) {
-        var el = $(this).closest(".input-group").children().first();
-        //текущее значение кастомного чекбокса, нам нужно измененное
-        var isDefault = el.hasClass("off") ? true : false;
-        var idDomain = $(this).closest(".host-chkbx-div").data("domainId");
+    $(".set-domain-default-btn").on("click", function (e) {
+        e.preventDefault();
+        var _linkId = $(this).data("linkId");
+        var _action = $(this).data("url");
+        try {
 
-        if (isDefault) {
-            //Видимость переключения остальных чекбоксов как в radio
-            $(".host-chkbx-div label").not($(this)).closest(".input-group").children().addClass("off");
-
-            try {
-
-                $.ajax({
-                    method: "POST",
-                    url: "/admin/sites/SetDomainDefault",
-                    async: false,
-                    data: { id: idDomain },
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { id: _linkId },
+            })
+                .done(function (response) {
                 })
-                    .done(function (response) {
-                        //elTooltip.tooltip('show');
-                    })
-                    .fail(function (jqXHR, status) {
-                        console.log("Ошибка" + " " + status + " " + jqXHR);
-                        //elTooltip.attr("title", "Ошибка сохранения");
-                    })
-                    .always(function (response) {
-                        //setTimeout(function () {
-                        //    //content.fadeOut("slow");
-                        //    elTooltip.tooltip('hide');
-                        //}, 1000);
-                        location.reload();
-                    });
-            }
-            catch (ex) {
-                console.log(ex);
-            }
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
         }
-        else {
-            location.reload();
+        catch (ex) {
+            console.log(ex);
         }
     });
 
     //удаление домена
-    $('.del_domain').on("click", function (e) {
+    $('.delete-domain-btn').on("click", function (e) {
         e.preventDefault();
-        $(".load_page").remove();
 
-        var idDomain = $(this).attr("data-id");
-        var idDomainName = $(this).data("domainName").trim();
+        var _domainId = $(this).attr("data-id");
+        var domainName = $(this).data("domainName").trim();
+        var _action = $(this).data("url");
 
-        if (idDomainName === "localhost") {
+        if (domainName === "localhost") {
             $("#domain_localhost").data("content", "Нельзя удалить значение: localhost! Если необходимо переназначить, добавьте нужному сайту этот домен. Система сделает это автоматически.")
             .popover('show');
 
@@ -425,25 +427,29 @@ $(document).ready(function () {
             return false;
         }
 
-        var $Container = $(this).parent().parent();
+        var $Container = $(this).closest("tr");
         $.ajax({
             type: "POST",
             async: false,
-            url: "/admin/sites/DelDomain",
-            data: { id: idDomain },
-            error: function () { alert("error"); },
-            success: function (data) {
-                if (data == "default") {
-                    alert("Нельзя удалять основной домен.");
+            url: _action,
+            data: { id: _domainId }
+        })
+            .done(function (response) {
+                if (response === "Success") {
+                    $Container.remove();
                 }
                 else {
-                    $Container.remove();
-                }                
+                    alert("Нельзя удалить основной домен!");
+                }
+            })
+            .fail(function (jqXHR, status) {
+                console.log("Ошибка" + " " + status + " " + jqXHR);
+                alert("Произошла непредвиденная ошибка!")
+            })
+            .always(function (response) {
                 location.reload();
-            }
-            
-        });
-        
+            });
+
     });
 
     //Удаление члена из гс 
@@ -506,14 +512,14 @@ $(document).ready(function () {
             type: "POST",
             async: false,
             url: "/admin/orgs/delPeople",
-            data: { iddep: idDep, idpeople: idPeople},
+            data: { iddep: idDep, idpeople: idPeople },
             error: function () { alert("error"); },
             success: function (data) {
                 $Container.remove();
             }
         });
     });
-    
+
     // валидация обязательных полей для заполнения 
     requiredTest();
 
