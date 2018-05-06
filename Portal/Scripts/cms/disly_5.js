@@ -361,6 +361,8 @@ $(document).ready(function () {
         var _linkId = $(this).data("linkId");
         var _action = $(this).data("url");
 
+        var _container = $(this).closest("tr");
+
         try {
             $.ajax({
                 method: "POST",
@@ -369,6 +371,12 @@ $(document).ready(function () {
                 data: { linkId: _linkId },
             })
                 .done(function (response) {
+                    if (response === "Success") {
+                        _container.remove();
+                    }
+                    else {
+                        alert("Произошла ошибка!");
+                    }
                 })
                 .fail(function (jqXHR, status) {
                     console.log("Ошибка" + " " + status + " " + jqXHR);
@@ -417,6 +425,8 @@ $(document).ready(function () {
         var domainName = $(this).data("domainName").trim();
         var _action = $(this).data("url");
 
+        var _container = $(this).closest("tr");
+
         if (domainName === "localhost") {
             $("#domain_localhost").data("content", "Нельзя удалить значение: localhost! Если необходимо переназначить, добавьте нужному сайту этот домен. Система сделает это автоматически.")
             .popover('show');
@@ -427,7 +437,6 @@ $(document).ready(function () {
             return false;
         }
 
-        var $Container = $(this).closest("tr");
         $.ajax({
             type: "POST",
             async: false,
@@ -436,7 +445,7 @@ $(document).ready(function () {
         })
             .done(function (response) {
                 if (response === "Success") {
-                    $Container.remove();
+                    _container.remove();
                 }
                 else {
                     alert("Нельзя удалить основной домен!");
