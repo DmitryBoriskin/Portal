@@ -26,7 +26,10 @@ namespace Portal.Areas.Admin.Controllers
                 Groups = _cmsRepository.GetGroups()
             };
             if (AccountInfo != null)
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+            {
+                model.Menu = MenuCmsCore;
+                model.MenuModul = MenuModulCore;
+            }
         }
 
         // GET: Admin/Users

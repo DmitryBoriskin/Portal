@@ -22,8 +22,11 @@ namespace Portal.Areas.Admin.Controllers
                 ActionName = ActionName,
             };
             if (AccountInfo != null)
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-                //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
+            {
+                model.Menu = MenuCmsCore;
+                model.MenuModul = MenuModulCore;
+            }                
+             //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
 
             return View(model);
         }

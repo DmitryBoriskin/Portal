@@ -14,6 +14,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new MenuViewModel
             {
+                PageName = "Структура CMS",
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
@@ -22,7 +23,8 @@ namespace Portal.Areas.Admin.Controllers
             };
             if (AccountInfo != null)
             {
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+                model.Menu = MenuCmsCore;
+                model.MenuModul = MenuModulCore;
             }
             model.MenuGroup = _cmsRepository.GetMenuGroup();
             //ViewBag.StartUrl = StartUrl;

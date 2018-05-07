@@ -164,15 +164,25 @@ namespace PgDbase.Repository.cms
             }
         }
 
-        //public CmsMenuModel[] GetModulMenu(Guid UserId)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        var query=db.core_user_resolutions
-        //                    .Where(w=>w.)
-        //                    .Select(s=>s.)
-                            
-        //    }
-        //}
+        public CmsMenuItem[] GetModulMenu(Guid UserId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                //var query = db.core_user_resolutions
+                //              .Where(w => w.)
+                var data = db.core_controllers
+                           .Where(w => w.f_parent == null)
+                           .OrderBy(o => o.c_name)
+                           .Select(s => new CmsMenuItem() {
+                               Alias = s.c_controller_name,
+                               Title = s.c_name
+                           });
+                if (data.Any())
+                {
+                    return data.ToArray();
+                }
+                return null;
+            }
+        }
     }
 }

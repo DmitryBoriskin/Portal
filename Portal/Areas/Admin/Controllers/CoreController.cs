@@ -62,7 +62,15 @@ namespace Portal.Areas.Admin
         /// Действие
         /// </summary>
         public string ActionName;
-        
+        /// <summary>
+        /// Меню админки из структуры CMS
+        /// </summary>
+        public CmsMenuModel[] MenuCmsCore;
+        /// <summary>
+        /// Меню модулей
+        /// </summary>
+        public CmsMenuItem[] MenuModulCore;
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -79,9 +87,13 @@ namespace Portal.Areas.Admin
             try { _userId = new Guid(System.Web.HttpContext.Current.User.Identity.Name); }
             catch { FormsAuthentication.SignOut(); }
             AccountInfo = _accountRepository.getCmsAccount(_userId);
-
-            // Список доменов, доступных пользователю
-            AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
+            if (AccountInfo != null)
+            {
+                // Список доменов, доступных пользователю
+                AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
+                MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+                MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
+            }
             #endregion
         }
         
