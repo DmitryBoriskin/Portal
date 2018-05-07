@@ -146,7 +146,7 @@ namespace PgDbase.Repository.cms
 
                     if (user.Group != null)
                     {
-                        InsertUserSiteLink(user.Id, user.Group.Id);
+                        InsertUserSiteLink(db, user.Id, user.Group.Id);
                     }
 
                     tr.Commit();
@@ -210,7 +210,7 @@ namespace PgDbase.Repository.cms
                         }
                         else
                         {
-                            InsertUserSiteLink(user.Id, user.Group.Id);
+                            InsertUserSiteLink(db, user.Id, user.Group.Id);
                         }
                     }
 
@@ -342,38 +342,31 @@ namespace PgDbase.Repository.cms
         /// Добавляет связь пользователя с сайтом
         /// </summary>
         /// <returns></returns>
-        public bool InsertUserSiteLink(Guid userId, Guid groupId)
+        public bool InsertUserSiteLink(CMSdb db, Guid userId, Guid groupId)
         {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
+            Guid id = Guid.NewGuid();
+
+            db.core_user_site_link
+                .Insert(() => new core_user_site_link
                 {
-                    Guid id = Guid.NewGuid();
+                    id = id,
+                    f_site = _siteId,
+                    f_user = userId,
+                    f_user_group = groupId
+                });
 
-                    db.core_user_site_link
-                        .Insert(() => new core_user_site_link
-                        {
-                            id = id,
-                            f_site = _siteId,
-                            f_user = userId,
-                            f_user_group = groupId
-                        });
+            var log = new LogModel
+            {
+                PageId = id,
+                PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
+                Section = LogModule.Users,
+                Action = LogAction.insert
+            };
+            InsertLog(log);
 
-                    var log = new LogModel
-                    {
-                        PageId = id,
-                        PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                        Section = LogModule.Users,
-                        Action = LogAction.insert
-                    };
-                    InsertLog(log);
-
-                    tr.Commit();
-                    return true;
-                }
-            }
+            return true;
         }
-        
+
         /// <summary>
         /// Возвращает заголовок при логировании
         /// добавления связи пользователя и сайта
