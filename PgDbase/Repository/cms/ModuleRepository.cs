@@ -758,6 +758,7 @@ namespace PgDbase.Repository.cms
                         ControllerName = s.fksitecontrollerscontrollers.c_controller_name,
                         ModuleParts = db.core_site_controllers
                                         .Where(m => m.fksitecontrollerscontrollers.f_parent == s.fksitecontrollerscontrollers.id)
+                                        .Where(m => m.f_site == s.f_site)
                                         .Select(m => new ModuleModel()
                                         {
                                             Id = m.id,
