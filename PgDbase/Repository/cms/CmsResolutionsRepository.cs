@@ -109,21 +109,18 @@ namespace PgDbase.Repository.cms
 
                 for (int i = 0; i < result.Length; i++)
                 {
+                    resolutions = resolutions.Where(w => w.f_menu == data[i].id);
                     result[i] = new UserGroupResolution
                     {
                         Id = Guid.NewGuid(),
                         UserGroup = groupId,
                         IsRead = resolutions
-                            .Where(w => w.f_menu == data[i].id)
                             .Select(a => a.b_read).SingleOrDefault(),
                         IsWrite = resolutions
-                            .Where(w => w.f_menu == data[i].id)
                             .Select(a => a.b_write).SingleOrDefault(),
                         IsChange = resolutions
-                            .Where(w => w.f_menu == data[i].id)
                             .Select(a => a.b_change).SingleOrDefault(),
                         IsDelete = resolutions
-                            .Where(w => w.f_menu == data[i].id)
                             .Select(a => a.b_delete).SingleOrDefault(),
                         Menu = new GroupsModel
                         {
