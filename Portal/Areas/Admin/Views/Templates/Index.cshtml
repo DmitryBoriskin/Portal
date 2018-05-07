@@ -12,18 +12,19 @@
                 {
                     <div class="col-md-6 template-item">
                         <a title="" class="li-caption" href="/admin/templates/item/@item.Id/@ViewBag.urlQuery">
+                            @item.Title<br />
                             <img src="@item.Image" title="@item.Title" /><br />
-                            @item.Title
-                        </a><br />
-
+                        </a>
+                        <div class="text-right"><span class="description">Модуль:</span>
                         @if (item.Controller != null && item.Controller.Id != Guid.Empty)
                         {
-                            <a href="/Admin/Modules/item/@item.Controller.Id">Контроллер: @item.Controller.Title</a>
+                            <a href="/Admin/Modules/item/@item.Controller.Id">@item.Controller.Title</a>
                         }
                         else
                         {
-                            <div class="text-danger">Контроллер: Не указан!</div>
+                            <span class="text-danger">Не указан!</span>
                         }
+                        </div>
                     </div>
                 }
             </div>

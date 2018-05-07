@@ -45,12 +45,29 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetModule(id);
+            if (model.Item == null && !string.IsNullOrEmpty(Request.Params["parent"]))
+            {
+                Guid parentId = Guid.Empty;
+                var res = Guid.TryParse(Request.Params["parent"], out parentId);
+                if (res)
+                {
+                    var parentModule = _cmsRepository.GetModule(parentId);
+                    if (parentModule != null)
+                        model.Item = new ModuleModel()
+                        {
+                            ParentId = parentId,
+                            ControllerName = parentModule.ControllerName
+                        };
+                }
+
+            }
+            
             if(model.Item != null)
                 model.Templates = _cmsRepository.GetTemplatesList()
-                                .Where(t => t.Controller.Id == Guid.Empty || t.Controller.Id == model.Item.Id)
-                                .ToArray();
+                .Where(t => t.Controller.Id == Guid.Empty || t.Controller.Id == model.Item.Id)
+                .ToArray();
 
-            return View("Item", model); 
+            return View("Item", model);
         }
 
         [HttpPost]
@@ -75,19 +92,19 @@ namespace Portal.Areas.Admin.Controllers
             {
                 backModel.Item.Id = id;
 
-                    if (_cmsRepository.ModuleExists(id))
-                    {
-                        _cmsRepository.UpdateModule(backModel.Item);
-                        message.Info = "Запись обновлена";
-                    }
-                    else
-                    {
-                        _cmsRepository.InsertModule(backModel.Item);
+                if (_cmsRepository.ModuleExists(id))
+                {
+                    _cmsRepository.UpdateModule(backModel.Item);
+                    message.Info = "Запись обновлена";
+                }
+                else
+                {
+                    _cmsRepository.InsertModule(backModel.Item);
 
-                        message.Info = "Запись добавлена";
-                    }
-                
-                message.Buttons = new ErrorMessageBtnModel[] 
+                    message.Info = "Запись добавлена";
+                }
+
+                message.Buttons = new ErrorMessageBtnModel[]
                 {
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
                     new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
@@ -119,7 +136,7 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Delete(Guid Id)
         {
             _cmsRepository.DeleteModule(Id);
-            
+
             ErrorMessage message = new ErrorMessage
             {
                 Title = "Информация",
@@ -129,7 +146,7 @@ namespace Portal.Areas.Admin.Controllers
                     new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "ок", Action = "false" }
                 }
             };
-            
+
             model.ErrorInfo = message;
 
             return RedirectToAction("index");

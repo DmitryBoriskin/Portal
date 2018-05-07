@@ -147,7 +147,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Доменное имя
@@ -197,13 +197,14 @@ namespace PgDbase.entity
     public class SiteModuleModel: ModuleModel
     {
         /// <summary>
-        /// Id записи модуля конкретного сайта
+        /// Id сайта
         /// </summary>
-        public Guid? SiteModuleId { get; set; }
+        public Guid SiteId { get; set; }
+
         /// <summary>
-        /// Модуль подключен к сайту (оплачен)
+        /// Id модуля конкретного сайта
         /// </summary>
-        public bool Checked { get; set; }
+        public Guid ModuleId { get; set; }
 
     }
 

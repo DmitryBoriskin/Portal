@@ -57,6 +57,9 @@ input:focus, textarea:focus {
 input[required]:invalid {
     background: #fcf8e3;
 }
+select[required]:invalid{
+    background: #fcf8e3;
+}
 
 .invalid .dropdown-toggle{background: #fcf8e3;}
 /* --- Подсказка к полям --- */
