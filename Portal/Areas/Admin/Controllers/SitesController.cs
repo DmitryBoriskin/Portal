@@ -196,6 +196,20 @@ namespace Portal.Areas.Admin.Controllers
         #endregion
 
         #region Модули
+
+        //GET: Admin/Sites/Module/{GUID}
+        public ActionResult Module(Guid id)
+        {
+            //filter = GetFilter();
+            var module = _cmsRepository.GetSiteModule(id);
+            model.Item = _cmsRepository.GetSite(module.SiteId);
+
+            if (model.Item != null)
+                model.Item.Modules = new SiteModuleModel[] { module };
+
+            return View(model);
+        }
+
         /// <summary>
         /// 
         /// </summary>

@@ -793,14 +793,30 @@ namespace PgDbase.Repository.cms
 
                     if (!data.Any())
                     {
-                        var cdSiteController = new core_site_controllers()
+                        var cdSiteModule = new core_site_controllers()
                         {
                             id = Guid.NewGuid(),
                             f_site = siteId,
                             f_controller = moduleId
                         };
-                        db.Insert(cdSiteController);
+                        db.Insert(cdSiteModule);
 
+                        //Переносим компоненты модуля
+                        var cdSiteModuleParts = db.core_controllers
+                            .Where(p => p.f_parent == moduleId)
+                            .Select(p => new core_site_controllers() {
+                                id = Guid.NewGuid(),
+                                f_site = siteId,
+                                f_controller = p.id
+                            });
+
+                        if(cdSiteModuleParts.Any())
+                            foreach(var modulePart in cdSiteModuleParts.ToArray())
+                            {
+                                db.Insert(modulePart);
+                            }
+
+                        //Доп инфа для логирования
                         var module = db.core_controllers
                                         .Where(m => m.id == moduleId)
                                         .Single();
@@ -844,6 +860,18 @@ namespace PgDbase.Repository.cms
                         var cdSiteModule = data.Single();
                         db.Delete(cdSiteModule);
 
+                        //Удаляем компоненты модуля
+                        var cdSiteModulePartsId = db.core_controllers
+                            .Where(p => p.f_parent == cdSiteModule.f_controller)
+                            .Select(p => p.id);
+
+                        if (cdSiteModulePartsId.Any())
+                            db.core_site_controllers
+                                .Where(p => p.f_site == cdSiteModule.f_site)
+                                .Where(p => cdSiteModulePartsId.Contains(p.f_controller))
+                                .Delete();
+
+                       //Доп инфа для логирования
                         var module = db.core_controllers
                                        .Where(m => m.id == cdSiteModule.f_controller)
                                        .Single();
