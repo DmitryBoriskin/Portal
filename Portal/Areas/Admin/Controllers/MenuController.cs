@@ -28,8 +28,6 @@ namespace Portal.Areas.Admin.Controllers
             }
             model.MenuGroup = _cmsRepository.GetMenuGroup();
             //ViewBag.StartUrl = StartUrl;
-
-
             ViewBag.Title = "Структура CMS";
         }
 
