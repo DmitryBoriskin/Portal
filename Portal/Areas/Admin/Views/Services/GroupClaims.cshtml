@@ -27,19 +27,19 @@
                             </td>
                             <td class="groupClaim-item td-center">
                                 <span class="groupClaim-item-tooltip" data-toggle="tooltip" data-placement="left" title="Сохранено"></span>
-                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="read" checked="@item.IsRead">
+                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="read" data-menu="@item.Menu.Id" checked="@item.IsRead">
                             </td>
                             <td class="groupClaim-item td-center">
                                 <span class="groupClaim-item-tooltip" data-toggle="tooltip" data-placement="left" title="Сохранено"></span>
-                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="write" checked="@item.IsWrite">
+                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="write" data-menu="@item.Menu.Id" checked="@item.IsWrite">
                             </td>
                             <td class="groupClaim-item td-center">
                                 <span class="groupClaim-item-tooltip" data-toggle="tooltip" data-placement="left" title="Сохранено"></span>
-                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="change" checked="@item.IsChange">
+                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="change" data-menu="@item.Menu.Id" checked="@item.IsChange">
                             </td>
                             <td class="groupClaim-item td-center">
                                 <span class="groupClaim-item-tooltip" data-toggle="tooltip" data-placement="left" title="Сохранено"></span>
-                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="delete" checked="@item.IsDelete">
+                                <input type="checkbox" class="iCheck" data-init="false" data-group="@item.UserGroup" data-url="@item.Id" data-action="delete" data-menu="@item.Menu.Id" checked="@item.IsDelete">
                             </td>
                         </tr>
                     }
@@ -67,7 +67,7 @@
                     { "searchable": false, "orderable": false },
                     { "searchable": false, "orderable": false }
                 ],
-                //paging: false,
+                paging: false,
                 language: {
                     "processing": "Подождите...",
                     "search": "Поиск:",

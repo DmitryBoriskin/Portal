@@ -135,5 +135,16 @@ namespace Portal.Areas.Admin.Controllers
             }
             return PartialView("GroupClaims", model);
         }
+
+        [HttpPost]
+        public ActionResult UpdateGroupClaims(ClaimParams data)
+        {
+            var res = _cmsRepository.UpdateGroupResolution(data);
+            if (res)
+            {
+                return Json("Success");
+            }
+            return Json("An Error Has occourred");
+        }
     }
 }

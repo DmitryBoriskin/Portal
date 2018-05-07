@@ -34,28 +34,38 @@
 
     //Назначение прав группе
     $("#modal-userGroupResolutions-table input[type='checkbox']").on('ifChanged', function () {
+
         var targetUrl = "/Admin/Services/UpdateGroupClaims";
         var _group = $(this).data("group");
         var _url = $(this).data("url");
         var _action = $(this).data("action");
+        var _menu = $(this).data("menu");
         var _checked = $(this).is(':checked');
 
         var el = $(this);
         var elTooltip = $(this).closest(".groupClaim-item").find(".groupClaim-item-tooltip").first();
 
+        var params = {
+            GroupId: _group,
+            ContentId: _url,
+            Claim: _action,
+            Checked: _checked
+        };
+        
         try
         {
             var params = {
-                GroupAlias: _group,
-                ContentId:_url,
+                GroupId: _group,
+                ContentId: _url,
+                MenuId: _menu,
                 Claim: _action,
-                Checked: _checked
+                IsChecked: _checked
             };
 
             var _data = JSON.stringify(params);
 
             //ShowPreloader(content);
-            
+
             $.ajax({
                 url: targetUrl,
                 method: "POST",
@@ -143,7 +153,7 @@
         var targetUrl = "/Admin/Orgs/UpdateLinkToOrg";
         var _objctId = $(this).data("objectId");
         var _objectType = $(this).data("objectType");
-        var _linkId =  $(this).data("linkId");
+        var _linkId = $(this).data("linkId");
         var _linkType = $(this).data("linkType");
         var _checked = $(this).is(':checked');
 
@@ -179,8 +189,7 @@
                     elTooltip.attr("title", "Сохранено");
                     elTooltip.tooltip('show');
                     if (_checked) {
-                        if (listBlock.find("org_" + _linkId).length === 0)
-                        {
+                        if (listBlock.find("org_" + _linkId).length === 0) {
                             listBlock.append($("<li id='org_" + _linkId + "' class='icon-link'/>").html(_chkbxlabel));
                         }
                     }
@@ -211,7 +220,7 @@
         var targetUrl = "/Admin/Events/UpdateLinkToEvent";
         var _objctId = $(this).data("objectId");
         var _objectType = $(this).data("objectType");
-        var _linkId =  $(this).data("linkId");
+        var _linkId = $(this).data("linkId");
         var _linkType = $(this).data("linkType");
         var _checked = $(this).is(':checked');
 
@@ -248,8 +257,7 @@
                     elTooltip.attr("title", "Сохранено");
                     elTooltip.tooltip('show');
                     if (_checked) {
-                        if (listBlock.find("evnt_" + _linkId).length === 0)
-                        {
+                        if (listBlock.find("evnt_" + _linkId).length === 0) {
                             listBlock.append($("<li id='evnt_" + _linkId + "' class='icon-link'/>").html(_dateEvent + _chkbxEvent));
                         }
                     }
@@ -454,15 +462,15 @@
                 delay: 500,
                 data: { peopleId: $("#member-people-select").val() },
                 processResults:
-                        function (data, params) {
-                            var obj = $.map(data, function (item, indx) {
-                                return {
-                                    id: item.id,
-                                    text: item.title
-                                }
-                            });
-                            return { results: obj };
-                        },
+                function (data, params) {
+                    var obj = $.map(data, function (item, indx) {
+                        return {
+                            id: item.id,
+                            text: item.title
+                        }
+                    });
+                    return { results: obj };
+                },
                 cache: true
             }
         });

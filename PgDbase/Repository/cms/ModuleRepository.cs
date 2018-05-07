@@ -326,8 +326,8 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_controllers
-                     .Where(t => t.id != Guid.Empty)
-                     .Where(t => t.pid != null);
+                     .Where(t => t.id != Guid.Empty);
+                     //.Where(t => t.pid != null);
 
                 if (!string.IsNullOrEmpty(filter.SearchText))
                     query = query.Where(t => t.c_name.ToLower().Contains(filter.SearchText) || t.c_desc.ToLower().Contains(filter.SearchText));
@@ -401,7 +401,7 @@ namespace PgDbase.Repository.cms
                     var cdController = new core_controllers
                     {
                         id = module.Id,
-                        pid = module.ParentId,
+                        //pid = module.ParentId,
                         c_name = module.Title,
                         c_controller_name = module.Controller,
                         c_action_name = module.Action,
@@ -442,7 +442,7 @@ namespace PgDbase.Repository.cms
                     if (data.Any())
                     {
                         var cdController = data.SingleOrDefault();
-                        cdController.pid = module.ParentId;
+                        //cdController.pid = module.ParentId;
                         cdController.c_name = module.Title;
                         cdController.c_controller_name = module.Controller;
                         cdController.c_action_name = module.Action;
