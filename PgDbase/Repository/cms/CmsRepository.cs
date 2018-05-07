@@ -168,8 +168,9 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                //var query = db.core_user_resolutions
-                //              .Where(w => w.)
+           
+
+                //var query=db.re
                 var data = db.core_controllers
                            .Where(w => w.f_parent == null)
                            .OrderBy(o => o.c_name)
