@@ -15,7 +15,7 @@
             foreach (var item in Model.Item.Modules)
             {
                 <div class="list-item">
-                    <h4>
+                    <h4 style="margin:2px 0;font-weight:400; font-size:1.3em;">
                         <span class="icon-puzzle" style="color:#999;"></span>
                         @item.Title <span class="description">(@(!string.IsNullOrEmpty(item.ActionName) ? @item.ControllerName + "/" + item.ActionName : @item.ControllerName))</span>
                     </h4>
