@@ -85,7 +85,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Список доменов
         /// </summary>
-        public Domain[] DomainList { get; set; }        
+        public Domain[] DomainList { get; set; }
 
         
 
@@ -93,6 +93,7 @@ namespace PgDbase.entity
         /// Ссылки на соц сети
         /// </summary>
         public SocialShare SocialShareBtns { get; set; }
+
 
         public SiteModuleModel[] Modules { get; set; }
     }
@@ -205,6 +206,11 @@ namespace PgDbase.entity
         /// Id модуля конкретного сайта
         /// </summary>
         public Guid ModuleId { get; set; }
+
+        /// <summary>
+        /// Все доступные шаблоны для модуля
+        /// </summary>
+        public TemplateModel[] Templates { get; set; }
 
     }
 

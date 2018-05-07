@@ -756,6 +756,9 @@ namespace PgDbase.Repository.cms
                         ModuleId = s.f_controller,
                         Title = s.fksitecontrollerscontrollers.c_name,
                         ControllerName = s.fksitecontrollerscontrollers.c_controller_name,
+                        ActionName = s.fksitecontrollerscontrollers.c_action_name,
+                        Desc = s.fksitecontrollerscontrollers.c_desc,
+                        View = (s.f_view != null)? s.f_view.Value : s.fksitecontrollerscontrollers.c_default_view,
                         ModuleParts = db.core_site_controllers
                                         .Where(m => m.fksitecontrollerscontrollers.f_parent == s.fksitecontrollerscontrollers.id)
                                         .Where(m => m.f_site == s.f_site)
@@ -831,6 +834,51 @@ namespace PgDbase.Repository.cms
                             Comment = "Сайту включен модуль " + module.c_controller_name + "/" + module.c_action_name
                         };
                         InsertLog(log);
+
+                        tran.Commit();
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Изменение модуля или компонента
+        /// </summary>
+        /// <param name="module"></param>
+        /// <returns></returns>
+        public bool SetSiteModuleTemplateDefault(Guid id, Guid templateId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var data = db.core_site_controllers
+                        .Where(s => s.id == id);
+
+                    if (data.Any())
+                    {
+                        var cdSiteController = data.SingleOrDefault();
+                        cdSiteController.f_view = templateId;
+
+                        db.Update(cdSiteController);
+
+                        //Логирование
+                        #region
+
+                        //var log = new LogModel()
+                        //{
+                        //    PageId = id,
+                        //    PageName = module.Title,
+                        //    Section = LogModule.Modules,
+                        //    Action = LogAction.update,
+                        //    Comment = $"Изменен модуль '{module.Title}' ({module.ControllerName})"
+                        //};
+                        //InsertLog(log);
+
+                        #endregion
 
                         tran.Commit();
                         return true;

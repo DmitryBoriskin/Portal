@@ -489,6 +489,7 @@
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\AllUsersController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SiteModulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\PagesController.cs" />
@@ -651,7 +652,8 @@
     <Content Include="Areas\Admin\Views\Services\GroupClaims.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Part\Modules.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Part\Domens.cshtml" />
-    <Content Include="Areas\Admin\Views\Sites\Module.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteModules\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteModules\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

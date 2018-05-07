@@ -50,7 +50,7 @@ namespace Portal.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: Admin/Templates/<id>
+        // GET: Admin/Templates/{Guid:id}
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetTemplate(id);

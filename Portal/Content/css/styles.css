@@ -452,9 +452,7 @@ a.link-close:before {
 .disabled div {
     color: #a1a1a1 !important;
 }
-.disabled .li-caption {
 
-}
 .icon-lock::before {content:'\e855'; /*color:#85afcc;*/}
 .icon-сlock::before {
     content: '\e8b3';
@@ -587,10 +585,8 @@ a.link-close:before {
 /* ------- // SiteMap.aspx ---------- */
 /* --------- Users.aspx  ------------ */
 /* ------- // Users.aspx  ----------- */
-.child-list {
-}
-.child-list_head h1{display:inline-block;}
 
+.child-list_head h1{display:inline-block;}
 
 
 /* Дополнительный блок */
@@ -1086,7 +1082,6 @@ a.item-default-link.active:hover:before{color:#005c99;}
 }
 
 
-
 /* Photoalbums */
 .photoalbum {
     list-style-type: none;
@@ -1366,5 +1361,30 @@ button.rss_delete {border:none; background:none;}
 .select2-container--default .select2-selection--single {
     border: 1px solid #dae1e6;
     color: #555555;
+}
+
+.module-templates-block{
+    width:800px;
+}
+
+.module-templates {
+    display:flex;
+    flex-direction:row;
+    /*flex-flow:nowrap;*/
+    flex-wrap:nowrap;
+    align-content:space-between;
+    width:800px;
+    height:300px;
+}
+.module-templates-item {
+    width:230px;
+    padding:15px;
+
+}
+
+.module-templates-item img{
+    border:1px solid #ccc;
+    min-width:200px;
+    min-height:220px;
 }
 

@@ -30,7 +30,7 @@ namespace Portal.Areas.Admin.Controllers
                 model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
         }
 
-        // GET: Admin/Users
+        // GET: Admin/Modules
         public ActionResult Index()
         {
             filter = GetFilter();
@@ -41,7 +41,7 @@ namespace Portal.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: Admin/Users/<id>
+        // GET: Admin/Modules/{Guid:id}
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetModule(id);
