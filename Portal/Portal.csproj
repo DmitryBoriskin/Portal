@@ -489,6 +489,7 @@
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\AllUsersController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteModulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
@@ -501,6 +502,7 @@
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
     <Compile Include="Areas\Admin\Models\FilterTreeModel.cs" />
+    <Compile Include="Areas\Admin\Models\NewsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MenuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TemplateViewModel.cs" />
@@ -654,6 +656,7 @@
     <Content Include="Areas\Admin\Views\Sites\Part\Domens.cshtml" />
     <Content Include="Areas\Admin\Views\SiteModules\Item.cshtml" />
     <Content Include="Areas\Admin\Views\SiteModules\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\News\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -667,6 +670,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Admin\Controllers\Modul\" />
     <Folder Include="Areas\Admin\Views\Core\" />
     <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="Models\" />
