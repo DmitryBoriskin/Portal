@@ -52,7 +52,7 @@
                 <div class="menu-panel">
                     @if (Model.Menu != null)
                     {
-                        @Html.Partial("Templates/Menu", Model.Menu);
+                        @Html.Partial("Templates/Menu");
                     }
                     @if (Model.Account != null && Model.Account.Group == "Developer")
                     {
@@ -110,11 +110,9 @@
         }
         
         <div class="main-block">
-            <div class="scroll-block">
-                @*@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post, new { @enctype = "multipart/form-data" }))
-                    {*@
+            <div class="scroll-block">                
                 @RenderBody()
-                @*}*@
+                
             </div>
         </div>
     </div>

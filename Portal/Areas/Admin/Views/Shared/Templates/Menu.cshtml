@@ -1,12 +1,13 @@
-﻿@model CmsMenuModel[]
+﻿@*@model CmsMenuModel[]*@
+@model CoreViewModel
 @{
     Layout = null;
     string ActiveClass = "";
-}
+} 
 
-@if (Model != null && Model.Count() > 0)
+@if (Model.Menu != null && Model.Menu.Count() > 0)
 {
-    foreach (var menuGroup in Model)
+    foreach (var menuGroup in Model.Menu)
     {
         if (menuGroup.GroupItems != null && menuGroup.GroupItems.Count() > 0)
         {
@@ -29,12 +30,39 @@
                             ActiveClass = "selected";
                         }
                     }
-
                     <div class="admin-menu_item @ActiveClass">
                         <a class="@Item.Class" href="@Url">@Item.Title</a>
                     </div>
-
                     ActiveClass = String.Empty;
+                }
+                @*модули*@
+                @if (menuGroup.Alias == "site")
+                {
+                    if (Model.MenuModul != null)
+                    {
+                        foreach (var Item in Model.MenuModul)
+                        {
+                            string Url = "/Admin/" + Item.Alias + "/";
+                            try
+                            {
+                                if (Request.Url.Segments[2].ToString().ToLower() == Item.Alias.ToLower() + "/")
+                                {
+                                    ActiveClass = "selected";
+                                }
+                            }
+                            catch
+                            {
+                                if (Item.Alias.ToLower() == "main")
+                                {
+                                    ActiveClass = "selected";
+                                }
+                            }
+                            <div class="admin-menu_item @ActiveClass">
+                                <a class="@Item.Class" href="@Url">@Item.Title</a>
+                            </div>
+                            ActiveClass = String.Empty;
+                        }
+                    }
                 }
                 <hr />
             </div>
