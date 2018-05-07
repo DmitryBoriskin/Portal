@@ -102,7 +102,10 @@ namespace PgDbase.Repository.cms
 
                 var data = query.ToArray();
 
-                UserGroupResolution[] result = new UserGroupResolution[query.Count()];
+                UserGroupResolution[] result = new UserGroupResolution[data.Length];
+
+                var resolutions = db.core_user_group_resolutions
+                    .Where(w => w.f_usergroup == groupId);
 
                 for (int i = 0; i < result.Length; i++)
                 {
@@ -110,18 +113,18 @@ namespace PgDbase.Repository.cms
                     {
                         Id = Guid.NewGuid(),
                         UserGroup = groupId,
-                        //IsRead = data[i].fkusergroupresolutionss != null
-                        //    ? data[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).SingleOrDefault().b_read : false,
-                        //IsWrite = data[i].fkusergroupresolutionss != null
-                        //    ? data[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).Any(a => a.b_write) : false,
-                        //IsChange = data[i].fkusergroupresolutionss != null
-                        //    ? data[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).Any(a => a.b_change) : false,
-                        //IsDelete = data[i].fkusergroupresolutionss != null
-                        //    ? data[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).Any(a => a.b_delete) : false,
-                        IsRead = false,
-                        IsWrite = false,
-                        IsChange = false,
-                        IsDelete = false,
+                        IsRead = resolutions
+                            .Where(w => w.f_menu == data[i].id)
+                            .Select(a => a.b_read).SingleOrDefault(),
+                        IsWrite = resolutions
+                            .Where(w => w.f_menu == data[i].id)
+                            .Select(a => a.b_write).SingleOrDefault(),
+                        IsChange = resolutions
+                            .Where(w => w.f_menu == data[i].id)
+                            .Select(a => a.b_change).SingleOrDefault(),
+                        IsDelete = resolutions
+                            .Where(w => w.f_menu == data[i].id)
+                            .Select(a => a.b_delete).SingleOrDefault(),
                         Menu = new GroupsModel
                         {
                             Id = data[i].id,
@@ -130,12 +133,7 @@ namespace PgDbase.Repository.cms
                     };
                 }
 
-                var dd = query.Where(a => a.fkusergroupresolutionss.Any(w => w.f_usergroup == groupId)).ToArray();
-
-                //result.Where(w => w.Menu.Equals(dd.));
-
                 return result;
-
             }
         }
 
