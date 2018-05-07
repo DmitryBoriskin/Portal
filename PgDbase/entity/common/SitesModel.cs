@@ -51,23 +51,11 @@ namespace PgDbase.entity
         /// </summary>
         public string LongTitle { get; set; }
 
-#warning Чем отличаются Disabled и SiteOff?   
         /// <summary>
-        /// 
+        /// признак отключенности сайта
         /// </summary>
         public bool Disabled { get; set; }
-
-        /// <summary>
-        /// Флаг отключенного сайта
-        /// </summary>
-        public bool SiteOff { get; set; }
-
-        /// <summary>
-        /// Алиас
-        /// </summary>
-        //[Required(ErrorMessage = "Поле «Доменное имя» не должно быть пустым.")]
-        //[RegularExpression(@"^[^-]([a-zA-Z0-9-]+)$", ErrorMessage = "Поле «Доменное имя» может содержать только буквы латинского алфавита и символ - (дефис). Доменное имя не может начинаться с дефиса.")]
-        //public string Alias { get; set; }
+        
 
         /// <summary>
         /// Тип
@@ -89,34 +77,23 @@ namespace PgDbase.entity
         /// </summary>
         public string Scripts { get; set; }
 
-#warning Чем отличаются MainDomain и DefaultDomain?
         /// <summary>
         /// домен сайта отмечанный в списке его доменов
-        /// </summary>
-        public string MainDomain { get; set; }
-
+        /// </summary>        
         public string DefaultDomain { get; set; }
 
-#warning Чем отличаются DomainList, DomainListString и DomainListArray?
         /// <summary>
         /// Список доменов
         /// </summary>
         public Domain[] DomainList { get; set; }
 
-        /// <summary>
-        /// Список дополнительных доменов в виде строки
-        /// </summary>
-        public string DomainListString { get; set; }
-
-        /// <summary>
-        /// Список дополнительных доменов
-        /// </summary>
-        public IEnumerable<string> DomainListArray { get; set; }
+        
 
         /// <summary>
         /// Ссылки на соц сети
         /// </summary>
         public SocialShare SocialShareBtns { get; set; }
+
 
         public SiteModuleModel[] Modules { get; set; }
     }
@@ -171,7 +148,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Доменное имя
@@ -221,13 +198,19 @@ namespace PgDbase.entity
     public class SiteModuleModel: ModuleModel
     {
         /// <summary>
-        /// Id записи модуля конкретного сайта
+        /// Id сайта
         /// </summary>
-        public Guid? SiteModuleId { get; set; }
+        public Guid SiteId { get; set; }
+
         /// <summary>
-        /// Модуль подключен к сайту (оплачен)
+        /// Id модуля конкретного сайта
         /// </summary>
-        public bool Checked { get; set; }
+        public Guid ModuleId { get; set; }
+
+        /// <summary>
+        /// Все доступные шаблоны для модуля
+        /// </summary>
+        public TemplateModel[] Templates { get; set; }
 
     }
 

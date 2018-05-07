@@ -47,15 +47,19 @@ namespace Portal.Areas.Admin.Models
         //public ResolutionsModel UserResolution { get; set; }
 
         /// <summary>
-        /// Меню админки
+        /// Меню админки из структуры CMS
         /// </summary>
         public CmsMenuModel[] Menu { get; set; }
+        /// <summary>
+        /// Меню модулей
+        /// </summary>
+        public CmsMenuItem[] MenuModul { get; set; }
 
         /// <summary>
         /// Логи, последние н записей
         /// </summary>
         //public cmsLogModel Log { get; set; }
-        
+
         /// <summary>
         /// Ошибка
         /// </summary>

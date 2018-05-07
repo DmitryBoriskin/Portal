@@ -90,7 +90,7 @@ namespace PgDbase.Repository.cms
                                          .Select(d => new Domain()
                                          {
                                              DomainName = d.c_domain,
-                                             id = d.id,
+                                             Id = d.id,
                                              IsDefault = d.b_default
                                          }).ToArray()
                          });

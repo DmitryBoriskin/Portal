@@ -1,0 +1,48 @@
+﻿@model SitesViewModel
+@{
+    int i = 0;
+}
+<div class="row topIndent-20">
+    <div class="col-md-12">
+        <div class="group-block open" title="Доменные имена">
+            @*<div class="alert alert-info" role="alert">Чтобы сайт отображался на другом домене, в его настройках DNS необходимо прописать запись типа А указав ip: @Request.ServerVariables["LOCAL_ADDR"] и добавить домен:</div>*@
+            @if (Model.Item.DomainList != null && Model.Item.DomainList.Count() > 0)
+            {
+                <table class="table table-condensed admin-pannel-table">
+                    <thead>
+                        <tr>
+                            <th>Основной</th>
+                            <th width="90%">Доменное_имя</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Item.DomainList)
+                        {
+                           
+                            <tr>
+                                <td>
+                                    <div class="host-chkbx-div">
+                                        <a class="set-domain-default-btn item-default-link @(item.IsDefault ? "active" : "")" data-link-id="@item.Id" data-url="/admin/sites/setSiteDomainDefault" data-init="false"></a>
+                                    </div>
+                                </td>
+                                <td>@item.DomainName</td>
+                                <td class="text-right">
+                                    <span id="domain_@(item.DomainName)" data-container="body" data-toggle="popover" data-placement="left" data-content=""></span>
+                                    <a class="delete-domain-btn delete-item-link" data-id="@item.Id" data-domain-name="@item.DomainName" data-url="/admin/sites/deleteSiteDomain" data-init="false"></a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            }
+            <div class="col-md-6">
+                <input type="text" title="Домен" name="new_domain" placeholder="example.ru" />
+            </div>
+            <div class="col-md-4">
+                <button style="margin-top: 25px;" class="button icon-create green pull-right" type="submit" name="action" value="add-new-domain">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>

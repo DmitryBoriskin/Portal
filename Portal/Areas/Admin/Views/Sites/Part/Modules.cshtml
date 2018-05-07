@@ -1,0 +1,63 @@
+﻿@model SitesViewModel
+
+<div class="row topIndent-20">
+    <div class="col-md-12">
+        <div class="group-block open" title="Модули">
+            @if (Model.Item.Modules != null && Model.Item.Modules.Count() > 0)
+            {
+                <table class="table admin-pannel-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th width="90%">Название_модуля</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var module in Model.Item.Modules)
+                        {
+                            <tr>
+                                <td>
+                                    <a class="item-settings-link" href="/admin/siteModules/item/@module.Id/" data-init="false"></a>
+                                    @*@Html.ActionLink(" ", "SiteModuleTemplatesList", "Templates", new { @siteId = Model.Item.Id, @moduleId = module.Id }, new { @id = "ModuleSettings", @class = "button pop-up_frame icon-cog", @data_class = "LogList", @title = "Настройки модуля" })*@
+                                </td>
+                                <td>
+                                    @module.Title
+                                </td>
+                                <td class="text-right">
+                                    <span id="module_@(module.Id)" data-container="body" data-toggle="popover" data-placement="left" data-content=""></span>
+                                    <a class="delete-module-btn delete-item-link" data-link-id="@module.Id" data-url="/admin/sites/deleteSiteModule" data-init="false"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            <div class="col-md-6">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Модуль:</label>
+                </div>
+                <select id="itemModule-select" class="form-control select2" >
+                    @if (Model.Modules != null && Model.Modules.Count() > 0)
+                    {
+                        foreach (var module in Model.Modules)
+                        {
+                            if (Model.Item != null && Model.Item.Modules != null && Model.Item.Modules.Any(m => m.ModuleId == module.Id))
+                            {
+                                <option value="@module.Id" disabled> @module.Title </option>
+                            }
+                            else
+                            {
+                                <option value="@module.Id"> @module.Title </option>
+                            }
+                        }
+                    }
+                </select>
+
+            </div>
+            <div class="col-md-4">
+                <button type="button" id="add-module-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-site-id="@Model.Item.Id" data-url="/admin/sites/addSiteModule">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>

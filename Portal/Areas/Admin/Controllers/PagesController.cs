@@ -17,6 +17,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new PageViewModel
             {
+                PageName = "Карта сайта",
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
@@ -26,7 +27,8 @@ namespace Portal.Areas.Admin.Controllers
             };
             if (AccountInfo != null)
             {
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+                model.Menu = MenuCmsCore;
+                model.MenuModul = MenuModulCore;
             }
 
             #region Метатеги

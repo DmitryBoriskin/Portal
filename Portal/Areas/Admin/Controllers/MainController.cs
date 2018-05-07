@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Portal.Areas.Admin
+namespace Portal.Areas.Admin.Controllers
 {
     public class MainController : CoreController
     {
@@ -22,8 +22,11 @@ namespace Portal.Areas.Admin
                 ActionName = ActionName,
             };
             if (AccountInfo != null)
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-                //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
+            {
+                model.Menu = MenuCmsCore;
+                model.MenuModul = MenuModulCore;
+            }                
+             //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
 
             return View(model);
         }

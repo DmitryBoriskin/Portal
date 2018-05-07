@@ -11,7 +11,6 @@ namespace Portal.Areas.Admin.Controllers
         SitesViewModel model;
         FilterModel filter;
 
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -26,7 +25,10 @@ namespace Portal.Areas.Admin.Controllers
                 ActionName = ActionName
             };
             if (AccountInfo != null)
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+            {
+                model.Menu = MenuCmsCore;
+                model.MenuModul = MenuModulCore;
+            }
         }
 
 
@@ -44,9 +46,11 @@ namespace Portal.Areas.Admin.Controllers
         {
             model.Item = _cmsRepository.GetSite(id);
 
-            if(model.Item != null)
+            if (model.Item != null)
+            {
                 model.Item.Modules = _cmsRepository.GetSiteModulesList(id);
-
+                model.Modules = _cmsRepository.GetModulesList();
+            }
             return View("Item", model);
         }
 
@@ -158,7 +162,7 @@ namespace Portal.Areas.Admin.Controllers
         {
             try
             {
-                Guid id = Guid.Parse(Request["Item.Id"]);                
+                Guid id = Guid.Parse(Request["Item.Id"]);
                 string Domain = Request["new_domain"].Replace(" ", "");
 
                 _cmsRepository.InsertDomain(Domain, id);
@@ -172,7 +176,7 @@ namespace Portal.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public ActionResult SetDomainDefault(Guid id)
+        public ActionResult SetSiteDomainDefault(Guid id)
         {
             var res = _cmsRepository.SetDomainDefault(id);
             if (res)
@@ -182,25 +186,29 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult DelDomain(Guid id)
+        public ActionResult DeleteSiteDomain(Guid id)
         {
-            if(_cmsRepository.DeleteDomain(id)) return null;
-            return Json("default");
+            var res = _cmsRepository.DeleteDomain(id);
+            if (res)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
 
         }
 
         #endregion
 
         #region Модули
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult SetSiteModule(Guid siteId, Guid moduleId)
+        public ActionResult AddSiteModule(Guid siteId, Guid moduleId)
         {
-           var res = _cmsRepository.BindSiteModule(siteId, moduleId);
+            var res = _cmsRepository.InsertSiteModuleLink(siteId, moduleId);
             if (res)
                 return Json("Success");
 
@@ -208,9 +216,9 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult UnSetSiteModule(Guid siteId, Guid moduleId)
+        public ActionResult DeleteSiteModule(Guid linkId)
         {
-            var res = _cmsRepository.UnBindSiteModule(siteId, moduleId);
+            var res = _cmsRepository.DeleteSiteModuleLink(linkId);
             if (res)
                 return Json("Success");
 

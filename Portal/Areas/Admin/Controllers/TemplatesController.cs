@@ -27,7 +27,10 @@ namespace Portal.Areas.Admin.Controllers
             };
 
             if (AccountInfo != null)
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+            {
+                model.Menu = MenuCmsCore;
+                model.MenuModul = MenuModulCore;
+            }
         }
 
         // GET: Admin/Templates
@@ -50,7 +53,7 @@ namespace Portal.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: Admin/Templates/<id>
+        // GET: Admin/Templates/{Guid:id}
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetTemplate(id);

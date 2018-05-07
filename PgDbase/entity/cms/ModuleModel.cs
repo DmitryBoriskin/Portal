@@ -13,7 +13,7 @@ namespace PgDbase.entity
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Идентификатор родителя
+        /// Идентификатор модуля-родителя
         /// </summary>
         public Guid? ParentId { get; set; }
 
@@ -25,12 +25,12 @@ namespace PgDbase.entity
         /// <summary>
         /// Имя контроллера
         /// </summary>
-        public string Controller { get; set; }
+        public string ControllerName { get; set; }
 
         /// <summary>
         /// Имя Экшена
         /// </summary>
-        public string Action { get; set; }
+        public string ActionName { get; set; }
 
         /// <summary>
         /// Вью
@@ -42,5 +42,10 @@ namespace PgDbase.entity
         /// </summary>
         public string Desc { get; set; }
 
+        /// <summary>
+        /// Составляющие части модуля
+        /// </summary>
+        public ModuleModel[] ModuleParts { get; set; }
     }
+
 }
