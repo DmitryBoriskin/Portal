@@ -59,7 +59,7 @@
     <Compile Include="Entity\cms\LogModel.cs" />
     <Compile Include="Entity\cms\NewsModel.cs" />
     <Compile Include="Entity\cms\PageModel.cs" />
-    <Compile Include="Entity\cms\Resolution.cs" />
+    <Compile Include="Entity\cms\ResolutionModel.cs" />
     <Compile Include="Entity\cms\TemplateModel.cs" />
     <Compile Include="Entity\cms\PasswordModel.cs" />
     <Compile Include="Entity\cms\SettingsModel.cs" />

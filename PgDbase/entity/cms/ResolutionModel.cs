@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Разрешения
     /// </summary>
-    public class Resolution
+    public class ResolutionModel
     {
         /// <summary>
         /// Чтение

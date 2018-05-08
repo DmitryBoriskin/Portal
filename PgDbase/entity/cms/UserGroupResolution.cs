@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Права группы
     /// </summary>
-    public class UserGroupResolution : Resolution
+    public class UserGroupResolution : ResolutionModel
     {
         /// <summary>
         /// Идентификатор
