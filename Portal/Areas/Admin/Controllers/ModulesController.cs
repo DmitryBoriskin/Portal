@@ -18,8 +18,8 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new ModuleViewModel()
             {
-                PageName = "Модули",
-                DomainName = Domain,
+                PageName = PageName,
+                //DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

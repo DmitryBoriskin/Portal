@@ -14,7 +14,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new MenuViewModel
             {
-                PageName = "Структура CMS",
+                PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
