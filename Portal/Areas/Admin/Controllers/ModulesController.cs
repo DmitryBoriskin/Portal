@@ -20,6 +20,8 @@ namespace Portal.Areas.Admin.Controllers
             {
                 PageName = PageName,
                 DomainName = Domain,
+                PageName = PageName,
+                //DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
