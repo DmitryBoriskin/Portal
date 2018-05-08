@@ -17,7 +17,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new PageViewModel
             {
-                PageName = "Карта сайта",
+                PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
