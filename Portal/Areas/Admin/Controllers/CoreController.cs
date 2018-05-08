@@ -101,6 +101,17 @@ namespace Portal.Areas.Admin
                 MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
                 MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
                 UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
+
+                if (UserResolutionInfo == null)
+                {
+                    throw new Exception("У вас нет прав доступа к странице!");
+                }
+
+                // Если нет прав на проссмотр, то направляем на главную
+                if (!UserResolutionInfo.IsRead)
+                {
+                    filterContext.Result = Redirect("/Admin/");
+                }
             }
             #endregion
         }
@@ -110,7 +121,6 @@ namespace Portal.Areas.Admin
         /// </summary>
         public CoreController()
         {
-
             Guid userId = Guid.Empty;
             var domainUrl = "";
 
