@@ -19,7 +19,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new NewsViewModel
             {
-                PageName = "Новости",
+                PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,

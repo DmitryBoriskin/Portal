@@ -18,7 +18,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new SitesViewModel()
             {
-                PageName = "Модули сайта",
+                PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,

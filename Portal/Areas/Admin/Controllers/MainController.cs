@@ -14,7 +14,7 @@ namespace Portal.Areas.Admin.Controllers
         {
             MainViewModel model = new MainViewModel()
             {
-                PageName = "Добро пожаловать",
+                PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,

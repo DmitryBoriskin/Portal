@@ -18,7 +18,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new TemplateViewModel()
             {
-                PageName = "Шаблоны",
+                PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
