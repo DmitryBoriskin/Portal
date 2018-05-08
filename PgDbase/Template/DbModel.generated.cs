@@ -185,7 +185,7 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_materials_categories_link_f_mk_BackReference
 		/// </summary>
-		[Association(ThisKey="id", OtherKey="f_maaterials_category", CanBeNull=true, IsBackReference=true)]
+		[Association(ThisKey="id", OtherKey="f_materials_category", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_material_category_link> fkmaterialscategorieslinkfmks { get; set; }
 
 		#endregion
@@ -194,16 +194,16 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="material_category_link")]
 	public partial class core_material_category_link
 	{
-		[PrimaryKey, NotNull    ] public Guid  id                    { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_materials           { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_maaterials_category { get; set; } // uuid
+		[PrimaryKey, NotNull    ] public Guid  id                   { get; set; } // uuid
+		[Column,        Nullable] public Guid? f_materials          { get; set; } // uuid
+		[Column,     NotNull    ] public Guid  f_materials_category { get; set; } // uuid
 
 		#region Associations
 
 		/// <summary>
 		/// fk_materials_categories_link_f_mk
 		/// </summary>
-		[Association(ThisKey="f_maaterials_category", OtherKey="id", CanBeNull=true, KeyName="fk_materials_categories_link_f_mk", BackReferenceName="fkmaterialscategorieslinkfmks")]
+		[Association(ThisKey="f_materials_category", OtherKey="id", CanBeNull=false, KeyName="fk_materials_categories_link_f_mk", BackReferenceName="fkmaterialscategorieslinkfmks")]
 		public core_material_categories fkmaterialscategorieslinkfmk { get; set; }
 
 		/// <summary>
@@ -221,7 +221,7 @@ namespace PgDbase.models
 		[Identity               ] public int      id            { get; set; } // integer
 		[PrimaryKey, NotNull    ] public Guid     gid           { get; set; } // uuid
 		[Column,     NotNull    ] public DateTime d_date        { get; set; } // timestamp (6) without time zone
-		[Column,     NotNull    ] public string   c_name        { get; set; } // character varying(512)
+		[Column,     NotNull    ] public string   c_title       { get; set; } // character varying(512)
 		[Column,        Nullable] public string   c_text        { get; set; } // text
 		[Column,        Nullable] public string   c_photo       { get; set; } // character varying(512)
 		[Column,        Nullable] public string   c_keyw        { get; set; } // character varying(256)

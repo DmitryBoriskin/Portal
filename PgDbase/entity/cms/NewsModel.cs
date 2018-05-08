@@ -26,8 +26,16 @@ namespace PgDbase.entity
         public string SourceName { get; set; }
         public int ViewCount { get; set; }
         public bool Disabled { get; set; }
-        public bool Important { get; set; }        
+        public bool Important { get; set; }
+        public NewsCategoryModel[] Category {get;set;}
     }
-    
-        
+
+    public class NewsCategoryModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Alias { get; set; }
+        public int Sort { get; set; }
+        public Guid SiteId { get; set; }
+    }   
 }
