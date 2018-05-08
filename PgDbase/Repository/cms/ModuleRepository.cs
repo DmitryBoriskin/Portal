@@ -718,8 +718,12 @@ namespace PgDbase.Repository.cms
                         ModuleId = s.f_controller,
                         Title = s.fksitecontrollerscontrollers.c_name,
                         ControllerName = s.fksitecontrollerscontrollers.c_controller_name,
+                        ActionName = s.fksitecontrollerscontrollers.c_action_name,
+                        Desc = s.fksitecontrollerscontrollers.c_desc,
+                        View = (s.f_view != null) ? s.f_view.Value : s.fksitecontrollerscontrollers.c_default_view,
                         ModuleParts = db.core_site_controllers
                                         .Where(m => m.fksitecontrollerscontrollers.f_parent == s.fksitecontrollerscontrollers.id)
+                                        .Where(m => m.f_site == s.f_site)
                                         .Select(m => new ModuleModel()
                                         {
                                             Id = m.id,

@@ -292,41 +292,6 @@ $(document).ready(function () {
         requiredTest();
     });
 
-    //телефонные номер  в отделениях
-    $('.depart_phone_del').click(function (e) {
-        e.preventDefault();
-        var idPhone = $(this).attr("data-id");
-        var $Container = $(this).parent().parent();
-        $.ajax({
-            type: "POST",
-            async: false,
-            url: "/admin/orgs/DelPhoneDepart",
-            data: { id: idPhone },
-            error: function () { alert("error"); },
-            success: function (data) {
-                $Container.remove();
-            }
-        });
-    });
-
-    //удалить дополнительный адрес
-    $('.del_dop_address').click(function (e) {
-        e.preventDefault();
-        var idDopAddres = $(this).attr("data-id");
-        var $Container = $(this).parent().parent();
-
-        $.ajax({
-            type: "POST",
-            async: false,
-            url: "/admin/orgs/DelDopAddres",
-            data: { id: idDopAddres },
-            error: function () { alert("error"); },
-            success: function (data) {
-                $Container.remove();
-            }
-        });
-
-    });
 
     //Добавляет связь сайт-модуль
     $("#add-module-btn").on("click", function (e) {
@@ -340,6 +305,33 @@ $(document).ready(function () {
                 url: _action,
                 async: false,
                 data: { siteId: _siteId, moduleId: _moduleId },
+            })
+                .done(function (response) {
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+    //Добавляет связь сайт-модуль
+    $(".set-template-default-btn").on("click", function (e) {
+        e.preventDefault();
+        var _linkId = $(this).data("linkId");
+        var _templateId = $(this).data("templateId");
+        var _action = $(this).data("url");
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { linkId: _linkId, templateId: _templateId },
             })
                 .done(function (response) {
                 })
@@ -461,38 +453,8 @@ $(document).ready(function () {
 
     });
 
-    //Удаление члена из гс 
-    $(".gs-member-delete").on('click', function () {
-        var targetUrl = "/Admin/MainSpecialist/DeleteGSMember/";
-        var _memberId = $(this).data("memberId");
 
-        var memberItem = $(this).closest(".member-item");
 
-        try {
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: "/admin/mainspecialist/deletegsmember",
-                data: { id: _memberId },
-                error: function () { alert("error"); },
-
-            })
-                .done(function (response) {
-                    memberItem.remove();
-                })
-                .fail(function (jqXHR, status) {
-                    console.log("Ошибка" + " " + status + " " + jqXHR);
-
-                })
-                .always(function (response) {
-
-                    //location.reload();
-                });
-        }
-        catch (ex) {
-            console.log(ex);
-        }
-    });
 
     //удаление варианта ответа
     $('.answer_delete').click(function (e) {

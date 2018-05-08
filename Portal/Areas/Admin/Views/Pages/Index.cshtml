@@ -7,8 +7,7 @@
 
 @using (Html.BeginForm())
 {
-    @*@if (Model.UserResolution.Read)*@
-    if (true)
+    if (Model.UserResolution.IsRead)
     {
         <div class="buttons"></div>
         <div class="content">
@@ -26,8 +25,7 @@
                     </div>
                     <div class="col-sm-7">
                         <div class="bubble_but">
-                            @*@if (Model.UserResolution.Write)*@
-                            @if (true)
+                            @if (Model.UserResolution.IsWrite)
                             {
                                 <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()">Добавить</a>
                             }

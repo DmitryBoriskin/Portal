@@ -62,14 +62,21 @@ namespace Portal.Areas.Admin
         /// Действие
         /// </summary>
         public string ActionName;
+
         /// <summary>
         /// Меню админки из структуры CMS
         /// </summary>
         public CmsMenuModel[] MenuCmsCore;
+
         /// <summary>
         /// Меню модулей
         /// </summary>
         public CmsMenuItem[] MenuModulCore;
+
+        /// <summary>
+        /// Права пользователя
+        /// </summary>
+        public ResolutionModel UserResolutionInfo;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -93,6 +100,7 @@ namespace Portal.Areas.Admin
                 AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
                 MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
                 MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
+                UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
             }
             #endregion
         }

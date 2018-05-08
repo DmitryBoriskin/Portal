@@ -18,7 +18,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new SitesViewModel()
             {
-                PageName = "Все сайты",
+                PageName = "Модули сайта",
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
@@ -34,7 +34,8 @@ namespace Portal.Areas.Admin.Controllers
         {
             filter = GetFilter();
             var mfilter = FilterModel.Extend<ModuleFilter>(filter);
-            //model.Item.Modules = _cmsRepository.GetSiteModulesList(model.DomainName);
+            model.Item = _cmsRepository.GetSite(SiteId);
+            model.Item.Modules = _cmsRepository.GetSiteModulesList(SiteId);
 
             ViewBag.SearchText = filter.SearchText;
             return View(model);
@@ -85,9 +86,9 @@ namespace Portal.Areas.Admin.Controllers
 
        
         [HttpPost]
-        public ActionResult SetDefaultTemplate(Guid id, Guid templateId)
+        public ActionResult SetDefaultTemplate(Guid linkId, Guid templateId)
         {
-            var res = _cmsRepository.SetSiteModuleTemplateDefault(id, templateId);
+            var res = _cmsRepository.SetSiteModuleTemplateDefault(linkId, templateId);
             if (res)
                 return Json("Success");
 

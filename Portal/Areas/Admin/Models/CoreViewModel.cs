@@ -44,7 +44,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Права пользователя
         /// </summary>
-        //public ResolutionsModel UserResolution { get; set; }
+        public ResolutionModel UserResolution { get; set; }
 
         /// <summary>
         /// Меню админки из структуры CMS

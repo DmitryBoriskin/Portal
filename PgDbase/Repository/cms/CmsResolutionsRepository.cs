@@ -96,54 +96,140 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                //return db.core_user_group_resolutions
-                //    .Where(w => w.f_usergroup == groupId)
-                //    .Select(s => new UserGroupResolution
-                //    {
-                //        Id = s.id,
-                //        UserGroup = s.f_usergroup,
-                //        IsRead = s.b_read,
-                //        IsWrite = s.b_write,
-                //        IsChange = s.b_change,
-                //        IsDelete = s.b_delete,
-                //        Menu = new GroupsModel
-                //        {
-                //            Id = s.fkusergroupresolutionsmenu.id,
-                //            Title = s.fkusergroupresolutionsmenu.c_title
-                //        }
-                //    }).ToArray();
-
-
                 var query = db.core_menu
                     .OrderBy(o => o.f_parent)
-                    .ThenBy(o => o.n_sort)
-                    .ToArray();
+                    .ThenBy(o => o.n_sort);
 
-                UserGroupResolution[] result = new UserGroupResolution[query.Count()];
+                var data = query.ToArray();
+
+                UserGroupResolution[] result = new UserGroupResolution[data.Length];
+
+                var resolutions = db.core_user_group_resolutions
+                    .Where(w => w.f_usergroup == groupId);
 
                 for (int i = 0; i < result.Length; i++)
                 {
+                    resolutions = resolutions.Where(w => w.f_menu == data[i].id);
                     result[i] = new UserGroupResolution
                     {
                         Id = Guid.NewGuid(),
                         UserGroup = groupId,
-                        IsRead = query[i].fkusergroupresolutionss != null 
-                            ? query[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).Any(a => a.b_read) : false,
-                        IsWrite = query[i].fkusergroupresolutionss != null 
-                            ? query[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).Any(a => a.b_write) : false,
-                        IsChange = query[i].fkusergroupresolutionss != null 
-                            ? query[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).Any(a => a.b_change) : false,
-                        IsDelete = query[i].fkusergroupresolutionss != null 
-                            ? query[i].fkusergroupresolutionss.Where(a => a.f_usergroup == groupId).Any(a => a.b_delete) : false,
+                        IsRead = resolutions
+                            .Select(a => a.b_read).SingleOrDefault(),
+                        IsWrite = resolutions
+                            .Select(a => a.b_write).SingleOrDefault(),
+                        IsChange = resolutions
+                            .Select(a => a.b_change).SingleOrDefault(),
+                        IsDelete = resolutions
+                            .Select(a => a.b_delete).SingleOrDefault(),
                         Menu = new GroupsModel
                         {
-                            Id = query[i].id,
-                            Title = query[i].c_title
+                            Id = data[i].id,
+                            Title = data[i].c_title
                         }
                     };
                 }
 
                 return result;
+            }
+        }
+
+        /// <summary>
+        /// Обновляет права на раздел
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool UpdateGroupResolution(ClaimParams data)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_user_group_resolutions
+                    .Where(w => w.f_usergroup == data.GroupId)
+                    .Where(w => w.f_menu == data.MenuId);
+
+                if (query.Any())
+                {
+                    switch (data.Claim)
+                    {
+                        case "read":
+                            return query.Set(u => u.b_read, data.IsChecked).Update() > 0;
+                        case "write":
+                            return query.Set(u => u.b_write, data.IsChecked).Update() > 0;
+                        case "change":
+                            return query.Set(u => u.b_change, data.IsChecked).Update() > 0;
+                        case "delete":
+                            return query.Set(u => u.b_delete, data.IsChecked).Update() > 0;
+                        default: return false;
+                    }
+                }
+                else
+                {
+                    core_user_group_resolutions item = new core_user_group_resolutions
+                    {
+                        id = Guid.NewGuid(),
+                        f_usergroup = data.GroupId,
+                        f_menu = data.MenuId,
+                        b_read = false,
+                        b_write = false,
+                        b_change = false,
+                        b_delete = false
+                    };
+                    switch (data.Claim)
+                    {
+                        case "read":
+                            item.b_read = data.IsChecked;
+                            break;
+                        case "write":
+                            item.b_write = data.IsChecked;
+                            break;
+                        case "change":
+                            item.b_change = data.IsChecked;
+                            break;
+                        case "delete":
+                            item.b_delete = data.IsChecked;
+                            break;
+                    }
+                    return db.core_user_group_resolutions.Insert(() => new core_user_group_resolutions
+                    {
+                        id = item.id,
+                        f_usergroup = item.f_usergroup,
+                        f_menu = item.f_menu,
+                        b_read = item.b_read,
+                        b_write = item.b_write,
+                        b_change = item.b_change,
+                        b_delete = item.b_delete
+                    }) > 0;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Возвращает права на раздел относительно группы
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="controller"></param>
+        /// <returns></returns>
+        public ResolutionModel GetUserResolutionGroup(Guid user, string controller)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Guid group = db.core_user_site_link
+                    .Where(w => w.f_user == user)
+                    .Where(w => w.f_site == _siteId)
+                    .Select(s => s.f_user_group)
+                    .SingleOrDefault();
+
+                return db.core_user_group_resolutions
+                    .Where(w => w.f_usergroup == group)
+                    .Where(w => w.fkusergroupresolutionsmenu
+                                    .c_alias.ToLower() == controller.ToLower())
+                    .Select(s => new ResolutionModel
+                    {
+                        IsRead = s.b_read,
+                        IsWrite = s.b_write,
+                        IsChange = s.b_change,
+                        IsDelete = s.b_delete
+                    }).SingleOrDefault();
             }
         }
     }

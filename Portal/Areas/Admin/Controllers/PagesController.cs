@@ -23,6 +23,7 @@ namespace Portal.Areas.Admin.Controllers
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
+                UserResolution = UserResolutionInfo,
                 MenuGroups = _cmsRepository.GetPageGroups()
             };
             if (AccountInfo != null)
