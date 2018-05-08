@@ -11,6 +11,11 @@ namespace PgDbase.Repository.cms
     /// </summary>
     public partial class CmsRepository
     {
+        /// <summary>
+        /// список новостей
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public Paged<NewsModel> GetNewsList(FilterModel filter)
         {
             Paged<NewsModel> result = new Paged<NewsModel>();
@@ -66,6 +71,63 @@ namespace PgDbase.Repository.cms
                     }
                 };
             }                            
+        }
+        /// <summary>
+        /// single news
+        /// </summary>
+        /// <param name="Guid"></param>
+        /// <returns></returns>
+        public NewsModel FetNews(Guid Guid) {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_materials.Where(w => w.gid == Guid);
+                if (query.Any())
+                {
+
+                    return query.Select(s=> new NewsModel {
+                                Guid=s.gid,
+                                Date=s.d_date,
+                                Title=s.c_title,
+                                Text=s.c_text,
+                                Photo=s.c_photo,
+                                Keyw=s.c_keyw,
+                                Desc=s.c_desc,
+                                SourceName=s.c_source_name,
+                                SourceUrl=s.c_source_url,
+                                Disabled=s.b_disabled,
+                                Important=s.b_important                                
+                                }).Single();
+                }
+                return null;
+            }
+        }
+
+
+        public bool InsertNews(NewsModel news) {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    InsertLog(new LogModel
+                    {
+                        PageId = news.Guid,
+                        PageName = news.Title,
+                        Section = LogModule.News,
+                        Action = LogAction.update
+                    });
+
+                    bool result = db.core_materials
+                                  .Insert(
+                                  () => new core_materials {
+                                      gid=news.Guid,
+                                      c_title=news.Title,
+                                      
+                                      
+                                  }) > 0;
+
+                    return true;
+                }
+            }
         }
     }
 }
