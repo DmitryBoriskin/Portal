@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PgDbase.Entity
+namespace PgDbase.entity
 {
     public class NewsModel
     {

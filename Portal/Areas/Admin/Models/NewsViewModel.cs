@@ -1,5 +1,4 @@
 ﻿using PgDbase.entity;
-using PgDbase.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

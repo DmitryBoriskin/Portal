@@ -49,6 +49,10 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="News, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\News.dll</HintPath>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.0\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -489,7 +493,7 @@
     <Compile Include="Areas\Admin\Controllers\CoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\AllUsersController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
-    <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Module\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteModulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
@@ -670,7 +674,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Controllers\Modul\" />
     <Folder Include="Areas\Admin\Views\Core\" />
     <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="Models\" />
