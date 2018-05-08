@@ -10,6 +10,5 @@ namespace Portal.Areas.Admin.Models
     {
         public NewsModel Item { get; set; }
         public Paged<NewsModel> List { get; set; }
-
     }
 }

@@ -62,14 +62,26 @@ namespace Portal.Areas.Admin
         /// Действие
         /// </summary>
         public string ActionName;
+
+        /// <summary>
+        /// Название страницы
+        /// </summary>
+        public string PageName;
+
         /// <summary>
         /// Меню админки из структуры CMS
         /// </summary>
         public CmsMenuModel[] MenuCmsCore;
+
         /// <summary>
         /// Меню модулей
         /// </summary>
         public CmsMenuItem[] MenuModulCore;
+
+        /// <summary>
+        /// Права пользователя
+        /// </summary>
+        public ResolutionModel UserResolutionInfo;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -77,11 +89,10 @@ namespace Portal.Areas.Admin
 
             ControllerName = filterContext.RouteData.Values["Controller"].ToString().ToLower();
             ActionName = filterContext.RouteData.Values["Action"].ToString().ToLower();
-            
-            
+            PageName = _cmsRepository.GetPageName(ControllerName);
+
             StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
-
-
+            
             #region Данные об авторизованном пользователе
             Guid _userId = new Guid();
             try { _userId = new Guid(System.Web.HttpContext.Current.User.Identity.Name); }
@@ -93,6 +104,18 @@ namespace Portal.Areas.Admin
                 AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
                 MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
                 MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
+                UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
+
+                if (UserResolutionInfo == null)
+                {
+                    throw new Exception("У вас нет прав доступа к странице!");
+                }
+
+                // Если нет прав на проссмотр, то направляем на главную
+                if (!UserResolutionInfo.IsRead)
+                {
+                    filterContext.Result = Redirect("/Admin/");
+                }
             }
             #endregion
         }
@@ -102,7 +125,6 @@ namespace Portal.Areas.Admin
         /// </summary>
         public CoreController()
         {
-
             Guid userId = Guid.Empty;
             var domainUrl = "";
 

@@ -28,6 +28,6 @@ namespace PgDbase.entity
         public bool Disabled { get; set; }
         public bool Important { get; set; }        
     }
-
-
+    
+        
 }
