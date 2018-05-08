@@ -202,5 +202,35 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
+
+        /// <summary>
+        /// Возвращает права на раздел относительно группы
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="controller"></param>
+        /// <returns></returns>
+        public ResolutionModel GetUserResolutionGroup(Guid user, string controller)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Guid group = db.core_user_site_link
+                    .Where(w => w.f_user == user)
+                    .Where(w => w.f_site == _siteId)
+                    .Select(s => s.f_user_group)
+                    .SingleOrDefault();
+
+                return db.core_user_group_resolutions
+                    .Where(w => w.f_usergroup == group)
+                    .Where(w => w.fkusergroupresolutionsmenu
+                                    .c_alias.ToLower() == controller.ToLower())
+                    .Select(s => new ResolutionModel
+                    {
+                        IsRead = s.b_read,
+                        IsWrite = s.b_write,
+                        IsChange = s.b_change,
+                        IsDelete = s.b_delete
+                    }).SingleOrDefault();
+            }
+        }
     }
 }
