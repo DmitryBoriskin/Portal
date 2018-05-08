@@ -38,6 +38,8 @@ namespace Portal.Areas.Admin.Controllers
         // GET: Admin/News
         public ActionResult Index()
         {
+            filter = GetFilter();
+            //model.List
             return View(model);
         }
     }

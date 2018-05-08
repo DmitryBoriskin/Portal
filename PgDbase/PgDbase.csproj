@@ -57,6 +57,7 @@
     <Compile Include="Entity\cms\CmsMenuModel.cs" />
     <Compile Include="Entity\cms\GroupsModel.cs" />
     <Compile Include="Entity\cms\LogModel.cs" />
+    <Compile Include="Entity\cms\NewsModel.cs" />
     <Compile Include="Entity\cms\PageModel.cs" />
     <Compile Include="Entity\cms\Resolution.cs" />
     <Compile Include="Entity\cms\TemplateModel.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Repository\cms\CmsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\cms\CmsResolutionsRepository.cs" />
+    <Compile Include="Repository\cms\NewsRepository.cs" />
     <Compile Include="Repository\cms\MenuRepository.cs" />
     <Compile Include="Repository\cms\CmsSitesRepository.cs" />
     <Compile Include="Repository\cms\ModuleRepository.cs" />
