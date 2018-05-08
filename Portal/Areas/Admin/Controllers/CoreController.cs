@@ -64,6 +64,11 @@ namespace Portal.Areas.Admin
         public string ActionName;
 
         /// <summary>
+        /// Название страницы
+        /// </summary>
+        public string PageName;
+
+        /// <summary>
         /// Меню админки из структуры CMS
         /// </summary>
         public CmsMenuModel[] MenuCmsCore;
@@ -84,11 +89,10 @@ namespace Portal.Areas.Admin
 
             ControllerName = filterContext.RouteData.Values["Controller"].ToString().ToLower();
             ActionName = filterContext.RouteData.Values["Action"].ToString().ToLower();
-            
-            
+            PageName = _cmsRepository.GetPageName(ControllerName);
+
             StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
-
-
+            
             #region Данные об авторизованном пользователе
             Guid _userId = new Guid();
             try { _userId = new Guid(System.Web.HttpContext.Current.User.Identity.Name); }

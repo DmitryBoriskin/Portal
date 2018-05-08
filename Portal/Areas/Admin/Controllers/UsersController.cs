@@ -17,7 +17,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new UsersViewModel()
             {
-                PageName = "Администраторы",
+                PageName = PageName,
                 //DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,

@@ -438,5 +438,21 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
+
+        /// <summary>
+        /// Возвращает название страницы по псевдониму
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <returns></returns>
+        public string GetPageName(string alias)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_menu
+                    .Where(w => w.c_alias.ToLower() == alias.ToLower())
+                    .Select(s => s.c_title)
+                    .SingleOrDefault();
+            }
+        }
     }
 }
