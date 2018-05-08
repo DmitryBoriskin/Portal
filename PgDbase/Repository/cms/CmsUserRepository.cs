@@ -38,9 +38,9 @@ namespace PgDbase.Repository.cms
                             if (!String.IsNullOrWhiteSpace(p))
                             {
                                 query = query.Where(w => w.c_surname.Contains(p)
-                                                    || w.c_name.Contains(p)
-                                                    || w.c_patronymic.Contains(p)
-                                                    || w.c_email.Contains(p));
+                                                      || w.c_name.Contains(p)
+                                                      || w.c_patronymic.Contains(p)
+                                                      || w.c_email.Contains(p));
                             }
                         }
                     }

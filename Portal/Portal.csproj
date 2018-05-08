@@ -669,7 +669,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Controllers\Modul\" />
     <Folder Include="Areas\Admin\Views\Core\" />
     <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="Models\" />

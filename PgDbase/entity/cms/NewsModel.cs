@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PgDbase.Entity
+namespace PgDbase.entity
 {
     public class NewsModel
     {
@@ -28,6 +28,6 @@ namespace PgDbase.Entity
         public bool Disabled { get; set; }
         public bool Important { get; set; }        
     }
-
-
+    
+        
 }
