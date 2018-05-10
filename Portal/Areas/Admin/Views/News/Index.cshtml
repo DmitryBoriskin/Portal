@@ -3,5 +3,30 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="content">
+    <h1>@Model.PageName</h1>
 
+</div>
+<div class="dop_info-block">
+    @if(Model.List!=null && Model.List.Items != null && Model.List.Items.Count() > 0)
+    {
+        foreach (var Item in Model.List.Items)
+        {
+            string disabled = (Item.Disabled) ? "disabled" : String.Empty;
+            string imgurl = Item.Photo;
+            <div class="list-item @disabled">
+                <a href="/admin/materials/item/@Item.Id/@ViewBag.urlQuery">
+                    <img src="@Item.Photo" alt="@Item.Title" class="li-image" />
+                </a>
+            </div>
+        }
+    }
+    
+    <div class="dop-caption">Фильтр</div>
+    @Html.Partial("Part/Filter")
+    @Html.ActionLink("Добавить категорию", "Category", "news", new {  @class = "button pop-up_frame icon-attach", @data_class = "LogList", @title = "Добавить категорию" })
+    
+    
+</div>
+
+<div class="buttons"></div>

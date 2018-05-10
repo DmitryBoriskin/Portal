@@ -26,11 +26,14 @@ namespace Portal.Areas.Admin.Controllers
                 ControllerName = ControllerName,
                 ActionName = ActionName
             };
+
             if (AccountInfo != null)
             {
                 model.Menu = MenuCmsCore;
                 model.MenuModul = MenuModulCore;
-            }            
+            }
+
+            model.Category = _cmsRepository.GetNewsCategory();
             //ViewBag.StartUrl = StartUrl;
             ViewBag.Title = "Новости";
         }
@@ -39,8 +42,25 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Index()
         {
             filter = GetFilter();
-            //model.List
+            model.List = _cmsRepository.GetNewsList(filter);
             return View(model);
+        }
+        public ActionResult Category(Guid? id)
+        {
+            return View();
+        }
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "save-group-btn")]        
+        public ActionResult Category(NewsCategoryModel model)
+        {
+            return View(model);
+        }
+
+        //GET: Admin/news/item/{GUID}
+        public ActionResult Item(Guid id)
+        {
+            model.Item = _cmsRepository.GetNewsItem(id);
+            return View("Item", model);
         }
     }
 }

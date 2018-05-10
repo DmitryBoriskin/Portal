@@ -10,5 +10,10 @@ namespace Portal.Areas.Admin.Models
     {
         public NewsModel Item { get; set; }
         public Paged<NewsModel> List { get; set; }
+        public NewsCategoryModel[] Category { get; set; }
+        /// <summary>
+        /// Фильтр
+        /// </summary>
+        public FilterTreeModel Filter { get; set; }
     }
 }

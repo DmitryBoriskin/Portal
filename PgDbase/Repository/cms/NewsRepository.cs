@@ -12,6 +12,29 @@ namespace PgDbase.Repository.cms
     public partial class CmsRepository
     {
         /// <summary>
+        /// категории
+        /// </summary>
+        /// <returns></returns>
+        public NewsCategoryModel[] GetNewsCategory()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_material_categories
+                            .Where(w => w.f_site == _siteId)
+                            .OrderBy(o => o.n_sort)
+                            .Select(s => new NewsCategoryModel() {
+                                Alias=s.c_alias,
+                                Name=s.c_name
+                            });
+                if (query.Any())
+                {
+                    return query.ToArray();
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// список новостей
         /// </summary>
         /// <param name="filter"></param>
@@ -77,7 +100,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="Guid"></param>
         /// <returns></returns>
-        public NewsModel FetNews(Guid Guid) {
+        public NewsModel GetNewsItem(Guid Guid) {
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_materials.Where(w => w.gid == Guid);
