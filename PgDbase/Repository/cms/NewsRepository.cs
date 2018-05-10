@@ -11,6 +11,7 @@ namespace PgDbase.Repository.cms
     /// </summary>
     public partial class CmsRepository
     {
+        #region категории
         /// <summary>
         /// категории
         /// </summary>
@@ -22,9 +23,11 @@ namespace PgDbase.Repository.cms
                 var query = db.core_material_categories
                             .Where(w => w.f_site == _siteId)
                             .OrderBy(o => o.n_sort)
-                            .Select(s => new NewsCategoryModel() {
-                                Alias=s.c_alias,
-                                Name=s.c_name
+                            .Select(s => new NewsCategoryModel()
+                            {
+                                Id = s.id,
+                                Alias = s.c_alias,
+                                Name = s.c_name
                             });
                 if (query.Any())
                 {
@@ -33,6 +36,96 @@ namespace PgDbase.Repository.cms
                 return null;
             }
         }
+        /// <summary>
+        /// отдельная категория
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public NewsCategoryModel GetNewsCategoryItem(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var q = db.core_material_categories.Where(w => w.id == id && w.f_site == _siteId);
+                if (q.Any())
+                {
+                    return q.Select(s => new NewsCategoryModel
+                    {
+                        Alias = s.c_alias,
+                        Name = s.c_name,
+                        Id = s.id
+                    }).Single();
+                }
+                return null;
+            }
+        }
+        public bool ExistNewsCategory(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_material_categories.Where(w => w.f_site == _siteId && w.id==id).Any();
+            }
+        }
+        public bool InsertNewsCaetegory(NewsCategoryModel category)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    InsertLog(new LogModel
+                    {
+                        PageId = category.Id,
+                        PageName = category.Name,
+                        Section = LogModule.NewsCategory,
+                        Action = LogAction.update
+                    });
+                    int sort = 1;
+                    var q = db.core_material_categories.Where(w => w.f_site == _siteId);
+                    if (q.Any())
+                    {
+                        sort = q.Select(s => s.n_sort).Max() + 1;
+                    }
+                    bool result = db.core_material_categories
+                        .Insert(() => new core_material_categories
+                        {
+                            c_alias = category.Alias,
+                            c_name = category.Name,
+                            n_sort = sort,
+                            f_site = _siteId
+                        }) > 0;
+                    tr.Commit();
+                    return result;
+                }
+            }
+        } 
+
+        public bool UpdateNewsCategory(NewsCategoryModel category)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    InsertLog(new LogModel
+                    {
+                        PageId = category.Id,
+                        PageName = category.Name,
+                        Section = LogModule.NewsCategory,
+                        Action = LogAction.update
+                    });
+                    var q = db.core_material_categories.Where(w => w.id == category.Id && w.f_site==_siteId);
+                    if (q.Any())
+                    {
+                        q
+                         .Set(s => s.c_name, category.Name)
+                         .Set(s => s.c_alias, category.Alias)
+                         .Update();
+                        tr.Commit();
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+        #endregion
 
         /// <summary>
         /// список новостей
