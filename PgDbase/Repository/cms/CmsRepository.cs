@@ -86,6 +86,16 @@ namespace PgDbase.Repository.cms
             }
         }
 
+
+
+        public core_sites GetCoreSites(Guid SiteId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_sites.Where(w => w.id == SiteId).Single();
+            }
+        }
+
         /// <summary>
         /// Возвращает логи для страницы
         /// </summary>

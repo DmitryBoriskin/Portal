@@ -28,6 +28,7 @@ namespace PgDbase.entity
         public int ViewCount { get; set; }
         public bool Disabled { get; set; }
         public bool Important { get; set; }
+        //public Guid[] CategoryId { get; set; }
         public NewsCategoryModel[] Category {get;set;}
     }
 

@@ -2,6 +2,7 @@
 using Portal.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -35,7 +36,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model.Category = _cmsRepository.GetNewsCategory();
             //ViewBag.StartUrl = StartUrl;
-            ViewBag.Title = "Новости";
+            ViewBag.Title = "Новости";            
         }
 
         // GET: Admin/News
@@ -43,6 +44,7 @@ namespace Portal.Areas.Admin.Controllers
         {
             filter = GetFilter();
             model.List = _cmsRepository.GetNewsList(filter);
+            //иерархия категорий            
             model.Filter = GetFilterTree();
             return View(model);
         }
@@ -52,7 +54,89 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetNewsItem(id);
+            if (model.Item != null)
+            {
+                ViewBag.Photo = model.Item.Photo;
+            }            
             return View("Item", model);
+        }
+
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
+        public ActionResult Insert()
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "page", String.Empty);
+
+            return Redirect(StartUrl + "item/" + Guid.NewGuid() + "/" + query);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
+        public ActionResult Save(Guid id, NewsViewModel backModel, HttpPostedFileBase upload)
+        {
+            ErrorMessage message = new ErrorMessage
+            {
+                Title = "Информация"
+            };
+            backModel.Item.Guid = id;
+            if (ModelState.IsValid)
+            {
+                #region Изображение
+                if (upload != null)
+                {
+                    #region добавление изображения
+                    string Path = Settings.UserFiles + SiteDir + Settings.MaterialsDir + backModel.Item.Date.ToString("yyyy_mm") + "/" + backModel.Item.Date.ToString("dd") + "/" + id + "/";
+
+                    #region оригинал
+                    string PathOriginal = Path + "original/";
+                    if (!Directory.Exists(PathOriginal)) { Directory.CreateDirectory(Server.MapPath(PathOriginal)); }
+                    upload.SaveAs(Server.MapPath(Path + "original/" + upload.FileName));
+                    #endregion
+
+                    if (upload != null && upload.ContentLength > 0)
+                        try
+                        {
+                            backModel.Item.Photo = Files.SaveImageResize(upload, Path, 540, 360);
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = "Произошла ошибка: " + ex.Message.ToString();
+                        }
+                    else
+                    {
+                        ViewBag.Message = "Вы не выбрали файл.";
+                    }
+                    #endregion
+                }
+                #endregion
+                if (_cmsRepository.CheckNews(id))
+                {
+                    _cmsRepository.UpdateNews(backModel.Item);
+                    message.Info = "Запись обновлена";
+                }
+                else
+                {
+                    _cmsRepository.InsertNews(backModel.Item);
+                    message.Info = "Запись добавлена";
+                }
+                message.Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
+                    new ErrorMessageBtnModel { Url = StartUrl + "item/"+id, Text = "ок", Action = "false" }
+                };
+            }
+            else
+            {
+                message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
+                message.Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = "#", Text = "ок", Action = "false" }
+                };
+            }
+            model.ErrorInfo = message;
+            return View("item", model);
         }
 
         #region категории
@@ -95,19 +179,40 @@ namespace Portal.Areas.Admin.Controllers
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-group-btn")]
         public ActionResult Category(NewsCategoryModel model)
         {
-            if (_cmsRepository.ExistNewsCategory(model.Id))
+            if (ModelState.IsValid)
             {
-                //обновляем
-                _cmsRepository.UpdateNewsCategory(model);
-
+                if (_cmsRepository.ExistNewsCategory(model.Id))
+                {
+                    //обновляем
+                    _cmsRepository.UpdateNewsCategory(model);
+                }
+                else
+                {
+                    //создаем
+                    _cmsRepository.InsertNewsCaetegory(model);
+                }
+                ViewBag.SuccesAlert = "Запись сохранена.";
             }
             else
             {
-                //создаем
-                _cmsRepository.InsertNewsCaetegory(model);
+                ViewBag.DankerAler = "Произошла ошибка.";
             }
-            
             return View(model);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-group-btn")]
+        public ActionResult CategoryDelete(Guid id)
+        {
+            if (_cmsRepository.DeleteNewsCategory(id))
+            {
+                ViewBag.SuccesAlert = "Категория успешно удалена.";
+            }
+            else
+            {
+                ViewBag.DankerAler = "Произошла ошибка.";
+            }
+            return View();            
         }
         #endregion
     }

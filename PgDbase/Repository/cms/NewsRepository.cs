@@ -125,6 +125,42 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
+
+        public bool DeleteNewsCategory(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var q = db.core_material_categories.Where(w => w.id == id && w.f_site==_siteId);
+                    if (q.Any())
+                    {
+                        var data = q.Single();
+                        InsertLog(new LogModel
+                        {
+                            PageId = id,
+                            PageName = data.c_name,
+                            Section = LogModule.NewsCategory,
+                            Action = LogAction.delete,                                
+                            Comment = "Удалена категория новостей" + String.Format("{0}/{1}", data.c_name, data.c_alias),
+                            
+                        }, data);
+
+                        //смещаем n_sort
+                        db.core_material_categories
+                          .Where(w => w.f_site == _siteId && w.n_sort>data.n_sort)
+                          .Set(p=>p.n_sort,p=>p.n_sort-1)
+                          .Update();
+
+                        tr.Commit();
+                        q.Delete();
+                        return true;
+                    }                    
+                    return false;
+                }
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -163,8 +199,11 @@ namespace PgDbase.Repository.cms
                               .Take(filter.Size)
                               .Select(s => new NewsModel {
                                   Id = s.id,
+                                  Guid=s.gid,
                                   Title = s.c_title,
                                   Date = s.d_date,
+                                  Photo=s.c_photo,
+                                  ViewCount=s.c_view_count,
                                   Category = s.fkcategorieslinks
                                                     .Join(
                                                             db.core_material_categories,
@@ -204,6 +243,7 @@ namespace PgDbase.Repository.cms
                                 Guid=s.gid,
                                 Date=s.d_date,
                                 Title=s.c_title,
+                                Alias=s.c_alias,
                                 Text=s.c_text,
                                 Photo=s.c_photo,
                                 Keyw=s.c_keyw,
@@ -218,6 +258,18 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// проверка существования новости по идентифкатору
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CheckNews(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_materials.Where(w => w.gid == id && w.f_site == _siteId).Any();
+            }
+        }
 
         public bool InsertNews(NewsModel news) {
             using (var db = new CMSdb(_context))
@@ -229,19 +281,97 @@ namespace PgDbase.Repository.cms
                         PageId = news.Guid,
                         PageName = news.Title,
                         Section = LogModule.News,
-                        Action = LogAction.update
+                        Action = LogAction.insert
                     });
 
-                    bool result = db.core_materials
+                    db.core_materials
                                   .Insert(
                                   () => new core_materials {
                                       gid=news.Guid,
                                       c_title=news.Title,
-                                      
-                                      
-                                  }) > 0;
-
+                                      c_alias=news.Alias,
+                                      c_photo=news.Photo,
+                                      c_source_name=news.SourceName,
+                                      c_source_url=news.SourceUrl,
+                                      c_desc=news.Desc,
+                                      c_keyw=news.Keyw,
+                                      b_disabled=news.Disabled,
+                                      b_important=news.Important,
+                                      f_site=_siteId
+                                  });
+                    tr.Commit();
                     return true;
+                }
+            }
+        }
+        /// <summary>
+        /// update news
+        /// </summary>
+        /// <param name="news"></param>
+        /// <returns></returns>
+        public bool UpdateNews(NewsModel news)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var q = db.core_materials.Where(w => w.gid == news.Guid && w.f_site==_siteId);
+                    if (q.Any())
+                    {
+                        InsertLog(new LogModel
+                        {
+                            PageId = news.Guid,
+                            PageName = news.Title,
+                            Section = LogModule.News,
+                            Action = LogAction.update
+                        });
+                        bool result = q.Set(s => s.c_title, news.Title)
+                                       .Set(s => s.c_text, news.Text)
+                                       .Set(s => s.c_alias, news.Alias)
+                                       .Set(s => s.c_photo, news.Photo)
+                                       .Set(s => s.c_keyw, news.Keyw)
+                                       .Set(s => s.c_desc, news.Desc)
+                                       .Set(s => s.c_source_name, news.SourceName)
+                                       .Set(s => s.c_source_url, news.SourceUrl)
+                                       .Set(s => s.b_disabled, news.Disabled)
+                                       .Set(s => s.b_important, news.Important)
+                                       .Update() > 0;
+                        tr.Commit();
+                        return result;
+                    }
+                    return false;
+                    
+
+                }
+            }
+        }
+        /// <summary>
+        /// удаляет новости
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteNews(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var q = db.core_materials.Where(w => w.gid == id && w.f_site == _siteId);
+                    if (q.Any())
+                    {
+                        var news = q.Single();
+                        InsertLog(new LogModel
+                        {
+                            PageId = id,
+                            PageName = news.c_title,
+                            Comment = "Удалена новость" + String.Format("{0}/", news.c_title),
+                            Section = LogModule.News,
+                            Action = LogAction.update,                            
+                        },news);
+                        tr.Commit();
+                        return true;
+                    }
+                    return false;
                 }
             }
         }
