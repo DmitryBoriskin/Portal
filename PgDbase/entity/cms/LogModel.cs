@@ -154,7 +154,16 @@ namespace PgDbase.entity
         /// <summary>
         /// Структура меню CMS
         /// </summary>
-        Menu
+        Menu,
+        /// <summary>
+        /// Новости
+        /// </summary>
+        News,
+        /// <summary>
+        /// Категории новостей
+        /// </summary>
+        NewsCategory
+
     }
 
     /// <summary>

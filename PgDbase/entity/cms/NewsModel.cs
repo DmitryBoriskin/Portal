@@ -17,6 +17,7 @@ namespace PgDbase.entity
         /// </summary>
         public Guid Guid { get; set; }
         public DateTime Date { get; set; }
+        public string Alias { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
         public string Photo { get; set; }

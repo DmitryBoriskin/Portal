@@ -660,6 +660,8 @@
     <Content Include="Areas\Admin\Views\SiteModules\Item.cshtml" />
     <Content Include="Areas\Admin\Views\SiteModules\Index.cshtml" />
     <Content Include="Areas\Admin\Views\News\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\News\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\News\Category.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Modules\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
