@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3478378E-DC15-4602-8CCA-458316213A46}</ProjectGuid>
+    <ProjectGuid>{FA78B21E-E1F6-41D5-BF4A-CD6579C107FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>News</RootNamespace>
-    <AssemblyName>News</AssemblyName>
+    <RootNamespace>SomeModule</RootNamespace>
+    <AssemblyName>SomeModule</AssemblyName>
     <MvcBuildViews>true</MvcBuildViews>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -34,9 +34,20 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Portal\bin\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,8 +57,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\News2Controller.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\SomeModuleController.cs" />
+    <Compile Include="Areas\Admin\Models\SomeModuleViewModel.cs" />
+    <Compile Include="Areas\Module\ModuleAreaRegistration.cs" />
+    <Compile Include="Areas\Module\Controllers\SomeModuleController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Areas\Admin\Views\SomeModule\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SomeModule\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Areas\Module\Views\SomeModule\Index.cshtml" />
+    <Content Include="Areas\Module\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
@@ -60,9 +85,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="View\Index.cshtml" />
+    <Folder Include="Areas\Module\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\*" "$(SolutionDir)Portal\Areas\Admin\Views\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Module\Views\*" "$(SolutionDir)Portal\Areas\Module\Views\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

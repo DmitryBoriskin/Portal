@@ -229,8 +229,8 @@ namespace PgDbase.models
 		[Column,        Nullable] public string   c_source_url  { get; set; } // character varying(512)
 		[Column,        Nullable] public string   c_source_name { get; set; } // character varying(128)
 		[Column,        Nullable] public int?     c_view_count  { get; set; } // integer
-		[Column,        Nullable] public bool?    b_disabled    { get; set; } // boolean
-		[Column,        Nullable] public bool?    b_important   { get; set; } // boolean
+		[Column,     NotNull    ] public bool     b_disabled    { get; set; } // boolean
+		[Column,     NotNull    ] public bool     b_important   { get; set; } // boolean
 		[Column,     NotNull    ] public Guid     f_site        { get; set; } // uuid
 
 		#region Associations
