@@ -23,6 +23,7 @@ namespace Portal.Areas.Admin.Controllers
                 PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
+                UserResolution = UserResolutionInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName
