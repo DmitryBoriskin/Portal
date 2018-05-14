@@ -97,7 +97,7 @@ namespace Portal.Areas.Admin.Controllers
                 ViewBag.Photo = model.Item.Photo;
                 Date = model.Item.Date;
             }
-            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + Date.ToString("yyyy_mm") + "/" + Date.ToString("dd") + "/" + id + "/";
+            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + Date.ToString("yyyy_MM") + "/" + Date.ToString("dd") + "/" + id + "/";
             return View("Item", model);
         }
 
@@ -128,7 +128,7 @@ namespace Portal.Areas.Admin.Controllers
                 if (upload != null)
                 {
                     #region добавление изображения
-                    string Path = Settings.UserFiles + SiteDir + Settings.MaterialsDir + backModel.Item.Date.ToString("yyyy_mm") + "/" + backModel.Item.Date.ToString("dd") + "/" + id + "/";
+                    string Path = Settings.UserFiles + SiteDir + Settings.MaterialsDir + backModel.Item.Date.ToString("yyyy_MM") + "/" + backModel.Item.Date.ToString("dd") + "/" + id + "/";
 
                     #region оригинал
                     string PathOriginal = Path + "original/";
@@ -188,7 +188,7 @@ namespace Portal.Areas.Admin.Controllers
                 ViewBag.Photo = model.Item.Photo;
                 DataDir = model.Item.Date;
             }
-            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + DataDir.ToString("yyyy_mm") + "/" + DataDir.ToString("dd") + "/" + id + "/";
+            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + DataDir.ToString("yyyy_MM") + "/" + DataDir.ToString("dd") + "/" + id + "/";
 
             model.ErrorInfo = message;
             return View("item", model);
