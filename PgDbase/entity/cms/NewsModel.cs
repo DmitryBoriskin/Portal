@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace PgDbase.entity
         /// </summary>
         public Guid Guid { get; set; }
         public DateTime Date { get; set; }
+        [RegularExpression(@"^[^-]([a-zA-Z0-9-]+)$", ErrorMessage = "Поле «Доменное имя» может содержать только буквы латинского алфавита и символ - (дефис). Доменное имя не может начинаться с дефиса.")]
         public string Alias { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
@@ -28,7 +30,7 @@ namespace PgDbase.entity
         public int ViewCount { get; set; }
         public bool Disabled { get; set; }
         public bool Important { get; set; }
-        //public Guid[] CategoryId { get; set; }
+        public Guid[] CategoryId { get; set; }
         public NewsCategoryModel[] Category {get;set;}
     }
 

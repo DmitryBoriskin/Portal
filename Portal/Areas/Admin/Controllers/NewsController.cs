@@ -48,7 +48,44 @@ namespace Portal.Areas.Admin.Controllers
             model.Filter = GetFilterTree();
             return View(model);
         }
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchtext"></param>
+        /// <param name="disabled"></param>
+        /// <param name="size"></param>
+        /// <param name="date"></param>
+        /// <param name="dateend"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string searchtext, string group, bool enabled, string size, DateTime? datestart, DateTime? dateend)
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "category", searchtext);
+            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            if (datestart.HasValue)
+                query = AddFilterParam(query, "datestart", datestart.Value.ToString("dd.MM.yyyy").ToLower());
+            if (dateend.HasValue)
+                query = AddFilterParam(query, "dateend", dateend.Value.ToString("dd.MM.yyyy").ToLower());
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
+
+            return Redirect(StartUrl + query);
+        }
+
+        /// <summary>
+        /// Очищаем фильтр
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
+        {
+            return Redirect(StartUrl);
+        }
 
         //GET: Admin/news/item/{GUID}
         public ActionResult Item(Guid id)
@@ -76,6 +113,7 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Save(Guid id, NewsViewModel backModel, HttpPostedFileBase upload)
         {
@@ -114,6 +152,11 @@ namespace Portal.Areas.Admin.Controllers
                     #endregion
                 }
                 #endregion
+                //категория
+                if (Request["Item.Services"] != null)
+                {
+                    backModel.Item.CategoryId = Request["Item.Services"].Split(',').Select(s => Guid.Parse(s)).ToArray();
+                }
                 if (_cmsRepository.CheckNews(id))
                 {
                     _cmsRepository.UpdateNews(backModel.Item);
@@ -138,6 +181,13 @@ namespace Portal.Areas.Admin.Controllers
                     new ErrorMessageBtnModel { Url = "#", Text = "ок", Action = "false" }
                 };
             }
+            model.Item = _cmsRepository.GetNewsItem(id);
+            if (model.Item != null)
+            {
+                ViewBag.Photo = model.Item.Photo;                
+            }
+            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + model.Item.Date.ToString("yyyy_mm") + "/" + model.Item.Date.ToString("dd") + "/" + id + "/";
+
             model.ErrorInfo = message;
             return View("item", model);
         }

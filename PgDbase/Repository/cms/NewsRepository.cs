@@ -178,6 +178,21 @@ namespace PgDbase.Repository.cms
                 {
                     query = query.Where(w => w.b_disabled == filter.Disabled);
                 }
+
+
+                if (!string.IsNullOrEmpty(filter.Category))
+                {
+                    var qcat = db.core_material_categories.Where(w => w.c_alias == filter.Category)
+                             .Join(db.core_material_category_link, n => n.id, m => m.f_materials_category, (n, m) => m.f_materials);
+
+                    query = query.Join(qcat, n => n.gid, m => m, (n, m) => n);
+                }
+                if (filter.Date.HasValue)
+                    query = query.Where(s => s.d_date > filter.Date.Value);
+                if (filter.DateEnd.HasValue)
+                    query = query.Where(s => s.d_date < filter.DateEnd.Value.AddDays(1));
+
+
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -251,6 +266,10 @@ namespace PgDbase.Repository.cms
                                 SourceName=s.c_source_name,
                                 SourceUrl=s.c_source_url,
                                 Disabled=s.b_disabled,
+                                Category=s.fkcategorieslinks.Select(ss=>new NewsCategoryModel() {
+                                    Id=ss.f_materials_category,
+                                    Name=ss.fkmaterialscategorieslinkfmk.c_name
+                                }).ToArray(),
                                 Important=s.b_important                                
                                 }).Single();
                 }
@@ -289,6 +308,7 @@ namespace PgDbase.Repository.cms
                                   () => new core_materials {
                                       gid=news.Guid,
                                       c_title=news.Title,
+                                      d_date=news.Date,
                                       c_alias=news.Alias,
                                       c_photo=news.Photo,
                                       c_source_name=news.SourceName,
@@ -299,6 +319,22 @@ namespace PgDbase.Repository.cms
                                       b_important=news.Important,
                                       f_site=_siteId
                                   });
+
+                    if (news.CategoryId != null)
+                    {
+                        foreach (var cat in news.CategoryId)
+                        {
+                            db.Insert(new core_material_category_link
+                            {
+                                id = Guid.NewGuid(),
+                                f_materials = news.Guid,
+                                f_materials_category = cat
+                            });
+                        }                        
+                    }
+
+
+                    //if(new.)
                     tr.Commit();
                     return true;
                 }
@@ -325,9 +361,14 @@ namespace PgDbase.Repository.cms
                             Section = LogModule.News,
                             Action = LogAction.update
                         });
+
+                        var thisnews = q.Single();
+
+
                         bool result = q.Set(s => s.c_title, news.Title)
                                        .Set(s => s.c_text, news.Text)
                                        .Set(s => s.c_alias, news.Alias)
+                                       .Set(s => s.d_date, news.Date)
                                        .Set(s => s.c_photo, news.Photo)
                                        .Set(s => s.c_keyw, news.Keyw)
                                        .Set(s => s.c_desc, news.Desc)
@@ -336,6 +377,24 @@ namespace PgDbase.Repository.cms
                                        .Set(s => s.b_disabled, news.Disabled)
                                        .Set(s => s.b_important, news.Important)
                                        .Update() > 0;
+
+
+                        //удаляем все привязки к категориям
+                        db.core_material_category_link.Where(w => w.f_materials == thisnews.gid).Delete();
+
+                        //добавляем категории
+                        if (news.CategoryId != null)
+                        {
+                            foreach (var cat in news.CategoryId)
+                            {
+                                db.Insert(new core_material_category_link
+                                {
+                                    id = Guid.NewGuid(),
+                                    f_materials = news.Guid,
+                                    f_materials_category = cat
+                                });
+                            }
+                        }                        
                         tr.Commit();
                         return result;
                     }

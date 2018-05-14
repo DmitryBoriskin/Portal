@@ -194,9 +194,9 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="material_category_link")]
 	public partial class core_material_category_link
 	{
-		[PrimaryKey, NotNull    ] public Guid  id                   { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_materials          { get; set; } // uuid
-		[Column,     NotNull    ] public Guid  f_materials_category { get; set; } // uuid
+		[PrimaryKey, NotNull] public Guid id                   { get; set; } // uuid
+		[Column,     NotNull] public Guid f_materials          { get; set; } // uuid
+		[Column,     NotNull] public Guid f_materials_category { get; set; } // uuid
 
 		#region Associations
 
@@ -209,7 +209,7 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_materials_categories_link
 		/// </summary>
-		[Association(ThisKey="f_materials", OtherKey="gid", CanBeNull=true, KeyName="fk_materials_categories_link", BackReferenceName="fkcategorieslinks")]
+		[Association(ThisKey="f_materials", OtherKey="gid", CanBeNull=false, KeyName="fk_materials_categories_link", BackReferenceName="fkcategorieslinks")]
 		public core_materials fkmaterialscategorieslink { get; set; }
 
 		#endregion

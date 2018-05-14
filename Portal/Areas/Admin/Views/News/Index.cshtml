@@ -20,10 +20,23 @@
                 </a>
                 <div class="li-desc">
                     <a  title="@Item.Title" class="li-caption" href="/admin/news/item/@Item.Guid">@Item.Title</a><br>
-                    <span>Дата: </span>@Convert.ToDateTime(Item.Date).ToString("dd.MM.yyyy")<br />
-                    <span>Кол-во просмотров: </span>@*@Item.co*@
+                    <span>Дата: </span>@Convert.ToDateTime(Item.Date).ToString("dd.MM.yyyy")<br />                    
+                    @if (Item.Category != null)
+                    {
+                        <span>Категории: </span>
+                        foreach (var cat in Item.Category)
+                        {
+                            <a href="/admin/news?category=@cat.Alias">@cat.Name</a>
+                        }
+                    }
+                    <br>
+                    <span>Кол-во просмотров: </span>@Item.ViewCount
                 </div>
             </div>
+        }
+        if (Model.List != null && Model.List.Pager != null)
+        {
+            @Html.Partial("Partial/_pager", Model.List.Pager)
         }
     }
 </div>
