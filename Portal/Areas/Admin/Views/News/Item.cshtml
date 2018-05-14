@@ -26,7 +26,7 @@
 
         @Html.TextBoxFor(m => m.Item.Date, new { required = "", data_type = "datetime", title = "Дата публикации", value = ViewBag.Date })
 
-        @Html.TextBoxFor(m => m.Item.Alias, new { @class = "uc_input", @title = "Алиас", @placeholder = "Алиас", @MaxLength = "512",@data_help="Часть URL(адреса) новости" })
+        @Html.TextBoxFor(m => m.Item.Alias, new { @class = "uc_input", @title = "Алиас", @placeholder = "news-name", @MaxLength = "512",@data_help="Часть URL(адреса) новости" })
         <div class="form-group">
             <label for="itemServices-select">Категории:</label>
             <select name="Item.Services" id="itemServices-select" class="form-control select2" multiple>

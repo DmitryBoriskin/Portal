@@ -181,12 +181,14 @@ namespace Portal.Areas.Admin.Controllers
                     new ErrorMessageBtnModel { Url = "#", Text = "ок", Action = "false" }
                 };
             }
+            var DataDir = DateTime.Today;
             model.Item = _cmsRepository.GetNewsItem(id);
             if (model.Item != null)
             {
-                ViewBag.Photo = model.Item.Photo;                
+                ViewBag.Photo = model.Item.Photo;
+                DataDir = model.Item.Date;
             }
-            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + model.Item.Date.ToString("yyyy_mm") + "/" + model.Item.Date.ToString("dd") + "/" + id + "/";
+            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + DataDir.ToString("yyyy_mm") + "/" + DataDir.ToString("dd") + "/" + id + "/";
 
             model.ErrorInfo = message;
             return View("item", model);
