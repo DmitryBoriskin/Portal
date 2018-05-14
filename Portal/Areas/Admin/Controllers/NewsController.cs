@@ -54,10 +54,13 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetNewsItem(id);
+            var Date = DateTime.Today;            
             if (model.Item != null)
             {
                 ViewBag.Photo = model.Item.Photo;
-            }            
+                Date = model.Item.Date;
+            }
+            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + Date.ToString("yyyy_mm") + "/" + Date.ToString("dd") + "/" + id + "/";
             return View("Item", model);
         }
 
@@ -137,6 +140,32 @@ namespace Portal.Areas.Admin.Controllers
             }
             model.ErrorInfo = message;
             return View("item", model);
+        }
+
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
+        public ActionResult Delete(Guid id)
+        {
+            _cmsRepository.DeleteNews(id);
+            ErrorMessage message = new ErrorMessage
+            {
+                Title = "Информация",
+                Info = "Запись удалена",
+                Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "ок", Action = "false" }
+                }
+            };
+            model.ErrorInfo = message;
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
+        public ActionResult Cancel()
+        {
+            return Redirect(StartUrl + Request.Url.Query);
         }
 
         #region категории

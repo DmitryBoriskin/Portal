@@ -366,8 +366,9 @@ namespace PgDbase.Repository.cms
                             PageName = news.c_title,
                             Comment = "Удалена новость" + String.Format("{0}/", news.c_title),
                             Section = LogModule.News,
-                            Action = LogAction.update,                            
+                            Action = LogAction.delete,                            
                         },news);
+                        q.Delete();
                         tr.Commit();
                         return true;
                     }
