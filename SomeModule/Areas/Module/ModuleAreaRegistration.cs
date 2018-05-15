@@ -16,11 +16,11 @@ namespace SomeModule.Module
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-               name: "SomeModule",
-               url: "SomeModule/{action}/{id}",
-               defaults: new { controller = "SomeModule", action = "Index", id = UrlParameter.Optional },
-               namespaces: new[] { "SomeModule.Module.Controllers" }
-           );
+                           name: "SomeModule",
+                           url: "someModule/{action}/{id}",
+                           defaults: new { controller = "SomeModule", action = "Index", id = UrlParameter.Optional },
+                           namespaces: new[] { "SomeModule.Module.Controllers" }
+                       );
         }
     }
 }

@@ -10,6 +10,8 @@ using System.Web.Mvc;
 
 namespace SomeModule.Admin.Controllers
 {
+    [RouteArea("Admin")]
+    [RoutePrefix("SomeModule")]
     public class SomeModuleController : CoreController
     {
         SomeModuleViewModel model;
@@ -37,7 +39,9 @@ namespace SomeModule.Admin.Controllers
                 model.MenuModul = MenuModulCore;
             }
         }
+
         // GET: Admin/SomeModule
+        [Route]
         public ActionResult Index()
         {
             return View(model);

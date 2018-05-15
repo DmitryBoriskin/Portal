@@ -9,7 +9,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SomeModule</RootNamespace>
     <AssemblyName>SomeModule</AssemblyName>
-    <MvcBuildViews>true</MvcBuildViews>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -70,7 +69,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Areas\Module\Views\SomeModule\Index.cshtml" />
-    <Content Include="Areas\Module\Views\web.config">
+    <Content Include="Areas\Module\Views\SomeModule\web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
@@ -89,7 +88,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\*" "$(SolutionDir)Portal\Areas\Admin\Views\"
+    <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\*" "$(SolutionDir)Portal\Areas\Admin\Views\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Module\Views\*" "$(SolutionDir)Portal\Areas\Module\Views\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

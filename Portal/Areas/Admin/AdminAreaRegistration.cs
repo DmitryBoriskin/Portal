@@ -12,14 +12,14 @@ namespace Portal.Areas.Admin
             }
         }
 
-
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                            "Admin_default",
-                            "Admin/{controller}/{action}/{id}",
-                            new { controller = "Main", action = "Index", id = UrlParameter.Optional },
-                            new[] { "Portal.Areas.Admin.Controllers" }
+                            "DefaultAdmin",
+                            "admin/{controller}/{action}/{id}",
+                            new { controller = "main", action = "index", id = UrlParameter.Optional },
+                            //new {controler != ""}
+                            new[] { "portal.areas.admin.controllers" }
                         );
         }
     }
