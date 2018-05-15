@@ -97,10 +97,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DbModel_core.tt</DependentUpon>
     </Compile>
-    <Compile Include="Template\LkDbModel.generated.cs">
+    <Compile Include="Template\DbModel_lk.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>LkDbModel.tt</DependentUpon>
+      <DependentUpon>DbModel_lk.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -139,9 +139,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DbModel_core.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="Template\LkDbModel.tt">
+    <Content Include="Template\DbModel_lk.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LkDbModel.generated.cs</LastGenOutput>
+      <LastGenOutput>DbModel_lk.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
