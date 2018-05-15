@@ -35,6 +35,9 @@ public class Settings
     public static string NoResolut = ConfigurationManager.AppSettings["NoResolut"];
 
 
+
+    
+
     /// <summary>
     /// Ключ капчи
     /// </summary>
@@ -159,7 +162,7 @@ public class Settings
     /// Типы поддерживаемых картинок
     /// </summary>
     public static string PicTypes = ReadAppSetting("PicTypes");//ConfigurationManager.AppSettings["MaterialPreviewImgSize"];
-
+    
     /// <summary>
     /// Размеры предыдущего превью
     /// </summary>
