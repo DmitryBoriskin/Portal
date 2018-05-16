@@ -515,6 +515,7 @@
     <Compile Include="Areas\Admin\Controllers\AllUsersController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhotoAlbumsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteModulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
@@ -530,6 +531,7 @@
     <Compile Include="Areas\Admin\Models\NewsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MenuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\PhotoViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TemplateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PageViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
@@ -686,6 +688,7 @@
     <Content Include="Areas\Admin\Views\News\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\News\Category.cshtml" />
     <Content Include="Areas\Admin\Views\News\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\PhotoAlbums\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

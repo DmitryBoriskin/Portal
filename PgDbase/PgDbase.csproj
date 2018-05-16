@@ -59,6 +59,8 @@
     <Compile Include="Entity\cms\LogModel.cs" />
     <Compile Include="Entity\cms\NewsModel.cs" />
     <Compile Include="Entity\cms\PageModel.cs" />
+    <Compile Include="Entity\cms\PhotoAlbumModel.cs" />
+    <Compile Include="Entity\cms\PhotoModel.cs" />
     <Compile Include="Entity\cms\ResolutionModel.cs" />
     <Compile Include="Entity\cms\TemplateModel.cs" />
     <Compile Include="Entity\cms\PasswordModel.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Entity\services\Filters\PageFilterModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />
+    <Compile Include="Repository\cms\CmsPhotoRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\cms\CmsResolutionsRepository.cs" />

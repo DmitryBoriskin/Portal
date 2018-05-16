@@ -31,6 +31,8 @@ namespace PgDbase.models
 		public ITable<core_page_group_links>       core_page_group_links       { get { return this.GetTable<core_page_group_links>(); } }
 		public ITable<core_page_groups>            core_page_groups            { get { return this.GetTable<core_page_groups>(); } }
 		public ITable<core_pages>                  core_pages                  { get { return this.GetTable<core_pages>(); } }
+		public ITable<core_photo_albums>           core_photo_albums           { get { return this.GetTable<core_photo_albums>(); } }
+		public ITable<core_photos>                 core_photos                 { get { return this.GetTable<core_photos>(); } }
 		public ITable<core_site_controllers>       core_site_controllers       { get { return this.GetTable<core_site_controllers>(); } }
 		public ITable<core_site_domains>           core_site_domains           { get { return this.GetTable<core_site_domains>(); } }
 		public ITable<core_sites>                  core_sites                  { get { return this.GetTable<core_sites>(); } }
@@ -380,6 +382,56 @@ namespace PgDbase.models
 		#endregion
 	}
 
+	[Table(Schema="core", Name="photo_albums")]
+	public partial class core_photo_albums
+	{
+		[PrimaryKey, NotNull    ] public Guid     id         { get; set; } // uuid
+		[Column,        Nullable] public string   c_title    { get; set; } // character varying(512)
+		[Column,        Nullable] public string   c_preview  { get; set; } // character varying(512)
+		[Column,        Nullable] public string   c_text     { get; set; } // text
+		[Column,     NotNull    ] public DateTime d_date     { get; set; } // timestamp (6) without time zone
+		[Column,     NotNull    ] public bool     b_disabled { get; set; } // boolean
+		[Column,     NotNull    ] public Guid     f_site     { get; set; } // uuid
+
+		#region Associations
+
+		/// <summary>
+		/// fk_photo_albums_sites
+		/// </summary>
+		[Association(ThisKey="f_site", OtherKey="id", CanBeNull=false, KeyName="fk_photo_albums_sites", BackReferenceName="fkphotoalbumss")]
+		public core_sites fkphotoalbumssites { get; set; }
+
+		/// <summary>
+		/// fk_photos_photo_albums_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_album", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_photos> fkphotosphotoalbumss { get; set; }
+
+		#endregion
+	}
+
+	[Table(Schema="core", Name="photos")]
+	public partial class core_photos
+	{
+		[PrimaryKey, NotNull    ] public Guid     id        { get; set; } // uuid
+		[Column,     NotNull    ] public Guid     f_album   { get; set; } // uuid
+		[Column,        Nullable] public string   c_title   { get; set; } // character varying(512)
+		[Column,     NotNull    ] public DateTime d_date    { get; set; } // timestamp (6) without time zone
+		[Column,        Nullable] public string   c_url     { get; set; } // character varying(512)
+		[Column,        Nullable] public string   c_preview { get; set; } // character varying(512)
+		[Column,     NotNull    ] public int      n_sort    { get; set; } // integer
+
+		#region Associations
+
+		/// <summary>
+		/// fk_photos_photo_albums
+		/// </summary>
+		[Association(ThisKey="f_album", OtherKey="id", CanBeNull=false, KeyName="fk_photos_photo_albums", BackReferenceName="fkphotosphotoalbumss")]
+		public core_photo_albums fkphotoalbums { get; set; }
+
+		#endregion
+	}
+
 	[Table(Schema="core", Name="site_controllers")]
 	public partial class core_site_controllers
 	{
@@ -489,6 +541,12 @@ namespace PgDbase.models
 		/// </summary>
 		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
 		public IEnumerable<core_material_categories> fkmaterialscategoriess { get; set; }
+
+		/// <summary>
+		/// fk_photo_albums_sites_BackReference
+		/// </summary>
+		[Association(ThisKey="id", OtherKey="f_site", CanBeNull=true, IsBackReference=true)]
+		public IEnumerable<core_photo_albums> fkphotoalbumss { get; set; }
 
 		#endregion
 	}
@@ -731,6 +789,18 @@ namespace PgDbase.models
 				t.gid == gid);
 		}
 
+		public static core_photo_albums Find(this ITable<core_photo_albums> table, Guid id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id == id);
+		}
+
+		public static core_photos Find(this ITable<core_photos> table, Guid id)
+		{
+			return table.FirstOrDefault(t =>
+				t.id == id);
+		}
+
 		public static core_site_controllers Find(this ITable<core_site_controllers> table, Guid id)
 		{
 			return table.FirstOrDefault(t =>
@@ -780,4 +850,4 @@ namespace PgDbase.models
 		}
 	}
 }
-   
+  
