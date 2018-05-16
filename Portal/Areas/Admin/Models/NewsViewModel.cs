@@ -11,6 +11,7 @@ namespace Portal.Areas.Admin.Models
         public NewsModel Item { get; set; }
         public Paged<NewsModel> List { get; set; }
         public NewsCategoryModel[] Category { get; set; }
+        public NewsCategoryModel CategoryItem { get; set; }
         /// <summary>
         /// Фильтр
         /// </summary>

@@ -32,6 +32,10 @@ namespace Portal.Areas.Admin
         /// Домен
         /// </summary>
         public string Domain;
+        /// <summary>
+        /// Корневая директория
+        /// </summary>
+        public string SiteDir;
 
         /// <summary>
         /// Идентификатор сайта
@@ -118,6 +122,9 @@ namespace Portal.Areas.Admin
                 }
             }
             #endregion
+
+
+
         }
         
         /// <summary>
@@ -161,6 +168,10 @@ namespace Portal.Areas.Admin
 
 
             _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
+
+
+            var core_site = _cmsRepository.GetCoreSites(SiteId);
+            SiteDir = core_site.c_serial.ToString();
         }
 
         /// <summary>

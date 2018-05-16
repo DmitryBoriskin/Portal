@@ -157,7 +157,7 @@ namespace PgDbase.Repository.cms
                         PageId = menu.Id,
                         PageName = menu.Title,
                         Section = LogModule.Menu,
-                        Action = LogAction.update
+                        Action = LogAction.insert
                     });
 
                     int sort = 1;

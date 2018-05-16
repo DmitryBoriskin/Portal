@@ -6,6 +6,11 @@
         bool.TryParse(Request.QueryString["disabled"], out checkboxValue);
     }
 }
+
+
+
+
+
 @using (Html.BeginForm())
 {
     <div class="row">
@@ -14,6 +19,10 @@
 
             @Html.CheckBox("enabled", !checkboxValue, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Только разрешенные", data_off = "Только запрещенные", data_width = "248" })
         </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">@Html.TextBox("datestart", Request.QueryString["datestart"], new { @class = "uc_input", @data_type = "date", @title = "Дата публикации с", @placeholder = "дд.мм.гггг" })</div>
+        <div class="col-xs-6">@Html.TextBox("dateend", Request.QueryString["dateend"], new { @class = "uc_input", @data_type = "date", @title = "по", @placeholder = "дд.мм.гггг" })</div>
     </div>
     <div class="row">
         <div class="col-md-6"><button type="submit" name="action" value="search-btn" class="button btn-primary">Применить</button></div>

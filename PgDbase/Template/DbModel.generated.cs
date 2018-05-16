@@ -194,9 +194,9 @@ namespace PgDbase.models
 	[Table(Schema="core", Name="material_category_link")]
 	public partial class core_material_category_link
 	{
-		[PrimaryKey, NotNull    ] public Guid  id                   { get; set; } // uuid
-		[Column,        Nullable] public Guid? f_materials          { get; set; } // uuid
-		[Column,     NotNull    ] public Guid  f_materials_category { get; set; } // uuid
+		[PrimaryKey, NotNull] public Guid id                   { get; set; } // uuid
+		[Column,     NotNull] public Guid f_materials          { get; set; } // uuid
+		[Column,     NotNull] public Guid f_materials_category { get; set; } // uuid
 
 		#region Associations
 
@@ -209,7 +209,7 @@ namespace PgDbase.models
 		/// <summary>
 		/// fk_materials_categories_link
 		/// </summary>
-		[Association(ThisKey="f_materials", OtherKey="gid", CanBeNull=true, KeyName="fk_materials_categories_link", BackReferenceName="fkcategorieslinks")]
+		[Association(ThisKey="f_materials", OtherKey="gid", CanBeNull=false, KeyName="fk_materials_categories_link", BackReferenceName="fkcategorieslinks")]
 		public core_materials fkmaterialscategorieslink { get; set; }
 
 		#endregion
@@ -228,10 +228,11 @@ namespace PgDbase.models
 		[Column,        Nullable] public string   c_desc        { get; set; } // character varying(512)
 		[Column,        Nullable] public string   c_source_url  { get; set; } // character varying(512)
 		[Column,        Nullable] public string   c_source_name { get; set; } // character varying(128)
-		[Column,        Nullable] public int?     c_view_count  { get; set; } // integer
+		[Column,     NotNull    ] public int      c_view_count  { get; set; } // integer
 		[Column,     NotNull    ] public bool     b_disabled    { get; set; } // boolean
 		[Column,     NotNull    ] public bool     b_important   { get; set; } // boolean
 		[Column,     NotNull    ] public Guid     f_site        { get; set; } // uuid
+		[Column,        Nullable] public string   c_alias       { get; set; } // character varying(512)
 
 		#region Associations
 
@@ -443,6 +444,7 @@ namespace PgDbase.models
 		[Column,     NotNull    ] public string c_name     { get; set; } // character varying(512)
 		[Column,     NotNull    ] public bool   b_disabled { get; set; } // boolean
 		[Column,        Nullable] public string c_fullname { get; set; } // character varying(4096)
+		[Identity               ] public int    c_serial   { get; set; } // integer
 
 		#region Associations
 
@@ -778,4 +780,4 @@ namespace PgDbase.models
 		}
 	}
 }
-  
+   

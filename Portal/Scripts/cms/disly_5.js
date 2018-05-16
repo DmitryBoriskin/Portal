@@ -473,23 +473,7 @@ $(document).ready(function () {
         });
     });
 
-    //отцепление врача от отделения
-    $('.del_people_for_dep').click(function (e) {
-        e.preventDefault();
-        var idDep = $(this).attr("data-dep");
-        var idPeople = $(this).attr("data-people");
-        var $Container = $(this).parent().parent();
-        $.ajax({
-            type: "POST",
-            async: false,
-            url: "/admin/orgs/delPeople",
-            data: { iddep: idDep, idpeople: idPeople },
-            error: function () { alert("error"); },
-            success: function (data) {
-                $Container.remove();
-            }
-        });
-    });
+    
 
     // валидация обязательных полей для заполнения 
     requiredTest();
@@ -619,7 +603,139 @@ $(document).ready(function () {
             SpotContent($(this));
         });
     }
+
+
+    // Инициализация полей для выбора файлов
+    //if ($('.uc_fileupload').length > 0) ucFileUpload_Init();
+
+    //$('#my-imageupload').imageupload({
+    //    allowedFormats: ['jpg'],
+    //    maxFileSizeKb: 512
+    //});
+    //$('#my-imageupload').imageupload('reset');
+    
+
 });
+
+// Инициализация полей для выбора файлов
+//function ucFileUpload_Init() {
+//    $('.uc_fileupload').each(function () {
+//        var $BlockTitle = $(this).find('.uc_title');
+//        var $ControlBlock = $(this).find('.uc_control');
+//        var $BlockPreview = $(this).find('.uc_preview');
+//        var $ResultInput = $(this).find('input[type=hidden]');
+
+//        //file info
+//        if ($(this).find('.uc_preview_img').length > 0) {
+//            var id = $(this).find('.uc_input').attr('id');
+            
+//            var File = document.getElementById(id);
+//            var FileName = File.defaultValue.replace(/^.*[\\\/]/, '');
+//            var FileType = File.type;
+//            var FileSize = File.size;
+
+
+//            var $PreviewBlock = $("<div/>", { 'class': 'uc_preview_item' });
+            
+
+
+
+//            // если картинка
+//            //var img = $("<img/>");
+//            //img.attr('src', File.defaultValue);
+//            //$ImgBlock.append(img);
+
+            
+        
+
+//            var $InfoBlock = $("<div/>", { 'class': 'uc_preview_info' });
+//            $InfoBlock.append('<div class="uc_preview_name">' + FileName + '</div>');
+//            $InfoBlock.append('<div class="uc_preview_size">' + FileSize + '</div>');
+
+//            // Кнопка Удалить
+//            var $DelPreview = $("<div/>", { 'class': 'uc_preview_btn' }).append('удалить');
+//            $DelPreview.click(function () {
+//                $ControlBlock.find('input:file').removeClass('UnLook');
+//                $ResultInput.val('');
+//                $BlockPreview.empty();
+//            });
+
+//            $InfoBlock.append($DelPreview);
+//            $PreviewBlock.append($InfoBlock);
+//            $BlockPreview.append($PreviewBlock);
+//        }
+
+//        // Разворачивает и сворачивает список файлов
+//        $BlockTitle.click(function () {
+//            var Class = $(this).parent().attr('class');
+
+//            $ControlBlock.slideToggle(
+//                function () {
+//                    if (Class.indexOf('Open') == -1) $(this).parent().addClass('Open');
+//                    else $(this).parent().removeClass('Open');
+//                });
+
+//            return false;
+//        });
+
+//        // Добавить файл при помощи кнопки
+//        $ControlBlock.find('input:file').change(function (e) {
+//            $(this).addClass('UnLook');
+//            $BlockPreview.empty();
+
+//            var File = $(this)[0].files[0];
+//            var FileName = File.name;
+//            var FileType = File.type;
+//            var FileSize = File.size;
+
+            
+//            $BlockPreview.empty();
+
+//            $ResultInput.val(FileName);
+
+
+//            var $PreviewBlock = $("<div/>", { 'class': 'uc_preview_item' });
+//            var $ImgBlock = $("<div/>", { 'class': 'uc_preview_img' });
+//            // если картинка
+//            if (FileType.indexOf('image') > -1) {
+//                var img = $("<img/>");
+//                img.attr('src', window.URL.createObjectURL(File));
+//                $ImgBlock.append(img);
+//            }
+//            else {
+//                $ImgBlock.append(File.substring(FileName.lastIndexOf(".") + 1));
+//            }
+//            $PreviewBlock.append($ImgBlock);
+
+//            var $InfoBlock = $("<div/>", { 'class': 'uc_preview_info' });
+//            $InfoBlock.append('<div class="uc_preview_name">' + FileName + '</div>');
+//            $InfoBlock.append('<div class="uc_preview_size">' + FileSize + '</div>');
+
+//            // Кнопка Удалить
+//            var $DelPreview = $("<div/>", { 'class': 'uc_preview_btn' }).append('удалить');
+//            $DelPreview.click(function () {
+//                $ControlBlock.find('input:file').removeClass('UnLook');
+//                $ResultInput.val('');
+//                $BlockPreview.empty();
+//            });
+
+//            $InfoBlock.append($DelPreview);
+//            $PreviewBlock.append($InfoBlock);
+//            $BlockPreview.append($PreviewBlock);
+//        });
+
+//        // Кнопка "Удалить"
+//        $(this).find('.uc_preview_Del').click(function () {
+//            $ControlBlock.find('input:file').removeClass('UnLook');
+//            $ResultInput.val('');
+//            $BlockPreview.empty();
+
+//            return false;
+//        });
+//    });
+//}
+
+
 var validSumm = $('.validation-summary-valid');
 if (validSumm.length > 0 && validSumm.find('li')[0].innerHTML !== '') validSumm.css('display', 'block');
 
@@ -734,8 +850,8 @@ function PopUpFrame(Object) {
         loadPage(location.href);
 
         function loadPage(url) {
-            $('.filtr-block').load(url + ' .filtr-block > *', function () {
-                $('.filtr-block a.pop-up_frame').click(function () {
+            $('.filtr-list').load(url + ' .filtr-list > *', function () {
+                $('.filtr-list a.pop-up_frame').click(function () {
                     PopUpFrame($(this));
                     return false;
                 });

@@ -158,7 +158,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Новости
         /// </summary>
-        News
+        News,
+        /// <summary>
+        /// Категории новостей
+        /// </summary>
+        NewsCategory
 
     }
 
