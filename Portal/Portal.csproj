@@ -689,6 +689,7 @@
     <Content Include="Areas\Admin\Views\News\Category.cshtml" />
     <Content Include="Areas\Admin\Views\News\Item.cshtml" />
     <Content Include="Areas\Admin\Views\PhotoAlbums\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\PhotoAlbums\Item.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

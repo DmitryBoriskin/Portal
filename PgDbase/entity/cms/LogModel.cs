@@ -162,8 +162,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Категории новостей
         /// </summary>
-        NewsCategory
-
+        NewsCategory,
+        /// <summary>
+        /// Фотоальбом
+        /// </summary>
+        PhotoAlbums
     }
 
     /// <summary>

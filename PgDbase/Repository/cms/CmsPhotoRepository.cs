@@ -3,6 +3,8 @@ using PgDbase.models;
 using System.Linq;
 using LinqToDB;
 using System;
+using System.Collections.Generic;
+using LinqToDB.Data;
 
 namespace PgDbase.Repository.cms
 {
@@ -101,6 +103,157 @@ namespace PgDbase.Repository.cms
                                 Sort = p.n_sort
                             }).ToArray()
                     }).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Добавляет фотоальбом
+        /// </summary>
+        /// <param name="album"></param>
+        /// <returns></returns>
+        public bool InsertPhotoAlbum(PhotoAlbumModel album)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var log = new LogModel
+                    {
+                        PageId = album.Id,
+                        PageName = album.Title,
+                        Section = LogModule.PhotoAlbums,
+                        Action = LogAction.insert
+                    };
+                    InsertLog(log);
+
+                    bool result = db.core_photo_albums.Insert(() => new core_photo_albums
+                    {
+                        id = album.Id,
+                        c_title = album.Title,
+                        c_preview = album.Preview,
+                        c_text = album.Text,
+                        d_date = album.Date,
+                        b_disabled = album.Disabled,
+                        f_site = _siteId
+                    }) > 0;
+                    
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Обновляет фотоальбом
+        /// </summary>
+        /// <param name="album"></param>
+        /// <returns></returns>
+        public bool UpdatePhotoAlbum(PhotoAlbumModel album)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var log = new LogModel
+                    {
+                        PageId = album.Id,
+                        PageName = album.Title,
+                        Section = LogModule.PhotoAlbums,
+                        Action = LogAction.update
+                    };
+                    InsertLog(log);
+
+                    bool result = db.core_photo_albums
+                        .Where(w => w.id == album.Id)
+                        .Set(s => s.c_title, album.Title)
+                        .Set(s => s.c_preview, album.Preview)
+                        .Set(s => s.c_text, album.Text)
+                        .Set(s => s.d_date, album.Date)
+                        .Set(s => s.b_disabled, album.Disabled)
+                        .Update() > 0;
+
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Удаляет фотоальбом
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeletePhotoAlbum(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    bool result = false;
+                    var album = db.core_photo_albums.Where(w => w.id == id).SingleOrDefault();
+                    if (album != null)
+                    {
+                        var log = new LogModel
+                        {
+                            PageId = id,
+                            PageName = album.c_title,
+                            Section = LogModule.PhotoAlbums,
+                            Action = LogAction.delete
+                        };
+                        InsertLog(log, album);
+
+                        result = db.Delete(album) > 0;
+                    }
+
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Прикрепляет изображения к альбому
+        /// </summary>
+        /// <returns></returns>
+        public void InsertPhotos(Guid album, IEnumerable<PhotoModel> photos)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    List<core_photos> list = new List<core_photos>();
+
+                    foreach (var p in photos)
+                    {
+                        list.Add(new core_photos
+                        {
+                            id = Guid.NewGuid(),
+                            f_album = album,
+                            c_title = p.Title,
+                            d_date = p.Date,
+                            c_url = p.Url,
+                            c_preview = p.Preview,
+                            n_sort = p.Sort
+                        });
+                    }
+                    db.BulkCopy(list);
+
+                    string albumTitle = db.core_photo_albums
+                                    .Where(w => w.id == album)
+                                    .Select(s => s.c_title)
+                                    .SingleOrDefault();
+
+                    var log = new LogModel
+                    {
+                        PageId = album,
+                        PageName = albumTitle,
+                        Section = LogModule.PhotoAlbums,
+                        Action = LogAction.update
+                    };
+                    InsertLog(log);
+
+                    tr.Commit();
+                }
             }
         }
     }

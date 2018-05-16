@@ -36,5 +36,10 @@ namespace PgDbase.entity
         /// Сортировка
         /// </summary>
         public int Sort { get; set; }
+
+        /// <summary>
+        /// Альбом
+        /// </summary>
+        public Guid Album { get; set; }
     }
 }
