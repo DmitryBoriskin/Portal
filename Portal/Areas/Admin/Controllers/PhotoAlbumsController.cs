@@ -214,6 +214,26 @@ namespace Portal.Areas.Admin.Controllers
             return "Не удалось удалить изображение";
         }
 
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string searchtext, bool enabled, string size)
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
+
+            return Redirect(StartUrl + query);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
+        {
+            return Redirect(StartUrl);
+        }
+
         /// <summary>
         /// Сохраняет превьюшку альбома
         /// </summary>
@@ -296,6 +316,17 @@ namespace Portal.Areas.Admin.Controllers
                 _cmsRepository.InsertPhotos(helper.AlbumId, photoList);
             }
             return albumPreview;
+        }
+
+        /// <summary>
+        /// Возвращает фотоальбомы в виде json
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public JsonResult PhotoListApi(int page = 1, int size = 30)
+        {
+            return null;
         }
     }
 }
