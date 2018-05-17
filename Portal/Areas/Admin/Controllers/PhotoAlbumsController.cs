@@ -249,17 +249,8 @@ namespace Portal.Areas.Admin.Controllers
                         {
                             Directory.CreateDirectory(Server.MapPath(helper.Path));
                         }
-
-                        double filesCount = Directory.EnumerateFiles(Server.MapPath(helper.Path)).Count();
-                        double newFilenameInt = Math.Ceiling(filesCount / 2) + 1;
-                        string newFilename = $"{newFilenameInt.ToString()}.jpg";
-
-                        while (System.IO.File.Exists(Server.MapPath(Path.Combine(helper.Path, newFilename))))
-                        {
-                            newFilenameInt++;
-                            newFilename = $"{newFilenameInt.ToString()}.jpg";
-                        }
-
+                        string newFilename = $"{(counter + 1).ToString()}.jpg";
+                        
                         //сохраняем оригинал
                         photo.SaveAs(Server.MapPath(Path.Combine(helper.Path, newFilename)));
 

@@ -353,7 +353,7 @@ namespace PgDbase.Repository.cms
                                 db.core_photos
                                     .Where(w => w.f_album == album)
                                     .Where(w => w.n_sort > actualNum)
-                                    .Where(w => w.n_sort <= actualNum)
+                                    .Where(w => w.n_sort <= pos)
                                     .Set(s => s.n_sort, s => s.n_sort - 1)
                                     .Update();
                             }
@@ -362,7 +362,7 @@ namespace PgDbase.Repository.cms
                                 db.core_photos
                                     .Where(w => w.f_album == album)
                                     .Where(w => w.n_sort < actualNum)
-                                    .Where(w => w.n_sort >= actualNum)
+                                    .Where(w => w.n_sort >= pos)
                                     .Set(s => s.n_sort, s => s.n_sort + 1)
                                     .Update();
                             }
