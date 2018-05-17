@@ -124,22 +124,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\common.css" />
-    <Content Include="Content\css\commonless.css" />
-    <Content Include="Content\css\common_media.css" />
     <Content Include="Content\css\iframe_tinymce.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\styles.css" />
     <Content Include="Content\css\styles_login.css" />
-    <Content Include="Content\css\styles_old.css" />
     <Content Include="Content\css\styles_popUp.css" />
-    <Content Include="Content\css\theme\blue.css" />
-    <Content Include="Content\css\theme\blue_dark.css" />
-    <Content Include="Content\css\theme\green.css" />
-    <Content Include="Content\css\theme\green2.css" />
-    <Content Include="Content\css\theme\green_portal.css" />
-    <Content Include="Content\css\theme\purple.css" />
-    <Content Include="Content\css\theme\turquoise.css" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\fonts\fontello\fontello.css" />
     <Content Include="Content\fonts\fontello\fontello.svg" />
@@ -477,14 +466,6 @@
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Account\LogIn.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_login.cshtml" />
-    <Content Include="Content\css\commonless.less" />
-    <Content Include="Content\css\theme\blue.less" />
-    <Content Include="Content\css\theme\blue_dark.less" />
-    <Content Include="Content\css\theme\green.less" />
-    <Content Include="Content\css\theme\green2.less" />
-    <Content Include="Content\css\theme\green_portal.less" />
-    <Content Include="Content\css\theme\purple.less" />
-    <Content Include="Content\css\theme\turquoise.less" />
     <Content Include="Content\plugins\bootstrap\config.json" />
     <Content Include="Content\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\plugins\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
@@ -502,6 +483,7 @@
     <Content Include="Scripts\cms\disly_5.js" />
     <Content Include="Scripts\cms\disly_5_login.js" />
     <Content Include="Scripts\cms\disly_5_popup.js" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\popUp_script.js" />
     <Content Include="Scripts\uc_script.js" />
     <Content Include="Web.config">
@@ -538,6 +520,7 @@
     <Compile Include="Areas\Admin\Models\SitesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ModuleViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UsersViewModel.cs" />
+    <Compile Include="Controllers\CoreController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -709,6 +692,7 @@
     <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="bin\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Core\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
