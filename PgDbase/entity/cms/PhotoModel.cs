@@ -3,9 +3,9 @@
 namespace PgDbase.entity
 {
     /// <summary>
-    /// Изображение
+    /// Изображение костяк
     /// </summary>
-    public class PhotoModel
+    public class PhotoCoreModel
     {
         /// <summary>
         /// Идентификатор
@@ -13,10 +13,21 @@ namespace PgDbase.entity
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Альбом
+        /// </summary>
+        public Guid Album { get; set; }
+        
+        /// <summary>
         /// Заголовок
         /// </summary>
         public string Title { get; set; }
+    }
 
+    /// <summary>
+    /// Изображение
+    /// </summary>
+    public class PhotoModel : PhotoCoreModel
+    {
         /// <summary>
         /// Дата
         /// </summary>
@@ -36,10 +47,5 @@ namespace PgDbase.entity
         /// Сортировка
         /// </summary>
         public int Sort { get; set; }
-
-        /// <summary>
-        /// Альбом
-        /// </summary>
-        public Guid Album { get; set; }
     }
 }

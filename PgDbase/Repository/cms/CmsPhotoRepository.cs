@@ -212,6 +212,20 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Проверяет существование альбома
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CheckPhotoAlbumExists(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_photo_albums
+                    .Where(w => w.id == id).Any();
+            }
+        }
+
+        /// <summary>
         /// Прикрепляет изображения к альбому
         /// </summary>
         /// <returns></returns>
@@ -253,6 +267,45 @@ namespace PgDbase.Repository.cms
                     InsertLog(log);
 
                     tr.Commit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Удаляет изображение
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public PhotoCoreModel DeletePhoto(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var photo = db.core_photos.Where(w => w.id == id).SingleOrDefault();
+                    var log = new LogModel
+                    {
+                        PageId = id,
+                        PageName = photo.c_title,
+                        Section = LogModule.Photos,
+                        Action = LogAction.delete
+                    };
+                    InsertLog(log, photo);
+
+                    bool success = db.Delete(photo) > 0;
+
+                    tr.Commit();
+                    
+                    if (success)
+                    {
+                        return new PhotoCoreModel
+                        {
+                            Id = id,
+                            Album = photo.f_album,
+                            Title = photo.c_title 
+                        };
+                    }
+                    return null;
                 }
             }
         }

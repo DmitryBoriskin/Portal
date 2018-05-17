@@ -166,7 +166,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Фотоальбом
         /// </summary>
-        PhotoAlbums
+        PhotoAlbums,
+        /// <summary>
+        /// Фото
+        /// </summary>
+        Photos
     }
 
     /// <summary>

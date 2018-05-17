@@ -21,7 +21,7 @@
                 <input type="file" title="Фотографии альбома (@ViewBag.PicTypes)" class="noplagin" name="uploads" multiple="" accept="image/*" />
             </div>
 
-            @if (Model.Item != null && Model.Item.Photos != null)
+            @if (Model.Item != null && Model.Item.Photos != null && Model.Item.Photos.Count() > 0)
             {
                 <div class="row">
                     <div class="col-sm-7"><h3 class="nesting_title">Фотографии</h3></div>

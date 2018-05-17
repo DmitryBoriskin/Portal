@@ -1,6 +1,6 @@
 ﻿@model PhotoViewModel
 @{
-    string noPhoto = "Content/img/nophoto.jpg";
+    string noPhoto = "/Content/img/nophoto.jpg";
 }
 
 @if (Model.UserResolution.IsRead)
@@ -15,7 +15,7 @@
                 string disabled = item.Disabled ? "disabled" : "";
                 string editLink = "/admin/photoalbums/item/" + item.Id;
 
-                if (!String.IsNullOrWhiteSpace(imgUrl))
+                if (String.IsNullOrWhiteSpace(imgUrl))
                 {
                     imgUrl = noPhoto;
                 }
