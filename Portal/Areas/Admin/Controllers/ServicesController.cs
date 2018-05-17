@@ -120,13 +120,13 @@ namespace Portal.Areas.Admin.Controllers
                     break;
             }
             return Content(result.ToString());
-
         }
 
         [HttpPost]
         public ActionResult ChangePositionAlbum(Guid album, Guid id, int permit)
         {
-            return null;
+            bool result = _cmsRepository.ChangePositionPhoto(album, id, permit);
+            return Content(result.ToString());
         }
 
         [HttpGet]
