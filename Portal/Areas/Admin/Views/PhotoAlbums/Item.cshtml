@@ -12,9 +12,9 @@
                     @Html.TextBoxFor(m => m.Item.Preview, new { type = "file", data_posted_name = "upload", data_url = ViewBag.Preview, title = "Картинка для превью", accept = ViewBag.PicTypes })
                 </div>
             </div>
-            <div class="group-block" title="Текст">
+            @*<div class="group-block" title="Текст">
                 @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "300" })
-            </div>
+            </div>*@
 
             <div class="form-group">
                 <label>Фотографии альбома (@ViewBag.PicTypes)</label>
