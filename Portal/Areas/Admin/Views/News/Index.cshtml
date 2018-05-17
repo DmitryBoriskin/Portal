@@ -1,7 +1,8 @@
 ﻿@model NewsViewModel
 @{
-    ViewBag.Title = "Index";
+    string noPhoto = "/Content/img/nophoto.jpg";
 }
+
 @if (Model.UserResolution.IsRead)
 {
     using (Html.BeginForm(Model.ActionName, Model.ControllerName))
@@ -13,11 +14,22 @@
                 foreach (var Item in Model.List.Items)
                 {
                     string disabled = (Item.Disabled) ? "disabled" : String.Empty;
-                    string imgurl = (String.IsNullOrEmpty(Item.Photo)) ? "/Content/img/nophoto.jpg" : Item.Photo;
+                    string imgUrl =  Item.Photo;
+                    if (String.IsNullOrWhiteSpace(imgUrl))
+                    {
+                        imgUrl = noPhoto;
+                    }
+                    else if (imgUrl.IndexOf("http") == -1)
+                    {
+                        if (!File.Exists(Server.MapPath(imgUrl)))
+                        {
+                            imgUrl = noPhoto;
+                        }
+                    }
 
                     <div class="list-item @disabled">
                         <a href="/admin/news/item/@Item.Guid/@ViewBag.urlQuery">
-                            <img src="@Item.Photo" alt="@Item.Title" class="li-image" />
+                            <img src="@imgUrl" alt="@Item.Title" class="li-image" />
                         </a>
                         <div class="li-desc">
                             <a title="@Item.Title" class="li-caption" href="/admin/news/item/@Item.Guid">@Item.Title</a><br>
