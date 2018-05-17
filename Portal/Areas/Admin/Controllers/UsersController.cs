@@ -116,7 +116,7 @@ namespace Portal.Areas.Admin.Controllers
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel()
         {
-            return Redirect(StartUrl + Request.Url.Query);
+            return Redirect($"{StartUrl}{Request.Url.Query}");
         }
 
         [HttpPost]

@@ -164,6 +164,7 @@
     <Content Include="Content\img\modules\products.png" />
     <Content Include="Content\img\modules\reviews.png" />
     <Content Include="Content\img\modules\sertificates.png" />
+    <Content Include="Content\img\nophoto.jpg" />
     <Content Include="Content\img\preloader.svg" />
     <Content Include="Content\js\menu.js" />
     <Content Include="Content\js\script.js" />
@@ -672,6 +673,7 @@
     <Content Include="Areas\Admin\Views\News\Category.cshtml" />
     <Content Include="Areas\Admin\Views\News\Item.cshtml" />
     <Content Include="Areas\Admin\Views\PhotoAlbums\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\PhotoAlbums\Item.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
