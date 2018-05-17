@@ -2,17 +2,14 @@
 @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="content">
-        <h1>@ViewBag.Title</h1>
-        @*@Html.HiddenFor(m=>m.Item.Guid)*@
+        <h1>@ViewBag.Title</h1>        
         @Html.TextBoxFor(m => m.Item.Title, new { @class = "uc_input", @required = "", @title = "Название", @placeholder = "Название", @MaxLength = "512" })
 
         <div class="row">
             <div class="col-lg-12">
-                @*data_url = fileUrl,*@
                 @Html.TextBoxFor(m => m.Item.Photo, new { type = "file", data_posted_name = "upload",data_url= @ViewBag.Photo, title = "Картинка для предпросмотра", data_help = "Размер фотографии должен быть не менне 400 точек по ширине и пропорции картинки - 4х3", accept = ".jpg,.jpeg,.png,.gif" })
             </div>
         </div>
-
         <div class="group-block" title="Текст">
             @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "300", data_dir = ViewBag.DataPath })
         </div>
@@ -44,18 +41,17 @@
             @Html.TextAreaFor(m => m.Item.Desc, new { type = "text", title = "Краткое описание", data_help = "Данный метатег поисковые системы используют для того, чтобы определить релевантность ссылки. При формировании данного тега необходимо использовать только те слова, которые содержатся в самом документе. Использование тех слов, которых нет на странице, не рекомендуется. Рекомендованное количество слов в данном теге — не более десяти." })
         </div>
 
-
-        
-
         @if (Model.Item != null)
         {
             @Html.ActionLink("Журнал изменений", "Log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
         }
     </div>
     <div class="buttons">
-        <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
-        @*@if (Model.Item != null && Model.UserResolution.Delete)*@
-        @if (true)
+        @if (Model.UserResolution.IsChange)
+        {
+            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+        }        
+        @if (Model.UserResolution.IsDelete)
         {
             <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
         }
