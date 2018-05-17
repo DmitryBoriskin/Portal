@@ -179,6 +179,23 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Обновляет превью для альбома
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="prev"></param>
+        /// <returns></returns>
+        public bool UpdatePhotoAlbumPreview(Guid id, string prev)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_photo_albums
+                    .Where(w => w.id == id)
+                    .Set(s => s.c_preview, prev)
+                    .Update() > 0;
+            }
+        }
+
+        /// <summary>
         /// Удаляет фотоальбом
         /// </summary>
         /// <param name="id"></param>
@@ -306,6 +323,58 @@ namespace PgDbase.Repository.cms
                         };
                     }
                     return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Меняет порядок сортировки фото
+        /// </summary>
+        /// <param name="album"></param>
+        /// <param name="id"></param>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public bool ChangePositionPhoto(Guid album, Guid id, int pos)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    bool result = false;
+                    var query = db.core_photos.Where(w => w.id == id);
+                    if (query.Any())
+                    {
+                        var data = query.SingleOrDefault();
+                        int actualNum = data.n_sort;
+                        if (pos != actualNum)
+                        {
+                            if (pos > actualNum)
+                            {
+                                db.core_photos
+                                    .Where(w => w.f_album == album)
+                                    .Where(w => w.n_sort > actualNum)
+                                    .Where(w => w.n_sort <= pos)
+                                    .Set(s => s.n_sort, s => s.n_sort - 1)
+                                    .Update();
+                            }
+                            else
+                            {
+                                db.core_photos
+                                    .Where(w => w.f_album == album)
+                                    .Where(w => w.n_sort < actualNum)
+                                    .Where(w => w.n_sort >= pos)
+                                    .Set(s => s.n_sort, s => s.n_sort + 1)
+                                    .Update();
+                            }
+                            result = db.core_photos
+                                .Where(w => w.id == id)
+                                .Set(s => s.n_sort, pos)
+                                .Update() > 0;
+                        }
+                    }
+
+                    tr.Commit();
+                    return result;
                 }
             }
         }

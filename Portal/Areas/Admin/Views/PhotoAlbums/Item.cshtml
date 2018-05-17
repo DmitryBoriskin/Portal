@@ -9,7 +9,7 @@
             @Html.TextBoxFor(m => m.Item.Title, new { @class = "uc_input", @title = "Название", @required = "" })
             <div class="row">
                 <div class="col-md-12">
-                    @Html.TextBoxFor(m => m.Item.Preview, new { type = "file", data_posted_name = "upload", title = "Картинка для превью", accept = ViewBag.PicTypes })
+                    @Html.TextBoxFor(m => m.Item.Preview, new { type = "file", data_posted_name = "upload", data_url = ViewBag.Preview, title = "Картинка для превью", accept = ViewBag.PicTypes })
                 </div>
             </div>
             <div class="group-block" title="Текст">
@@ -28,7 +28,7 @@
                     <div class="col-sm-5">
                         <a class="button icon-sort pull-right" id="sorting_photo" data-action="noPreloader-accept" title="Добавляет возможность сортировки элементов списка">Сортировать</a>
                     </div>
-                    <ul class="photoalbum" data-service="/admin/services/changeposition?group=photos" data-id="@Model.Item.Id">
+                    <ul class="photoalbum" data-service="/admin/services/ChangePositionAlbum?group=photos" data-id="@Model.Item.Id">
                         @foreach (var photo in Model.Item.Photos)
                         {
                             <li>
