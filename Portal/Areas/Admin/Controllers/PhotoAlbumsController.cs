@@ -52,7 +52,11 @@ namespace Portal.Areas.Admin.Controllers
         {
             model.Item = _cmsRepository.GetPhotoAlbum(id);
             ViewBag.PicTypes = String.Join(",", allowedExtention.Select(s => $".{s}"));
-            ViewBag.Date = DateTime.Now;
+            if (model.Item != null)
+            {
+                ViewBag.Date = DateTime.Now;
+                ViewBag.Preview = model.Item.Preview;
+            }
             return View("Item", model);
         }
 
@@ -112,7 +116,18 @@ namespace Portal.Areas.Admin.Controllers
 
                 if (uploads != null && uploads.Any(a => a != null))
                 {
-                    SaveUploadImages(uploads, path, id);
+                    var helper = new UploadImageHelper
+                    {
+                        Uploads = uploads,
+                        Path = path,
+                        AlbumId = id,
+                        IsNeedPreview = String.IsNullOrWhiteSpace(backModel.Item.Preview)
+                    };
+                    string prev = SaveUploadImages(helper);
+                    if (!String.IsNullOrWhiteSpace(prev))
+                    {
+                        _cmsRepository.UpdatePhotoAlbumPreview(id, prev);
+                    }
                 }
 
                 message.Buttons = new ErrorMessageBtnModel[]
@@ -219,33 +234,34 @@ namespace Portal.Areas.Admin.Controllers
         /// Сохраняет изображения для альбома
         /// </summary>
         /// <param name="uploads"></param>
-        private void SaveUploadImages(IEnumerable<HttpPostedFileBase> uploads, string path, Guid id)
+        private string SaveUploadImages(UploadImageHelper helper)
         {
             int counter = 0;
-            PhotoModel[] photoList = new PhotoModel[uploads.Count()];
-            foreach (var photo in uploads)
+            PhotoModel[] photoList = new PhotoModel[helper.Uploads.Count()];
+            string albumPreview = null;
+            foreach (var photo in helper.Uploads)
             {
                 if (photo != null && photo.ContentLength > 0)
                 {
                     if (allowedExtention.Contains(photo.FileName.Substring(photo.FileName.LastIndexOf('.') + 1)))
                     {
-                        if (!Directory.Exists(Server.MapPath(path)))
+                        if (!Directory.Exists(Server.MapPath(helper.Path)))
                         {
-                            Directory.CreateDirectory(Server.MapPath(path));
+                            Directory.CreateDirectory(Server.MapPath(helper.Path));
                         }
 
-                        double filesCount = Directory.EnumerateFiles(Server.MapPath(path)).Count();
+                        double filesCount = Directory.EnumerateFiles(Server.MapPath(helper.Path)).Count();
                         double newFilenameInt = Math.Ceiling(filesCount / 2) + 1;
                         string newFilename = $"{newFilenameInt.ToString()}.jpg";
 
-                        while (System.IO.File.Exists(Server.MapPath(Path.Combine(path, newFilename))))
+                        while (System.IO.File.Exists(Server.MapPath(Path.Combine(helper.Path, newFilename))))
                         {
                             newFilenameInt++;
                             newFilename = $"{newFilenameInt.ToString()}.jpg";
                         }
 
                         //сохраняем оригинал
-                        photo.SaveAs(Server.MapPath(Path.Combine(path, newFilename)));
+                        photo.SaveAs(Server.MapPath(Path.Combine(helper.Path, newFilename)));
 
                         ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/jpeg");
                         EncoderParameters myEncoderParameters = new EncoderParameters(1);
@@ -255,24 +271,29 @@ namespace Portal.Areas.Admin.Controllers
 
                         //оригинал
                         Bitmap _FileOrigin = Imaging.Resize(_File, 4000, "width");
-                        _FileOrigin.Save(Server.MapPath($"{path}{newFilename}"), myImageCodecInfo, myEncoderParameters);
+                        _FileOrigin.Save(Server.MapPath($"{helper.Path}{newFilename}"), myImageCodecInfo, myEncoderParameters);
 
                         //сохраняем full hd
                         Bitmap _FileHd = Imaging.Resize(_File, 2000, "width");
-                        _FileHd.Save(Server.MapPath($"{path}hd_{newFilename}"), myImageCodecInfo, myEncoderParameters);
+                        _FileHd.Save(Server.MapPath($"{helper.Path}hd_{newFilename}"), myImageCodecInfo, myEncoderParameters);
 
                         //сохраняем превью
                         Bitmap _FilePrev = Imaging.Resize(_File, 120, 120, "center", "center");
-                        _FilePrev.Save(Server.MapPath($"{path}prev_{newFilename}"), myImageCodecInfo, myEncoderParameters);
+                        _FilePrev.Save(Server.MapPath($"{helper.Path}prev_{newFilename}"), myImageCodecInfo, myEncoderParameters);
+
+                        if (helper.IsNeedPreview && counter == 0)
+                        {
+                            albumPreview = SavePreviewAlbum(photo, helper.Path);
+                        }
 
                         photoList[counter] = new PhotoModel()
                         {
                             Id = Guid.NewGuid(),
-                            Album = id,
+                            Album = helper.AlbumId,
                             Title = newFilename,
                             Date = DateTime.Now,
-                            Preview = $"{path}prev_{newFilename}",
-                            Url = $"{path}{newFilename}",
+                            Preview = $"{helper.Path}prev_{newFilename}",
+                            Url = $"{helper.Path}{newFilename}",
                             Sort = counter + 1
                         };
                         counter++;
@@ -281,8 +302,9 @@ namespace Portal.Areas.Admin.Controllers
             }
             if (photoList != null && photoList.Any(a => a != null))
             {
-                _cmsRepository.InsertPhotos(id, photoList);
+                _cmsRepository.InsertPhotos(helper.AlbumId, photoList);
             }
+            return albumPreview;
         }
     }
 }

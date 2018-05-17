@@ -123,6 +123,12 @@ namespace Portal.Areas.Admin.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult ChangePositionAlbum(Guid album, Guid id, int permit)
+        {
+            return null;
+        }
+
         [HttpGet]
         public ActionResult GroupClaims(string id)
         {

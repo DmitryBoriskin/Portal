@@ -179,6 +179,23 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Обновляет превью для альбома
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="prev"></param>
+        /// <returns></returns>
+        public bool UpdatePhotoAlbumPreview(Guid id, string prev)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_photo_albums
+                    .Where(w => w.id == id)
+                    .Set(s => s.c_preview, prev)
+                    .Update() > 0;
+            }
+        }
+
+        /// <summary>
         /// Удаляет фотоальбом
         /// </summary>
         /// <param name="id"></param>
