@@ -326,7 +326,13 @@ namespace Portal.Areas.Admin.Controllers
         /// <returns></returns>
         public JsonResult PhotoListApi(int page = 1, int size = 30)
         {
-            return null;
+            filter = GetFilter();
+            filter.Page = page;
+            filter.Size = size;
+
+            var albums = _cmsRepository.GetPhotoAlbums(filter);
+            var json = Json(albums, JsonRequestBehavior.AllowGet);
+            return json;
         }
     }
 }
