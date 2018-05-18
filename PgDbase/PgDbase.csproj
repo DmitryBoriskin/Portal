@@ -91,6 +91,7 @@
     <Compile Include="Entity\services\Paged.cs" />
     <Compile Include="Entity\services\PagerModel.cs" />
     <Compile Include="Repository\front\Repository.cs" />
+    <Compile Include="Repository\modules\auth\AuthRepository.cs" />
     <Compile Include="Template\DbModel_auth.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
