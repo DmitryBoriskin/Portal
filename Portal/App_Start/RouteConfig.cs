@@ -17,7 +17,7 @@ namespace Portal
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Main", action = "Index", id = UrlParameter.Optional },
-                namespaces: new[] {"Portal.Controllers"}
+                namespaces: new[] { "Portal.Controllers" }
             );
         }
     }
