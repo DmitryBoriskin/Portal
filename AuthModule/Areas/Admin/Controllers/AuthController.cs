@@ -44,7 +44,7 @@ namespace AuthModule.Admin.Controllers
         {
             filter = GetFilter();
             var frontUserFilter = FilterModel.Extend<FrontUserFilter>(filter);
-            model.List = _cmsRepository.GetFrontUsers(frontUserFilter);
+            //model.List = _cmsRepository.GetFrontUsers(frontUserFilter);
 
             if (model.List != null && model.List.Items != null && model.List.Items.Count() > 0)
             {
@@ -57,7 +57,7 @@ namespace AuthModule.Admin.Controllers
         [Route("Users/{id:int}")]
         public ActionResult Item(Guid id)
         {
-            model.Item = _cmsRepository.GetFrontUser(id);
+            //model.Item = _cmsRepository.GetFrontUser(id);
             return View(model);
         }
     }
