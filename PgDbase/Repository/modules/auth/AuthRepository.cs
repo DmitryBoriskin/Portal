@@ -41,11 +41,11 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                var data = db.auth_users
-                    .Where(t => t.email == email);
+                //var data = db.auth_users
+                //    .Where(t => t.email == email);
 
-                if (data.Any())
-                    return true;
+                //if (data.Any())
+                //    return true;
 
                 return false;
             }
@@ -72,16 +72,16 @@ namespace PgDbase.Repository.cms
                     .Select(s => new FrontUserModel()
                     {
                         Id = s.id,
-                        Mail = s.email,
-                        Surname = s.c_surname,
-                        Name = s.c_surname,
-                        Patronymic = s.c_patronymic,
-                        Disabled = s.b_disabled,
-                        Hash = s.c_hash,
-                        Salt = s.c_salt,
-                        LockDate = s.d_locked_date,
-                        ResetPwdCode = s.c_reset_password_code,
-                        VerificationCode = s.c_verification_code
+                        //Mail = s.email,
+                        //Surname = s.c_surname,
+                        //Name = s.c_surname,
+                        //Patronymic = s.c_patronymic,
+                        //Disabled = s.b_disabled,
+                        //Hash = s.c_hash,
+                        //Salt = s.c_salt,
+                        //LockDate = s.d_locked_date,
+                        //ResetPwdCode = s.c_reset_password_code,
+                        //VerificationCode = s.c_verification_code
                     });
 
                 return list.ToArray();
@@ -103,8 +103,8 @@ namespace PgDbase.Repository.cms
                 if (!string.IsNullOrEmpty(filter.SearchText))
                     query = query.Where(t => (t.c_surname + " " + t.c_name + " " + t.c_patronymic).ToLower().Contains(filter.SearchText.ToLower()));
 
-                if (filter.Site.HasValue)
-                    query = query.Where(t => t.site == filter.Site.Value);
+                //if (filter.Site.HasValue)
+                //    query = query.Where(t => t.site == filter.Site.Value);
 
                 query = query.OrderBy(t => t.c_surname)
                             .OrderBy(t => t.c_name)
@@ -117,16 +117,16 @@ namespace PgDbase.Repository.cms
                     .Take(filter.Size).Select(s => new FrontUserModel()
                     {
                         Id = s.id,
-                        Mail = s.email,
-                        Surname = s.c_surname,
-                        Name = s.c_surname,
-                        Patronymic = s.c_patronymic,
-                        Disabled = s.b_disabled,
-                        Hash = s.c_hash,
-                        Salt = s.c_salt,
-                        LockDate = s.d_locked_date,
-                        ResetPwdCode = s.c_reset_password_code,
-                        VerificationCode = s.c_verification_code
+                        //Mail = s.email,
+                        //Surname = s.c_surname,
+                        //Name = s.c_surname,
+                        //Patronymic = s.c_patronymic,
+                        //Disabled = s.b_disabled,
+                        //Hash = s.c_hash,
+                        //Salt = s.c_salt,
+                        //LockDate = s.d_locked_date,
+                        //ResetPwdCode = s.c_reset_password_code,
+                        //VerificationCode = s.c_verification_code
 
                     });
 
@@ -160,16 +160,16 @@ namespace PgDbase.Repository.cms
                     {
 
                         Id = s.id,
-                        Mail = s.email,
-                        Surname = s.c_surname,
-                        Name = s.c_surname,
-                        Patronymic = s.c_patronymic,
-                        Disabled = s.b_disabled,
-                        Hash = s.c_hash,
-                        Salt = s.c_salt,
-                        LockDate = s.d_locked_date,
-                        ResetPwdCode = s.c_reset_password_code,
-                        VerificationCode = s.c_verification_code
+                        //Mail = s.email,
+                        //Surname = s.c_surname,
+                        //Name = s.c_surname,
+                        //Patronymic = s.c_patronymic,
+                        //Disabled = s.b_disabled,
+                        //Hash = s.c_hash,
+                        //Salt = s.c_salt,
+                        //LockDate = s.d_locked_date,
+                        //ResetPwdCode = s.c_reset_password_code,
+                        //VerificationCode = s.c_verification_code
 
                     });
 

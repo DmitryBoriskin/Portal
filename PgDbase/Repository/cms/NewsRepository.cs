@@ -331,10 +331,7 @@ namespace PgDbase.Repository.cms
                                 f_materials_category = cat
                             });
                         }                        
-                    }
-
-
-                    //if(new.)
+                    }                    
                     tr.Commit();
                     return true;
                 }
