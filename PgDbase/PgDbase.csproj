@@ -71,13 +71,10 @@
     <Compile Include="Entity\cms\UserResolution.cs" />
     <Compile Include="Entity\common\PhotoGallery.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
-    <Compile Include="Entity\modules\auth\FrontUserModel.cs" />
-    <Compile Include="Entity\modules\auth\FrontUserFilter.cs" />
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
     <Compile Include="Entity\services\Filters\PageFilterModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
-    <Compile Include="Repository\modules\auth\AuthRepository.cs" />
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />
     <Compile Include="Repository\cms\CmsPhotoRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
@@ -91,22 +88,16 @@
     <Compile Include="Entity\services\Filters\FilterModel.cs" />
     <Compile Include="Entity\services\Paged.cs" />
     <Compile Include="Entity\services\PagerModel.cs" />
-    <Compile Include="Template\DbModel_auth.generated.cs">
-      <DependentUpon>DbModel_auth.tt</DependentUpon>
     <Compile Include="Repository\front\Repository.cs" />
     <Compile Include="Template\DbModel.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Template\DbModel_core.generated.cs">
+    <Compile Include="Template\LkDbModel.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DbModel_core.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Template\DbModel_lk.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DbModel_lk.tt</DependentUpon>
+      <DependentUpon>LkDbModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -137,17 +128,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="LinqToDB.Templates\CopyMe.PostgreSQL.tt.txt" />
-    <Content Include="Template\DbModel_auth.tt">
+    <Content Include="Template\DbModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DbModel_auth.generated.cs</LastGenOutput>
+      <LastGenOutput>DbModel.generated.cs</LastGenOutput>
     </Content>
-    <Content Include="Template\DbModel_core.tt">
+    <Content Include="Template\LkDbModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DbModel_core.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Template\DbModel_lk.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DbModel_lk.generated.cs</LastGenOutput>
+      <LastGenOutput>LkDbModel.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
