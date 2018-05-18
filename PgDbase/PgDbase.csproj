@@ -73,6 +73,7 @@
     <Compile Include="Entity\common\SitesModel.cs" />
     <Compile Include="Entity\modules\auth\FrontUserFilter.cs" />
     <Compile Include="Entity\modules\auth\FrontUserModel.cs" />
+    <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
     <Compile Include="Entity\services\Filters\PageFilterModel.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Entity\services\PagerModel.cs" />
     <Compile Include="Repository\front\Repository.cs" />
     <Compile Include="Repository\modules\auth\AuthRepository.cs" />
+    <Compile Include="Repository\modules\vacancy\VacancyRepository.cs" />
     <Compile Include="Template\DbModel_auth.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -106,6 +108,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DbModel_lk.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\DbModel_vacancy.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbModel_vacancy.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +154,10 @@
     <Content Include="Template\DbModel_lk.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DbModel_lk.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Template\DbModel_vacancy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DbModel_vacancy.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
