@@ -73,6 +73,7 @@
     <Compile Include="Entity\common\SitesModel.cs" />
     <Compile Include="Entity\modules\auth\FrontUserModel.cs" />
     <Compile Include="Entity\modules\auth\FrontUserFilter.cs" />
+    <Compile Include="Entity\modules\event\EventFilterModel.cs" />
     <Compile Include="Entity\modules\event\EventsModel.cs" />
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />

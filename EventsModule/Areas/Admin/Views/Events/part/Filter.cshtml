@@ -4,6 +4,11 @@
     {
         bool.TryParse(Request.QueryString["disabled"], out checkboxValue);
     }
+    var checannual = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["annual"]))
+    {
+        bool.TryParse(Request.QueryString["annual"], out checannual);
+    }
 }
 @using (Html.BeginForm())
 {
@@ -11,6 +16,7 @@
         <div class="col-md-12">
             @Html.TextBox("searchtext", Request.QueryString["searchtext"], new { @title = "Поиск по ключевым словам", @placeholder = "поиск...", @MaxLength = "512" })
 
+            @Html.CheckBox("annual", !checannual, new { type = "checkbox", title = "Повторяемость", data_toggle = "toggle", data_on = "Ежегодные", data_off = "Разовые", data_width = "248" })
             @Html.CheckBox("enabled", !checkboxValue, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Только разрешенные", data_off = "Только запрещенные", data_width = "248" })
         </div>
     </div>

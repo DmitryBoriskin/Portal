@@ -45,8 +45,18 @@ namespace EventsModule.Areas.Admin.Controllers
         [Route]
         public ActionResult Index()
         {
+            #region filter
             filter = GetFilter();
-            model.List=_cmsRepository.GetEventsList(filter);
+            var mfilter = FilterModel.Extend<EventFilterModel>(filter);
+
+            var annual = false;
+            if (!String.IsNullOrEmpty(Request.QueryString["annual"]))
+            {
+                bool.TryParse(Request.QueryString["annual"], out annual);
+                mfilter.Annual = annual;
+            } 
+            #endregion
+            model.List=_cmsRepository.GetEventsList(mfilter);
             return View(model);
         }        
         [Route, HttpPost]
@@ -61,11 +71,12 @@ namespace EventsModule.Areas.Admin.Controllers
 
         [Route, HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string searchtext, bool enabled, string size, DateTime? datestart, DateTime? dateend)
+        public ActionResult Search(string searchtext, bool enabled, bool annual, string size, DateTime? datestart, DateTime? dateend)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "searchtext", searchtext);            
             query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            query = AddFilterParam(query, "annual", (!annual).ToString().ToLower());
             if (datestart.HasValue)
                 query = AddFilterParam(query, "datestart", datestart.Value.ToString("dd.MM.yyyy").ToLower());
             if (dateend.HasValue)
@@ -194,6 +205,11 @@ namespace EventsModule.Areas.Admin.Controllers
         {
             return Redirect(StartUrl + Request.Url.Query);
         }
-
+        [Route, HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
+        {
+            return Redirect(StartUrl);
+        }
     }
 }

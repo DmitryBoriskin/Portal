@@ -17,6 +17,26 @@
         @Html.TextBoxFor(m => m.Item.SourceName, new { @class = "uc_input", @title = "Источник", @placeholder = "Сайт органов власти" })
         @Html.TextBoxFor(m => m.Item.SourceUrl, new { @class = "uc_input", @title = "Источник", @placeholder = "http://example.com" })
 
+
+        @if (Model.Item != null)
+        {
+            if (Model.Item.NewsInclude != null)
+            {
+                <br />
+                <div class="group-block open" title="Подключенные новости">
+                    <table class="table table-condensed admin-pannel-table">
+                        @foreach (var item in Model.Item.NewsInclude)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="/admin/news/item/@item.Guid" target="_blank">@item.Title</a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
     </div>
     <div class="dop_info-block">
         <div class="dop-caption icon-layers">Доп. параметры</div>
@@ -26,7 +46,7 @@
 
         @Html.TextBoxFor(m => m.Item.Alias, new { @class = "uc_input", @title = "Алиас", @placeholder = "news-name", @MaxLength = "512", @data_help = "Часть URL(адреса) новости" })        
 
-        @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Тип события", data_toggle = "toggle", data_on = "ежегодное", data_onstyle = "primary", data_off = "разовое", data_offstyle = "primary", data_width = "248" })
+        @Html.CheckBoxFor(m => m.Item.Annual, new { type = "checkbox", title = "Тип события", data_toggle = "toggle", data_on = "ежегодное", data_onstyle = "primary", data_off = "разовое", data_offstyle = "primary", data_width = "248" })
 
         
         @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })

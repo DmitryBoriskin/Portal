@@ -16,12 +16,42 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<EventsModel> GetEventsList(FilterModel filter)
+        public Paged<EventsModel> GetEventsList(EventFilterModel filter)
         {
             Paged<NewsModel> result = new Paged<NewsModel>();
             using (var db = new CMSdb(_context))
             {
                 var query = db.event_events.Where(w => w.f_site == _siteId);
+
+                if (filter.Disabled != null)
+                {
+                    query = query.Where(w=>w.b_disabled== filter.Disabled);
+                }
+                if (filter.Annual!= null)
+                {
+                    query = query.Where(w => w.b_annual !=filter.Annual);
+                }
+                if (filter.Date.HasValue)
+                    query = query.Where(s => s.d_date > filter.Date.Value);
+                if (filter.DateEnd.HasValue)
+                    query = query.Where(s => s.d_date < filter.DateEnd.Value.AddDays(1));
+
+
+                if (!String.IsNullOrWhiteSpace(filter.SearchText))
+                {
+                    string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (search != null && search.Count() > 0)
+                    {
+                        foreach (string p in filter.SearchText.Split(' '))
+                        {
+                            if (!String.IsNullOrWhiteSpace(p))
+                            {
+                                query = query.Where(w => w.c_title.Contains(p));
+                            }
+                        }
+                    }
+                }
+
                 query = query.OrderBy(o => o.d_date);
                 int itemsCount = query.Count();
                 var list = query.Skip(filter.Size * (filter.Page - 1))
@@ -30,6 +60,8 @@ namespace PgDbase.Repository.cms
                                     Id = s.id,
                                     Guid = s.gid,
                                     Title = s.c_title,
+                                    Disabled=s.b_disabled,
+                                    Annual=s.b_annual,
                                     Date = s.d_date,
                                     DateEnd=s.d_date_end,
                                     Photo = s.c_photo,
@@ -59,7 +91,7 @@ namespace PgDbase.Repository.cms
                 var data = db.event_events.Where(w => w.gid == id);
                 if (data.Any())
                 {
-                    return data.Select(s => new EventsModel {
+                    var d= data.Select(s => new EventsModel {
                         Alias=s.c_alias,
                         Annual=s.b_annual,
                         Date=s.d_date,
@@ -74,8 +106,20 @@ namespace PgDbase.Repository.cms
                         SourceUrl=s.c_source_url,
                         Text=s.c_text,
                         Title=s.c_title,
-                        ViewCount=s.c_view_count
+                        ViewCount=s.c_view_count                        
                     }).Single();
+
+                    var q = db.event_events_material_link.Where(w => w.f_events == id);
+                    if (q.Any())
+                    {
+                        d.NewsInclude = q.Select(s => new NewsModel()
+                        {
+                            Guid = s.f_news,
+                            Title = s.fkeventsmaterialsnews.c_title
+                        }).ToArray();
+                    }
+
+                    return d;
                 }
                 return null;
             }
@@ -171,7 +215,7 @@ namespace PgDbase.Repository.cms
                             .Set(s => s.c_text, update.Text)
                             .Set(s => s.c_title, update.Title)
                             .Set(s => s.d_date, update.Date)
-                            .Set(s => s.d_date_end, update.DateEnd)
+                            .Set(s => s.d_date_end, update.DateEnd)                            
                             .Update();
                     }
                     tr.Commit();
@@ -198,7 +242,7 @@ namespace PgDbase.Repository.cms
                         {
                             PageId = Guid,
                             PageName = events.c_title,
-                            Comment = "Удалена новость" + String.Format("{0}/", events.c_title),
+                            Comment = "Удалено событие" + String.Format("{0}/", events.c_title),
                             Section = LogModule.News,
                             Action = LogAction.delete,
                         }, events);

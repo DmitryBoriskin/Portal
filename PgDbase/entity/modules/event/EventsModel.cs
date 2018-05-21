@@ -34,5 +34,10 @@ namespace PgDbase.entity
         /// Признак ежегодности
         /// </summary>
         public bool Annual { get; set; }
+
+        /// <summary>
+        /// прицепленные новости
+        /// </summary>
+        public NewsModel[] NewsInclude { get; set; }
     }
 }
