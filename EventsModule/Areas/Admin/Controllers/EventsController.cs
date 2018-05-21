@@ -72,6 +72,7 @@ namespace EventsModule.Areas.Admin.Controllers
         public ActionResult Insert()
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
+
             query = AddFilterParam(query, "page", String.Empty);
 
             return Redirect(StartUrl + "item/" + Guid.NewGuid() + "/" + query);
