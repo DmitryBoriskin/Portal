@@ -73,7 +73,7 @@ namespace PgDbase.Repository.cms
                         SourceName=s.c_source_name,
                         SourceUrl=s.c_source_url,
                         Text=s.c_text,
-                        Title=s.c_text,
+                        Title=s.c_title,
                         ViewCount=s.c_view_count
                     }).Single();
                 }
@@ -81,6 +81,20 @@ namespace PgDbase.Repository.cms
             }
 
         }
+
+        /// <summary>
+        /// проверка существования события по идентифкатору
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CheckEvets(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.event_events.Where(w => w.gid == id && w.f_site == _siteId).Any();
+            }
+        }
+
         /// <summary>
         /// добавление события
         /// </summary>
@@ -102,7 +116,7 @@ namespace PgDbase.Repository.cms
 
                     db.event_events
                         .Insert(
-                        ()=>new event_events {
+                        ()=>new event_events {                            
                             b_annual= insert.Annual,
                             b_disabled= insert.Disabled,
                             c_alias= insert.Alias,
@@ -146,8 +160,7 @@ namespace PgDbase.Repository.cms
                             Action = LogAction.insert
                         });
 
-                        q.Set(s => s.b_annual, update.Annual)
-                            .Set(s => s.b_annual, update.Annual)
+                        q.Set(s => s.b_annual, update.Annual)                           
                             .Set(s => s.b_disabled, update.Disabled)
                             .Set(s => s.c_alias, update.Alias)
                             .Set(s => s.c_desc, update.Desc)

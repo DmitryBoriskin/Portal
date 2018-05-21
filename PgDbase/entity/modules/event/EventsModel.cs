@@ -19,7 +19,7 @@ namespace PgDbase.entity
         public Guid Guid { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateEnd { get; set; }
-        [RegularExpression(@"^[^-]([a-zA-Z0-9-]+)$", ErrorMessage = "Поле «alias» может содержать только буквы латинского алфавита и символ - (дефис). Доменное имя не может начинаться с дефиса.")]
+        [RegularExpression(@"^([a-zA-Z0-9-]+)$", ErrorMessage = "Поле «alias» может содержать только буквы латинского алфавита и символ - (дефис). Доменное имя не может начинаться с дефиса.")]
         public string Alias { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
