@@ -97,6 +97,8 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\VacancyController.cs" />
     <Compile Include="Areas\Admin\Models\VacancyViewModel.cs" />
+    <Compile Include="Areas\Vacancy\Controllers\VacancyController.cs" />
+    <Compile Include="Areas\Vacancy\VacancyAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -108,6 +110,7 @@
     <Content Include="Areas\Admin\Views\Vacancy\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Vacancy\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Vacancy\Item.cshtml" />
+    <Content Include="Areas\Vacancy\Views\web.config" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -118,6 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Vacancy\Models\" />
+    <Folder Include="Areas\Vacancy\Views\Shared\" />
+    <Folder Include="Areas\Vacancy\Views\Vacancy\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
