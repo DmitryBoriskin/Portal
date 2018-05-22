@@ -18,38 +18,9 @@
         @Html.TextBoxFor(m => m.Item.SourceUrl, new { @class = "uc_input",  @title = "Источник", @placeholder = "http://example.com" })
         
 
-                @if (Model.Item != null)
-                {
-                    <div class="group-block open" title="События к которым относится новость">
-                        <div class="row topIndent-20">
-                            <div class="col-md-12">
-                                <div class="col-md-6">
-                                    <div class="form-group" style="margin-bottom: 0;">
-                                        <label>Модуль:</label>
-                                    </div>
-                                    <select id="itemModule-select" class="form-control select2">
-                                        @if (Model.Modules != null && Model.Modules.Count() > 0)
-                    {
-                        foreach (var module in Model.Modules)
-                        {
-                            if (Model.Item != null && Model.Item.Modules != null && Model.Item.Modules.Any(m => m.ModuleId == module.Id))
-                            {
-                                                    <option value="@module.Id" disabled> @module.Title </option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@module.Id"> @module.Title </option>
-                                                }
-                                            }
-                                        }
-                                    </select>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                }
+        @*виджет событий*@
+        @{Html.RenderAction("index","EventsWidget");}
+            
 
                         </div>
                         <div class="dop_info-block">

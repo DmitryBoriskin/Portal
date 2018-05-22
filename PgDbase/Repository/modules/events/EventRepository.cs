@@ -254,8 +254,35 @@ namespace PgDbase.Repository.cms
                 }   
             }
         }
+
+
+        /// <summary>
+        /// Возвращает прицепленные к новости события
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public EventsModel[] GetAttachEventsForNews(Guid id)
+        {
+           using (var db = new CMSdb(_context))
+           {
+               var q = db.event_events_material_link.Where(w => w.f_news == id);
+               if (q.Any())
+               {
+                   return q.Select(s => new EventsModel() {
+                       Guid=s.f_events,
+                       Title=s.fkeventsmaterials.c_title                        
+                   }).ToArray();
+               }                          
+           }
+           return null;
+        }
+        public bool AttachEventsForNews()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return false;
+            }
+        }
+
     }
-
-
-
 }

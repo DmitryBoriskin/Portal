@@ -211,5 +211,11 @@ namespace EventsModule.Areas.Admin.Controllers
         {
             return Redirect(StartUrl);
         }
+
+        [Route("item/{id:guid}"), HttpGet]
+        public ActionResult Widget()
+        {
+            return View();
+        }
     }
 }
