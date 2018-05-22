@@ -17,5 +17,11 @@ namespace VacancyModule.Areas.Vacancy.Controllers
             var model = _Repository.GetVacancies(filter);
             return View(model);
         }
+
+        public ActionResult Item(Guid id)
+        {
+            var model = _Repository.GetVacancy(id);
+            return View("Item", model);
+        }
     }
 }
