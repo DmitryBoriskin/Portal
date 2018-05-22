@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -111,6 +112,9 @@
     <Content Include="Areas\Admin\Views\Vacancy\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Vacancy\Item.cshtml" />
     <Content Include="Areas\Vacancy\Views\web.config" />
+    <Content Include="Areas\Vacancy\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Vacancy\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Vacancy\Views\Vacancy\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -122,8 +126,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Vacancy\Models\" />
-    <Folder Include="Areas\Vacancy\Views\Shared\" />
-    <Folder Include="Areas\Vacancy\Views\Vacancy\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -171,7 +173,8 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Vacancy\*" "$(SolutionDir)Portal\Areas\Admin\Views\Vacancy\"</PostBuildEvent>
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Vacancy\*" "$(SolutionDir)Portal\Areas\Admin\Views\Vacancy\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Vacancy\Views\Vacancy\*" "$(SolutionDir)Portal\Areas\Vacancy\Views\Vacancy\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

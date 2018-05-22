@@ -14,8 +14,8 @@ namespace VacancyModule.Areas.Vacancy.Controllers
         public ActionResult Index()
         {
             FilterModel filter = GetFilter();
-            _Repository.GetVacancies(filter);
-            return View();
+            var model = _Repository.GetVacancies(filter);
+            return View(model);
         }
     }
 }
