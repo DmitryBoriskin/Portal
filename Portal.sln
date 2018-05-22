@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PgDbase", "PgDbase\PgDbase.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{95530F25-61B5-46DD-A838-23B573A5A781}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForEample", "ForEample\ForEample.csproj", "{B22A52D1-19BF-44E1-A0FF-B40373CB4E7F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,16 +29,9 @@ Global
 		{CF9AD0C6-218B-47F4-B8A3-85D13329BBB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF9AD0C6-218B-47F4-B8A3-85D13329BBB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF9AD0C6-218B-47F4-B8A3-85D13329BBB6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B22A52D1-19BF-44E1-A0FF-B40373CB4E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B22A52D1-19BF-44E1-A0FF-B40373CB4E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B22A52D1-19BF-44E1-A0FF-B40373CB4E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B22A52D1-19BF-44E1-A0FF-B40373CB4E7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B22A52D1-19BF-44E1-A0FF-B40373CB4E7F} = {95530F25-61B5-46DD-A838-23B573A5A781}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F809BFB2-BBA3-454E-BB23-45059D7842BB}
