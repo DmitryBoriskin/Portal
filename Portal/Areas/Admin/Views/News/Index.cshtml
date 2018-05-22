@@ -14,7 +14,7 @@
                 foreach (var Item in Model.List.Items)
                 {
                     string disabled = (Item.Disabled) ? "disabled" : String.Empty;
-                    string imgUrl =  Item.Photo;
+                    string imgUrl = Item.Photo;
                     if (String.IsNullOrWhiteSpace(imgUrl))
                     {
                         imgUrl = noPhoto;
@@ -58,6 +58,9 @@
             @Html.Partial("Part/Filter")
             @Html.ActionLink("Добавить категорию", "Category", "news", new { @class = "button pop-up_frame icon-attach", @data_class = "LogList", @title = "Добавить категорию" })
         </div>
+    }
+    using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+    {
         <div class="buttons">
             @if (Model.UserResolution.IsWrite)
             {
