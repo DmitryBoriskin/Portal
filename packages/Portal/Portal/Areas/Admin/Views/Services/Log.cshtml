@@ -1,0 +1,77 @@
+﻿@model LogModel[]
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_popUp.cshtml";
+    string title = "Пользователь";
+    bool isUser = false;
+    if (Model != null && Model.Count() > 0)
+    {
+        isUser = Model[0].User != null;
+        title = isUser ? "Пользователь" : "Страница";
+    }
+}
+
+
+<div>
+    @if (Model != null)
+    {
+        <div id="log-list_title">
+            <div class="log-item_head">
+                <div class="date-col head-block">
+                    Дата
+                </div>
+                <div class="action-col head-block">
+                    Действие
+                </div>
+                <div class="action-col head-block">
+                    Секция
+                </div>
+                <div class="user-col head-block">
+                    @title
+                </div>
+            </div>
+        </div>
+        <div class="scrollbar log-list">
+            @if (Model != null && Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="log-item">
+                        <div class="date-col">
+                            @item.Date
+                        </div>
+                        <div class="action-col">
+                            @item.Action
+                        </div>
+                        <div class="action-col">
+                            @item.Section
+                        </div>
+                        <div class="user-col">
+                            @if (isUser)
+                            {
+                                if (item.User != null)
+                                {
+                                    string name = String.Format("{0} {1}", item.User.Surname, item.User.Name);
+                                    <a target="_blank" title="" href="/admin/users/item/@item.User.Id">@name</a>
+                                }
+                                else
+                                {
+                                    <span>Ошибка получения пользователя.</span>
+                                }
+                            }
+                            else
+                            {
+                                <span>@item.PageName</span>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+    else
+    {
+        <div id="log-list_title">
+            <div class="alert alert-danger" role="alert">Журнал изменений для этой записи пуст.</div>
+        </div>
+    }
+</div>

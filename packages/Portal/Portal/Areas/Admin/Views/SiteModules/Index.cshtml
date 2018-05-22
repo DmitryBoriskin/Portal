@@ -1,0 +1,58 @@
+﻿@model SitesViewModel
+@*@if (Model.UserResolution.Read)*@
+@if (true)
+{
+    <div class="content">
+        <h1>
+            @Model.PageName
+            @if (Model.Item != null)
+            {
+                <span>»</span> <a href="/admin/sites/item/@Model.Item.Id" style="text-decoration:none;">@Model.Item.Title</a>
+            }
+        </h1>
+
+        @if (Model.Item != null && Model.Item.Modules != null && Model.Item.Modules.Count() > 0)
+        {
+            foreach (var item in Model.Item.Modules)
+            {
+                <div class="list-item">
+                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/siteModules/item/@item.Id">@item.Title</a>
+                        @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
+                        {
+                            foreach (var part in item.ModuleParts)
+                            {
+                                <div class="list-item-part">
+                                    <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Title</a>
+                                    <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
+                                </div>
+                            }
+                        }
+                </div>
+            }
+        }
+
+    </div>
+    <div class="dop_info-block">
+        <div class="dop-caption">Фильтр</div>
+        @*@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
+            {
+                @Html.Partial("Part/Filter")
+            }*@
+
+    </div>
+    <div class="buttons">
+        @*@if (Model.UserResolution.Write)*@
+        @if (true)
+        {
+            using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+            {
+                <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+            }
+
+        }
+    </div>
+}
+else
+{
+    <div class="content"><p>У вас недостаточно прав.</p></div>
+}

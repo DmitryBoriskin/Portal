@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_popUp.cshtml";
+}
+@model NewsCategoryModel
+@using (Html.BeginForm("Category", "news", FormMethod.Post))
+{
+    <div class="row">
+        <div class="buttons">
+            <button type="submit" name="action" value="save-group-btn" class="button icon-save">Сохранить</button>
+            @if (Model != null)
+            {
+                <button type="submit" name="action" value="delete-group-btn" class="button icon-delete">Удалить</button>
+            }
+        </div>
+        <br />
+    </div>
+    <div class="alert alert-success" role="alert" style="display:none;"></div>
+
+    if (ViewBag.SuccesAlert != null)
+    {
+        <div class="alert alert-success" role="alert">@ViewBag.SuccesAlert</div>
+    }
+    if (ViewBag.DankerAlert != null)
+    {
+        <div class="alert alert-danger">@ViewBag.DankerAlert</div>
+    }
+    @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+    <div class="row form-group">
+        <div class="col-xs-3">
+            @Html.TextBoxFor(m => m.Alias, new { @class = "uc_input form-control", @title = "Алиас группы (на английском)",@placeholder ="Алис" })
+        </div>
+        <div class="col-xs-3">
+            @Html.TextBoxFor(m => m.Name, new { @class = "uc_input form-control", @title = "Название группы (на русском)", @placeholder="Название" })
+        </div>
+    </div>
+}

@@ -1,0 +1,58 @@
+﻿@model NewsViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="content">
+    <h1>@Model.PageName</h1>
+
+
+    @if(Model.List!=null && Model.List.Items != null && Model.List.Items.Count() > 0)
+    {
+        foreach (var Item in Model.List.Items)
+        {
+            string disabled = (Item.Disabled) ? "disabled" : String.Empty;
+            string imgurl = (String.IsNullOrEmpty(Item.Photo))? "/Content/img/nophoto.jpg" : Item.Photo;
+
+            <div class="list-item @disabled">
+                <a href="/admin/news/item/@Item.Guid/@ViewBag.urlQuery">
+                    <img src="@Item.Photo" alt="@Item.Title" class="li-image" />
+                </a>
+                <div class="li-desc">
+                    <a  title="@Item.Title" class="li-caption" href="/admin/news/item/@Item.Guid">@Item.Title</a><br>
+                    <span>Дата: </span>@Convert.ToDateTime(Item.Date).ToString("dd.MM.yyyy")<br />                    
+                    @if (Item.Category != null)
+                    {
+                        <span>Категории: </span>
+                        foreach (var cat in Item.Category)
+                        {
+                            <a href="/admin/news?category=@cat.Alias">@cat.Name</a>
+                        }
+                    }
+                    <br>
+                    <span>Кол-во просмотров: </span>@Item.ViewCount
+                </div>
+            </div>
+        }
+        if (Model.List != null && Model.List.Pager != null)
+        {
+            @Html.Partial("Partial/_pager", Model.List.Pager)
+        }
+    }
+</div>
+<div class="dop_info-block">
+    
+    
+    <div class="dop-caption">Фильтр</div>    
+    @Html.Partial("Part/Filter")
+    @Html.ActionLink("Добавить категорию", "Category", "news", new {  @class = "button pop-up_frame icon-attach", @data_class = "LogList", @title = "Добавить категорию" })
+    
+    
+</div>
+
+<div class="buttons">
+    @using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+    {
+        <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+    }    
+</div>

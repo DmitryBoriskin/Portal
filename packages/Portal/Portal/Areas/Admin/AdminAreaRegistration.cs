@@ -1,0 +1,26 @@
+﻿using System.Web.Mvc;
+
+namespace Portal.Areas.Admin
+{
+    public class AdminAreaRegistration : AreaRegistration
+    {
+        public override string AreaName
+        {
+            get
+            {
+                return "Admin";
+            }
+        }
+
+        public override void RegisterArea(AreaRegistrationContext context)
+        {
+            context.MapRoute(
+                            "DefaultAdmin",
+                            "admin/{controller}/{action}/{id}",
+                            new { controller = "main", action = "index", id = UrlParameter.Optional },
+                            //new {controler != ""}
+                            new[] { "portal.areas.admin.controllers" }
+                        );
+        }
+    }
+}
