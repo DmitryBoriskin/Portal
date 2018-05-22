@@ -15,9 +15,10 @@ namespace AuthModule.Areas.Admin
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "Admin_default",
+                "Auth_Admin",
                 "Admin/Auth/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional },
+                new[] { "AuthModule.Admin.Controllers" }
             );
         }
     }

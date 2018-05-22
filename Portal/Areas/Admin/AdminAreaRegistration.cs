@@ -18,7 +18,6 @@ namespace Portal.Areas.Admin
                             "DefaultAdmin",
                             "admin/{controller}/{action}/{id}",
                             new { controller = "main", action = "index", id = UrlParameter.Optional },
-                            //new {controler != ""}
                             new[] { "portal.areas.admin.controllers" }
                         );
         }
