@@ -116,6 +116,7 @@
     <Content Include="Areas\Vacancy\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Vacancy\Views\Vacancy\Index.cshtml" />
     <Content Include="Areas\Vacancy\Views\Vacancy\Item.cshtml" />
+    <Content Include="Areas\Vacancy\Views\Vacancy\Widget.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

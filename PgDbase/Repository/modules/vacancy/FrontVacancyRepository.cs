@@ -1,10 +1,7 @@
 ﻿using PgDbase.entity;
 using PgDbase.Vacancy.models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PgDbase.Repository.front
 {
@@ -67,6 +64,18 @@ namespace PgDbase.Repository.front
                         TotalCount = itemsCount
                     }
                 };
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список вакансий для виджета
+        /// </summary>
+        /// <returns></returns>
+        public VacancyModel[] GetVacancies(int count)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return null;
             }
         }
 

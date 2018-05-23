@@ -1,5 +1,6 @@
 ﻿using PgDbase.entity;
 using Portal.Controllers;
+using Portal.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,23 @@ namespace VacancyModule.Areas.Vacancy.Controllers
             return View(model);
         }
 
+        // GET: Vacancy/Item/<:id>
         public ActionResult Item(Guid id)
         {
             var model = _Repository.GetVacancy(id);
-            return View("Item", model);
+            return View(model);
+        }
+
+        // GET: Vacancy/Widget/<:viewName>
+        public ActionResult Widget(WidgetParamHelper helper)
+        {
+            VacancyWidgetModel model = new VacancyWidgetModel
+            {
+                Title = helper.Title,
+                //List = 
+            };
+
+            return View(model);
         }
     }
 }
