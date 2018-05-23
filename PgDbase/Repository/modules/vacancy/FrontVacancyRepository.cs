@@ -75,7 +75,16 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                return null;
+                return db.vacancy_vacancies
+                    .Where(w => !w.b_disabled)
+                    .OrderByDescending(o => o.d_date)
+                    .Take(count)
+                    .Select(s => new VacancyModel
+                    {
+                        Id = s.id,
+                        Title = s.c_title,
+                        Text = s.c_text
+                    }).ToArray();
             }
         }
 

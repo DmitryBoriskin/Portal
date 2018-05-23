@@ -32,7 +32,7 @@ namespace VacancyModule.Areas.Vacancy.Controllers
             VacancyWidgetModel model = new VacancyWidgetModel
             {
                 Title = helper.Title,
-                //List = 
+                List = _Repository.GetVacancies(helper.Count)
             };
 
             return View(model);
