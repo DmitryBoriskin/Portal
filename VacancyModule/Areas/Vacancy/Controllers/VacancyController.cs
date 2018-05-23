@@ -35,7 +35,7 @@ namespace VacancyModule.Areas.Vacancy.Controllers
                 List = _Repository.GetVacancies(helper.Count)
             };
 
-            return View(model);
+            return View(helper.ViewName, model);
         }
     }
 }
