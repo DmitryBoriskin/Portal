@@ -10,4 +10,9 @@
             </div>
         }
     </div>
+
+    //Тест виджета
+    <div>
+        @{Html.RenderAction("Widget", "Vacancy", new { viewName = "Widget", count = 2, title = "Виджет для вакансий" });}
+    </div>
 }
