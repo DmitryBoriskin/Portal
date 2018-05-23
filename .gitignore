@@ -4,10 +4,5 @@
 */bin/
 */obj/
 PgDbase/Template/
-App.config
-app.config
-Web.config
-Web.Release.config
-Web.Debug.config
-*/userfiles/
-
+/Portal/*.config
+!/Portal/packages.config

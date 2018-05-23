@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthModule", "AuthModule\Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsModule", "EventsModule\EventsModule.csproj", "{C57AA699-E4D4-486D-A289-2A0785A7E3C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacancyModule", "VacancyModule\VacancyModule.csproj", "{AF8D93C7-31B8-4C5F-B052-5A797D3D9D43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{C57AA699-E4D4-486D-A289-2A0785A7E3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C57AA699-E4D4-486D-A289-2A0785A7E3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C57AA699-E4D4-486D-A289-2A0785A7E3C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF8D93C7-31B8-4C5F-B052-5A797D3D9D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF8D93C7-31B8-4C5F-B052-5A797D3D9D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF8D93C7-31B8-4C5F-B052-5A797D3D9D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF8D93C7-31B8-4C5F-B052-5A797D3D9D43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F6000588-C4B4-47DC-A67F-4AF7BE07F108} = {5C26047E-DE6F-4A61-B42A-17C1C6965E96}
 		{C57AA699-E4D4-486D-A289-2A0785A7E3C6} = {5C26047E-DE6F-4A61-B42A-17C1C6965E96}
+		{AF8D93C7-31B8-4C5F-B052-5A797D3D9D43} = {5C26047E-DE6F-4A61-B42A-17C1C6965E96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F809BFB2-BBA3-454E-BB23-45059D7842BB}
