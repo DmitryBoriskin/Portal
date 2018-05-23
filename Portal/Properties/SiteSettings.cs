@@ -83,6 +83,7 @@ public class Settings
     /// </summary>
     public static string MaterialsDir = ReadAppSetting("MaterialsDir");
 
+
     /// <summary>
     /// Директория обращений
     /// </summary>

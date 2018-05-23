@@ -2,6 +2,11 @@
 var change = 0;
 
 $(document).ready(function () {
+
+  
+
+
+
     //специфический для med.cap.ru
     //показываем селект "новове в медеицине" если выбрана соответствующая категория
     if ($('#itemGroups-select').length > 0) {

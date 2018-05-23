@@ -172,6 +172,11 @@ namespace PgDbase.entity
         /// </summary>
         Photos,
         /// <summary>
+        /// События
+        /// </summary>
+        Events
+        Photos,
+        /// <summary>
         /// Вакансии
         /// </summary>
         Vacancies
