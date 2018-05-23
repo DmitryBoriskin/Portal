@@ -2,6 +2,7 @@
 using PgDbase.entity;
 using PgDbase.Event.models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PgDbase.Repository.cms
@@ -270,16 +271,86 @@ namespace PgDbase.Repository.cms
                {
                    return q.Select(s => new EventsModel() {
                        Guid=s.f_events,
-                       Title=s.fkeventsmaterials.c_title                        
+                       AttachEventNewsId=s.id,
+                       Title =s.fkeventsmaterials.c_title                        
                    }).ToArray();
                }                          
            }
            return null;
         }
-        public bool AttachEventsForNews()
+        /// <summary>
+        /// список событий которые можно подключить к новости
+        /// </summary>
+        /// <returns></returns>
+        public EventsModel[] GetLastEvents(Guid NewsId)
+        {
+            using (var db = new CMSdb(_context))
+            {   
+                var q = db.event_events
+                          .Where(w => w.f_site == _siteId);                
+
+                var AllEvents = db.event_events
+                             .Where(w => w.f_site == _siteId).Select(s=>s.gid);
+
+                var SelectedEvents = db.event_events_material_link.Where(w => w.f_news == NewsId).Select(s=>s.f_events).ToArray();
+                var list = new List<Guid>();
+                foreach (var item in AllEvents)
+                {
+                    if(SelectedEvents!=null && !SelectedEvents.Contains(item)){
+                        list.Add(item);
+                    }
+                }
+                var EventsDropdownList = list.Join(db.event_events, m => m, n => n.gid, (m, n) => n).OrderByDescending(o=>o.d_date).Take(500);
+                if (EventsDropdownList.Any())
+                {
+                    return EventsDropdownList.Select(s => new EventsModel() {
+                        Title=s.c_title,
+                        Guid=s.gid
+                    }).ToArray();
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Прикрепляет к новости событие
+        /// </summary>
+        /// <param name="NewsId"></param>
+        /// <param name="EventId"></param>
+        /// <returns></returns>
+        public bool AttachEventsForNews(Guid NewsId, Guid EventId)
         {
             using (var db = new CMSdb(_context))
             {
+                using (var tr = db.BeginTransaction())
+                {
+                   var result= db.event_events_material_link.Insert(
+                        ()=> new event_events_material_link {
+                            f_news=NewsId,
+                            f_events=EventId
+                        })>0;                        
+
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// удаляет связь новости и события
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteAttachEventsForNews(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var q = db.event_events_material_link.Where(w => w.id == id);
+                if (q.Any())
+                {
+                    q.Delete();
+                    return true;
+                }
                 return false;
             }
         }

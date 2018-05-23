@@ -39,5 +39,7 @@ namespace PgDbase.entity
         /// прицепленные новости
         /// </summary>
         public NewsModel[] NewsInclude { get; set; }
+
+        public Guid AttachEventNewsId { get; set; }
     }
 }

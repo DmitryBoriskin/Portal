@@ -1,6 +1,5 @@
 ﻿using PgDbase;
 using PgDbase.Repository.cms;
-using Portal.Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,10 +50,15 @@ namespace Portal.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                AppLogger.Debug("CoreController: Не получилось определить id сайта", ex);
+                //AppLogger.Debug("CoreController: Не получилось определить id сайта", ex);
             }
             _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
         }
-    
+
+        // GET: Admin/Connection
+        public ActionResult Index()
+        {
+            return View();
+        }
     }
 }
