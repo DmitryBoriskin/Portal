@@ -170,7 +170,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Фото
         /// </summary>
-        Photos
+        Photos,
+        /// <summary>
+        /// Вакансии
+        /// </summary>
+        Vacancies
     }
 
     /// <summary>
