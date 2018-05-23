@@ -1,0 +1,16 @@
+﻿@model PgDbase.entity.VacancyModel
+
+<div class="row" style="margin-top:100px;">
+    @if (Model != null)
+    {
+        <div>
+            <p>
+                <strong>Дата: </strong>
+                <small>@Model.Date.ToString("dd.MM.yyyy")</small>
+            </p>
+            <p><strong>Название:</strong> @Model.Title</p>
+            <p><strong>Описание:</strong> @Html.Raw(Model.Text)</p>
+            <p><strong>Оклад:</strong> @Html.Raw(Model.Salary)</p>
+        </div>
+    }
+</div>

@@ -21,7 +21,7 @@
             <div class="dop-caption">Настройки</div>
             @Html.TextBoxFor(m => m.Item.Date, new { required = "", data_type = "datetime", title = "Дата" })
             @Html.TextBoxFor(m => m.Item.Salary, new { title = "Заработная плата" })
-            @Html.CheckBoxFor(m => m.Item.IsDisabled, new { type = "checkbox", title = "Временная/постоянная", data_toggle = "toggle", data_on = "временная", data_onstyle = "danger", data_off = "постоянная", data_offstyle = "success", data_width = "248" })
+            @Html.CheckBoxFor(m => m.Item.IsTemporary, new { type = "checkbox", title = "Временная/постоянная", data_toggle = "toggle", data_on = "временная", data_onstyle = "danger", data_off = "постоянная", data_offstyle = "success", data_width = "248" })
             @Html.CheckBoxFor(m => m.Item.IsDisabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
             @if (Model.Item != null)
     {

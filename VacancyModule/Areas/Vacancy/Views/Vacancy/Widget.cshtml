@@ -1,0 +1,13 @@
+﻿@model Portal.Models.VacancyWidgetModel
+
+@if (Model != null)
+{
+    <div class="row" style="margin-top: 100px;">
+        @foreach (var item in Model.List)
+        {
+            <div class="col-md-12">
+                <a href="/vacancy/item/@item.Id">@item.Title</a>
+            </div>
+        }
+    </div>
+}
