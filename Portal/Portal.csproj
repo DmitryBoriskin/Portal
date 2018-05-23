@@ -527,6 +527,7 @@
     <Compile Include="Areas\Admin\Models\AccountModel.cs" />
     <Compile Include="Models\VacancyWidgetModel.cs" />
     <Compile Include="Models\WidgetCoreModel.cs" />
+    <Compile Include="Models\WidgetParamHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Cripto.cs" />
     <Compile Include="Properties\Files.cs" />
