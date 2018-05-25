@@ -12,6 +12,151 @@ namespace PgDbase.Repository.cms
     /// </summary>
     public partial class CmsRepository
     {
+        public RoleModel[] GetRoles()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoles
+                    .Where(s => s.Discriminator == "ApplicationRole");
+
+                var data = query.Select(s => new RoleModel()
+                {
+                    Id = Guid.Parse(s.Id),
+                    Name = s.Name,
+                    Desc = s.Desc,
+                    Claims = GetRoleClaims(s.Id)
+                });
+
+                return data.ToArray();
+            }
+        }
+
+        public RoleModel GetRole(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoles
+                    .Where(s => s.Id == id.ToString());
+
+                var data = query.Select(s => new RoleModel()
+                {
+                    Id = Guid.Parse(s.Id),
+                    Name = s.Name,
+                    Desc = s.Desc,
+                    Claims = GetRoleClaims(s.Id)
+                });
+
+                return data.SingleOrDefault();
+            }
+        }
+
+
+        public RoleClaimModel[] GetRoleClaims(Guid roleId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoleClaims
+                    .Where(s => s.RoleId == roleId.ToString());
+
+                var data = query.Select(s => new RoleClaimModel()
+                {
+                    Id = s.Id,
+                    RoleId = Guid.Parse(s.RoleId),
+                    Type = s.ClaimType,
+                    Value = s.ClaimValue,
+                    Checked = true
+                });
+
+                return data.ToArray();
+            }
+        }
+
+        private RoleClaimModel[] GetRoleClaims(string roleId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoleClaims
+                    .Where(s => s.RoleId == roleId);
+
+                var data = query.Select(s => new RoleClaimModel()
+                {
+                    Id = s.Id,
+                    RoleId = Guid.Parse(s.RoleId),
+                    Type = s.ClaimType,
+                    Value = s.ClaimValue,
+                    Checked = true
+                });
+
+                return data.ToArray();
+            }
+        }
+
+        public bool UpdateRoleClaim(RoleClaimModel roleClaim)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var dbRoleclaim = db.core_AspNetRoleClaims
+                       .Where(s => s.Id == roleClaim.Id);
+
+                    if(roleClaim.Checked)
+                    {
+                        if(!dbRoleclaim.Any())
+                        {
+                            //insert
+                            var newRoleClaim = new core_AspNetRoleClaims()
+                            {
+                                Id = roleClaim.Id,
+                                RoleId = roleClaim.RoleId.ToString(),
+                                ClaimType = roleClaim.Type,
+                                ClaimValue = roleClaim.Value
+                            };
+
+                            db.Insert(newRoleClaim);
+
+                            //log
+                            //var log = new LogModel
+                            //{
+                            //    PageId = Guid.NewGuid,
+                            //    PageName = "",
+                            //    Section = LogModule.Users,
+                            //    Action = LogAction.update,
+                            //    Comment = "Изменена связь пользователя с сайтами"
+                            //};
+                            //InsertLog(log);
+
+
+                            tran.Commit();
+                            return true;
+                        }
+
+                    }
+                    else
+                    {
+                        if (dbRoleclaim.Any())
+                        {
+                            //delete
+                            var roleClaimData = dbRoleclaim.Single();
+                            db.Delete(roleClaimData);
+
+                            //log
+
+                            tran.Commit();
+                            return true;
+                        }
+
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+
+
+
+
         /// <summary>
         /// Возвращает постраничный список администраторо
         /// </summary>

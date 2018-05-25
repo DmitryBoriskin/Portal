@@ -9,8 +9,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class NewsController : CoreController
+    public class NewsController : BeCoreController
     {
+        //public NewsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        //    : base(userManager, signInManager) { }
+
         NewsViewModel model;
         FilterModel filter;
 

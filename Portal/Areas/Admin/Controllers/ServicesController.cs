@@ -5,8 +5,12 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class ServicesController : CoreController
+    public class ServicesController : BeCoreController
     {
+        //public ServicesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        //   : base(userManager, signInManager) { }
+
+
         public ActionResult Log(Guid id, string type)
         {
             LogModel[] model = null;

@@ -7,9 +7,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class MainController : CoreController
+    [Authorize]
+    public class MainController : BeCoreController
     {
-        // GET: Admin/Main
+
+       // GET: Admin/Main
         public ActionResult Index()
         {
             MainViewModel model = new MainViewModel()
@@ -29,6 +31,11 @@ namespace Portal.Areas.Admin.Controllers
              //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
 
             return View(model);
+        }
+
+        public ActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

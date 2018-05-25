@@ -1,7 +1,11 @@
-﻿using PgDbase;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using PgDbase;
 using PgDbase.entity;
 using PgDbase.Repository.cms;
 using Portal.Code;
+using Portal.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,9 +18,34 @@ using System.Web.Security;
 namespace Portal.Areas.Admin
 {
     [Authorize]
-    public class CoreController : Controller
+    public class BeCoreController : Controller
     {
-        //protected Logger cmsLogger = null;
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         /// <summary>
         /// Репозиторий для работы с авторизацией
@@ -46,6 +75,12 @@ namespace Portal.Areas.Admin
         /// Путь из адресной строки
         /// </summary>
         public string StartUrl;
+
+
+        /// <summary>
+        /// В админке всегда авторизованный пользователь
+        /// </summary>
+        public Guid UserId;
 
         /// <summary>
         /// Авторизованный пользователь
@@ -87,92 +122,88 @@ namespace Portal.Areas.Admin
         /// </summary>
         public ResolutionModel UserResolutionInfo;
 
+        public BeCoreController() { }
+
+        public BeCoreController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
+
             ControllerName = filterContext.RouteData.Values["Controller"].ToString().ToLower();
             ActionName = filterContext.RouteData.Values["Action"].ToString().ToLower();
-            PageName = _cmsRepository.GetPageName(ControllerName);
-
             StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
-            
+
+            // Определяем сайт
+            SiteId = GetCurrentSiteId();
+
             #region Данные об авторизованном пользователе
-            Guid _userId = new Guid();
-            try { _userId = new Guid(System.Web.HttpContext.Current.User.Identity.Name); }
-            catch { FormsAuthentication.SignOut(); }
-            AccountInfo = _accountRepository.getCmsAccount(_userId);
-            if (AccountInfo != null)
+
+            var userId = User.Identity.GetUserId();
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(userId);
+
+            var UserId = currentUser.UserId;
+            //AccountInfo = _accountRepository.getCmsAccount(_userId);
+
+            //Mapping ApplicationUser to AccountModel
+            AccountInfo = new AccountModel()
             {
-                // Список доменов, доступных пользователю
-                AccountInfo.Domains = _accountRepository.GetSiteLinkUser(_userId);
-                MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-                MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
-                UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
+                Id = currentUser.UserId,
+                Name = currentUser.UserInfo.Name,
+                Surname = currentUser.UserInfo.Surname,
+                Patronymic = currentUser.UserInfo.Patronymic,
+                Disabled = currentUser.UserInfo.Disabled,
+                Mail = currentUser.Email
+            };
 
-                if (UserResolutionInfo == null)
-                {
-                    throw new Exception("У вас нет прав доступа к странице!");
-                }
+            // Список доменов, доступных пользователю
+            //AccountInfo.Domains = _accountRepository.GetUserSites(UserId); //_accountRepository.GetSiteLinkUser(_userId);
 
-                // Если нет прав на проссмотр, то направляем на главную
-                if (!UserResolutionInfo.IsRead)
-                {
-                    filterContext.Result = Redirect("/Admin/");
-                }
-            }
-            #endregion
+            //Проверка на права доступа к сайту
+            var siteAuth = User.IsInRole(SiteId.ToString());
+            
+            //Проверка на права доступа к контроллеру
+            var controllerAuth = User.Identity.HasClaim(ControllerName, "view");
 
 
-
-        }
-        
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        public CoreController()
-        {
-            Guid userId = Guid.Empty;
-            var domainUrl = "";
-
-            if (System.Web.HttpContext.Current != null)
-            {
-                var context = System.Web.HttpContext.Current;
-
-                if (context.Request != null && context.Request.Url != null && !string.IsNullOrEmpty(context.Request.Url.Host))
-                    domainUrl = context.Request.Url.Host.ToLower().Replace("www.", "");
-
-                if (context.User != null && context.User.Identity != null && !string.IsNullOrEmpty(context.User.Identity.Name))
-                {
-                    try
-                    {
-                        userId = Guid.Parse(System.Web.HttpContext.Current.User.Identity.Name);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception("Не удалось определить идентификатор пользователя" + ex);
-                    }
-                }
-            }
-
-            _accountRepository = new AccountRepository("dbConnection",RequestUserInfo.IP, SiteId);
-
-            try
-            {
-                SiteId = _accountRepository.GetSiteGuid(domainUrl);
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Debug("CoreController: Не получилось определить id сайта", ex);
-            }
+            if(!siteAuth || !controllerAuth)
+                filterContext.Result = new RedirectResult("~/Account/AccessDenied");
 
 
-            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
+            _cmsRepository = new CmsRepository("dbConnection", UserId, RequestUserInfo.IP, SiteId);
 
+            PageName = _cmsRepository.GetPageName(ControllerName);
 
             var core_site = _cmsRepository.GetCoreSites(SiteId);
             SiteDir = core_site.c_serial.ToString();
+
+
+            //Права доступа пользователя к страницам
+            MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+            MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
+
+            //UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
+            //if (UserResolutionInfo == null)
+            //{
+            //    throw new Exception("У вас нет прав доступа к странице!");
+            //}
+
+            // Если нет прав на просмотр, то направляем на главную
+            //if (!UserResolutionInfo.IsRead)
+            //{
+            //    filterContext.Result = Redirect("/Admin/");
+            //}
+
+            #endregion
+
         }
+
 
         /// <summary>
         /// Добавляет параметр
@@ -320,6 +351,40 @@ namespace Portal.Areas.Admin
                 return controllerContext.HttpContext.Request[MatchFormKey] != null &&
                     controllerContext.HttpContext.Request[MatchFormKey] == MatchFormValue;
             }
+        }
+
+
+        private Guid GetCurrentSiteId()
+        {
+            var _baseRepository = new BaseRepository("dbConnection");
+            var domainUrl = Request.Url.Host.ToLower().Replace("www.", "");
+
+            var siteId = _baseRepository.GetSiteId(domainUrl);
+
+            if (siteId == Guid.Empty)
+                AppLogger.Debug($"CoreController: Не получилось определить Domain для {domainUrl}");
+
+            return siteId;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_userManager != null)
+                {
+                    _userManager.Dispose();
+                    _userManager = null;
+                }
+
+                if (_signInManager != null)
+                {
+                    _signInManager.Dispose();
+                    _signInManager = null;
+                }
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

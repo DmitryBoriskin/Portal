@@ -7,8 +7,12 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class AllUsersController : CoreController
+    public class AllUsersController : BeCoreController
     {
+
+        //public AllUsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        // : base(userManager, signInManager) { }
+
         UsersViewModel model;
         FilterModel filter;
 

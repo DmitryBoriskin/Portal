@@ -32,30 +32,20 @@ namespace PgDbase.Repository.cms
         /// </summary>
         private Guid _siteId;
 
-        /// <summary>
-        /// Конструктор
-        /// </summary>
+
         public CmsRepository()
         {
             _context = "defaultConnection";
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
 
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="userId"></param>
-        /// <param name="ip"></param>
-        /// <param name="domainUrl"></param>
-        public CmsRepository(string connectionString, Guid userId, string ip, Guid siteId)
+
+        public CmsRepository(string connectionString, Guid siteId, string ip, Guid userId)
         {
             _context = connectionString;
-            //_domain = (!string.IsNullOrEmpty(DomainUrl)) ? getSiteId(DomainUrl) : "";
+            _siteId = siteId;
             _ip = ip;
             _currentUserId = userId;
-            _siteId = siteId;
-
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
@@ -85,7 +75,6 @@ namespace PgDbase.Repository.cms
                 });
             }
         }
-
 
 
         public core_sites GetCoreSites(Guid SiteId)

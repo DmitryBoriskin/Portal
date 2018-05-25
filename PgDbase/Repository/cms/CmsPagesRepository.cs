@@ -448,10 +448,12 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_menu
+                var data = db.core_menu
                     .Where(w => w.c_alias.ToLower() == alias.ToLower())
-                    .Select(s => s.c_title)
-                    .SingleOrDefault();
+                    .Select(s => s.c_title);
+                   
+
+                return data.SingleOrDefault();
             }
         }
     }

@@ -71,6 +71,7 @@
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
     <Compile Include="Entity\services\Filters\PageFilterModel.cs" />
+    <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Entity\services\Filters\FilterModel.cs" />
     <Compile Include="Entity\services\Paged.cs" />
     <Compile Include="Entity\services\PagerModel.cs" />
+    <Compile Include="Repository\front\FrontRepository.cs" />
     <Compile Include="Template\DbModel_core.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -135,8 +137,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repository\front\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

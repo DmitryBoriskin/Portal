@@ -5,8 +5,12 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class MenuController : CoreController
+    public class MenuController : BeCoreController
     {
+        //public MenuController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        //  : base(userManager, signInManager)
+        //{ }
+
         MenuViewModel model;
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {

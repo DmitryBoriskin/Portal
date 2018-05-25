@@ -2,6 +2,47 @@
 
 namespace PgDbase.entity
 {
+    public class RoleClaimModel
+    {
+        public int Id { get; set; }
+
+        public Guid RoleId { get; set; }
+
+        public string Type { get; set; }
+
+        public string Value { get; set; }
+
+        public bool Checked { get; set; }
+
+    }
+
+
+    public class RoleModel
+    {
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Desc { get; set; }
+
+        public string Desciminator { get; set; }
+
+        public RoleClaimModel[] Claims { get; set; }
+
+
+    }
+
+    public class UserRoleModel
+    {
+        public int Id { get; set; }
+
+        public Guid UserId { get; set; }
+
+        public Guid RoleId { get; set; }
+    }
+
+
+    
     /// <summary>
     /// Разрешения
     /// </summary>

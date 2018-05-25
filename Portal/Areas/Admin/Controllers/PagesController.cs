@@ -6,8 +6,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class PagesController : CoreController
+    public class PagesController : BeCoreController
     {
+        //public PagesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        //    : base(userManager, signInManager) { }
+
         PageViewModel model;
         FilterModel filter;
 

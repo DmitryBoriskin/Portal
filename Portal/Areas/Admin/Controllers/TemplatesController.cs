@@ -7,8 +7,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class TemplatesController : CoreController
+    public class TemplatesController : BeCoreController
     {
+        //public TemplatesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        // : base(userManager, signInManager) { }
+
         TemplateViewModel model;
         FilterModel filter;
 
