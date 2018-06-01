@@ -886,6 +886,7 @@
     <Content Include="Areas\Admin\Views\SiteUsers\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SiteUsers\Item.cshtml" />
     <Content Include="Areas\Admin\Views\SiteUsers\Part\Filter.cshtml" />
+    <Content Include="AppSettings.config" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

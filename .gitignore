@@ -4,7 +4,7 @@
 */bin/
 */obj/
 PgDbase/Template/
-/Portal/*.config
-!/Portal/packages.config
+/Portal/AppSettings.config
+/Portal/ConnectionStrings.config
 
 

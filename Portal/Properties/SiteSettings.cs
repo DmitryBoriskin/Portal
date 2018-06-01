@@ -34,10 +34,6 @@ public class Settings
     /// </summary>
     public static string NoResolut = ConfigurationManager.AppSettings["NoResolut"];
 
-
-
-    
-
     /// <summary>
     /// Ключ капчи
     /// </summary>
