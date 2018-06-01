@@ -695,7 +695,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\NewFolder1\" />
     <Folder Include="Areas\Admin\Views\Connection\" />
     <Folder Include="Areas\Admin\Views\Core\" />
     <Folder Include="Areas\Admin\Views\Groups\" />

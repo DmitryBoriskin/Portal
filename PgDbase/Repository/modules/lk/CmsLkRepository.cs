@@ -228,5 +228,18 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
+
+        /// <summary>
+        /// Возвращает список подразделений
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Paged<Department> GetDepartments(FilterModel filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+
+            }
+        }
     }
 }
