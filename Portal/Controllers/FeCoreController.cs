@@ -109,12 +109,12 @@ namespace Portal.Areas.Admin
         /// <summary>
         /// Меню админки из структуры CMS
         /// </summary>
-        public CmsMenuModel[] MenuCmsCore;
+        public CmsMenuItemModel[] MenuCms;
 
         /// <summary>
         /// Меню модулей
         /// </summary>
-        public CmsMenuItem[] MenuModulCore;
+        public CmsMenuItemModel[] MenuModule;
 
         /// <summary>
         /// Права пользователя
@@ -161,9 +161,9 @@ namespace Portal.Areas.Admin
 
                 // Права доступа пользователя к страницам
 
-                MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-                MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
-                UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
+                //MenuCms = _cmsRepository.GetCmsMenuItems();
+                //MenuModule = _cmsRepository.GetModuleMenu(AccountInfo.Id);
+                //UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
 
                 //Проверка на права доступа к конкретному сайту
                 var siteAuth = User.IsInRole(SiteId.ToString());
@@ -218,8 +218,7 @@ namespace Portal.Areas.Admin
             }
 
 
-            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
-
+            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
 
             var core_site = _cmsRepository.GetCoreSites(SiteId);
             SiteDir = core_site.c_serial.ToString();

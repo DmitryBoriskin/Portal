@@ -13,24 +13,29 @@ namespace PgDbase.entity
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Идентификатор сайта
+        /// </summary>
+        public Guid SiteId { get; set; }
+
+        /// <summary>
         /// Email
         /// </summary>
         public string Email { get; set; }
 
         /// <summary>
-        /// Соль пароля
+        /// Email confirmed
         /// </summary>
-        public string Salt { get; set; }
+        public bool EmailConfirmed { get; set; }
 
         /// <summary>
-        /// Хэш-пароля
+        /// Mobile
         /// </summary>
-        public string Hash { get; set; }
+        public string Phone { get; set; }
 
         /// <summary>
-        /// Код для смены пароля
+        /// Mobile confirmed
         /// </summary>
-        public Guid ChangePassCode { get; set; }
+        public bool PhoneConfirmed { get; set; }
 
         /// <summary>
         /// Фамилия
@@ -53,14 +58,14 @@ namespace PgDbase.entity
         public bool Disabled { get; set; }
 
         /// <summary>
-        /// Кол-во неудачных попыток авторизации
+        /// Др
         /// </summary>
-        public int ErrorCount { get; set; }
+        public DateTime BirthDate { get; set; }
 
         /// <summary>
-        /// Последнее время авторизации
+        /// Дата регистрации
         /// </summary>
-        public DateTime? TryLogin { get; set; }
+        public DateTime RegDate { get; set; }
 
         /// <summary>
         /// Полное имя
@@ -76,6 +81,6 @@ namespace PgDbase.entity
         /// <summary>
         /// Группа 
         /// </summary>
-        public GroupsModel Group { get; set; }
+        public RoleModel[] Roles { get; set; }
     }
 }

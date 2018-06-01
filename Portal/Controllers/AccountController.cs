@@ -101,7 +101,7 @@ namespace Portal.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                        return RedirectToLocal(returnUrl);
+                    return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -209,46 +209,36 @@ namespace Portal.Controllers
                                 RegDate = DateTime.Now
                             }
                         };
-                        var result = await UserManager.CreateAsync(user, model.Password);
+                        var addUserResult = await UserManager.CreateAsync(user, model.Password);
 
-                        if (result.Succeeded)
+                        if (addUserResult.Succeeded)
                         {
-                            await UserManager.UpdateAsync(user);
-                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            var addRolesResult = await UserManager.AddToRolesAsync(userId.ToString(), new string[] { "User", siteId.ToString() });
+                            if (addRolesResult.Succeeded)
+                            {
+                                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            }
 
                             // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                             // Send an email with this link
-                            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                            string codeGenerated = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                             //http://localhost:61504/Account/ConfirmEmail?userId=621d0a10-4e57-44d4-b74d-8410e2bbf70b&code=UuEq1Oo8gVnSjTENKPWQSyWHLUupPwfIlDZt4PgnxCku5JxZD1RxKrkV0bHYwo1SAgOqflZvglwKYUoXLauRBPLN4IX%2B7J7y9OTgQ%2F%2FtW9kGF0jRvOP%2FEMHwDDCjzePFCTLe49krjbpRufoMQROEjSjpXq0hkAo3txO%2FOvbrbgNGeaoaOWmd9%2BS8FO4fwjfk
-                            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = codeGenerated }, protocol: Request.Url.Scheme);
 
-                            string text = "<p>Уважаемый " + user.UserInfo.FullName + ", Вы отправили запрос на смену пароля на сайте " + Request.Url.Host + ".</p>";
+                            string text = "<p>Уважаемый " + user.UserInfo.FullName + ", Вы были зарегистрированы на сайте  " + Request.Url.Host + ".</p>";
                             //Text += "<p>Для вас сформирована ссылка, перейдя по которой, Вы сможете ввести новый пароль для вашего аккаунта.</p>";
                             text += "<p>Для вас сформирована ссылка, перейдя по которой, Вы сможете подтвердить аккаунт.</p>";
                             text += "Подтвердите регистрацию перейдя по ссылке <a href=\"" + callbackUrl + "\">here</a>";
                             text += "<p>С уважением, администрация сайта!</p>";
                             text += "<hr><i><span style=\"font-size:11px\">Данное сообщение отправлено роботом, на него не нужно отвечать</i></span>";
 
-                            //await UserManager.SendEmailAsync(user.Id, "Подтверждение регистрации", "Подтвердите регистрацию перейдя по ссылке <a href=\"" + callbackUrl + "\">here</a>");
                             await UserManager.SendEmailAsync(user.Id, "Подтверждение регистрации", text);
 
-                            //#region оповещение на e-mail
-
-                            //Mailer Letter = new Mailer()
-                            //{
-                            //    Theme = "Изменение пароля",
-                            //    MailTo = user.Email,
-                            //    MailFrom = Request.Url.Host,
-                            //    Text = text
-                            //};
-                            ////Логируем в SendMail
-                            //var res = Letter.SendMail();
-
-                            //#endregion
 
                             return RedirectToAction("Index", "AccountHome");
                         }
-                        AddErrors(result);
+                        AddErrors(addUserResult);
+
                     }
                     catch (Exception ex)
                     {
@@ -259,7 +249,7 @@ namespace Portal.Controllers
                 else
                 {
                     var errors = new List<string>();
-                    errors.Add(String.Format("Пользователь с таким именем {0} уже существует", model.Email));
+                    errors.Add(String.Format("Пользователь с таким email {0} уже существует на сайте", model.Email));
                     var result = new IdentityResult(errors);
                     AddErrors(result);
                 }
@@ -299,7 +289,18 @@ namespace Portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                var siteId = GetCurrentSiteId();
+                if (siteId == Guid.Empty)
+                    return RedirectToAction("Error", "Main");
+
+                var getUser = UserManager.Users.Where(u => u.Email == model.Email && u.SiteId == siteId).SingleOrDefault();
+
+                if(getUser == null)
+                    return View("ForgotPasswordConfirmation");
+
+                var userId = getUser.Id;
+
+                var user = await UserManager.FindByIdAsync(userId);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -308,10 +309,18 @@ namespace Portal.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string codeGenerated = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = codeGenerated }, protocol: Request.Url.Scheme);
+
+                string text = "<p>Уважаемый " + user.UserInfo.FullName + ", Вами было запрошено восстановление пароля на сайте " + Request.Url.Host + ".</p>";
+                text += "<p>Для вас сформирована ссылка, перейдя по которой, Вы сможете ввести новый пароль для вашего аккаунта.</p>";
+                text += "Чтобы сбросить текущий пароль  перейдите по ссылке <a href=\"" + callbackUrl + "\">here</a>";
+                text += "<p>С уважением, администрация сайта!</p>";
+                text += "<hr><i><span style=\"font-size:11px\">Данное сообщение отправлено роботом, на него не нужно отвечать</i></span>";
+
+                await UserManager.SendEmailAsync(user.Id, "Запрос на сброс пароля", text);
+
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -345,7 +354,20 @@ namespace Portal.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+
+            var siteId = GetCurrentSiteId();
+            if (siteId == Guid.Empty)
+                return RedirectToAction("Error", "Main");
+
+            var getUser = UserManager.Users.Where(u => u.Email == model.Email && u.SiteId == siteId).SingleOrDefault();
+
+            if (getUser == null)
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+
+            var userId = getUser.Id;
+
+
+            var user = await UserManager.FindByIdAsync(userId);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
@@ -591,6 +613,7 @@ namespace Portal.Controllers
 
             return siteId;
         }
+
         #endregion
     }
 }

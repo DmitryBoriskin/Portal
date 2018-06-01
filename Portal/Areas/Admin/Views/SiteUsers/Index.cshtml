@@ -1,6 +1,6 @@
 ﻿@model UsersViewModel
 
-@if (Model.UserResolution.IsRead)
+@if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
     <div class="content">
         <h1>@Model.PageName</h1>
@@ -10,9 +10,12 @@
             {
                 string disabled = (item.Disabled) ? "disabled" : String.Empty;
                 <div class="list-item @disabled">
-                    <a title="" class="li-caption" href="/admin/users/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
-                    <div class="li-desc"><span>Группа:</span> @item.Group.Title</div>
-                    <div class="li-desc"><span>E-mail:</span> @item.Email</div>
+                    <a title="" class="li-caption" href="/admin/siteusers/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
+                    <div class="li-desc">
+                        <span>E-mail:</span> <span class="@(item.EmailConfirmed? "text-seccess":"text-danger")">@item.Email</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span>Тел.:</span> <span class="@(item.PhoneConfirmed? "text-seccess":"text-danger")">@item.Phone</span>
+                    </div>
                 </div>
             }
             if (Model.List != null && Model.List.Pager != null)
@@ -32,7 +35,7 @@
     </div>
 
     <div class="buttons">
-        @if (Model.UserResolution.IsWrite)
+        @if (User.Identity.HasClaim(Model.ControllerName, "create"))
         {
             using (Html.BeginForm(Model.ActionName, Model.ControllerName))
             {

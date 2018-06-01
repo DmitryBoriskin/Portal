@@ -131,58 +131,6 @@ namespace PgDbase.Repository.cms
                     }).ToArray();
             }
         }
-        /// <summary>
-        /// Возвращает пункты меню из структуры CMS га которые есит права
-        /// </summary>
-        /// <param name="UserId"></param>
-        /// <returns></returns>
-        public CmsMenuModel[] GetCmsMenu(Guid UserId)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                #warning Тут после разработки раздела будем показывать меню в соответстиии с правами пользователя на текущем сайт
-
-                var data = db.core_menu
-                            .Where(s => s.f_parent == null)
-                            .OrderBy(s => s.n_sort)
-                            .Select(s => new CmsMenuModel()
-                            {
-                                Alias = s.c_alias,
-                                GroupName = s.c_title,
-                                GroupItems = s.fk_menu_parent_BackReferences
-                                                .OrderBy(m => m.n_sort)
-                                                .Select(m => new CmsMenuItem()
-                                                {
-                                                    Alias = m.c_alias,
-                                                    Title = m.c_title,
-                                                    Class = m.c_class
-                                                }).ToArray()
-                            });
-
-                return data.ToArray();
-            }
-        }
-
-        public CmsMenuItem[] GetModulMenu(Guid UserId)
-        {
-            using (var db = new CMSdb(_context))
-            {
-           
-
-                //var query=db.re
-                var data = db.core_controllers
-                           .Where(w => w.f_parent == null)
-                           .OrderBy(o => o.c_name)
-                           .Select(s => new CmsMenuItem() {
-                               Alias = s.c_controller_name,
-                               Title = s.c_name
-                           });
-                if (data.Any())
-                {
-                    return data.ToArray();
-                }
-                return null;
-            }
-        }
+        
     }
 }

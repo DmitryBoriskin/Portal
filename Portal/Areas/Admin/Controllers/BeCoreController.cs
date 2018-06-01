@@ -110,12 +110,12 @@ namespace Portal.Areas.Admin
         /// <summary>
         /// Меню админки из структуры CMS
         /// </summary>
-        public CmsMenuModel[] MenuCmsCore;
+        public CmsMenuItemModel[] MenuCmsCore;
 
         /// <summary>
         /// Меню модулей
         /// </summary>
-        public CmsMenuItem[] MenuModulCore;
+        public CmsMenuItemModel[] MenuModulCore;
 
         /// <summary>
         /// Права пользователя
@@ -144,11 +144,11 @@ namespace Portal.Areas.Admin
 
             #region Данные об авторизованном пользователе
 
-            var userId = User.Identity.GetUserId();
+            var _userId = User.Identity.GetUserId();
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentUser = manager.FindById(userId);
+            var currentUser = manager.FindById(_userId);
 
-            var UserId = currentUser.UserId;
+            var userId = currentUser.UserId;
             //AccountInfo = _accountRepository.getCmsAccount(_userId);
 
             //Mapping ApplicationUser to AccountModel
@@ -176,7 +176,7 @@ namespace Portal.Areas.Admin
                 filterContext.Result = new RedirectResult("~/Account/AccessDenied");
 
 
-            _cmsRepository = new CmsRepository("dbConnection", UserId, RequestUserInfo.IP, SiteId);
+            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId );
 
             PageName = _cmsRepository.GetPageName(ControllerName);
 
@@ -185,8 +185,8 @@ namespace Portal.Areas.Admin
 
 
             //Права доступа пользователя к страницам
-            MenuCmsCore = _cmsRepository.GetCmsMenu(AccountInfo.Id);
-            MenuModulCore = _cmsRepository.GetModulMenu(AccountInfo.Id);
+            MenuCmsCore = _cmsRepository.GetCmsMenu();
+            MenuModulCore = _cmsRepository.GetModuleMenu(AccountInfo.Id);
 
             //UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
             //if (UserResolutionInfo == null)

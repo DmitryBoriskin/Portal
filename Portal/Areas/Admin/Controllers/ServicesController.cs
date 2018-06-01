@@ -127,28 +127,28 @@ namespace Portal.Areas.Admin.Controllers
 
         }
 
-        [HttpGet]
-        public ActionResult GroupClaims(string id)
-        {
-            UserGroupResolution[] model = null;
+        //[HttpGet]
+        //public ActionResult GroupClaims(string id)
+        //{
+        //    UserGroupResolution[] model = null;
             
-            if (!String.IsNullOrWhiteSpace(id))
-            {
-                Guid groupId = Guid.Parse(id);
-                model = _cmsRepository.GetGroupResolutions(groupId);
-            }
-            return PartialView("GroupClaims", model);
-        }
+        //    if (!String.IsNullOrWhiteSpace(id))
+        //    {
+        //        Guid groupId = Guid.Parse(id);
+        //        model = _cmsRepository.GetGroupResolutions(groupId);
+        //    }
+        //    return PartialView("GroupClaims", model);
+        //}
 
-        [HttpPost]
-        public ActionResult UpdateGroupClaims(ClaimParams data)
-        {
-            var res = _cmsRepository.UpdateGroupResolution(data);
-            if (res)
-            {
-                return Json("Success");
-            }
-            return Json("An Error Has occourred");
-        }
+        //[HttpPost]
+        //public ActionResult UpdateGroupClaims(ClaimParams data)
+        //{
+        //    var res = _cmsRepository.UpdateGroupResolution(data);
+        //    if (res)
+        //    {
+        //        return Json("Success");
+        //    }
+        //    return Json("An Error Has occourred");
+        //}
     }
 }

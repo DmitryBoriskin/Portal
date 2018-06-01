@@ -4,78 +4,109 @@
 {
     if (User.Identity.HasClaim(Model.ControllerName, "view"))
     {
-<div class="content">
-    <h1>@Model.PageName</h1>
-    <div class="row">
-        <div class="col-md-12">
-            @Html.HiddenFor(m => m.Item.Id)
-            @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @Title = "Название", @placeholder = "Название", MaxLength = "256" })
-            @Html.TextBoxFor(m => Model.Item.Desc, new { @required = "", @Title = "Описание", @placeholder = "Описание", MaxLength = "1024" })
-            @Html.HiddenFor(m => m.Item.Desciminator, new { value = "ApplicationRole" })
-        </div>
-    </div>
-
-    @if (Model.Item != null)
-    {
-        //<div class="group-block open topIndent-20" title="Мета теги">
-        <div class="row group-block open topIndent-20" title="Права на разделы cms">
-            <div class="col-md-12">
-               
-                <table class="table table-striped table-condensed topIndent-20">
-                    <tr>
-                        <th>Раздел</th>
-                        <th>Просмотр</th>
-                        <th>Редактирование</th>
-                        <th>Создание</th>
-                        <th>Удаление</th>
-                    </tr>
-                    @if (Model.Menu.Count() > 0)
-                    {
-                        foreach (var menu in Model.Menu)
-                        {
-                            <tr>
-                                <td>@menu.GroupName (@menu.Alias)</td>
-                                <td>
-                                    <input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" />
-                                </td>
-                                <td><input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" /></td>
-                                <td><input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" /></td>
-                                <td><input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" /></td>
-                            </tr>
-                        }
-                    }
-                </table>
+        <div class="content">
+            <h1>@Model.PageName</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.HiddenFor(m => m.Item.Id)
+                    @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @Title = "Название", @placeholder = "Название", MaxLength = "256" })
+                    @Html.TextBoxFor(m => Model.Item.Desc, new { @required = "", @Title = "Описание", @placeholder = "Описание", MaxLength = "1024" })
+                    @Html.HiddenFor(m => m.Item.Desciminator, new { value = "ApplicationRole" })
+                </div>
             </div>
-        </div>
 
-        <div class="row group-block open topIndent-20" title="Права на модули">
-            <div class="col-md-12">
-                <table class="table table-striped table-condensed topIndent-20">
-                    <tr>
-                        <th>Модуль</th>
-                        <th>Просмотр</th>
-                        <th>Редактирование</th>
-                        <th>Создание</th>
-                        <th>Удаление</th>
-                    </tr>
-                    @if (Model.MenuModul.Count() > 0)
-                    {
-                        foreach (var menu in Model.MenuModul)
-                        {
+            @if (Model.Item != null)
+            {
+                //<div class="group-block open topIndent-20" title="Мета теги">
+                <div class="row group-block open topIndent-20" title="Права на разделы cms">
+                    <div class="col-md-12">
+
+                        <table class="table table-condensed topIndent-20">
                             <tr>
-                                <td>@menu.Title (@menu.Alias)</td>
-                                <td><input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" /></td>
-                                <td><input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" /></td>
-                                <td><input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" /></td>
-                                <td><input type="checkbox" data-init="false" data-claim-id="@Guid.NewGuid()" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" /></td>
+                                <th>Раздел</th>
+                                <th>Просмотр</th>
+                                <th>Редактирование</th>
+                                <th>Создание</th>
+                                <th>Удаление</th>
                             </tr>
-                        }
-                    }
-                </table>
-            </div>
+                            @if (Model.Menu.Count() > 0)
+                            {
+                                foreach (var group in Model.Menu)
+                                {
+                                    <tr>
+                                        <td colspan="5" class="bg-warning"><strong>@group.Name (@group.Alias)</strong></td>
+                                    </tr>
+
+                                    if (group.Childs.Count() > 0)
+                                    {
+                                        foreach (var menu in group.Childs)
+                                        {
+                                        <tr><td>@menu.Name (@menu.Alias)</td>
+                                        <td>
+                                            <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx"
+                                                   @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "view") ? "checked" : "") />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="edit" class="iCheck roleClaim-chckbx"
+                                                   @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "edit") ? "checked" : "") />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="create" class="iCheck roleClaim-chckbx"
+                                                   @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "create") ? "checked" : "") />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="delete" class="iCheck roleClaim-chckbx"
+                                                   @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "delete") ? "checked" : "")/>
+                                        </td>
+                                    </tr>
+                                        }
+                                    }
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row group-block open topIndent-20" title="Права на модули">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-condensed topIndent-20">
+                            <tr>
+                                <th>Модуль</th>
+                                <th>Просмотр</th>
+                                <th>Редактирование</th>
+                                <th>Создание</th>
+                                <th>Удаление</th>
+                            </tr>
+                            @if (Model.MenuModul.Count() > 0)
+                            {
+                                foreach (var menu in Model.MenuModul)
+                                {
+                                    <tr>
+                                        <td>@menu.Name (@menu.Alias)</td>
+                                        <td>
+                                             <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx" 
+                                                    @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "view")?"checked":"") />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="edit" class="iCheck roleClaim-chckbx" 
+                                                    @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "edit")?"checked":"") />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="create" class="iCheck roleClaim-chckbx" 
+                                                   @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "create")?"checked":"")/>
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="delete" class="iCheck roleClaim-chckbx" 
+                                                   @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "delete")?"checked":"")/>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+            }
         </div>
-    }
-</div>
 
         <div class="dop_info-block">
             @*@Html.CheckBoxFor(m => m.Item.Disabled, new { @class = "checkbox", @title = "Состояние сайта", @data_toggle = "toggle", @data_off = "Включен", @data_on = "Отключен", @data_onstyle = "danger", @data_offstyle = "success", @data_width = "270" })*@
@@ -101,15 +132,3 @@
         <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
     </div>
 }
-
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        $('.iCheck').iCheck();
-
-        $(".roleClaim-chckbx").on('ifChecked', function (event) {
-
-            //alert(event.type + ' callback');
-        });
-    });
-</script>

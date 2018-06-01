@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class UsersController : BeCoreController
+    public class SiteAdminsController : BeCoreController
     {
         //public UsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         //    : base(userManager, signInManager) { }
@@ -21,12 +21,11 @@ namespace Portal.Areas.Admin.Controllers
             model = new UsersViewModel()
             {
                 PageName = PageName,
-                //DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName, 
-                Groups = _cmsRepository.GetGroups()
+                ActionName = ActionName,
+                Roles = _cmsRepository.GetRoles()
             };
             if (AccountInfo != null)
             {
@@ -39,7 +38,7 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetUsers(filter);
+            model.List = _cmsRepository.GetSiteAdmins(filter);
             return View(model);
         }
 
@@ -64,53 +63,45 @@ namespace Portal.Areas.Admin.Controllers
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Save(Guid id, UsersViewModel backModel)
         {
-            ErrorMessage message = new ErrorMessage
-            {
-                Title = "Информация"
-            };
-            if (ModelState.IsValid)
-            {
-                backModel.Item.Id = id;
-                if (_cmsRepository.CheckUserExists(id))
-                {
-                    _cmsRepository.UpdateUser(backModel.Item);
-                    message.Info = "Запись обновлена";
-                }
-                else if (_cmsRepository.CheckUserExists(backModel.Item.Email))
-                {
-                    message.Info = "Пользователь с таким Email адресом уже существует";
-                }
-                else
-                {
-                    char[] _pass = backModel.Password.Password.ToCharArray();
-                    Cripto password = new Cripto(_pass);
-                    string NewSalt = password.Salt;
-                    string NewHash = password.Hash;
+            //ErrorMessage message = new ErrorMessage
+            //{
+            //    Title = "Информация"
+            //};
+            //if (ModelState.IsValid)
+            //{
+            //    backModel.Item.Id = id;
+            //    if (_cmsRepository.CheckUserExists(id))
+            //    {
+            //        _cmsRepository.UpdateUser(backModel.Item);
+            //        message.Info = "Запись обновлена";
+            //    }
+            //    else if (_cmsRepository.CheckUserExists(backModel.Item.Email))
+            //    {
+            //        message.Info = "Пользователь с таким Email адресом уже существует";
+            //    }
+            //    else
+            //    {
+            //        _cmsRepository.InsertUser(backModel.Item);
 
-                    backModel.Item.Hash = NewHash;
-                    backModel.Item.Salt = NewSalt;
-
-                    _cmsRepository.InsertUser(backModel.Item);
-
-                    message.Info = "Запись добавлена";
-                }
-                message.Buttons = new ErrorMessageBtnModel[]
-                {
-                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
-                };
-            }
-            else
-            {
-                message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
-                message.Buttons = new ErrorMessageBtnModel[]
-                {
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
-                };
-            }
+            //        message.Info = "Запись добавлена";
+            //    }
+            //    message.Buttons = new ErrorMessageBtnModel[]
+            //    {
+            //        new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
+            //        new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
+            //    };
+            //}
+            //else
+            //{
+            //    message.Info = "Ошибка в заполнении формы. Поля в которых допушены ошибки - помечены цветом";
+            //    message.Buttons = new ErrorMessageBtnModel[]
+            //    {
+            //        new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
+            //    };
+            //}
 
             model.Item = _cmsRepository.GetUser(id);
-            model.ErrorInfo = message;
+            //model.ErrorInfo = message;
             return View("item", model);
         }
 
@@ -125,19 +116,19 @@ namespace Portal.Areas.Admin.Controllers
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
         public ActionResult Delete(Guid Id)
         {
-            _cmsRepository.DeleteUser(Id);
+            //_cmsRepository.DeleteUser(Id);
 
-            ErrorMessage message = new ErrorMessage
-            {
-                Title = "Информация",
-                Info = "Запись удалена",
-                Buttons = new ErrorMessageBtnModel[]
-                {
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}{Request.Url.Query}", Text = "ок", Action = "false" }
-                }
-            };
+            //ErrorMessage message = new ErrorMessage
+            //{
+            //    Title = "Информация",
+            //    Info = "Запись удалена",
+            //    Buttons = new ErrorMessageBtnModel[]
+            //    {
+            //        new ErrorMessageBtnModel { Url = $"{StartUrl}{Request.Url.Query}", Text = "ок", Action = "false" }
+            //    }
+            //};
 
-            model.ErrorInfo = message;
+            //model.ErrorInfo = message;
 
             return RedirectToAction("index");
         }

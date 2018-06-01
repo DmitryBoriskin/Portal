@@ -696,9 +696,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BeCoreController.cs" />
-    <Compile Include="Areas\Admin\Controllers\AllUsersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminsController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SiteUsersController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteModulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TemplatesController.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
@@ -707,7 +708,7 @@
     <Compile Include="Areas\Admin\Controllers\SitesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ModulesController.cs" />
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
-    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SiteAdminsController.cs" />
     <Compile Include="Areas\Admin\Models\CoreViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
@@ -840,10 +841,10 @@
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.woff" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.woff2" />
     <Content Include="Areas\Admin\Views\Account\RestorePass.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteAdmins\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Partial\_pager.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\Part\Filter.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteAdmins\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteAdmins\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Account\ChangePass.cshtml" />
     <Content Include="Areas\Admin\Views\Account\LogOff.cshtml" />
     <Content Include="Areas\Admin\Views\Account\MsgFailRestore.cshtml" />
@@ -868,8 +869,8 @@
     <Content Include="Areas\Admin\Views\Templates\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Templates\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Services\FilterTreeItem.cshtml" />
-    <Content Include="Areas\Admin\Views\AllUsers\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\AllUsers\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Admins\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Admins\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Services\GroupClaims.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Part\Modules.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Part\Domens.cshtml" />
@@ -883,6 +884,9 @@
     <Content Include="Areas\Admin\Views\Main\AccessDenied.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteUsers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteUsers\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteUsers\Part\Filter.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Module\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

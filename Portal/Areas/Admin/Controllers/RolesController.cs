@@ -161,5 +161,18 @@ namespace Portal.Areas.Admin.Controllers
         {
             return Redirect(StartUrl);
         }
+
+
+        [HttpPost]
+        public ActionResult UpdateRoleClaim(RoleClaimModel roleClaim)
+        {
+            var res = _cmsRepository.UpdateRoleClaim(roleClaim);
+            if (res)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
+
     }
 }
