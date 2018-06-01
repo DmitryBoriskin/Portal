@@ -81,7 +81,6 @@
     <Compile Include="Entity\services\Filters\PageFilterModel.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\front\Repository.cs" />
-    <Compile Include="Repository\modules\auth\AuthRepository.cs" />
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />
     <Compile Include="Repository\cms\CmsPhotoRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
@@ -177,6 +176,8 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Repository\modules\auth\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
