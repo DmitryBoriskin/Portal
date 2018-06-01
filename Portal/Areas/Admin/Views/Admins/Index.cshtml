@@ -1,0 +1,52 @@
+﻿@model UsersViewModel
+
+@*if (Model.UserResolution.Read)*@
+@if (true)
+{
+    <div class="content">
+        <h1>@Model.PageName</h1>
+        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+        {
+            foreach (var item in Model.List.Items)
+            {
+                string disabled = (item.Disabled) ? "disabled" : String.Empty;
+                <div class="list-item @disabled">
+                    <a title="" class="li-caption" href="/admin/admins/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
+                    <div class="li-desc"><span>Группа:</span> @(item.Roles != null ? "есть роли" : "")</div>
+                    <div class="li-desc"><span>E-mail:</span> @item.Email</div>
+                </div>
+            }
+            if (Model.List != null && Model.List.Pager != null)
+            {
+                @Html.Partial("Partial/_pager", Model.List.Pager)
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">Не найдено ни одной записи.</div>
+        }
+    </div>
+
+    <div class="dop_info-block">
+        <div class="dop-caption">Фильтр</div>
+        @if (Model.Filter != null)
+        {
+            @Html.Partial("Partial/_filter", Model.Filter)
+        }
+    </div>
+
+    <div class="buttons">
+        @*@if (Model.UserResolution.Write)*@
+        @if (true)
+        {
+            using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+            {
+                <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+            }
+        }
+    </div>
+}
+else
+{
+    <div class="content"><p>У вас недостаточно прав.</p></div>
+}

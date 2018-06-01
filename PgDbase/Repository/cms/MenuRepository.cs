@@ -11,26 +11,78 @@ namespace PgDbase.Repository.cms
     /// </summary>
     public partial class CmsRepository
     {
-        public CmsMenuModel[] GetCmsMenu()
+        /// <summary>
+        /// Возвращает разделы меню CMS с дочерними элементами
+        /// </summary>
+        /// <returns></returns>
+        public CmsMenuItemModel[] GetCmsMenu()
         {
             using (var db = new CMSdb(_context))
             {
                 var data = db.core_menu
                             .Where(s => s.f_parent == null)
-                            .Select(s => new CmsMenuModel()
+                            .OrderBy(s => s.n_sort)
+                            .Select(s => new CmsMenuItemModel()
                             {
-                                Id=s.id,
                                 Alias = s.c_alias,
-                                GroupName = s.c_title,
-                                GroupItems = s.fk_menu_parent_BackReferences.OrderBy(o=>o.n_sort).Select(m => new CmsMenuItem()
-                                {
-                                    Id=m.id,
-                                    Alias = m.c_alias,
-                                    Title = m.c_title,
-                                    Class = m.c_class
-                                }).ToArray()
+                                Name = s.c_title,
+                                Childs = s.fk_menu_parent_BackReferences
+                                                .OrderBy(m => m.n_sort)
+                                                .Select(m => new CmsMenuItemModel()
+                                                {
+                                                    Alias = m.c_alias,
+                                                    Name = m.c_title,
+                                                    Icon = m.c_class
+                                                }).ToArray()
                             });
-                if (data.Any()) return data.ToArray();
+
+                return data.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Список меню CMS без разделов
+        /// </summary>
+        /// <returns></returns>
+        public CmsMenuItemModel[] GetCmsMenuItems()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_menu
+                            .Where(s => s.f_parent != null)
+                            .OrderBy(s => s.n_sort)
+                            .Select(s => new CmsMenuItemModel()
+                            {
+                                Id = s.id,
+                                Alias = s.c_alias,
+                                Name = s.c_title,
+                                Icon = s.c_class,
+                                Sort = s.n_sort
+                            });
+
+                return data.ToArray();
+            }
+        }
+
+        public CmsMenuItemModel[] GetModuleMenu(Guid UserId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+
+
+                //var query=db.re
+                var data = db.core_controllers
+                           .Where(w => w.f_parent == null)
+                           .OrderBy(o => o.c_name)
+                           .Select(s => new CmsMenuItemModel()
+                           {
+                               Alias = s.c_controller_name,
+                               Name = s.c_name
+                           });
+                if (data.Any())
+                {
+                    return data.ToArray();
+                }
                 return null;
             }
         }
@@ -41,7 +93,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public CmsMenuItem GetCmsMenuItem(Guid id)
+        public CmsMenuItemModel GetCmsMenuItem(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
@@ -49,12 +101,12 @@ namespace PgDbase.Repository.cms
                 if (query.Any())
                 {
                     var s = query.Single();
-                    var data = new CmsMenuItem
+                    var data = new CmsMenuItemModel
                     {
                         Id = s.id,
                         Alias = s.c_alias,
-                        Class = s.c_class,                        
-                        Title = s.c_title
+                        Icon = s.c_class,                        
+                        Name = s.c_title
                     };
                     if (s.f_parent != null)
                     {
@@ -65,23 +117,8 @@ namespace PgDbase.Repository.cms
                 return null;
             }
         }
-        public CmsMenuModel[] GetMenuGroup()
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var data = db.core_menu.Where(w=>w.f_parent==null);
-                if (data.Any())
-                {
-                    return data.OrderBy(o => o.n_sort)
-                               .Select(s => new CmsMenuModel
-                               {
-                                   Id = s.id,
-                                   GroupName = s.c_title
-                               }).ToArray();
-                }
-                return null;
-            }
-        }
+
+       
         /// <summary>
         /// Возвращает true если есть элемент с таким id
         /// </summary>
@@ -96,7 +133,7 @@ namespace PgDbase.Repository.cms
         }
 
 
-        public bool UpdateMenu(CmsMenuItem menu)
+        public bool UpdateMenu(CmsMenuItemModel menu)
         {
             using (var db = new CMSdb(_context))
             {
@@ -105,7 +142,7 @@ namespace PgDbase.Repository.cms
                     InsertLog(new LogModel
                     {
                         PageId = menu.Id,
-                        PageName = menu.Title,
+                        PageName = menu.Name,
                         Section = LogModule.Menu,
                         Action = LogAction.update
                     });
@@ -133,9 +170,9 @@ namespace PgDbase.Repository.cms
 
                         bool result = db.core_menu
                                         .Where(w => w.id == menu.Id)
-                                        .Set(s => s.c_title, menu.Title)
+                                        .Set(s => s.c_title, menu.Name)
                                         .Set(s => s.c_alias, menu.Alias)
-                                        .Set(s => s.c_class, menu.Class)
+                                        .Set(s => s.c_class, menu.Icon)
                                         .Set(s => s.f_parent, menu.Pid)
                                         .Set(s => s.n_sort, (q.Single().f_parent==null)? q.Single().n_sort : newsort)
                                         .Update() > 0;
@@ -146,7 +183,7 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
-        public bool InsertMenu(CmsMenuItem menu)
+        public bool InsertMenu(CmsMenuItemModel menu)
         {
             using (var db = new CMSdb(_context))
             {
@@ -155,7 +192,7 @@ namespace PgDbase.Repository.cms
                     InsertLog(new LogModel
                     {
                         PageId = menu.Id,
-                        PageName = menu.Title,
+                        PageName = menu.Name,
                         Section = LogModule.Menu,
                         Action = LogAction.insert
                     });
@@ -172,9 +209,9 @@ namespace PgDbase.Repository.cms
                                   .Insert(
                                   ()=>new core_menu {
                                       id=menu.Id,
-                                      c_title=menu.Title,
+                                      c_title=menu.Name,
                                       c_alias=menu.Alias,
-                                      c_class=menu.Class,
+                                      c_class=menu.Icon,
                                       n_sort=sort,
                                       f_parent=(menu.Pid!=null)? menu.Pid:null
                                   })> 0;

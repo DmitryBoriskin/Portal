@@ -5,8 +5,12 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class ServicesController : CoreController
+    public class ServicesController : BeCoreController
     {
+        //public ServicesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        //   : base(userManager, signInManager) { }
+
+
         public ActionResult Log(Guid id, string type)
         {
             LogModel[] model = null;
@@ -129,28 +133,28 @@ namespace Portal.Areas.Admin.Controllers
             return Content(result.ToString());
         }
 
-        [HttpGet]
-        public ActionResult GroupClaims(string id)
-        {
-            UserGroupResolution[] model = null;
+        //[HttpGet]
+        //public ActionResult GroupClaims(string id)
+        //{
+        //    UserGroupResolution[] model = null;
             
-            if (!String.IsNullOrWhiteSpace(id))
-            {
-                Guid groupId = Guid.Parse(id);
-                model = _cmsRepository.GetGroupResolutions(groupId);
-            }
-            return PartialView("GroupClaims", model);
-        }
+        //    if (!String.IsNullOrWhiteSpace(id))
+        //    {
+        //        Guid groupId = Guid.Parse(id);
+        //        model = _cmsRepository.GetGroupResolutions(groupId);
+        //    }
+        //    return PartialView("GroupClaims", model);
+        //}
 
-        [HttpPost]
-        public ActionResult UpdateGroupClaims(ClaimParams data)
-        {
-            var res = _cmsRepository.UpdateGroupResolution(data);
-            if (res)
-            {
-                return Json("Success");
-            }
-            return Json("An Error Has occourred");
-        }
+        //[HttpPost]
+        //public ActionResult UpdateGroupClaims(ClaimParams data)
+        //{
+        //    var res = _cmsRepository.UpdateGroupResolution(data);
+        //    if (res)
+        //    {
+        //        return Json("Success");
+        //    }
+        //    return Json("An Error Has occourred");
+        //}
     }
 }

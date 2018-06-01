@@ -13,195 +13,313 @@ namespace PgDbase.Repository.cms
     public partial class CmsRepository
     {
         /// <summary>
-        /// Возвращает постраничный список администраторо
+        /// Список ролей
         /// </summary>
-        /// <param name="model"></param>
         /// <returns></returns>
-        public Paged<UserModel> GetAllUsers(FilterModel filter)
+        public RoleModel[] GetRoles()
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<UserModel> result = new Paged<UserModel>();
+                var query = db.core_AspNetRoles
+                    .Where(s => s.Discriminator == "ApplicationRole");
 
-                var query = db.core_users.OrderBy(o => o.fkusersitelinks).AsQueryable();
-
-                if (filter.Disabled.HasValue)
+                var data = query.Select(s => new RoleModel()
                 {
-                    query = query.Where(w => w.b_disabled == filter.Disabled.Value);
-                }
-                if (!String.IsNullOrWhiteSpace(filter.Group))
-                {
-                    query = query.Where(w => w.fkusersitelinks.Any(a => a.f_user_group == Guid.Parse(filter.Group)));
-                }
-                if (!String.IsNullOrWhiteSpace(filter.SearchText))
-                {
-                    string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (search != null && search.Count() > 0)
-                    {
-                        foreach (string p in filter.SearchText.Split(' '))
-                        {
-                            if (!String.IsNullOrWhiteSpace(p))
-                            {
-                                query = query.Where(w => w.c_surname.Contains(p)
-                                                    || w.c_name.Contains(p)
-                                                    || w.c_patronymic.Contains(p)
-                                                    || w.c_email.Contains(p));
-                            }
-                        }
-                    }
-                }
-                query = query.OrderBy(o => new { o.c_surname, o.c_name });
+                    Id = Guid.Parse(s.Id),
+                    Name = s.Name,
+                    Desc = s.Desc,
+                    Claims = GetRoleClaims(s.Id)
+                });
 
-                int itemsCount = query.Count();
-
-                var list = query.Skip(filter.Size * (filter.Page - 1))
-                    .Take(filter.Size).Select(s => new UserModel
-                    {
-                        Id = s.id,
-                        Email = s.c_email,
-                        Surname = s.c_surname,
-                        Name = s.c_name,
-                        Patronimyc = s.c_patronymic,
-                        Disabled = s.b_disabled,
-                        ErrorCount = s.n_error_count,
-                        TryLogin = s.d_try_login,
-                        Group = new GroupsModel
-                        {
-                            Title = s.fkusersitelinks
-                                .Select(g => g.fkusersitelinkusergroup.c_title)
-                                .SingleOrDefault()
-                        }
-                    });
-
-
-                return new Paged<UserModel>()
-                {
-                    Items = list.ToArray(),
-                    Pager = new PagerModel()
-                    {
-                        PageNum = filter.Page,
-                        PageSize = filter.Size,
-                        TotalCount = itemsCount
-                    }
-                };
+                return data.ToArray();
             }
         }
 
+        /// <summary>
+        /// Роль
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public RoleModel GetRole(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoles
+                    .Where(s => s.Id == id.ToString());
+
+                var data = query.Select(s => new RoleModel()
+                {
+                    Id = Guid.Parse(s.Id),
+                    Name = s.Name,
+                    Desc = s.Desc,
+                    Claims = GetRoleClaims(s.Id)
+                });
+
+                return data.SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Права роли
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        public RoleClaimModel[] GetRoleClaims(Guid roleId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoleClaims
+                    .Where(s => s.RoleId == roleId.ToString());
+
+                var data = query.Select(s => new RoleClaimModel()
+                {
+                    Id = s.Id,
+                    RoleId = Guid.Parse(s.RoleId),
+                    Type = s.ClaimType,
+                    Value = s.ClaimValue,
+                    Checked = true
+                });
+
+                return data.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// права роли
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        private RoleClaimModel[] GetRoleClaims(string roleId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoleClaims
+                    .Where(s => s.RoleId == roleId);
+
+                var data = query.Select(s => new RoleClaimModel()
+                {
+                    Id = s.Id,
+                    RoleId = Guid.Parse(s.RoleId),
+                    Type = s.ClaimType,
+                    Value = s.ClaimValue,
+                    Checked = true
+                });
+
+                return data.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Получение списка ролей для пользователя
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public RoleModel[] GetUserRoles(Guid userId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var _userId = userId.ToString();
+                var query = db.core_AspNetUserRoles
+                    .Where(s => s.AspNetRolesRoleId.Discriminator == "ApplicationRole")
+                    .Where(s => s.UserId == _userId);
+
+                var data = query.Select(s => new RoleModel()
+                {
+                    Id = Guid.Parse(s.RoleId),
+                    Name = s.AspNetRolesRoleId.Name,
+                    Desc = s.AspNetRolesRoleId.Desc,
+                    //Claims = GetRoleClaims(s.RoleId)
+                });
+
+                return data.ToArray();
+            }
+        }
+
+
+        /// <summary>
+        /// Изменение прав у роли
+        /// </summary>
+        /// <param name="roleClaim"></param>
+        /// <returns></returns>
+        public bool UpdateRoleClaim(RoleClaimModel roleClaim)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var dbRoleclaim = db.core_AspNetRoleClaims
+                       .Where(s => s.RoleId == roleClaim.RoleId.ToString())
+                       .Where(s => s.ClaimType == roleClaim.Type)
+                       .Where(s => s.ClaimValue == roleClaim.Value);
+
+                    if(roleClaim.Checked)
+                    {
+                        if(!dbRoleclaim.Any())
+                        {
+                            //insert
+                            var newRoleClaim = new core_AspNetRoleClaims()
+                            {
+                                RoleId = roleClaim.RoleId.ToString(),
+                                ClaimType = roleClaim.Type,
+                                ClaimValue = roleClaim.Value
+                            };
+
+                            db.Insert(newRoleClaim);
+
+                            //log
+                            //var log = new LogModel
+                            //{
+                            //    PageId = Guid.NewGuid,
+                            //    PageName = "",
+                            //    Section = LogModule.Users,
+                            //    Action = LogAction.update,
+                            //    Comment = "Изменена связь пользователя с сайтами"
+                            //};
+                            //InsertLog(log);
+
+
+                            tran.Commit();
+                            return true;
+                        }
+
+                    }
+                    else
+                    {
+                        if (dbRoleclaim.Any())
+                        {
+                            //delete
+                            var roleClaimData = dbRoleclaim.Single();
+                            db.Delete(roleClaimData);
+
+                            //log
+
+                            tran.Commit();
+                            return true;
+                        }
+
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        
         /// <summary>
         /// Возвращает группу пользователей для редактирования
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public UserGroupResolution[] GetGroupResolutions(Guid groupId)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var query = db.core_menu
-                    .OrderBy(o => o.f_parent)
-                    .ThenBy(o => o.n_sort);
+        //public UserGroupResolution[] GetGroupResolutions(Guid groupId)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        var query = db.core_menu
+        //            .OrderBy(o => o.f_parent)
+        //            .ThenBy(o => o.n_sort);
 
-                var data = query.ToArray();
+        //        var data = query.ToArray();
 
-                UserGroupResolution[] result = new UserGroupResolution[data.Length];
+        //        UserGroupResolution[] result = new UserGroupResolution[data.Length];
 
-                var resolutions = db.core_user_group_resolutions
-                    .Where(w => w.f_usergroup == groupId);
+        //        var resolutions = db.core_user_group_resolutions
+        //            .Where(w => w.f_usergroup == groupId);
 
-                for (int i = 0; i < result.Length; i++)
-                {
-                    resolutions = resolutions.Where(w => w.f_menu == data[i].id);
-                    result[i] = new UserGroupResolution
-                    {
-                        Id = Guid.NewGuid(),
-                        UserGroup = groupId,
-                        IsRead = resolutions
-                            .Select(a => a.b_read).SingleOrDefault(),
-                        IsWrite = resolutions
-                            .Select(a => a.b_write).SingleOrDefault(),
-                        IsChange = resolutions
-                            .Select(a => a.b_change).SingleOrDefault(),
-                        IsDelete = resolutions
-                            .Select(a => a.b_delete).SingleOrDefault(),
-                        Menu = new GroupsModel
-                        {
-                            Id = data[i].id,
-                            Title = data[i].c_title
-                        }
-                    };
-                }
+        //        for (int i = 0; i < result.Length; i++)
+        //        {
+        //            resolutions = resolutions.Where(w => w.f_menu == data[i].id);
+        //            result[i] = new UserGroupResolution
+        //            {
+        //                Id = Guid.NewGuid(),
+        //                UserGroup = groupId,
+        //                IsRead = resolutions
+        //                    .Select(a => a.b_read).SingleOrDefault(),
+        //                IsWrite = resolutions
+        //                    .Select(a => a.b_write).SingleOrDefault(),
+        //                IsChange = resolutions
+        //                    .Select(a => a.b_change).SingleOrDefault(),
+        //                IsDelete = resolutions
+        //                    .Select(a => a.b_delete).SingleOrDefault(),
+        //                Menu = new GroupsModel
+        //                {
+        //                    Id = data[i].id,
+        //                    Title = data[i].c_title
+        //                }
+        //            };
+        //        }
 
-                return result;
-            }
-        }
+        //        return result;
+        //    }
+        //}
 
         /// <summary>
         /// Обновляет права на раздел
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool UpdateGroupResolution(ClaimParams data)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var query = db.core_user_group_resolutions
-                    .Where(w => w.f_usergroup == data.GroupId)
-                    .Where(w => w.f_menu == data.MenuId);
+        //public bool UpdateGroupResolution(ClaimParams data)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        var query = db.core_user_group_resolutions
+        //            .Where(w => w.f_usergroup == data.GroupId)
+        //            .Where(w => w.f_menu == data.MenuId);
 
-                if (query.Any())
-                {
-                    switch (data.Claim)
-                    {
-                        case "read":
-                            return query.Set(u => u.b_read, data.IsChecked).Update() > 0;
-                        case "write":
-                            return query.Set(u => u.b_write, data.IsChecked).Update() > 0;
-                        case "change":
-                            return query.Set(u => u.b_change, data.IsChecked).Update() > 0;
-                        case "delete":
-                            return query.Set(u => u.b_delete, data.IsChecked).Update() > 0;
-                        default: return false;
-                    }
-                }
-                else
-                {
-                    core_user_group_resolutions item = new core_user_group_resolutions
-                    {
-                        id = Guid.NewGuid(),
-                        f_usergroup = data.GroupId,
-                        f_menu = data.MenuId,
-                        b_read = false,
-                        b_write = false,
-                        b_change = false,
-                        b_delete = false
-                    };
-                    switch (data.Claim)
-                    {
-                        case "read":
-                            item.b_read = data.IsChecked;
-                            break;
-                        case "write":
-                            item.b_write = data.IsChecked;
-                            break;
-                        case "change":
-                            item.b_change = data.IsChecked;
-                            break;
-                        case "delete":
-                            item.b_delete = data.IsChecked;
-                            break;
-                    }
-                    return db.core_user_group_resolutions.Insert(() => new core_user_group_resolutions
-                    {
-                        id = item.id,
-                        f_usergroup = item.f_usergroup,
-                        f_menu = item.f_menu,
-                        b_read = item.b_read,
-                        b_write = item.b_write,
-                        b_change = item.b_change,
-                        b_delete = item.b_delete
-                    }) > 0;
-                }
-            }
-        }
+        //        if (query.Any())
+        //        {
+        //            switch (data.Claim)
+        //            {
+        //                case "read":
+        //                    return query.Set(u => u.b_read, data.IsChecked).Update() > 0;
+        //                case "write":
+        //                    return query.Set(u => u.b_write, data.IsChecked).Update() > 0;
+        //                case "change":
+        //                    return query.Set(u => u.b_change, data.IsChecked).Update() > 0;
+        //                case "delete":
+        //                    return query.Set(u => u.b_delete, data.IsChecked).Update() > 0;
+        //                default: return false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            core_user_group_resolutions item = new core_user_group_resolutions
+        //            {
+        //                id = Guid.NewGuid(),
+        //                f_usergroup = data.GroupId,
+        //                f_menu = data.MenuId,
+        //                b_read = false,
+        //                b_write = false,
+        //                b_change = false,
+        //                b_delete = false
+        //            };
+        //            switch (data.Claim)
+        //            {
+        //                case "read":
+        //                    item.b_read = data.IsChecked;
+        //                    break;
+        //                case "write":
+        //                    item.b_write = data.IsChecked;
+        //                    break;
+        //                case "change":
+        //                    item.b_change = data.IsChecked;
+        //                    break;
+        //                case "delete":
+        //                    item.b_delete = data.IsChecked;
+        //                    break;
+        //            }
+        //            return db.core_user_group_resolutions.Insert(() => new core_user_group_resolutions
+        //            {
+        //                id = item.id,
+        //                f_usergroup = item.f_usergroup,
+        //                f_menu = item.f_menu,
+        //                b_read = item.b_read,
+        //                b_write = item.b_write,
+        //                b_change = item.b_change,
+        //                b_delete = item.b_delete
+        //            }) > 0;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Возвращает права на раздел относительно группы
@@ -209,30 +327,28 @@ namespace PgDbase.Repository.cms
         /// <param name="user"></param>
         /// <param name="controller"></param>
         /// <returns></returns>
-        public ResolutionModel GetUserResolutionGroup(Guid user, string controller)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                Guid group = db.core_user_site_link
-                    .Where(w => w.f_user == user)
-                    .Where(w => w.f_site == _siteId)
-                    .Select(s => s.f_user_group)
-                    .SingleOrDefault();
+        //public ResolutionModel GetUserResolutionGroup(Guid user, string controller)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        Guid group = db.core_user_site_link
+        //            .Where(w => w.f_user == user)
+        //            .Where(w => w.f_site == _siteId)
+        //            .Select(s => s.f_user_group)
+        //            .SingleOrDefault();
 
-                var resolutions = db.core_user_group_resolutions
-                    .Where(w => w.f_usergroup == group)
-                    .Where(w => w.fkusergroupresolutionsmenu
-                                    .c_alias.ToLower() == controller.ToLower())
-                    .Select(s => new ResolutionModel
-                    {
-                        IsRead = s.b_read,
-                        IsWrite = s.b_write,
-                        IsChange = s.b_change,
-                        IsDelete = s.b_delete
-                    });
-
-                return resolutions.SingleOrDefault();
-            }
-        }
+        //        return db.core_user_group_resolutions
+        //            .Where(w => w.f_usergroup == group)
+        //            .Where(w => w.fkusergroupresolutionsmenu
+        //                            .c_alias.ToLower() == controller.ToLower())
+        //            .Select(s => new ResolutionModel
+        //            {
+        //                IsRead = s.b_read,
+        //                IsWrite = s.b_write,
+        //                IsChange = s.b_change,
+        //                IsDelete = s.b_delete
+        //            }).SingleOrDefault();
+        //    }
+        //}
     }
 }

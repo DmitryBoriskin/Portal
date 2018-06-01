@@ -7,8 +7,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class SiteModulesController : CoreController
+    public class SiteModulesController : BeCoreController
     {
+        //public SiteModulesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        //  : base(userManager, signInManager) { }
+
         SitesViewModel model;
         FilterModel filter;
 
@@ -26,7 +29,7 @@ namespace Portal.Areas.Admin.Controllers
                 ActionName = ActionName
             };
             if (AccountInfo != null)
-                model.Menu = _cmsRepository.GetCmsMenu(AccountInfo.Id);
+                model.Menu = _cmsRepository.GetCmsMenu();
         }
 
         // GET: Admin/SiteModules

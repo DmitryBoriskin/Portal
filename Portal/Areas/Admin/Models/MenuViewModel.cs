@@ -9,11 +9,9 @@ namespace Portal.Areas.Admin.Models
     public class MenuViewModel : CoreViewModel
     {
 
-        /// <summary>
-        /// Меню админки
-        /// </summary>
-        public CmsMenuModel[] MenuList { get; set; }
-        public CmsMenuItem Item { get; set; }
-        public CmsMenuModel[] MenuGroup { get; set; }
+        public CmsMenuItemModel[] MenuGroups { get; set; }
+        public CmsMenuItemModel[] MenuList { get; set; }
+        public CmsMenuItemModel Item { get; set; }
+
     }
 }

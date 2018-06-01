@@ -325,7 +325,7 @@ $(document).ready(function () {
         }
     });
 
-    //Добавляет связь сайт-модуль
+    //Добавляет связь шаблон-модуль
     $(".set-template-default-btn").on("click", function (e) {
         e.preventDefault();
         var _linkId = $(this).data("linkId");
@@ -351,6 +351,7 @@ $(document).ready(function () {
             console.log(ex);
         }
     });
+
 
     //Удаляет связь сайт-модуль
     $(".delete-module-btn").on("click", function (e) {
@@ -380,6 +381,42 @@ $(document).ready(function () {
                 })
                 .always(function (response) {
                     location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+    //Изменяет права роли
+    $(".roleClaim-chckbx").on('ifToggled', function (e) {
+
+        var _checked = ($(this).val() === "on") ? true : false;
+
+        var roleClaim = {
+            Id : $(this).data("claimId"),
+            RoleId : $("#Item_Id").val(),
+            Type : $(this).data("claimType"),
+            Value : $(this).data("claimValue"),
+            Checked: _checked
+        };
+
+
+        var _action = "/Admin/Roles/UpdateRoleClaim";
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: roleClaim
+            })
+                .done(function (response) {
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    //location.reload();
                 });
         }
         catch (ex) {

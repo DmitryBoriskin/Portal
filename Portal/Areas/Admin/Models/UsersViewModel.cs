@@ -23,9 +23,9 @@ namespace Portal.Areas.Admin.Models
         public PasswordModel Password { get; set; }
 
         /// <summary>
-        /// Группы
+        /// Группы вообще все
         /// </summary>
-        public GroupsModel[] Groups { get; set; }
+        public RoleModel[] Roles { get; set; }
 
         /// <summary>
         /// Фильтр

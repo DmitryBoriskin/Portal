@@ -44,66 +44,69 @@ namespace PgDbase
         /// </summary>
         /// <param name="Email"></param>
         /// <returns></returns>
-        public AccountModel getCmsAccount(string Email)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var data = db.core_users
-                    .Where(w => w.c_email == Email)
-                    .Select(s => new AccountModel
-                    {
-                        Id = s.id,
-                        Mail = s.c_email,
-                        Salt = s.c_salt,
-                        Hash = s.c_hash,
-                        Surname = s.c_surname,
-                        Name = s.c_name,
-                        Patronymic = s.c_patronymic,
-                        CountError = (s.n_error_count >= 5),
-                        LockDate = s.d_try_login,
-                        Disabled = s.b_disabled
-                    });
-                if (data.Any()) return data.First();
-                return null;
-            }
-        }
-        public AccountModel getCmsAccount(Guid Id)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var data = db.core_users
-                   .Where(w => w.id == Id)
-                   .Select(s => new AccountModel
-                   {
-                       Id = s.id,
-                       Mail = s.c_email,
-                       Salt = s.c_salt,
-                       Hash = s.c_hash,
-                       Name = s.c_name,
-                       Surname = s.c_surname
-                   });
-                if (data.Any()) return data.First();
-                return null;
-            }
-        }
-        public DomainList[] GetSiteLinkUser(Guid UserId)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var query = db.core_user_site_link
-                            .Where(w => w.f_user == UserId)
-                            .Select(s => new DomainList()
-                            {
-                                SiteName = s.fkusersitelinksites.c_name,
-                                DomainName = s.fkusersitelinksites
-                                .fkdomainss.Where(w1 => w1.b_default).Select(s1 => s1.c_domain).SingleOrDefault().ToString()
-                            });
+        //public AccountModel getCmsAccount(string Email)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        var data = db.core_users
+        //            .Where(w => w.c_email == Email)
+        //            .Select(s => new AccountModel
+        //            {
+        //                Id = s.id,
+        //                Mail = s.c_email,
+        //                Salt = s.c_salt,
+        //                Hash = s.c_hash,
+        //                Surname = s.c_surname,
+        //                Name = s.c_name,
+        //                Patronymic = s.c_patronymic,
+        //                CountError = (s.n_error_count >= 5),
+        //                LockDate = s.d_try_login,
+        //                Disabled = s.b_disabled
+        //            });
+        //        if (data.Any()) return data.First();
+        //        return null;
+        //    }
+        //}
 
+        //public AccountModel getCmsAccount(Guid Id)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        var data = db.core_users
+        //           .Where(w => w.id == Id)
+        //           .Select(s => new AccountModel
+        //           {
+        //               Id = s.id,
+        //               Mail = s.c_email,
+        //               Salt = s.c_salt,
+        //               Hash = s.c_hash,
+        //               Name = s.c_name,
+        //               Surname = s.c_surname
+        //           });
+        //        if (data.Any()) return data.First();
+        //        return null;
+        //    }
+        //}
 
-                if (query.Any()) return query.ToArray();
-                return null;
-            }
-        }
+        //public DomainList[] GetSiteLinkUser(Guid UserId)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        var data = db.core_user_site_link
+        //                    .Where(w => w.f_user == UserId)
+        //                    .Select(s => new DomainList()
+        //                    {
+        //                        SiteName = s.fkusersitelinksites.c_name,
+        //                        DomainName = s.fkusersitelinksites
+        //                                .fkdomainss.Where(w1 => w1.b_default)
+        //                                .Select(s1 => s1.c_domain)
+        //                                .SingleOrDefault()
+        //                    })
+        //                    .ToArray();
+
+        //        return data;
+        //    }
+        //}
 
 
         /// <summary>
@@ -111,75 +114,75 @@ namespace PgDbase
         /// </summary>
         /// <param name="Code"></param>
         /// <returns></returns>
-        public bool getCmsAccountCode(Guid Code)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                bool result = false;
+        //public bool getCmsAccountCode(Guid Code)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        bool result = false;
 
-                int count = db.core_users
-                    .Where(w => w.c_change_pass_code == Code).Count();
-                if (count > 0) result = true;
+        //        int count = db.core_users
+        //            .Where(w => w.c_change_pass_code == Code).Count();
+        //        if (count > 0) result = true;
 
-                return result;
-            }
-        }
+        //        return result;
+        //    }
+        //}
 
-        public void SuccessLogin(Guid id, string IP)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                Guid? change_pass_code = null;
+        //public void SuccessLogin(Guid id, string IP)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        Guid? change_pass_code = null;
 
-                var data = db.core_users
-                        .Where(w => w.id == id)
-                        .Set(u => u.n_error_count, 0)
-                        .Set(u => u.d_try_login, DateTime.Now)
-                        .Set(u => u.c_change_pass_code, change_pass_code)
-                        .Update();
+        //        var data = db.core_users
+        //                .Where(w => w.id == id)
+        //                .Set(u => u.n_error_count, 0)
+        //                .Set(u => u.d_try_login, DateTime.Now)
+        //                .Set(u => u.c_change_pass_code, change_pass_code)
+        //                .Update();
 
-                // Логирование
-                var log = new LogModel
-                {
-                    PageId = id,
-                    PageName = "Авторизация в CMS",
-                    Section = LogModule.Account,
-                    Action = LogAction.login
-                };
-                InsertLog(log);
-            }
-        }
+        //        // Логирование
+        //        var log = new LogModel
+        //        {
+        //            PageId = id,
+        //            PageName = "Авторизация в CMS",
+        //            Section = LogModule.Account,
+        //            Action = LogAction.login
+        //        };
+        //        InsertLog(log);
+        //    }
+        //}
 
         /// <summary>
         /// Записываем неудачную попытку входа
         /// </summary>
         /// <param name="id"></param>
         /// <param name="IP"></param>
-        public int FailedLogin(Guid id, string IP)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                int Num = db.core_users
-                    .Where(w => w.id == id).ToArray().First().n_error_count + 1;
+        //public int FailedLogin(Guid id, string IP)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        int Num = db.core_users
+        //            .Where(w => w.id == id).ToArray().First().n_error_count + 1;
 
-                var data = db.core_users
-                    .Where(w => w.id == id)
-                        .Set(u => u.n_error_count, Num)
-                        .Set(u => u.d_try_login, DateTime.Now)
-                        .Update();
+        //        var data = db.core_users
+        //            .Where(w => w.id == id)
+        //                .Set(u => u.n_error_count, Num)
+        //                .Set(u => u.d_try_login, DateTime.Now)
+        //                .Update();
 
-                // Логирование
-                //insertLog(id, IP, "failed_login", id, String.Empty, "Users", "Неудачная попытка входа");
+        //        // Логирование
+        //        //insertLog(id, IP, "failed_login", id, String.Empty, "Users", "Неудачная попытка входа");
 
-                if (Num == 5)
-                {
-                    // Логирование
-                    //insertLog(id, IP, "account_lockout", id, String.Empty, "Users", "Блокировка аккаунта");
-                }
+        //        if (Num == 5)
+        //        {
+        //            // Логирование
+        //            //insertLog(id, IP, "account_lockout", id, String.Empty, "Users", "Блокировка аккаунта");
+        //        }
 
-                return Num;
-            }
-        }
+        //        return Num;
+        //    }
+        //}
 
         /// <summary>
         /// записываем код востановления пароля
@@ -187,37 +190,37 @@ namespace PgDbase
         /// <param name="id">id аккаунта</param>
         /// <param name="Code">код восстановления</param>
         /// <param name="IP"></param>
-        public void SetRestorePassCode(Guid id, Guid Code, string IP)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tran = db.BeginTransaction())
-                {
-                    var data = db.core_users
-                                            .Where(w => w.id == id);
+        //public void SetRestorePassCode(Guid id, Guid Code, string IP)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tran = db.BeginTransaction())
+        //        {
+        //            var data = db.core_users
+        //                                    .Where(w => w.id == id);
 
-                    if (data.Any())
-                    {
-                        var user = data.Single();
-                        var res = data.Set(u => u.c_change_pass_code, Code)
-                                      .Update();
+        //            if (data.Any())
+        //            {
+        //                var user = data.Single();
+        //                var res = data.Set(u => u.c_change_pass_code, Code)
+        //                              .Update();
 
-                        // Логирование
-                        var log = new LogModel
-                        {
-                            PageId = id,
-                            UserId = id,
-                            Action = LogAction.recovery,
-                            Section = LogModule.Account,
-                            Comment = string.Format("Код востановления пароля для пользователя {0} {1} {2}", user.c_surname, user.c_name, user.c_patronymic)
-                        };
-                        InsertLog(log);
+        //                // Логирование
+        //                var log = new LogModel
+        //                {
+        //                    PageId = id,
+        //                    UserId = id,
+        //                    Action = LogAction.recovery,
+        //                    Section = LogModule.Account,
+        //                    Comment = string.Format("Код востановления пароля для пользователя {0} {1} {2}", user.c_surname, user.c_name, user.c_patronymic)
+        //                };
+        //                InsertLog(log);
 
-                        tran.Commit();
-                    }
-                }
-            }
-        }
+        //                tran.Commit();
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Сбросс пароля по ссылке пришедшей на почту
@@ -227,40 +230,69 @@ namespace PgDbase
         /// <param name="Hash"></param>
         /// <param name="IP"></param>
         /// <returns></returns>
-        public bool ChangePassByCode(Guid Code, string Salt, string Hash, string IP)
+        //public bool ChangePassByCode(Guid Code, string Salt, string Hash, string IP)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tr = db.BeginTransaction())
+        //        {
+        //            var query = db.core_users
+        //                .Where(w => w.c_change_pass_code == Code);
+
+        //            if (query.Any())
+        //            {
+        //                string LogTitle = query.First().c_surname + " " + query.First().c_name;
+        //                Guid accountId = query.First().id;
+        //                Guid? change_pass_code = null;
+        //                query
+        //                    .Set(p => p.c_salt, Salt)
+        //                    .Set(p => p.c_hash, Hash)
+        //                    .Set(p => p.n_error_count, 0)
+        //                    .Set(p => p.c_change_pass_code, change_pass_code)
+        //                    .Update();
+        //                tr.Commit();
+
+        //                var log = new LogModel
+        //                {
+        //                    PageId = accountId,
+        //                    PageName = "Авторизация в CMS",
+        //                    Section = LogModule.Account,
+        //                    Action = LogAction.update
+        //                };
+        //                InsertLog(log);
+        //                return true;
+        //            }
+        //            return false;
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// Возвращает идентификатор сайта
+        /// </summary>
+        /// <param name="domainUrl"></param>
+        /// <returns></returns>
+        public Guid GetSiteId(string domainUrl)
         {
-            using (var db = new CMSdb(_context))
+            try
             {
-                using (var tr = db.BeginTransaction())
+                using (var db = new CMSdb(_context))
                 {
-                    var query = db.core_users
-                        .Where(w => w.c_change_pass_code == Code);
+                    var query = db.core_site_domains
+                        .Where(w => w.c_domain.ToLower() == domainUrl.ToLower())
+                        .SingleOrDefault();
 
-                    if (query.Any())
+                    if (query != null)
                     {
-                        string LogTitle = query.First().c_surname + " " + query.First().c_name;
-                        Guid accountId = query.First().id;
-                        Guid? change_pass_code = null;
-                        query
-                            .Set(p => p.c_salt, Salt)
-                            .Set(p => p.c_hash, Hash)
-                            .Set(p => p.n_error_count, 0)
-                            .Set(p => p.c_change_pass_code, change_pass_code)
-                            .Update();
-                        tr.Commit();
-
-                        var log = new LogModel
-                        {
-                            PageId = accountId,
-                            PageName = "Авторизация в CMS",
-                            Section = LogModule.Account,
-                            Action = LogAction.update
-                        };
-                        InsertLog(log);
-                        return true;
+                        return query.f_site;
                     }
-                    return false;
+
+                    return Guid.Empty;
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + domainUrl + ") " + ex);
             }
         }
 
@@ -287,29 +319,22 @@ namespace PgDbase
             }
         }
 
-
-        /// <summary>
-        /// Возвращает идентификатор сайта
-        /// </summary>
-        /// <param name="domainUrl"></param>
-        /// <returns></returns>
-        public Guid GetSiteGuid(string domainUrl)
+        public DomainList[] GetUserSites(Guid UserId)
         {
-            try
+            using (var db = new CMSdb(_context))
             {
-                using (var db = new CMSdb(_context))
-                {
-                    var query = db.core_site_domains.Where(w => w.c_domain == domainUrl).FirstOrDefault();//.fksitesdomainssite;//
-                    if (query != null)
-                    {
-                        return Guid.Parse(query.f_site.ToString());
-                    }
-                    return Guid.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("cmsRepository > getSiteId: It is not possible to determine the site by url (" + domainUrl + ") " + ex);
+                var data = db.core_site_domains
+                            .Where(s => s.fksitesdomainssites.UserSitesSitess.Any(u => u.f_user == UserId))
+                            .Select(s => new DomainList()
+                            {
+                                SiteId = s.f_site,
+                                SiteName = s.fksitesdomainssites.c_name,
+                                DomainName = s.c_domain,
+                                Default = s.b_default
+
+                            }).ToArray();
+
+                return data;
             }
         }
     }

@@ -6,8 +6,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class SitesController : CoreController
+    public class SitesController : BeCoreController
     {
+        //public SitesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        // : base(userManager, signInManager) { }
+
         SitesViewModel model;
         FilterModel filter;
 
