@@ -91,8 +91,9 @@
     <Compile Include="Entity\services\Paged.cs" />
     <Compile Include="Entity\services\PagerModel.cs" />
     <Compile Include="Repository\front\FrontRepository.cs" />
-    <Compile Include="Repository\modules\events\EventRepository.cs" />
+    <Compile Include="Repository\modules\events\CmsEventsRepository.cs" />
     <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />
+    <Compile Include="Repository\modules\lk\CmsLkRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
@@ -165,8 +166,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repository\modules\auth\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

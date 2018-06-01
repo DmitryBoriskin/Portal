@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PgDbase.Repository.front
 {
-    public partial class Repository
+    public partial class FrontRepository
     {
         /// <summary>
         /// список событий

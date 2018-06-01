@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using PgDbase.Repository;
 
 namespace PgDbase.Repository.front
 {
