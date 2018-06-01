@@ -1,0 +1,60 @@
+﻿@model EventsModule.Areas.Admin.Models.EventViewModel
+@{    
+    string noPhoto = "/Content/img/nophoto.jpg";
+}
+@if (Model.UserResolution.IsRead)
+{
+    
+    
+        <div class="content">
+            <h1>События</h1>
+            @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+            {
+                foreach (var Item in Model.List.Items)
+                {
+                    string disabled = (Item.Disabled) ? "disabled" : String.Empty;
+                    string imgUrl = Item.Photo;
+                    if (String.IsNullOrWhiteSpace(imgUrl))
+                    {
+                        imgUrl = noPhoto;
+                    }
+                    else if (imgUrl.IndexOf("http") == -1)
+                    {
+                        if (!File.Exists(Server.MapPath(imgUrl)))
+                        {
+                            imgUrl = noPhoto;
+                        }
+                    }
+                    <div class="list-item @disabled">
+                        <a href="/admin/events/item/@Item.Guid/@ViewBag.urlQuery">
+                            <img src="@imgUrl" alt="@Item.Title" class="li-image" />
+                        </a>
+                        <div class="li-desc">
+                            <a title="@Item.Title" class="li-caption" href="/admin/events/item/@Item.Guid">@Item.Title</a>
+                            <br />
+                            <span>Даты: @Convert.ToDateTime(Item.Date).ToString("dd.MM.yyyy")-@Convert.ToDateTime(Item.DateEnd).ToString("dd.MM.yyyy")</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="dop_info-block">
+            <div class="dop-caption">Фильтр</div>
+            @Html.Partial("Part/Filter")
+        </div>
+        <div class="buttons">
+            @if (Model.UserResolution.IsWrite)
+            {
+                using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+                {
+                    <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+                }
+            }
+        </div>    
+}
+else
+{
+    <div class="content">
+        <p>@Settings.NoResolut</p>
+    </div>
+}

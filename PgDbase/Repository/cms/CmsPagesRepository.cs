@@ -431,9 +431,10 @@ namespace PgDbase.Repository.cms
                                 .Set(s => s.n_sort, newNum)
                                 .Update() > 0;
 
-                        tr.Commit();
                         }
                     }
+
+                    tr.Commit();
                     return result;
                 }
             }

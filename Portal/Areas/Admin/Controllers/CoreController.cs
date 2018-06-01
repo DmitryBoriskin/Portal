@@ -5,6 +5,7 @@ using Portal.Code;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -320,6 +321,26 @@ namespace Portal.Areas.Admin
                 return controllerContext.HttpContext.Request[MatchFormKey] != null &&
                     controllerContext.HttpContext.Request[MatchFormKey] == MatchFormValue;
             }
+        }
+
+        /// <summary>
+        /// Возвращает кодек
+        /// </summary>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        public static ImageCodecInfo GetEncoderInfo(String mimeType)
+        {
+            var codecs = ImageCodecInfo.GetImageEncoders();
+            if (codecs != null && codecs.Count() > 0)
+            {
+                foreach (var enc in codecs)
+                {
+                    if (enc.MimeType.ToLower() == mimeType.ToLower())
+                        return enc;
+                }
+
+            }
+            return null;
         }
     }
 }

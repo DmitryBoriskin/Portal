@@ -207,7 +207,7 @@ namespace PgDbase.Repository.cms
                         }
                     }
                 }
-                query = query.OrderBy(o => o.d_date);
+                query = query.OrderByDescending(o => o.d_date);
                 int itemsCount = query.Count();
 
                 var list = query.Skip(filter.Size * (filter.Page - 1))
@@ -331,10 +331,7 @@ namespace PgDbase.Repository.cms
                                 f_materials_category = cat
                             });
                         }                        
-                    }
-
-
-                    //if(new.)
+                    }                    
                     tr.Commit();
                     return true;
                 }

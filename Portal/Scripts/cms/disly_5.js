@@ -2,6 +2,11 @@
 var change = 0;
 
 $(document).ready(function () {
+
+  
+
+
+
     //специфический для med.cap.ru
     //показываем селект "новове в медеицине" если выбрана соответствующая категория
     if ($('#itemGroups-select').length > 0) {
@@ -931,7 +936,7 @@ function sortingPhotoInit(Object) {
         start: function () { $(this).addClass('Active'); },
         stop: function (event, ui) {
             $(this).removeClass('Active');
-            var _Album = $('.photoalbum').data('album');
+            var _Album = $('.photoalbum').data('id');
             var _ServiceUrl = $(this).attr('data-service');
             var _SortableItem = ui.item;
             var _Id = _SortableItem.find('div').attr('data-id');

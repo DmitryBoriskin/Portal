@@ -22,7 +22,8 @@ namespace Portal.Areas.Admin.Controllers
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName, 
+                ActionName = ActionName,
+                UserResolution = UserResolutionInfo,
                 Groups = _cmsRepository.GetGroups()
             };
             if (AccountInfo != null)
@@ -115,7 +116,7 @@ namespace Portal.Areas.Admin.Controllers
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel()
         {
-            return Redirect(StartUrl + Request.Url.Query);
+            return Redirect($"{StartUrl}{Request.Url.Query}");
         }
 
         [HttpPost]

@@ -512,7 +512,8 @@ a.link-close:before {
     border: solid 1px #dae1e6;
     border-radius: 4px;
     margin: 0 0 20px;
-    overflow:hidden;
+    /*overflow:hidden;*/
+    display:flow-root;
 }
 .group-block_title {
     cursor: pointer;

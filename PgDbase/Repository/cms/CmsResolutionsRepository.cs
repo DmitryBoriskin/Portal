@@ -219,7 +219,7 @@ namespace PgDbase.Repository.cms
                     .Select(s => s.f_user_group)
                     .SingleOrDefault();
 
-                return db.core_user_group_resolutions
+                var resolutions = db.core_user_group_resolutions
                     .Where(w => w.f_usergroup == group)
                     .Where(w => w.fkusergroupresolutionsmenu
                                     .c_alias.ToLower() == controller.ToLower())
@@ -229,7 +229,9 @@ namespace PgDbase.Repository.cms
                         IsWrite = s.b_write,
                         IsChange = s.b_change,
                         IsDelete = s.b_delete
-                    }).SingleOrDefault();
+                    });
+
+                return resolutions.SingleOrDefault();
             }
         }
     }

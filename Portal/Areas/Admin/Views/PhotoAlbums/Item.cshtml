@@ -1,0 +1,68 @@
+﻿@model PhotoViewModel
+
+@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    if (Model.UserResolution.IsWrite)
+    {
+        <div class="content">
+            <h1>@Model.PageName</h1>
+            @Html.TextBoxFor(m => m.Item.Title, new { @class = "uc_input", @title = "Название", @required = "" })
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(m => m.Item.Preview, new { type = "file", data_posted_name = "upload", data_url = ViewBag.Preview, title = "Картинка для превью", accept = ViewBag.PicTypes })
+                </div>
+            </div>
+            @*<div class="group-block" title="Текст">
+                @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "300" })
+            </div>*@
+
+            <div class="form-group">
+                <label>Фотографии альбома (@ViewBag.PicTypes)</label>
+                <input type="file" title="Фотографии альбома (@ViewBag.PicTypes)" class="noplagin" name="uploads" multiple="" accept="image/*" />
+            </div>
+
+            @if (Model.Item != null && Model.Item.Photos != null && Model.Item.Photos.Count() > 0)
+            {
+                <div class="row">
+                    <div class="col-sm-7"><h3 class="nesting_title">Фотографии</h3></div>
+                    <div class="col-sm-5">
+                        <a class="button icon-sort pull-right" id="sorting_photo" data-action="noPreloader-accept" title="Добавляет возможность сортировки элементов списка">Сортировать</a>
+                    </div>
+                    <ul class="photoalbum" data-service="/admin/services/ChangePositionAlbum?group=photos" data-id="@Model.Item.Id">
+                        @foreach (var photo in Model.Item.Photos)
+                        {
+                            <li>
+                                <img src="@photo.Preview" alt="@photo.Title" />
+                                <div class="delPhoto" data-id="@photo.Id"></div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+        <div class="dop_info-block">
+            <div class="dop-caption">Настройки</div>
+            @Html.TextBoxFor(m => m.Item.Date, new { required = "", data_type = "datetime", title = "Дата публикации", value = ViewBag.Date })
+            @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
+            @if (Model.Item != null)
+            {
+                @Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
+            }
+        </div>
+        <div class="buttons">
+            @if (Model.UserResolution.IsChange)
+            {
+                <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+            }
+            @if (Model.UserResolution.IsDelete)
+            {
+                <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
+            }
+            <button type="submit" name="action" data-action="cancel" value="cancel-btn" class="button icon-cancel">Закрыть</button>
+        </div>
+    }
+    else
+    {
+        <div class="content"><p>У вас недостаточно прав.</p></div>
+    }
+}
