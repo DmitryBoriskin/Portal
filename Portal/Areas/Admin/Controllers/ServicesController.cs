@@ -37,28 +37,28 @@ namespace Portal.Areas.Admin.Controllers
             return PartialView("ChangePass", model);
         }
 
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "password-update")]
-        public ActionResult ChangePass(Guid id, UsersViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                string NewPass = model.Password.Password;
-                Cripto pass = new Cripto(NewPass.ToCharArray());
-                string NewSalt = pass.Salt;
-                string NewHash = pass.Hash;
-                _cmsRepository.ChangePassword(id, NewSalt, NewHash);
-                ViewBag.SuccesAlert = "Пароль изменен";
-            }
+        //[HttpPost]
+        //[MultiButton(MatchFormKey = "action", MatchFormValue = "password-update")]
+        //public ActionResult ChangePass(Guid id, UsersViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string NewPass = model.Password.Password;
+        //        Cripto pass = new Cripto(NewPass.ToCharArray());
+        //        string NewSalt = pass.Salt;
+        //        string NewHash = pass.Hash;
+        //        _cmsRepository.ChangePassword(id, NewSalt, NewHash);
+        //        ViewBag.SuccesAlert = "Пароль изменен";
+        //    }
 
-            model = new UsersViewModel()
-            {
-                //UserResolution = UserResolutionInfo,
-                Item = _cmsRepository.GetUser(id)
-            };
+        //    model = new UsersViewModel()
+        //    {
+        //        //UserResolution = UserResolutionInfo,
+        //        Item = _cmsRepository.GetUser(id)
+        //    };
 
-            return PartialView("ChangePass", model);
-        }
+        //    return PartialView("ChangePass", model);
+        //}
         
         public ActionResult AddFilterTree(string section, string id)
         {

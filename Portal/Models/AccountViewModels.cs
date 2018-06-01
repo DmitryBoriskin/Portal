@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Portal.Models
@@ -83,6 +84,29 @@ namespace Portal.Models
         [Display(Name = "Подтверждение пароля")]
         [Compare("Password", ErrorMessage = "Введенные пароли не совпадают")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(128, ErrorMessage = "Это обязательное поле")]
+        [DataType(DataType.Text)]
+        [Display(Name = "Фамилия")]
+        public string Surname { get; set; }
+
+        [Required]
+        [StringLength(128, ErrorMessage = "Это обязательное поле")]
+        [DataType(DataType.Text)]
+        [Display(Name = "Имя")]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(128, ErrorMessage = "Это обязательное поле")]
+        [DataType(DataType.Text)]
+        [Display(Name = "Отчество")]
+        public string Patronymic { get; set; }
+
+        [Required]
+        [Display(Name = "Дата рождения")]
+        public DateTime Birthdate { get; set; }
+
     }
 
     public class ResetPasswordViewModel

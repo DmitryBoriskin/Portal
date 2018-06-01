@@ -295,7 +295,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
-	 <Reference Include="Imaging">
+    <Reference Include="Imaging">
       <HintPath>..\lib\Imaging.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -680,6 +680,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\BeCoreController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminsController.cs" />
     <Compile Include="Areas\Admin\Controllers\MainController.cs" />
@@ -712,7 +713,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountHomeController.cs" />
     <Compile Include="Controllers\AccountManageController.cs" />
-    <Compile Include="Controllers\FeCoreController.cs" />
+    <Compile Include="Controllers\CoreController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -926,7 +927,6 @@
     <Folder Include="Areas\Admin\Views\Core\" />
     <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="bin\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">

@@ -71,10 +71,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PgDbase\PgDbase.csproj">
-      <Project>{cf9ad0c6-218b-47f4-b8a3-85d13329bbb6}</Project>
-      <Name>PgDbase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Portal\Portal.csproj">
       <Project>{038CE648-12C4-4B80-9B72-A14FDB235A13}</Project>
       <Name>Portal</Name>

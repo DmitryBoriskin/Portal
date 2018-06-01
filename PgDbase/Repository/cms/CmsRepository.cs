@@ -101,12 +101,12 @@ namespace PgDbase.Repository.cms
                         Date = s.d_date,
                         Action = (LogAction)Enum.Parse(typeof(LogAction), s.f_action),
                         Section = (LogModule)Enum.Parse(typeof(LogModule), s.f_logsections),
-                        User = new UserModel
-                        {
-                            Id = s.fklogusers.id,
-                            Surname = s.fklogusers.c_surname,
-                            Name = s.fklogusers.c_name
-                        }
+                        //User = new UserModel
+                        //{
+                        //    Id = s.fklogusers.id,
+                        //    Surname = s.fklogusers.c_surname,
+                        //    Name = s.fklogusers.c_name
+                        //}
                     }).ToArray();
             }
         }

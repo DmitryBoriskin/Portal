@@ -3,12 +3,14 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using PgDbase;
 using PgDbase.entity;
+using PgDbase.Repository;
 using PgDbase.Repository.cms;
 using Portal.Code;
 using Portal.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -47,10 +49,6 @@ namespace Portal.Areas.Admin
             }
         }
 
-        /// <summary>
-        /// Репозиторий для работы с авторизацией
-        /// </summary>
-        protected AccountRepository _accountRepository { get; private set; }
 
         /// <summary>
         /// Репозиторий для работы с сущностями
@@ -142,14 +140,10 @@ namespace Portal.Areas.Admin
             // Определяем сайт
             SiteId = GetCurrentSiteId();
 
-            #region Данные об авторизованном пользователе
-
+            // Данные об авторизованном пользователе
             var _userId = User.Identity.GetUserId();
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentUser = manager.FindById(_userId);
-
+            var currentUser = UserManager.FindById(_userId);
             var userId = currentUser.UserId;
-            //AccountInfo = _accountRepository.getCmsAccount(_userId);
 
             //Mapping ApplicationUser to AccountModel
             AccountInfo = new AccountModel()
@@ -161,9 +155,6 @@ namespace Portal.Areas.Admin
                 Disabled = currentUser.UserInfo.Disabled,
                 Mail = currentUser.Email
             };
-
-            // Список доменов, доступных пользователю
-            //AccountInfo.Domains = _accountRepository.GetUserSites(UserId); //_accountRepository.GetSiteLinkUser(_userId);
 
             //Проверка на права доступа к сайту
             var siteAuth = User.IsInRole(SiteId.ToString());
@@ -200,7 +191,6 @@ namespace Portal.Areas.Admin
             //    filterContext.Result = Redirect("/Admin/");
             //}
 
-            #endregion
 
         }
 
@@ -356,15 +346,36 @@ namespace Portal.Areas.Admin
 
         private Guid GetCurrentSiteId()
         {
-            var _baseRepository = new BaseRepository("dbConnection");
+            var _repository = new Repository("dbConnection");
             var domainUrl = Request.Url.Host.ToLower().Replace("www.", "");
 
-            var siteId = _baseRepository.GetSiteId(domainUrl);
+            var siteId = _repository.GetSiteId(domainUrl);
 
             if (siteId == Guid.Empty)
                 AppLogger.Debug($"CoreController: Не получилось определить Domain для {domainUrl}");
 
             return siteId;
+
+        }
+
+        /// <summary>
+        /// Возвращает кодек
+        /// </summary>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        public static ImageCodecInfo GetEncoderInfo(String mimeType)
+        {
+            var codecs = ImageCodecInfo.GetImageEncoders();
+            if (codecs != null && codecs.Count() > 0)
+            {
+                foreach (var enc in codecs)
+                {
+                    if (enc.MimeType.ToLower() == mimeType.ToLower())
+                        return enc;
+                }
+
+            }
+            return null;
         }
 
         protected override void Dispose(bool disposing)

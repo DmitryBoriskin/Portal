@@ -6,9 +6,8 @@
     var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
     var user = manager.FindById(User.Identity.GetUserId());
 
-    //Либо через claims
-
-    string userFullName = User.Identity.GetUserFullName();
+    // User.Identity  Изменения в админке не обновляют User.Identity, требуется логинится заново
+    //string userFullName = User.Identity.GetUserFullName();
 }
 
 @if (Request.IsAuthenticated)
@@ -20,8 +19,6 @@
         <ul class="nav navbar-nav navbar-right">
             <li>
                 @Html.ActionLink("Здавствуйте, " + user.UserInfo.FullName + ".", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                <br />
-                @userFullName
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>

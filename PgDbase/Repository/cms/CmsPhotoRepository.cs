@@ -378,5 +378,22 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
+
+        /// <summary>
+        /// фотогаллерея
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<core_photos> GetGallery(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_photos.Where(w => w.f_album == id);
+                if (data.Any())
+                    return data.OrderBy(o => o.n_sort).ToList<core_photos>();
+                else
+                    return null;
+            }
+        }
     }
 }

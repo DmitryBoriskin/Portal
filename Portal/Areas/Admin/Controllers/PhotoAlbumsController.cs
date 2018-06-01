@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class PhotoAlbumsController : CoreController
+    public class PhotoAlbumsController : BeCoreController
     {
         PhotoViewModel model;
         FilterModel filter;

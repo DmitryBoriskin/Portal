@@ -3,7 +3,7 @@
     string noPhoto = "/Content/img/nophoto.jpg";
 }
 
-@if (Model.UserResolution.IsRead)
+@if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
     using (Html.BeginForm(Model.ActionName, Model.ControllerName))
     {
@@ -62,7 +62,7 @@
     using (Html.BeginForm(Model.ActionName, Model.ControllerName))
     {
         <div class="buttons">
-            @if (Model.UserResolution.IsWrite)
+            @if (User.Identity.HasClaim(Model.ControllerName, "create"))
             {
                 <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
             }

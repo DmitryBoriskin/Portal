@@ -467,36 +467,36 @@ namespace PgDbase.Repository.cms
         /// <param name="id"></param>
         /// <param name="salt"></param>
         /// <param name="hash"></param>
-        public void ChangePassword(Guid id, string salt, string hash)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
+        //public void ChangePassword(Guid id, string salt, string hash)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tr = db.BeginTransaction())
+        //        {
+        //            var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
 
-                    if (user != null)
-                    {
-                        var log = new LogModel
-                        {
-                            PageId = id,
-                            PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                            Section = LogModule.Users,
-                            Action = LogAction.update
-                        };
-                        InsertLog(log);
+        //            if (user != null)
+        //            {
+        //                var log = new LogModel
+        //                {
+        //                    PageId = id,
+        //                    PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
+        //                    Section = LogModule.Users,
+        //                    Action = LogAction.update
+        //                };
+        //                InsertLog(log);
 
-                        db.core_users
-                            .Where(w => w.id == id)
-                            .Set(s => s.c_salt, salt)
-                            .Set(s => s.c_hash, hash)
-                            .Update();
+        //                db.core_users
+        //                    .Where(w => w.id == id)
+        //                    .Set(s => s.c_salt, salt)
+        //                    .Set(s => s.c_hash, hash)
+        //                    .Update();
 
-                        tr.Commit();
-                    }
-                }
-            }
-        }
+        //                tr.Commit();
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Проверяет существование пользователя по id
@@ -564,58 +564,58 @@ namespace PgDbase.Repository.cms
         //}
 
 
-        /// <summary>
-        /// Добавляет связь пользователя с сайтом
-        /// </summary>
-        /// <returns></returns>
-        public bool InsertUserSiteLink(CMSdb db, Guid userId, Guid groupId)
-        {
-            Guid id = Guid.NewGuid();
+        ///// <summary>
+        ///// Добавляет связь пользователя с сайтом
+        ///// </summary>
+        ///// <returns></returns>
+        //public bool InsertUserSiteLink(CMSdb db, Guid userId, Guid groupId)
+        //{
+        //    Guid id = Guid.NewGuid();
 
-            db.core_user_site_link
-                .Insert(() => new core_user_site_link
-                {
-                    id = id,
-                    f_site = _siteId,
-                    f_user = userId,
-                    f_user_group = groupId
-                });
+        //    db.core_user_site_link
+        //        .Insert(() => new core_user_site_link
+        //        {
+        //            id = id,
+        //            f_site = _siteId,
+        //            f_user = userId,
+        //            f_user_group = groupId
+        //        });
 
-            var log = new LogModel
-            {
-                PageId = id,
-                PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                Section = LogModule.Users,
-                Action = LogAction.insert
-            };
-            InsertLog(log);
+        //    var log = new LogModel
+        //    {
+        //        PageId = id,
+        //        PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
+        //        Section = LogModule.Users,
+        //        Action = LogAction.insert
+        //    };
+        //    InsertLog(log);
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        /// <summary>
-        /// Возвращает заголовок при логировании
-        /// добавления связи пользователя и сайта
-        /// </summary>
-        /// <returns></returns>
-        private string GetLogTitleForUserSiteLink(Guid userId, Guid groupId, CMSdb db)
-        {
-            string user = db.core_users
-                .Where(w => w.id == userId)
-                .Select(s => $"{s.c_surname} {s.c_name}")
-                .SingleOrDefault();
+        ///// <summary>
+        ///// Возвращает заголовок при логировании
+        ///// добавления связи пользователя и сайта
+        ///// </summary>
+        ///// <returns></returns>
+        //private string GetLogTitleForUserSiteLink(Guid userId, Guid groupId, CMSdb db)
+        //{
+        //    string user = db.core_users
+        //        .Where(w => w.id == userId)
+        //        .Select(s => $"{s.c_surname} {s.c_name}")
+        //        .SingleOrDefault();
 
-            string domain = db.core_sites
-                .Where(w => w.id == _siteId)
-                .Select(s => s.c_name)
-                .SingleOrDefault();
+        //    string domain = db.core_sites
+        //        .Where(w => w.id == _siteId)
+        //        .Select(s => s.c_name)
+        //        .SingleOrDefault();
 
-            string group = db.core_user_groups
-                .Where(w => w.id == groupId)
-                .Select(s => s.c_title)
-                .SingleOrDefault();
+        //    string group = db.core_user_groups
+        //        .Where(w => w.id == groupId)
+        //        .Select(s => s.c_title)
+        //        .SingleOrDefault();
 
-            return $"{user} {group} {domain}";
-        }
+        //    return $"{user} {group} {domain}";
+        //}
     }
 }

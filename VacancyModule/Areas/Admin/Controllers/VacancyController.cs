@@ -10,7 +10,7 @@ namespace VacancyModule.Areas.Admin.Controllers
 {
     [RouteArea("Admin")]
     [RoutePrefix("Vacancy")]
-    public class VacancyController : CoreController
+    public class VacancyController : BeCoreController
     {
         FilterModel filter;
         VacancyViewModel model;

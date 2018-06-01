@@ -16,6 +16,7 @@ using PgDbase;
 using PgDbase.Repository.cms;
 using Portal.Code;
 using PgDbase.entity;
+using PgDbase.Repository;
 
 namespace Portal.Controllers
 {
@@ -57,6 +58,12 @@ namespace Portal.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        [AllowAnonymous]
+        public ActionResult Index()
+        {
+            return RedirectToAction("Login");
         }
 
 
@@ -202,10 +209,10 @@ namespace Portal.Controllers
                             UserInfo = new UserProfile()
                             {
                                 UserId = userId.ToString(),
-                                Surname = "Тестовый",
-                                Name = "Тест",
-                                Patronymic = "Тестович",
-                                BirthDate = DateTime.Now,
+                                Surname = model.Surname,
+                                Name = model.Name,
+                                Patronymic = model.Patronymic,
+                                BirthDate = model.Birthdate,
                                 RegDate = DateTime.Now
                             }
                         };
@@ -603,10 +610,10 @@ namespace Portal.Controllers
 
         private Guid GetCurrentSiteId()
         {
-            var _baseRepository = new BaseRepository("dbConnection");
+            var _repository = new Repository("dbConnection");
             var domainUrl = Request.Url.Host.ToLower().Replace("www.", "");
 
-            var siteId = _baseRepository.GetSiteId(domainUrl);
+            var siteId = _repository.GetSiteId(domainUrl);
 
             if (siteId == Guid.Empty)
                 AppLogger.Debug($"CoreController: Не получилось определить Domain для {domainUrl}");
