@@ -11,5 +11,6 @@ namespace PgDbase.Repository.cms
     /// </summary>
     public partial class CmsRepository
     {
+
     }
 }
