@@ -1,6 +1,6 @@
 ﻿using LinqToDB;
 using PgDbase.entity;
-using PgDbase.Lk.models;
+using PgDbase.models;
 using System;
 using System.Linq;
 

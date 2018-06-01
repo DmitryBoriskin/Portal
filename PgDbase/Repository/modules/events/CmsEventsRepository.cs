@@ -1,6 +1,6 @@
 ﻿using LinqToDB;
 using PgDbase.entity;
-using PgDbase.Event.models;
+using PgDbase.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

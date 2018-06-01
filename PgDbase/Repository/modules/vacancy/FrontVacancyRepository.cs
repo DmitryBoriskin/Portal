@@ -1,5 +1,5 @@
 ﻿using PgDbase.entity;
-using PgDbase.Vacancy.models;
+using PgDbase.models;
 using System;
 using System.Linq;
 

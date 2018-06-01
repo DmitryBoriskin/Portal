@@ -1,8 +1,8 @@
 ﻿using LinqToDB;
 using PgDbase.entity;
+using PgDbase.models;
 using System;
 using System.Linq;
-using PgDbase.Vacancy.models;
 
 namespace PgDbase.Repository.cms
 {

@@ -10,7 +10,7 @@ namespace LkModule.Areas.Admin.Controllers
 {
     [RouteArea("Admin")]
     [RoutePrefix("Subscr")]
-    public class SubscrController : CoreController
+    public class SubscrController : BeCoreController
     {
         FilterModel filter;
         SubscrViewModel model;

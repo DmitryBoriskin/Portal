@@ -1,7 +1,7 @@
-﻿using PgDbase.Event.models;
-using PgDbase.entity;
+﻿using PgDbase.entity;
 using System;
 using System.Linq;
+using PgDbase.models;
 
 namespace PgDbase.Repository.front
 {
