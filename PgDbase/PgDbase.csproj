@@ -75,6 +75,7 @@
     <Compile Include="Entity\modules\auth\FrontUserFilter.cs" />
     <Compile Include="Entity\modules\event\EventFilterModel.cs" />
     <Compile Include="Entity\modules\event\EventsModel.cs" />
+    <Compile Include="Entity\modules\lk\Subscr.cs" />
     <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Entity\services\Paged.cs" />
     <Compile Include="Entity\services\PagerModel.cs" />
     <Compile Include="Repository\modules\events\EventRepository.cs" />
+    <Compile Include="Repository\modules\lk\CmsLkRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
     <Compile Include="Template\DbModel_auth.generated.cs">

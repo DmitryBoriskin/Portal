@@ -178,7 +178,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Вакансии
         /// </summary>
-        Vacancies
+        Vacancies,
+        /// <summary>
+        /// Лицевые счета
+        /// </summary>
+        Subscrs
     }
 
     /// <summary>
