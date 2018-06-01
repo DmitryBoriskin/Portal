@@ -6,7 +6,7 @@ namespace PgDbase.entity
     /// Вакансия
     /// </summary>
     public class VacancyModel
-    {
+    {        
         /// <summary>
         /// Идентификатор
         /// </summary>

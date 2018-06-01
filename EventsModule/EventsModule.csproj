@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -98,6 +99,8 @@
     <Compile Include="Areas\Admin\Controllers\EventsController.cs" />
     <Compile Include="Areas\Admin\Controllers\EventsWidgetController.cs" />
     <Compile Include="Areas\Admin\Models\EventViewModel.cs" />
+    <Compile Include="Areas\Events\Controllers\EventsController.cs" />
+    <Compile Include="Areas\Events\EventsAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -111,6 +114,11 @@
     <Content Include="Areas\Admin\Views\Events\part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Events\Item.cshtml" />
     <Content Include="Areas\Admin\Views\EventsWidget\Index.cshtml" />
+    <Content Include="Areas\Events\Views\web.config" />
+    <Content Include="Areas\Events\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Events\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Events\Views\Events\Index.cshtml" />
+    <Content Include="Areas\Events\Views\Events\Item.cshtml" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -123,6 +131,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Events\Models\" />
+    <Folder Include="Areas\Events\Views\Index\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
@@ -169,7 +179,8 @@
   <PropertyGroup>
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Events\*" "$(SolutionDir)Portal\Areas\Admin\Views\Events\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\EventsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\EventsWidget\"</PostBuildEvent>
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\EventsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\EventsWidget\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Events\Views\Events\*" "$(SolutionDir)Portal\Views\Events\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
