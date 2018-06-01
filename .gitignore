@@ -7,3 +7,4 @@ PgDbase/Template/
 /Portal/*.config
 !/Portal/packages.config
 Portal/userfiles/
+*/ConnectionStrings.config
