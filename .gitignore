@@ -5,7 +5,7 @@
 */obj/
 PgDbase/Template/
 Portal/userfiles/
-*/Portal/AppSettings.config
-*/Portal/ConnectionStrings.config
+*AppSettings.config
+*ConnectionStrings.config
 
 
