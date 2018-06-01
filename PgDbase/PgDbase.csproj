@@ -92,6 +92,7 @@
     <Compile Include="Entity\services\PagerModel.cs" />
     <Compile Include="Repository\front\FrontRepository.cs" />
     <Compile Include="Repository\modules\events\EventRepository.cs" />
+    <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
     <Compile Include="Repository\Repository.cs" />

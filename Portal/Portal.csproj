@@ -916,6 +916,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
     <Content Include="Views\Vacancy\Index.cshtml" />
+    <Content Include="Views\Events\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

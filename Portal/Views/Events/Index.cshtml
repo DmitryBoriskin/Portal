@@ -1,0 +1,14 @@
+﻿@model PgDbase.entity.Paged<PgDbase.entity.EventsModel>
+
+
+@if (Model != null)
+{
+    <div class="row" style="margin-top:100px;">
+        @foreach (var item in Model.Items)
+        {
+            <div class="col-md-12">
+                <a href="/events/@item.Id">@item.Title</a>
+            </div>
+        }
+    </div>
+}
