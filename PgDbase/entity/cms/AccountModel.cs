@@ -83,15 +83,25 @@ namespace PgDbase.entity
         /// </summary>
         public int Permit { get; set; }
 
-        /// <summary>
-        /// Идентификатор сайта
-        /// </summary>
-        public string SiteId { get; set; }
 
         /// <summary>
         /// Название домена
         /// </summary>
         public string DomainName { get; set; }
+
+        /// <summary>
+        /// По умолчанию
+        /// </summary>
+        public bool Default { get; set; }
+
+        /// <summary>
+        /// Идентификатор сайта
+        /// </summary>
+        public Guid SiteId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string SiteName { get; set; }
     }
 }

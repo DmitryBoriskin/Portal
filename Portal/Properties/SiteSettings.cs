@@ -28,15 +28,12 @@ public class Settings
 
 
     public static string EmtyList = ConfigurationManager.AppSettings["EmtyList"];
+
     public static string EmtyListFilter = ConfigurationManager.AppSettings["EmtyListFilter"];
     /// <summary>
     /// Нет прав на данный раздел
     /// </summary>
     public static string NoResolut = ConfigurationManager.AppSettings["NoResolut"];
-
-
-
-    
 
     /// <summary>
     /// Ключ капчи

@@ -7,9 +7,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    public class MainController : CoreController
+    [Authorize]
+    public class MainController : BeCoreController
     {
-        // GET: Admin/Main
+
+       // GET: Admin/Main
         public ActionResult Index()
         {
             MainViewModel model = new MainViewModel()
@@ -21,14 +23,17 @@ namespace Portal.Areas.Admin.Controllers
                 ControllerName = ControllerName,
                 ActionName = ActionName,
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModul = MenuModulCore;
-            }                
+            model.Menu = MenuCmsCore;
+            model.MenuModul = MenuModulCore;
+                          
              //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
 
             return View(model);
+        }
+
+        public ActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

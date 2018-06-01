@@ -8,7 +8,7 @@ namespace PgDbase.Repository.front
     /// <summary>
     /// Репозиторий вакансий для работы во внешней части
     /// </summary>
-    public partial class Repository
+    public partial class FrontRepository
     {
         /// <summary>
         /// Возвращает постраничный список вакансий

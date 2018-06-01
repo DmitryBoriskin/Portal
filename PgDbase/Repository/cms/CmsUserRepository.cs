@@ -11,61 +11,83 @@ namespace PgDbase.Repository.cms
     /// </summary>
     public partial class CmsRepository
     {
+
         /// <summary>
-        /// Возвращает постраничный список пользователей
+        /// Администраторы, разработчики и тп всего портала
         /// </summary>
+        /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<UserModel> GetUsers(FilterModel filter)
+        public Paged<UserModel> GetPortalAdmins(FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
                 Paged<UserModel> result = new Paged<UserModel>();
 
-                var query = db.core_users
-                    .Where(w => w.fkusersitelinks.Any(a => a.f_site == _siteId));
+                var query = (from u in db.core_AspNetUsers
+                             join p in db.core_AspNetUserProfiles on u.Id equals p.UserId
+                             //Условие принадлежности к какой-либо роли
+                             where db.core_AspNetUserRoles.Any(r => r.UserId == u.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole") //исключить обычного пользователя
+                             select new
+                             {
+                                 u.Id,
+                                 u.UserId,
+                                 //u.UserName,
+                                 u.Email,
+                                 u.EmailConfirmed,
+                                 u.PhoneNumber,
+                                 u.PhoneNumberConfirmed,
+                                 //u.LockoutEndDateUtc,
+                                 //u.LockoutEnabled,
+                                 //u.AccessFailedCount,
+                                 u.SiteId,
+                                 p.Surname,
+                                 p.Name,
+                                 p.Patronymic,
+                                 p.Disabled,
+                                 p.BirthDate,
+                                 p.RegDate
+                             }
+                            );
+
 
                 if (filter.Disabled.HasValue)
                 {
-                    query = query.Where(w => w.b_disabled == filter.Disabled.Value);
+                    query = query.Where(s => s.Disabled == filter.Disabled.Value);
                 }
+                //if (!String.IsNullOrWhiteSpace(filter.Group))
+                //{
+                //    query = query.Where(w => w.fkusersitelinks.Any(a => a.f_user_group == Guid.Parse(filter.Group)));
+                //}
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
-                    string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (search != null && search.Count() > 0)
-                    {
-                        foreach (string p in filter.SearchText.Split(' '))
-                        {
-                            if (!String.IsNullOrWhiteSpace(p))
-                            {
-                                query = query.Where(w => w.c_surname.Contains(p)
-                                                      || w.c_name.Contains(p)
-                                                      || w.c_patronymic.Contains(p)
-                                                      || w.c_email.Contains(p));
-                            }
-                        }
-                    }
+                    query = query.Where(s =>
+                                            (s.Surname + " " + s.Name + " " + s.Patronymic).ToLower().Contains(filter.SearchText.ToLower()) ||
+                                            s.Email == filter.SearchText
+                                        );
                 }
-                query = query.OrderBy(o => new { o.c_surname, o.c_name });
+
+                query = query.OrderBy(s => new { s.Surname, s.Name, s.Patronymic });
 
                 int itemsCount = query.Count();
 
                 var list = query.Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size).Select(s => new UserModel
                     {
-                        Id = s.id,
-                        Email = s.c_email,
-                        Surname = s.c_surname,
-                        Name = s.c_name,
-                        Patronimyc = s.c_patronymic,
-                        Disabled = s.b_disabled,
-                        ErrorCount = s.n_error_count,
-                        TryLogin = s.d_try_login,
-                        Group = new GroupsModel
-                        {
-                            Title = s.fkusersitelinks
-                                .Select(g => g.fkusersitelinkusergroup.c_title)
-                                .SingleOrDefault()
-                        }
+                        Id = s.UserId,
+                        SiteId = s.SiteId,
+                        Surname = s.Surname,
+                        Name = s.Name,
+                        Patronimyc = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Email = s.Email,
+                        EmailConfirmed = s.EmailConfirmed,
+                        Phone = s.PhoneNumber,
+                        PhoneConfirmed = s.PhoneNumberConfirmed,
+                        RegDate = s.RegDate,
+                        Disabled = s.Disabled,
+
+                        //Roles
+                        //и сайты к которым он прикреплен
                     });
 
 
@@ -83,7 +105,190 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Возвращает пользователя
+        /// Администраторы, разработчики и тп сайта
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Paged<UserModel> GetSiteAdmins(FilterModel filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Paged<UserModel> result = new Paged<UserModel>();
+
+                var query = (from u in db.core_AspNetUsers
+                             join p in db.core_AspNetUserProfiles on u.Id equals p.UserId
+                             //Условие принадлежности к какой-либо роли
+                             where db.core_AspNetUserRoles.Any(r => r.UserId == u.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole") //исключить обычного пользователя
+                             //Условие принадлежности к сайту
+                             where db.core_AspNetRoles.Any(s => s.Name == _siteId.ToString() && s.AspNetUserRolesRoleIds.Any(t => t.UserId == u.Id) && s.Discriminator == "IdentityRole")
+                             select new
+                             {
+                                 u.Id,
+                                 u.UserId,
+                                 //u.UserName,
+                                 u.Email,
+                                 u.EmailConfirmed,
+                                 u.PhoneNumber,
+                                 u.PhoneNumberConfirmed,
+                                 //u.LockoutEndDateUtc,
+                                 //u.LockoutEnabled,
+                                 //u.AccessFailedCount,
+                                 u.SiteId,
+                                 p.Surname,
+                                 p.Name,
+                                 p.Patronymic,
+                                 p.Disabled,
+                                 p.BirthDate,
+                                 p.RegDate
+                             }
+                            );
+
+                if (filter.Disabled.HasValue)
+                {
+                    query = query.Where(s => s.Disabled == filter.Disabled.Value);
+                }
+
+                //if (!String.IsNullOrWhiteSpace(filter.Group))
+                //{
+                //    query = query.Where(w => w.fkusersitelinks.Any(a => a.f_user_group == Guid.Parse(filter.Group)));
+                //}
+
+                if (!String.IsNullOrWhiteSpace(filter.SearchText))
+                {
+                    query = query.Where(s =>
+                                           (s.Surname + " " + s.Name + " " + s.Patronymic).ToLower().Contains(filter.SearchText.ToLower()) ||
+                                            s.Email == filter.SearchText
+                                        );
+                }
+
+                query = query.OrderBy(s => new { s.Surname, s.Name, s.Patronymic });
+
+                int itemsCount = query.Count();
+
+                var list = query.Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size).Select(s => new UserModel
+                    {
+                        Id = s.UserId,
+                        SiteId = s.SiteId,
+                        Surname = s.Surname,
+                        Name = s.Name,
+                        Patronimyc = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Email = s.Email,
+                        EmailConfirmed = s.EmailConfirmed,
+                        Phone = s.PhoneNumber,
+                        PhoneConfirmed =s.PhoneNumberConfirmed,
+                        RegDate = s.RegDate,
+                        Disabled = s.Disabled,
+                        
+                        //Roles = null
+                    });
+
+
+                return new Paged<UserModel>()
+                {
+                    Items = list.ToArray(),
+                    Pager = new PagerModel()
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        /// Все пользователи сайта
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Paged<UserModel> GetSiteUsers(FilterModel filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Paged<UserModel> result = new Paged<UserModel>();
+
+                var query = (from u in db.core_AspNetUsers
+                             join p in db.core_AspNetUserProfiles on u.Id equals p.UserId
+                             //Условие принадлежности к сайту
+                             where db.core_AspNetRoles.Any(s => s.Name == _siteId.ToString() && s.AspNetUserRolesRoleIds.Any(t => t.UserId == u.Id) && s.Discriminator == "IdentityRole")
+                             select new {
+                                 u.Id,
+                                 u.UserId,
+                                 //u.UserName,
+                                 u.Email,
+                                 u.EmailConfirmed,
+                                 u.PhoneNumber,
+                                 u.PhoneNumberConfirmed,
+                                 //u.LockoutEndDateUtc,
+                                 //u.LockoutEnabled,
+                                 //u.AccessFailedCount,
+                                 u.SiteId,
+                                 p.Surname,
+                                 p.Name,
+                                 p.Patronymic,
+                                 p.Disabled,
+                                 p.BirthDate,
+                                 p.RegDate
+                             }
+                            );
+
+
+                if (filter.Disabled.HasValue)
+                {
+                    query = query.Where(s => s.Disabled == filter.Disabled.Value);
+                }
+                //if (!String.IsNullOrWhiteSpace(filter.Group))
+                //{
+                //    query = query.Where(w => w.fkusersitelinks.Any(a => a.f_user_group == Guid.Parse(filter.Group)));
+                //}
+                if (!String.IsNullOrWhiteSpace(filter.SearchText))
+                {
+                    query = query.Where(s =>
+                                            (s.Surname + " " + s.Name + " " + s.Patronymic).ToLower().Contains(filter.SearchText.ToLower()) ||
+                                            s.Email == filter.SearchText
+                                        );
+                }
+
+                query = query.OrderBy(s => new { s.Surname, s.Name, s.Patronymic });
+
+                int itemsCount = query.Count();
+
+                var list = query.Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size).Select(s => new UserModel
+                    {
+                        Id = s.UserId,
+                        SiteId = s.SiteId,
+                        Surname = s.Surname,
+                        Name = s.Name,
+                        Patronimyc = s.Patronymic,
+                        BirthDate = s.BirthDate,
+                        Email = s.Email,
+                        EmailConfirmed = s.EmailConfirmed,
+                        Phone = s.PhoneNumber,
+                        PhoneConfirmed = s.PhoneNumberConfirmed,
+                        RegDate = s.RegDate,
+                        Disabled = s.Disabled
+
+                    });
+
+
+                return new Paged<UserModel>()
+                {
+                    Items = list.ToArray(),
+                    Pager = new PagerModel()
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        /// Информация о пользователе
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -91,134 +296,170 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_users
-                    .Where(w => w.id == id)
-                    .Select(s => new UserModel
-                    {
-                        Id = s.id,
-                        Email = s.c_email,
-                        Surname = s.c_surname,
-                        Name = s.c_name,
-                        Patronimyc = s.c_patronymic,
-                        Disabled = s.b_disabled,
-                        TryLogin = s.d_try_login,
-                        Group = new GroupsModel
-                        {
-                            Id = s.fkusersitelinks
-                                .Where(w => w.f_site == _siteId)
-                                .Select(g => g.f_user_group).SingleOrDefault()
-                        }
-                    }).SingleOrDefault();
+                var query = db.core_AspNetUsers
+                    .Where(s => s.UserId == id);
+
+                var data = query.Select(s => new UserModel
+                {
+                    Id = s.UserId,
+                    SiteId = s.SiteId,
+                    Surname = s.AspNetUserProfilesUserId.Surname,
+                    Name = s.AspNetUserProfilesUserId.Name,
+                    Patronimyc = s.AspNetUserProfilesUserId.Patronymic,
+                    Disabled = s.AspNetUserProfilesUserId.Disabled,
+                    BirthDate = s.AspNetUserProfilesUserId.BirthDate,
+                    RegDate = s.AspNetUserProfilesUserId.RegDate,
+                    Email = s.Email,
+                    EmailConfirmed = s.EmailConfirmed,
+                    Phone = s.PhoneNumber,
+                    PhoneConfirmed = s.PhoneNumberConfirmed,
+                    
+                    Roles = null
+                    //сайты
+                });
+
+                return data.SingleOrDefault();
             }
         }
+
+
 
         /// <summary>
         /// Добавляет пользователя
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool InsertUser(UserModel user)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    var log = new LogModel
-                    {
-                        PageId = user.Id,
-                        PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
-                        Section = LogModule.Users,
-                        Action = LogAction.insert
-                    };
-                    InsertLog(log);
+        //public bool InsertUser(UserModel user)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tran = db.BeginTransaction())
+        //        {
+        //            try
+        //            {
+        //                var _userId = user.Id.ToString();
 
-                    bool result = db.core_users.Insert(() => new core_users
-                    {
-                        id = user.Id,
-                        c_email = user.Email,
-                        c_salt = user.Salt,
-                        c_hash = user.Hash,
-                        c_surname = user.Surname,
-                        c_name = user.Name,
-                        c_patronymic = user.Patronimyc,
-                        b_disabled = user.Disabled
-                    }) > 0;
+        //                var dbUser = db.core_AspNetUsers
+        //                    .Where(s => s.Id == _userId || (s.Email == user.Email && s.SiteId == _siteId));
 
-                    if (user.Group != null)
-                    {
-                        InsertUserSiteLink(db, user.Id, user.Group.Id);
-                    }
+        //                if (!dbUser.Any())
+        //                {
+        //                    var newUser = new core_AspNetUsers()
+        //                    {
+        //                        Id = _userId,
+        //                        UserName = _userId,
+        //                        UserId = user.Id,
+        //                        SiteId = _siteId,
+        //                        Email = user.Email,
+        //                        EmailConfirmed = user.EmailConfirmed,
+        //                        PhoneNumber = user.Phone,
+        //                        PhoneNumberConfirmed = user.PhoneConfirmed
+        //                    };
+        //                    db.Insert(newUser);
 
-                    tr.Commit();
-                    return result;
-                }
-            }
-        }
+        //                    var newUserProfile = new core_AspNetUserProfiles()
+        //                    {
+        //                        UserId = _userId,
+        //                        Surname = user.Surname,
+        //                        Name = user.Name,
+        //                        Patronymic = user.Patronimyc,
+        //                        BirthDate = user.BirthDate,
+        //                        RegDate = DateTime.Now,
+        //                        Disabled = user.Disabled
+        //                    };
+        //                    db.Insert(newUserProfile);
+
+        //                    var log = new LogModel
+        //                    {
+        //                        PageId = user.Id,
+        //                        PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
+        //                        Section = LogModule.Users,
+        //                        Action = LogAction.insert
+        //                    };
+        //                    InsertLog(log);
+
+        //                    tran.Commit();
+
+        //                    return true;
+        //                }
+        //                return false;
+        //            }
+        //            catch(Exception ex)
+        //            {
+        //                //log ex
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Обновляет пользователя
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool UpdateUser(UserModel user)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    db.core_users
-                        .Where(w => w.id == user.Id)
-                        .Set(s => s.c_email, user.Email)
-                        .Set(s => s.c_name, user.Name)
-                        .Set(s => s.c_surname, user.Surname)
-                        .Set(s => s.c_patronymic, user.Patronimyc)
-                        .Set(s => s.b_disabled, user.Disabled)
-                        .Update();
+        //public bool UpdateUser(UserModel user)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tran = db.BeginTransaction())
+        //        {
 
-                    var log = new LogModel
-                    {
-                        PageId = user.Id,
-                        PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
-                        Section = LogModule.Users,
-                        Action = LogAction.update
-                    };
-                    InsertLog(log);
+        //            try
+        //            {
+        //                var _userId = user.Id.ToString();
 
-                    // группа
-                    if (user.Group != null)
-                    {
-                        var currentLink = db.core_user_site_link
-                            .Where(w => w.f_user == user.Id)
-                            .Where(w => w.f_site == _siteId)
-                            .SingleOrDefault();
+        //                var dbUser = db.core_AspNetUsers
+        //                    .Where(s => s.Id == _userId);
 
-                        bool isExistsGroupOnThisSite = currentLink != null;
+        //                if (dbUser.Any())
+        //                {
+        //                    var updatedUser = dbUser.Single();
+        //                    updatedUser.Email = user.Email;
+        //                    updatedUser.EmailConfirmed = user.EmailConfirmed;
+        //                    updatedUser.PhoneNumber = user.Phone;
+        //                    updatedUser.PhoneNumberConfirmed = user.PhoneConfirmed;
 
-                        if (isExistsGroupOnThisSite)
-                        {
-                            currentLink.f_user_group = user.Group.Id;
-                            db.Update(currentLink);
-                            log = new LogModel
-                            {
-                                PageId = user.Id,
-                                PageName = GetLogTitleForUserSiteLink(user.Id, user.Group.Id, db),
-                                Section = LogModule.Users,
-                                Action = LogAction.update,
-                                Comment = "Изменена связь пользователя с сайтами"
-                            };
-                            InsertLog(log);
-                        }
-                        else
-                        {
-                            InsertUserSiteLink(db, user.Id, user.Group.Id);
-                        }
-                    }
+        //                    db.Update(updatedUser);
 
-                    tr.Commit();
-                    return true;
-                }
-            }
-        }
+
+        //                    var dbUserProfile = db.core_AspNetUserProfiles
+        //                          .Where(s => s.UserId == _userId);
+        //                    var updatedUserProfile = dbUserProfile.SingleOrDefault();
+
+        //                    updatedUserProfile.Surname = user.Surname;
+        //                    updatedUserProfile.Name = user.Name;
+        //                    updatedUserProfile.Patronymic = user.Patronimyc;
+        //                    updatedUserProfile.BirthDate = user.BirthDate;
+        //                    updatedUserProfile.Disabled = user.Disabled;
+
+        //                    db.Update(updatedUserProfile);
+
+        //                    var log = new LogModel
+        //                    {
+        //                        PageId = user.Id,
+        //                        PageName = $"{user.Surname} {user.Name} {user.Patronimyc}",
+        //                        Section = LogModule.Users,
+        //                        Action = LogAction.update
+        //                    };
+        //                    InsertLog(log);
+
+
+        //                    tran.Commit();
+        //                    return true;
+        //                }
+
+        //                return false;
+
+        //            }
+        //            catch(Exception ex)
+        //            {
+        //                //log ex
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Меняет пароль
@@ -226,36 +467,36 @@ namespace PgDbase.Repository.cms
         /// <param name="id"></param>
         /// <param name="salt"></param>
         /// <param name="hash"></param>
-        public void ChangePassword(Guid id, string salt, string hash)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
+        //public void ChangePassword(Guid id, string salt, string hash)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tr = db.BeginTransaction())
+        //        {
+        //            var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
 
-                    if (user != null)
-                    {
-                        var log = new LogModel
-                        {
-                            PageId = id,
-                            PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                            Section = LogModule.Users,
-                            Action = LogAction.update
-                        };
-                        InsertLog(log);
+        //            if (user != null)
+        //            {
+        //                var log = new LogModel
+        //                {
+        //                    PageId = id,
+        //                    PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
+        //                    Section = LogModule.Users,
+        //                    Action = LogAction.update
+        //                };
+        //                InsertLog(log);
 
-                        db.core_users
-                            .Where(w => w.id == id)
-                            .Set(s => s.c_salt, salt)
-                            .Set(s => s.c_hash, hash)
-                            .Update();
+        //                db.core_users
+        //                    .Where(w => w.id == id)
+        //                    .Set(s => s.c_salt, salt)
+        //                    .Set(s => s.c_hash, hash)
+        //                    .Update();
 
-                        tr.Commit();
-                    }
-                }
-            }
-        }
+        //                tr.Commit();
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Проверяет существование пользователя по id
@@ -266,22 +507,24 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_users
-                    .Where(w => w.id == id).Any();
+                return db.core_AspNetUsers
+                    .Where(w => w.UserId == id)
+                    .Any();
             }
         }
 
         /// <summary>
-        /// Проверяет существование пользователя по email
+        /// Проверяет существование пользователя по email на данном сайте
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public bool CheckUserExists(string email)
+        public bool CheckUserExists(string email, Guid siteId)
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_users
-                    .Where(w => w.c_email == email.ToLower()).Any();
+                return db.core_AspNetUsers
+                    .Where(w => w.Email == email && w.SiteId == siteId)
+                    .Any();
             }
         }
 
@@ -290,106 +533,89 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteUser(Guid id)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    bool result = false;
+        //public bool DeleteUser(Guid id)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tr = db.BeginTransaction())
+        //        {
+        //            bool result = false;
 
-                    var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
-                    if (user != null)
-                    {
-                        var log = new LogModel
-                        {
-                            PageId = id,
-                            PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
-                            Section = LogModule.Users,
-                            Action = LogAction.delete
-                        };
-                        InsertLog(log, user);
+        //            var user = db.core_users.Where(w => w.id == id).SingleOrDefault();
+        //            if (user != null)
+        //            {
+        //                var log = new LogModel
+        //                {
+        //                    PageId = id,
+        //                    PageName = $"{user.c_surname} {user.c_name} {user.c_patronymic}",
+        //                    Section = LogModule.Users,
+        //                    Action = LogAction.delete
+        //                };
+        //                InsertLog(log, user);
 
-                        result = db.Delete(user) > 0;
+        //                result = db.Delete(user) > 0;
 
-                        tr.Commit();
-                    }
+        //                tr.Commit();
+        //            }
 
-                    return result;
-                }
-            }
-        }
+        //            return result;
+        //        }
+        //    }
+        //}
 
-        /// <summary>
-        /// Возвращает список групп
-        /// </summary>
-        /// <returns></returns>
-        public GroupsModel[] GetGroups()
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.core_user_groups
-                    .Select(s => new GroupsModel
-                    {
-                        Id = s.id,
-                        Title = s.c_title,
-                        Alias = s.c_alias
-                    }).ToArray();
-            }
-        }
 
-        /// <summary>
-        /// Добавляет связь пользователя с сайтом
-        /// </summary>
-        /// <returns></returns>
-        public bool InsertUserSiteLink(CMSdb db, Guid userId, Guid groupId)
-        {
-            Guid id = Guid.NewGuid();
+        ///// <summary>
+        ///// Добавляет связь пользователя с сайтом
+        ///// </summary>
+        ///// <returns></returns>
+        //public bool InsertUserSiteLink(CMSdb db, Guid userId, Guid groupId)
+        //{
+        //    Guid id = Guid.NewGuid();
 
-            db.core_user_site_link
-                .Insert(() => new core_user_site_link
-                {
-                    id = id,
-                    f_site = _siteId,
-                    f_user = userId,
-                    f_user_group = groupId
-                });
+        //    db.core_user_site_link
+        //        .Insert(() => new core_user_site_link
+        //        {
+        //            id = id,
+        //            f_site = _siteId,
+        //            f_user = userId,
+        //            f_user_group = groupId
+        //        });
 
-            var log = new LogModel
-            {
-                PageId = id,
-                PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
-                Section = LogModule.Users,
-                Action = LogAction.insert
-            };
-            InsertLog(log);
+        //    var log = new LogModel
+        //    {
+        //        PageId = id,
+        //        PageName = GetLogTitleForUserSiteLink(userId, groupId, db),
+        //        Section = LogModule.Users,
+        //        Action = LogAction.insert
+        //    };
+        //    InsertLog(log);
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        /// <summary>
-        /// Возвращает заголовок при логировании
-        /// добавления связи пользователя и сайта
-        /// </summary>
-        /// <returns></returns>
-        private string GetLogTitleForUserSiteLink(Guid userId, Guid groupId, CMSdb db)
-        {
-            string user = db.core_users
-                .Where(w => w.id == userId)
-                .Select(s => $"{s.c_surname} {s.c_name}")
-                .SingleOrDefault();
+        ///// <summary>
+        ///// Возвращает заголовок при логировании
+        ///// добавления связи пользователя и сайта
+        ///// </summary>
+        ///// <returns></returns>
+        //private string GetLogTitleForUserSiteLink(Guid userId, Guid groupId, CMSdb db)
+        //{
+        //    string user = db.core_users
+        //        .Where(w => w.id == userId)
+        //        .Select(s => $"{s.c_surname} {s.c_name}")
+        //        .SingleOrDefault();
 
-            string domain = db.core_sites
-                .Where(w => w.id == _siteId)
-                .Select(s => s.c_name)
-                .SingleOrDefault();
+        //    string domain = db.core_sites
+        //        .Where(w => w.id == _siteId)
+        //        .Select(s => s.c_name)
+        //        .SingleOrDefault();
 
-            string group = db.core_user_groups
-                .Where(w => w.id == groupId)
-                .Select(s => s.c_title)
-                .SingleOrDefault();
+        //    string group = db.core_user_groups
+        //        .Where(w => w.id == groupId)
+        //        .Select(s => s.c_title)
+        //        .SingleOrDefault();
 
-            return $"{user} {group} {domain}";
-        }
+        //    return $"{user} {group} {domain}";
+        //}
     }
 }

@@ -52,11 +52,11 @@
                             }
                         </div>
                         <div class="buttons">
-                            @if (Model.UserResolution.IsChange)
+                            @if (User.Identity.HasClaim(Model.ControllerName, "edit") || User.Identity.HasClaim(Model.ControllerName, "create"))
                             {
                                 <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
                             }
-                            @if (Model.UserResolution.IsDelete)
+                            @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
                             {
                                 <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
                             }

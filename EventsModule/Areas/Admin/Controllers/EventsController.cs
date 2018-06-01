@@ -13,7 +13,7 @@ namespace EventsModule.Areas.Admin.Controllers
 {
     [RouteArea("Admin")]
     [RoutePrefix("Events")]
-    public class EventsController : CoreController
+    public class EventsController : BeCoreController
     {
         EventViewModel model;
         FilterModel filter;

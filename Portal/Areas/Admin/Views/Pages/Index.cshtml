@@ -7,7 +7,7 @@
 
 @using (Html.BeginForm())
 {
-    if (Model.UserResolution.IsRead)
+    if (User.Identity.HasClaim(Model.ControllerName, "view"))
     {
         <div class="buttons"></div>
         <div class="content">
@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-sm-7">
                         <div class="bubble_but">
-                            @if (Model.UserResolution.IsWrite)
+                            @if (User.Identity.HasClaim(Model.ControllerName, "edit") || User.Identity.HasClaim(Model.ControllerName, "create"))
                             {
                                 <a class="button icon-create green" href="/admin/pages/item/@Guid.NewGuid()">Добавить</a>
                             }
