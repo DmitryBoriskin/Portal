@@ -314,8 +314,8 @@ namespace PgDbase.Repository.cms
                     Phone = s.PhoneNumber,
                     PhoneConfirmed = s.PhoneNumberConfirmed,
                     
-                    Roles = null
-                    //сайты
+                    //Roles = null
+                    //Sites = null
                 });
 
                 return data.SingleOrDefault();

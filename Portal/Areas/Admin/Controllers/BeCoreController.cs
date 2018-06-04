@@ -5,6 +5,7 @@ using PgDbase;
 using PgDbase.entity;
 using PgDbase.Repository;
 using PgDbase.Repository.cms;
+using Portal.Areas.Admin.Models;
 using Portal.Code;
 using Portal.Models;
 using System;

@@ -1,6 +1,7 @@
 ﻿using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -38,6 +39,7 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Index()
         {
             filter = GetFilter();
+            model.Filter = GetFilterTree();
             model.List = _cmsRepository.GetSiteAdmins(filter);
             return View(model);
         }
@@ -46,6 +48,7 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetUser(id);
+            model.Item.Roles = _cmsRepository.GetUserRoles(id);
             return View("Item", model);
         }
 
@@ -151,6 +154,40 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult ClearFiltr()
         {
             return Redirect(StartUrl);
+        }
+
+        /// <summary>
+        /// Возвращает дерево фильтрации
+        /// </summary>
+        /// <returns></returns>
+        private FilterTreeModel GetFilterTree()
+        {
+            if (model.Roles != null)
+            {
+                string link = Request.Url.Query;
+                string editGroupUrl = "/admin/services/groupclaims/";
+                string alias = "group";
+                string active = Request.QueryString[alias];
+                return new FilterTreeModel()
+                {
+                    Title = "Группы пользователей",
+                    Icon = "icon-th-list-3",
+                    //Url = editGroupUrl,
+                    IsReadOnly = false,
+                    //AccountGroup = (model.Account != null) ? model.Account.Group : "",
+                    Items = model.Roles.Select(p =>
+                        new CatalogList()
+                        {
+                            Title = p.Name,
+                            Alias = p.Id.ToString(),
+                            Link = AddFilterParam(link, alias, p.Id.ToString()),
+                            Url = $"{editGroupUrl}{p.Id}",
+                            IsSelected = active == p.Id.ToString()
+                        }).ToArray(),
+                    Link = "/admin/siteadmins"
+                };
+            }
+            return null;
         }
     }
 }

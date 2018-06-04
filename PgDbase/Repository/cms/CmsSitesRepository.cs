@@ -103,6 +103,25 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        ///  Возвращает еденичный элемент сайта или пустое значение
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private string GetSiteName(string id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var _id = Guid.Parse(id);
+
+                var query = db.core_sites
+                         .Where(w => w.id == _id)
+                         .Select(s => s.c_name);
+
+                return query.FirstOrDefault();
+            }
+        }
+
+        /// <summary>
         /// true если существует сайт с таким идентифктаором
         /// </summary>
         /// <param name="id"></param>

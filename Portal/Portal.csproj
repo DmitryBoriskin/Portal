@@ -306,6 +306,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ConnectionStrings.config" />
     <Content Include="Content\css\iframe_tinymce.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\styles.css" />
@@ -883,6 +884,9 @@
     <Content Include="Areas\Admin\Views\PhotoAlbums\Index.cshtml" />
     <Content Include="Areas\Admin\Views\PhotoAlbums\Item.cshtml" />
     <Content Include="Areas\Admin\Views\PhotoAlbums\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteAdmins\Part\Roles.cshtml" />
+    <Content Include="Areas\Admin\Views\Admins\Part\Roles.cshtml" />
+    <Content Include="Areas\Admin\Views\Admins\Part\Sites.cshtml" />
     <Content Include="ConnectionStrings.config" />
     <Content Include="AppSettings.config" />
     <None Include="packages.config" />

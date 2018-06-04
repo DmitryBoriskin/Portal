@@ -40,8 +40,8 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetPortalAdmins(filter);
             model.Filter = GetFilterTree();
+            model.List = _cmsRepository.GetPortalAdmins(filter);
             return View(model);
         }
 
@@ -49,6 +49,9 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetUser(id);
+            model.Item.Roles = _cmsRepository.GetUserRoles(id);
+            model.Item.Sites = _cmsRepository.GetUserSites(id);
+            model.Sites = _cmsRepository.GetSites();
             return View("Item", model);
         }
 
@@ -196,5 +199,6 @@ namespace Portal.Areas.Admin.Controllers
             }
             return null;
         }
+
     }
 }

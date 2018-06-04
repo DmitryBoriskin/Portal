@@ -424,6 +424,99 @@ $(document).ready(function () {
         }
     });
 
+    //Добавляет связь пользователь-роль
+    $("#add-userRoleLink-btn").on("click", function (e) {
+        e.preventDefault();
+        var _role = $("#itemRole-select").val();
+        var _userId = $(this).data("userId");
+        var _action = $(this).data("url");
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { userId: _userId, role: _role },
+            })
+                .done(function (response) {
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+    $("#add-userSiteLink-btn").on("click", function (e) {
+        e.preventDefault();
+        var _role = $("#itemSite-select").val();
+        var _userId = $(this).data("userId");
+        var _action = $(this).data("url");
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { userId: _userId, role: _role },
+            })
+                .done(function (response) {
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+    //Удаляет связь пользователь-роль
+    $(".delete-role-btn").on("click", function (e) {
+        e.preventDefault();
+        var _role = $(this).data("role");
+        var _userId = $(this).data("userId");
+        var _action = $(this).data("url");
+
+        var _container = $(this).closest("tr");
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { role: _role, userId: _userId },
+            })
+                .done(function (response) {
+                    if (response === "Success") {
+                        _container.remove();
+                    }
+                    else {
+                        alert("Произошла ошибка!");
+                    }
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+
+
     //Домен по умолчанию
     $(".set-domain-default-btn").on("click", function (e) {
         e.preventDefault();
