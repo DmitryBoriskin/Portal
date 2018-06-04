@@ -9,6 +9,24 @@
             @Html.TextBoxFor(m => m.Item.Title, new { required = "", title = "Название", placeholder = "Название" })
             @Html.TextBoxFor(m => m.Item.Address, new { title = "Адрес", placeholder = "Адрес" })
 
+            <div class="group-block open" title="Координаты">
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Item.Longitude, new { title = "Долгота", placeholder = "Долгота", @value = 0 })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Item.Latitude, new { title = "Широта", placeholder = "Широта", @value = 0 })
+                    </div>
+                    <div class="col-md-12">
+                        <div id="map">
+                            <script type="text/javascript">
+                                Coords('@ViewBag.YCoord', '@ViewBag.XCoord', '@ViewBag.Title', '', '14');
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="group-block" title="Режим работы">
                 @Html.TextAreaFor(m => m.Item.WorkTime, new { type = "editor", height = "300" })
             </div>
@@ -16,9 +34,6 @@
 
         <div class="dop_info-block">
             <div class="dop-caption">Настройки</div>
-            @Html.TextBoxFor(m => m.Item.Longitude, new { title = "Долгота", placeholder = "Долгота" })
-            @Html.TextBoxFor(m => m.Item.Latitude, new { title = "Широта", placeholder = "Широта" })
-
             @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
             @if (Model.Item != null)
             {

@@ -56,5 +56,10 @@ namespace PgDbase.entity
         /// Дата создания
         /// </summary>
         public DateTime Created { get; set; }
+
+        /// <summary>
+        /// Подразделение
+        /// </summary>
+        public Guid Department { get; set; }
     }
 }

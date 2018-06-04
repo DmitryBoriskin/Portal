@@ -30,12 +30,12 @@ namespace PgDbase.entity
         /// <summary>
         /// Долгота
         /// </summary>
-        public decimal Longitude { get; set; }
+        public decimal? Longitude { get; set; }
 
         /// <summary>
         /// Широта
         /// </summary>
-        public decimal Latitude { get; set; }
+        public decimal? Latitude { get; set; }
 
         /// <summary>
         /// Запрещённость

@@ -3,6 +3,7 @@ using PgDbase.entity;
 using Portal.Areas.Admin;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -27,7 +28,13 @@ namespace LkModule.Areas.Admin.Controllers
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                UserResolution = UserResolutionInfo
+                UserResolution = UserResolutionInfo,
+                Departments = new SelectList(_cmsRepository.GetDepartments()
+                    .Select(s => new SelectListItem
+                    {
+                        Text = s.Title,
+                        Value = s.Id.ToString()
+                    }).ToArray(), "Value", "Text")
             };
 
             if (AccountInfo != null)
@@ -54,6 +61,19 @@ namespace LkModule.Areas.Admin.Controllers
             query = AddFilterParam(query, "page", String.Empty);
 
             return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
+        }
+
+        [Route, HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string searchtext, bool enabled, string size)
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
+
+            return Redirect(StartUrl + query);
         }
 
         [Route, HttpPost]
@@ -98,7 +118,7 @@ namespace LkModule.Areas.Admin.Controllers
             model.Item = _cmsRepository.GetSubscr(id);
             return View("Item", model);
         }
-        
+
         [Route("item/{id:guid}"), HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
@@ -111,7 +131,7 @@ namespace LkModule.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 backModel.Item.Id = id;
-                if (_cmsRepository.CheckVacancyExists(id))
+                if (_cmsRepository.CheckSubscrExists(id))
                 {
                     _cmsRepository.UpdateSubscr(backModel.Item);
                     message.Info = "Запись обновлена";

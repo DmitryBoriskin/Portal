@@ -10,9 +10,10 @@
             {
                 string disabled = item.Disabled ? "disabled" : "";
                 <div class="list-item @disabled">
-                    <a title="@(item.Surname + " " + item.Name + " " + item.Patronymic)" class="li-caption" href="/admin/subscr/item/@item.Id">
+                    <a title="@(item.Surname + " " + item.Name + " " + item.Patronymic)" class="li-caption" href="/admin/subscrs/item/@item.Id">
                         @(item.Surname + " " + item.Name + " " + item.Patronymic)
                     </a>
+                    <div class="li-desc"><span>Номер ЛС:</span> @item.Link</div>
                     <div class="li-desc"><span>Дата создания:</span> @item.Created.ToString("dd.MM.yyyy")</div>
                 </div>
             }

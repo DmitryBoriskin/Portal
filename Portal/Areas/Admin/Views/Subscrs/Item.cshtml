@@ -22,15 +22,19 @@
 
         <div class="dop_info-block">
             <div class="dop-caption">Настройки</div>
+            <div class="form-group">
+                <label for="deps">Подразделение:</label>
+                @Html.DropDownListFor(m => m.Item.Department, Model.Departments, new { title = "Подразделение", @class = "select2", @id = "deps" })
+            </div>
             @Html.TextBoxFor(m => m.Item.Link, new { required = "", title = "номер ЛС", placeholder = "номер ЛС" })
-            @Html.TextBoxFor(m => m.Item.Created, new { @readonly = "readonly", data_type = "datetime", title = "Дата создания" })
+            @Html.TextBoxFor(m => m.Item.Created, new { required = "", data_type = "date", title = "Дата создания", value = ViewBag.Date })
             @Html.TextBoxFor(m => m.Item.Phone, new { title = "телефон", placeholder = "телефон" })
             @Html.TextBoxFor(m => m.Item.Email, new { title = "email", placeholder = "email" })
             @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
             @if (Model.Item != null)
-            {
-                @Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
-            }
+    {
+        @Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
+}
         </div>
 
         <div class="buttons">

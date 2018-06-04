@@ -22,7 +22,7 @@ namespace PgDbase.Repository.cms
             {
                 Paged<Subscr> result = new Paged<Subscr>();
                 var query = db.lk_subscrs
-                    .Where(w => w.fkusersubscrs.Any(a => a.fkusersubscrsusers.SiteId == _siteId));
+                    .Where(w => w.fkdepartments.f_site == _siteId);
 
                 if (filter.Disabled.HasValue)
                 {
@@ -98,7 +98,8 @@ namespace PgDbase.Repository.cms
                         Phone = s.c_phone,
                         Email = s.c_email,
                         Disabled = s.b_disabled,
-                        Created = s.d_created
+                        Created = s.d_created, 
+                        Department = s.f_department
                     }).SingleOrDefault();
             }
         }
@@ -134,7 +135,8 @@ namespace PgDbase.Repository.cms
                         c_phone = item.Phone,
                         c_email = item.Email,
                         b_disabled = item.Disabled,
-                        d_created = item.Created
+                        d_created = item.Created,
+                        f_department = item.Department
                     }) > 0;
 
                     tr.Commit();
@@ -172,6 +174,7 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.c_phone, item.Phone)
                         .Set(s => s.c_email, item.Email)
                         .Set(s => s.b_disabled, item.Disabled)
+                        .Set(s => s.f_department, item.Department)
                         .Update() > 0;
 
                     tr.Commit();
@@ -288,6 +291,24 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Возвращает список подразделений для выпадающего списка
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetDepartments()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_departments
+                    .Where(w => w.f_site == _siteId)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_title
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
         /// Возвращает подразделение
         /// </summary>
         /// <param name="id"></param>
@@ -337,9 +358,10 @@ namespace PgDbase.Repository.cms
                         c_title = item.Title,
                         c_address = item.Address,
                         c_work_time = item.WorkTime,
-                        n_longitude = item.Longitude,
-                        n_latitude = item.Latitude,
-                        b_disabled = item.Disabled
+                        n_longitude = (decimal)item.Longitude,
+                        n_latitude = (decimal)item.Latitude,
+                        b_disabled = item.Disabled, 
+                        f_site = _siteId
                     }) > 0;
 
                     tr.Commit();
@@ -373,8 +395,8 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.c_title, item.Title)
                         .Set(s => s.c_address, item.Address)
                         .Set(s => s.c_work_time, item.WorkTime)
-                        .Set(s => s.n_longitude, item.Longitude)
-                        .Set(s => s.n_latitude, item.Latitude)
+                        .Set(s => s.n_longitude, (decimal)item.Longitude)
+                        .Set(s => s.n_latitude, (decimal)item.Latitude)
                         .Set(s => s.b_disabled, item.Disabled)
                         .Update() > 0;
 

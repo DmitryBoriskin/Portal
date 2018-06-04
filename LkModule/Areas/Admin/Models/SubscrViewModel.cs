@@ -1,5 +1,7 @@
 ﻿using PgDbase.entity;
 using Portal.Areas.Admin.Models;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Models
 {
@@ -17,5 +19,10 @@ namespace LkModule.Areas.Admin.Models
         /// Единичная запись
         /// </summary>
         public Subscr Item { get; set; }
+
+        /// <summary>
+        /// Подразделения
+        /// </summary>
+        public IEnumerable<SelectListItem> Departments { get; set; }
     }
 }
