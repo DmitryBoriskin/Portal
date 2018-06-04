@@ -1,6 +1,8 @@
-﻿using PgDbase.entity;
+﻿using Microsoft.AspNet.Identity;
+using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -169,6 +171,29 @@ namespace Portal.Areas.Admin.Controllers
             var res = _cmsRepository.UpdateRoleClaim(roleClaim);
             if (res)
                 return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
+        [HttpPost]
+        public ActionResult AddUserRole(Guid userId, string role)
+        {
+            var res = UserManager.AddToRole(userId.ToString(), role);
+            if (res.Succeeded)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteUserRole(Guid userId, string role)
+        {
+
+            var res = UserManager.RemoveFromRole(userId.ToString(), role);
+
+            if (res.Succeeded)
+               return Json("Success");
 
             return Json("An Error Has Occourred");
         }

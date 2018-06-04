@@ -35,6 +35,24 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        public RoleModel[] GetSites()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetRoles
+                    .Where(s => s.Discriminator == "IdentityRole");
+
+                var data = query.Select(s => new RoleModel()
+                {
+                    Id = Guid.Parse(s.Id),
+                    Name = s.Name,
+                    Desc = GetSiteName(s.Name),
+                });
+
+                return data.ToArray();
+            }
+        }
+
         /// <summary>
         /// Роль
         /// </summary>
@@ -135,6 +153,31 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// Сайты, к которым привязан пользователь
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public RoleModel[] GetUserSites(Guid userId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var _userId = userId.ToString();
+                var query = db.core_AspNetUserRoles
+                    .Where(s => s.AspNetRolesRoleId.Discriminator == "IdentityRole")
+                    .Where(s => s.UserId == _userId);
+
+                var data = query.Select(s => new RoleModel()
+                {
+                    Id = Guid.Parse(s.RoleId),
+                    Name = s.AspNetRolesRoleId.Name,
+                    Desc = GetSiteName(s.AspNetRolesRoleId.Name),
+                    //Claims = GetRoleClaims(s.RoleId)
+                });
+
+                return data.ToArray();
+            }
+        }
 
         /// <summary>
         /// Изменение прав у роли
@@ -152,9 +195,9 @@ namespace PgDbase.Repository.cms
                        .Where(s => s.ClaimType == roleClaim.Type)
                        .Where(s => s.ClaimValue == roleClaim.Value);
 
-                    if(roleClaim.Checked)
+                    if (roleClaim.Checked)
                     {
-                        if(!dbRoleclaim.Any())
+                        if (!dbRoleclaim.Any())
                         {
                             //insert
                             var newRoleClaim = new core_AspNetRoleClaims()
@@ -204,6 +247,84 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        ///// <summary>
+        ///// Добавление пользователю роли
+        ///// </summary>
+        ///// <param name="userId"></param>
+        ///// <param name="roleId"></param>
+        ///// <returns></returns>
+        //public bool AddUserRole(string userId, string roleId)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tran = db.BeginTransaction())
+        //        {
+                   
+        //            var dbUserRole = db.core_AspNetUserRoles
+        //               .Where(s => s.RoleId == roleId)
+        //               .Where(s => s.UserId == userId);
+
+
+        //            if (!dbUserRole.Any())
+        //            {
+        //                //insert
+        //                var newUserRole = new core_AspNetUserRoles()
+        //                {
+        //                    RoleId = roleId,
+        //                    UserId = userId
+        //                };
+
+        //                db.Insert(newUserRole);
+
+        //                //log
+        //                //var log = new LogModel
+        //                //{
+        //                //    PageId = Guid.NewGuid,
+        //                //    PageName = "",
+        //                //    Section = LogModule.Users,
+        //                //    Action = LogAction.update,
+        //                //    Comment = "Изменена связь пользователя с сайтами"
+        //                //};
+        //                //InsertLog(log);
+
+
+        //                tran.Commit();
+        //                return true;
+        //            }
+        //        }
+        //        return false;
+        //    }
+        //}
+
+        ///// <summary>
+        ///// Удаление роли у пользователя
+        ///// </summary>
+        ///// <param name="userId"></param>
+        ///// <param name="roleId"></param>
+        ///// <returns></returns>
+        //public bool DeleteUserRole(string userId, string roleId)
+        //{
+        //    using (var db = new CMSdb(_context))
+        //    {
+        //        using (var tran = db.BeginTransaction())
+        //        {
+
+        //            var dbUserRole = db.core_AspNetUserRoles
+        //               .Where(s => s.RoleId == roleId)
+        //               .Where(s => s.UserId == userId);
+
+        //            if (dbUserRole.Any())
+        //            {
+        //                var _userRole = dbUserRole.Single();
+        //                db.Delete(_userRole);
+        //                tran.Commit();
+        //                return true;
+        //            }
+
+        //            return false;
+        //        }
+        //    }
+        //}
         
         /// <summary>
         /// Возвращает группу пользователей для редактирования

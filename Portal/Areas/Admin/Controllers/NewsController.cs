@@ -252,6 +252,7 @@ namespace Portal.Areas.Admin.Controllers
             }
             return null;
         }
+
         public ActionResult Category(Guid? id)
         {
             if (id != null)

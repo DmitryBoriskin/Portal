@@ -1,0 +1,62 @@
+﻿@model UsersViewModel
+
+<div class="row topIndent-20">
+    <div class="col-md-12">
+        <div class="group-block open" title="Роли">
+            @if (Model.Item.Roles.Count() > 0)
+            {
+                <table class="table admin-pannel-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th width="90%">Название_роли</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var role in Model.Item.Roles)
+                        {
+                            <tr>
+                                <td>
+                                    <a class="item-settings-link" href="/admin/roles/item/@role.Id/" data-init="false"></a>
+                                </td>
+                                <td>
+                                    @role.Desc <span class="description"> (@role.Name)</span>
+                                </td>
+                                <td class="text-right">
+                                    <span id="role_@(role.Id)" data-container="body" data-toggle="popover" data-placement="left" data-content=""></span>
+                                    <a class="delete-role-btn delete-item-link" data-role="@role.Name" data-user-id="@Model.Item.Id" data-url="/admin/roles/DeleteUserRole" data-init="false"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            <div class="col-md-6">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Роль:</label>
+                </div>
+                <select id="itemRole-select" class="form-control select2">
+                    @if (Model.Roles != null && Model.Roles.Count() > 0)
+                    {
+                        foreach (var role in Model.Roles)
+                        {
+                            if (Model.Item != null && Model.Item.Roles != null && Model.Item.Roles.Any(m => m.Name == role.Name))
+                            {
+                                <option value="@role.Name" disabled>@role.Desc</option>
+                            }
+                            else
+                            {
+                                <option value="@role.Name">@role.Desc</option>
+                            }
+                        }
+                    }
+                </select>
+
+            </div>
+            <div class="col-md-4">
+                <button type="button" id="add-userRoleLink-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-user-id="@Model.Item.Id" data-url="/admin/roles/addUserRole">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>
