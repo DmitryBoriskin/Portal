@@ -7,5 +7,6 @@ PgDbase/Template/
 Portal/userfiles/
 *AppSettings.config
 *ConnectionStrings.config
+*UpgradeLog*.html
 
 

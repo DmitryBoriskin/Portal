@@ -37,12 +37,12 @@
             @*@if (Model.UserResolution.IsChange)*@
             @if (User.Identity.HasClaim(Model.ControllerName, "edit") || User.Identity.HasClaim(Model.ControllerName, "create"))
             {
-            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+                <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
             }
             @if (User.Identity.HasClaim(Model.ControllerName, "delete") && Model.Item != null)
-    {
-        <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
-}
+            {
+                <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
+            }
             <button type="submit" name="action" data-action="cancel" value="cancel-btn" class="button icon-cancel">Закрыть</button>
         </div>
     }

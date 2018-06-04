@@ -269,7 +269,8 @@ namespace PgDbase.Repository.cms
                         Address = s.c_address,
                         WorkTime = s.c_work_time,
                         Longitude = s.n_longitude,
-                        Latitude = s.n_latitude
+                        Latitude = s.n_latitude,
+                        Disabled = s.b_disabled
                     }).ToArray();
 
                 return new Paged<Department>
@@ -304,7 +305,8 @@ namespace PgDbase.Repository.cms
                         Address = s.c_address,
                         WorkTime = s.c_work_time,
                         Longitude = s.n_longitude,
-                        Latitude = s.n_latitude
+                        Latitude = s.n_latitude,
+                        Disabled = s.b_disabled
                     }).SingleOrDefault();
             }
         }
@@ -336,7 +338,8 @@ namespace PgDbase.Repository.cms
                         c_address = item.Address,
                         c_work_time = item.WorkTime,
                         n_longitude = item.Longitude,
-                        n_latitude = item.Latitude
+                        n_latitude = item.Latitude,
+                        b_disabled = item.Disabled
                     }) > 0;
 
                     tr.Commit();
@@ -372,6 +375,7 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.c_work_time, item.WorkTime)
                         .Set(s => s.n_longitude, item.Longitude)
                         .Set(s => s.n_latitude, item.Latitude)
+                        .Set(s => s.b_disabled, item.Disabled)
                         .Update() > 0;
 
                     tr.Commit();

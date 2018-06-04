@@ -36,5 +36,10 @@ namespace PgDbase.entity
         /// Широта
         /// </summary>
         public decimal Latitude { get; set; }
+
+        /// <summary>
+        /// Запрещённость
+        /// </summary>
+        public bool Disabled { get; set; }
     }
 }
