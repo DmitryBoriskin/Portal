@@ -9,8 +9,8 @@ using System.Web.Mvc;
 namespace LkModule.Areas.Admin.Controllers
 {
     [RouteArea("Admin")]
-    [RoutePrefix("Subscr")]
-    public class SubscrController : BeCoreController
+    [RoutePrefix("Subscrs")]
+    public class SubscrsController : BeCoreController
     {
         FilterModel filter;
         SubscrViewModel model;
