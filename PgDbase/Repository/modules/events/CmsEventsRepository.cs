@@ -202,7 +202,7 @@ namespace PgDbase.Repository.cms
                             PageId = update.Guid,
                             PageName = update.Title,
                             Section = LogModule.Events,
-                            Action = LogAction.insert
+                            Action = LogAction.update
                         });
 
                         q.Set(s => s.b_annual, update.Annual)                           
@@ -244,7 +244,7 @@ namespace PgDbase.Repository.cms
                             PageId = Guid,
                             PageName = events.c_title,
                             Comment = "Удалено событие" + String.Format("{0}/", events.c_title),
-                            Section = LogModule.News,
+                            Section = LogModule.Events,
                             Action = LogAction.delete,
                         }, events);
                         q.Delete();

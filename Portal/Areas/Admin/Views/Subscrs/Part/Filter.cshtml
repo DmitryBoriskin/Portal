@@ -10,14 +10,9 @@
 @using (Html.BeginForm())
 {
     <div class="row">
-        @*<div class="form-group">
-            <label for="deps">Подразделение:</label>*@
-        @*@Html.DropDownList("Подразделения", Model, new { title = "Подразделение", @class = "select2", @id = "deps" })*@
-        @*</div>*@
-
         <div class="form-group">
             <label class="label_filtr">Подразделение</label>
-            <select class="form-control select2" name="department">
+            <select class="select2" name="department">
                 <option value="">не выбрано</option>
                 @foreach (var item in Model)
                 {
