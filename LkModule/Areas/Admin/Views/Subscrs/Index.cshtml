@@ -1,6 +1,6 @@
 ﻿@model LkModule.Areas.Admin.Models.SubscrViewModel
 
-@if (Model.UserResolution != null && Model.UserResolution.IsRead)
+@if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
     <div class="content">
         <h1>@Model.PageName</h1>
@@ -31,7 +31,7 @@
         @Html.Partial("Part/Filter")
     </div>
     <div class="buttons">
-        @if (Model.UserResolution.IsWrite)
+        @if (User.Identity.HasClaim(Model.ControllerName, "edit"))
         {
             using (Html.BeginForm(Model.ActionName, Model.ControllerName))
             {
