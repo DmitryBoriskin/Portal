@@ -28,6 +28,10 @@ namespace PgDbase.Repository.cms
                 {
                     query = query.Where(w => w.b_disabled == filter.Disabled.Value);
                 }
+                if (!String.IsNullOrWhiteSpace(filter.Category))
+                {
+                    query = query.Where(w => w.f_department == Guid.Parse(filter.Category));
+                }
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

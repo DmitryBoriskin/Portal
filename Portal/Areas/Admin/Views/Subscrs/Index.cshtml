@@ -29,7 +29,7 @@
     </div>
     <div class="dop_info-block">
         <div class="dop-caption">Фильтр</div>
-        @Html.Partial("Part/Filter")
+        @Html.Partial("Part/Filter", Model.Departments)
     </div>
     <div class="buttons">
         @if (User.Identity.HasClaim(Model.ControllerName, "edit"))

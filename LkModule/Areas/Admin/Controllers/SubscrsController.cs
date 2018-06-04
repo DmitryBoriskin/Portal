@@ -50,6 +50,7 @@ namespace LkModule.Areas.Admin.Controllers
         {
             filter = GetFilter();
             model.List = _cmsRepository.GetSubscrs(filter);
+            ViewBag.Department = Request.Params["category"];
             return View(model);
         }
 
@@ -65,13 +66,14 @@ namespace LkModule.Areas.Admin.Controllers
 
         [Route, HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string searchtext, bool enabled, string size)
+        public ActionResult Search(string searchtext, bool enabled, string size, string department)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "searchtext", searchtext);
             query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
             query = AddFilterParam(query, "page", String.Empty);
             query = AddFilterParam(query, "size", size);
+            query = AddFilterParam(query, "category", department);
 
             return Redirect(StartUrl + query);
         }
