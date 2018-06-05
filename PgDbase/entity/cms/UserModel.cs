@@ -87,5 +87,10 @@ namespace PgDbase.entity
         /// Группа 
         /// </summary>
         public RoleModel[] Sites { get; set; }
+
+        /// <summary>
+        /// Подключенные ЛС
+        /// </summary>
+        public Guid[] Subscrs { get; set; }
     }
 }

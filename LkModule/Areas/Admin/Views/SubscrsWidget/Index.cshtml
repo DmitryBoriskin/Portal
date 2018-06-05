@@ -1,0 +1,18 @@
+﻿@model LkModule.Areas.Admin.Models.SubscrViewModel
+
+@if (Model.Subscrs != null && Model.Subscrs.Count() > 0)
+{
+    <div class="group-block open" title="Привязка лицевых счетов">
+        <div class="form-group">
+            <label for="subscr-select">Лицевые счета</label>
+            <select name="Item.Subscrs" id="subscr-select" class="form-control select2" multiple>
+                @foreach (var sub in Model.Subscrs)
+                {
+                    string title = String.Format("{0} {1} {2} {3}", sub.Link, sub.Surname, sub.Name, sub.Patronymic);
+                    string selected = Model.SelectedSubscrs.Any(a => a == sub.Id) ? "selected" : null;
+                    <option value="@sub.Id" @selected>@title</option>
+                }
+            </select>
+        </div>
+    </div>
+}

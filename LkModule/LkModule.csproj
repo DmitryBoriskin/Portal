@@ -97,6 +97,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscrsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SubscrsWidgetController.cs" />
     <Compile Include="Areas\Admin\Models\DepartmentViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubscrViewModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -114,6 +115,7 @@
     <Content Include="Areas\Admin\Views\Departments\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Departments\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Departments\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\SubscrsWidget\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -172,7 +174,8 @@
   <PropertyGroup>
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Subscrs\*" "$(SolutionDir)Portal\Areas\Admin\Views\Subscrs\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Departments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Departments\"</PostBuildEvent>
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Departments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Departments\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\SubscrsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\SubscrsWidget\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

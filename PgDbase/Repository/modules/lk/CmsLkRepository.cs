@@ -1,7 +1,9 @@
 ﻿using LinqToDB;
+using LinqToDB.Data;
 using PgDbase.entity;
 using PgDbase.models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PgDbase.Repository.cms
@@ -77,6 +79,28 @@ namespace PgDbase.Repository.cms
                         TotalCount = itemsCount
                     }
                 };
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список ЛС для привязки к пользователю
+        /// </summary>
+        /// <returns></returns>
+        public Subscr[] GetSubscrs()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_subscrs
+                    .Where(w => w.fkdepartments.f_site == _siteId)
+                    .OrderBy(o => o.c_link)
+                    .Select(s => new Subscr
+                    {
+                        Id = s.id,
+                        Link = s.c_link,
+                        Surname = s.c_surname,
+                        Name = s.c_name,
+                        Patronymic = s.c_patronymic
+                    }).ToArray();
             }
         }
 
@@ -183,6 +207,42 @@ namespace PgDbase.Repository.cms
 
                     tr.Commit();
                     return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Прикрепляет лицевые счета к пользователю
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="subscrs"></param>
+        /// <returns></returns>
+        public void UpdateUserSubscrs(Guid user, Guid[] subscrs)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var listExistSubscrs = db.lk_user_subscrs
+                        .Where(w => w.f_user == user)
+                        .Select(s => s.f_subscr)
+                        .ToArray();
+
+                    List<lk_user_subscrs> list = new List<lk_user_subscrs>();
+                    foreach (var subscr in subscrs)
+                    {
+                        if (!listExistSubscrs.Contains(subscr))
+                        {
+                            list.Add(new lk_user_subscrs
+                            {
+                                f_user = user,
+                                f_subscr = subscr
+                            });
+                        }
+                    }
+
+                    db.BulkCopy(list);
+                    tr.Commit();
                 }
             }
         }
