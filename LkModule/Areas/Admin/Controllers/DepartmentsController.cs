@@ -3,46 +3,48 @@ using PgDbase.entity;
 using Portal.Areas.Admin;
 using Portal.Areas.Admin.Models;
 using System;
+using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Controllers
 {
     [RouteArea("Admin")]
-    [RoutePrefix("Subscr")]
-    public class SubscrController : BeCoreController
+    [RoutePrefix("Departments")]
+    public class DepartmentsController : BeCoreController
     {
         FilterModel filter;
-        SubscrViewModel model;
+        DepartmentViewModel model;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
-            model = new SubscrViewModel()
+            model = new DepartmentViewModel()
             {
                 PageName = PageName,
                 DomainName = Domain,
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName,
-                UserResolution = UserResolutionInfo
+                ActionName = ActionName
             };
 
             if (AccountInfo != null)
             {
                 model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
+                model.MenuModul = MenuModulCore;
             }
         }
 
-        // GET: Admin/Lk
+        // GET: Admin/Department
         [Route]
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetSubscrs(filter);
+            model.List = _cmsRepository.GetDepartments(filter);
             return View(model);
         }
 
@@ -54,6 +56,19 @@ namespace LkModule.Areas.Admin.Controllers
             query = AddFilterParam(query, "page", String.Empty);
 
             return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
+        }
+
+        [Route, HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string searchtext, bool enabled, string size)
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
+
+            return Redirect(StartUrl + query);
         }
 
         [Route, HttpPost]
@@ -78,7 +93,7 @@ namespace LkModule.Areas.Admin.Controllers
             {
                 Title = "Информация"
             };
-            bool result = _cmsRepository.DeleteSubscr(id);
+            bool result = _cmsRepository.DeleteDepartment(id);
             if (result)
             {
                 message.Info = "Запись удалена";
@@ -95,30 +110,74 @@ namespace LkModule.Areas.Admin.Controllers
         [Route("item/{id:guid}"), HttpGet]
         public ActionResult Item(Guid id)
         {
-            model.Item = _cmsRepository.GetSubscr(id);
+            model.Item = _cmsRepository.GetDepartment(id);
+            if (model.Item != null)
+            {
+                ViewBag.XCoord = model.Item.Latitude;
+                ViewBag.YCoord = model.Item.Longitude;
+                ViewBag.Title = model.Item.Title;
+            }
             return View("Item", model);
         }
-        
+
         [Route("item/{id:guid}"), HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
-        public ActionResult Save(Guid id, SubscrViewModel backModel)
+        public ActionResult Save(Guid id, DepartmentViewModel backModel)
         {
             ErrorMessage message = new ErrorMessage
             {
                 Title = "Информация"
             };
+
             if (ModelState.IsValid)
             {
-                backModel.Item.Id = id;
-                if (_cmsRepository.CheckVacancyExists(id))
+                decimal mapX = 0;
+                decimal mapY = 0;
+                if (backModel.Item.Latitude != null)
                 {
-                    _cmsRepository.UpdateSubscr(backModel.Item);
+                    mapX = (decimal)backModel.Item.Latitude;
+                }
+                if (backModel.Item.Longitude != null)
+                {
+                    mapY = (decimal)backModel.Item.Longitude;
+                }
+
+                if (!String.IsNullOrWhiteSpace(backModel.Item.Address) && (mapX == 0 || mapY == 0))
+                {
+                    string url = $"http://geocode-maps.yandex.ru/1.x/?format=json&results=1&geocode={backModel.Item.Address}";
+
+                    HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                    HttpWebResponse myHttpWebResponse = (HttpWebResponse)myHttpWebRequest.GetResponse();
+                    StreamReader myStreamReader = new StreamReader(myHttpWebResponse.GetResponseStream());
+                    string html = myStreamReader.ReadToEnd();
+
+                    Regex reCoord = new Regex("(?<=\"Point\":{\"pos\":\")(.*)(?=\"})", RegexOptions.IgnoreCase);
+
+                    string coord = Convert.ToString(reCoord.Match(html).Groups[1].Value);
+
+                    coord = coord.Replace(" ", ";");
+                    string[] arrCoord = coord.Split(';');
+                    try
+                    {
+                        mapX = decimal.Parse(arrCoord[1].Replace(".", ","));
+                        mapY = decimal.Parse(arrCoord[0].Replace(".", ","));
+                    }
+                    catch { }
+                }
+                ViewBag.XCoord = backModel.Item.Latitude = mapX;
+                ViewBag.YCoord = backModel.Item.Longitude = mapY;
+                ViewBag.Title = backModel.Item.Title;
+
+                backModel.Item.Id = id;
+                if (_cmsRepository.CheckDepartmentExists(id))
+                {
+                    _cmsRepository.UpdateDepartment(backModel.Item);
                     message.Info = "Запись обновлена";
                 }
                 else
                 {
-                    _cmsRepository.InsertSubscr(backModel.Item);
+                    _cmsRepository.InsertDepartment(backModel.Item);
                     message.Info = "Запись добавлена";
                 }
                 message.Buttons = new ErrorMessageBtnModel[]
@@ -136,7 +195,7 @@ namespace LkModule.Areas.Admin.Controllers
                 };
             }
 
-            model.Item = _cmsRepository.GetSubscr(id);
+            model.Item = _cmsRepository.GetDepartment(id);
             model.ErrorInfo = message;
             return View("Item", model);
         }

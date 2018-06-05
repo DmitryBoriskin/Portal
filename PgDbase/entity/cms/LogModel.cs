@@ -182,7 +182,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Лицевые счета
         /// </summary>
-        Subscrs
+        Subscrs,
+        /// <summary>
+        /// Подразделения
+        /// </summary>
+        Departments
     }
 
     /// <summary>

@@ -22,11 +22,15 @@ namespace PgDbase.Repository.cms
             {
                 Paged<Subscr> result = new Paged<Subscr>();
                 var query = db.lk_subscrs
-                    .Where(w => w.fkusersubscrs.Any(a => a.fkusersubscrsusers.SiteId == _siteId));
+                    .Where(w => w.fkdepartments.f_site == _siteId);
 
                 if (filter.Disabled.HasValue)
                 {
                     query = query.Where(w => w.b_disabled == filter.Disabled.Value);
+                }
+                if (!String.IsNullOrWhiteSpace(filter.Category))
+                {
+                    query = query.Where(w => w.f_department == Guid.Parse(filter.Category));
                 }
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
@@ -89,7 +93,7 @@ namespace PgDbase.Repository.cms
                     .Where(w => w.id == id)
                     .Select(s => new Subscr
                     {
-                        Id=  s.id,
+                        Id = s.id,
                         Link = s.c_link,
                         Surname = s.c_surname,
                         Name = s.c_name,
@@ -98,7 +102,8 @@ namespace PgDbase.Repository.cms
                         Phone = s.c_phone,
                         Email = s.c_email,
                         Disabled = s.b_disabled,
-                        Created = s.d_created
+                        Created = s.d_created, 
+                        Department = s.f_department
                     }).SingleOrDefault();
             }
         }
@@ -134,9 +139,10 @@ namespace PgDbase.Repository.cms
                         c_phone = item.Phone,
                         c_email = item.Email,
                         b_disabled = item.Disabled,
-                        d_created = item.Created
+                        d_created = item.Created,
+                        f_department = item.Department
                     }) > 0;
-                    
+
                     tr.Commit();
                     return result;
                 }
@@ -172,6 +178,7 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.c_phone, item.Phone)
                         .Set(s => s.c_email, item.Email)
                         .Set(s => s.b_disabled, item.Disabled)
+                        .Set(s => s.f_department, item.Department)
                         .Update() > 0;
 
                     tr.Commit();
@@ -222,7 +229,7 @@ namespace PgDbase.Repository.cms
                         InsertLog(log, item);
                         result = db.Delete(item) > 0;
                     }
-                    
+
                     tr.Commit();
                     return result;
                 }
@@ -234,12 +241,220 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        //public Paged<Department> GetDepartments(FilterModel filter)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
+        public Paged<Department> GetDepartments(FilterModel filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Paged<Department> result = new Paged<Department>();
+                var query = db.lk_departments
+                    .Where(w => w.f_site == _siteId);
 
-        //    }
-        //}
+                if (!String.IsNullOrWhiteSpace(filter.SearchText))
+                {
+                    string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (search != null && search.Count() > 0)
+                    {
+                        foreach (string p in filter.SearchText.Split(' '))
+                        {
+                            if (!String.IsNullOrWhiteSpace(p))
+                            {
+                                query = query.Where(w => w.c_title.Contains(p));
+                            }
+                        }
+                    }
+                }
+                query.OrderByDescending(o => o.c_title);
+                int itemsCount = query.Count();
+
+                var list = query
+                    .Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size)
+                    .Select(s => new Department
+                    {
+                        Id = s.id,
+                        Title = s.c_title,
+                        Address = s.c_address,
+                        WorkTime = s.c_work_time,
+                        Longitude = s.n_longitude,
+                        Latitude = s.n_latitude,
+                        Disabled = s.b_disabled
+                    }).ToArray();
+
+                return new Paged<Department>
+                {
+                    Items = list,
+                    Pager = new PagerModel
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список подразделений для выпадающего списка
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetDepartments()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_departments
+                    .Where(w => w.f_site == _siteId)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_title
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает подразделение
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Department GetDepartment(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_departments
+                    .Where(w => w.id == id)
+                    .Select(s => new Department
+                    {
+                        Id = s.id,
+                        Title = s.c_title,
+                        Address = s.c_address,
+                        WorkTime = s.c_work_time,
+                        Longitude = s.n_longitude,
+                        Latitude = s.n_latitude,
+                        Disabled = s.b_disabled
+                    }).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Добавляет подразделение
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool InsertDepartment(Department item)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var log = new LogModel
+                    {
+                        PageId = item.Id,
+                        PageName = item.Title,
+                        Section = LogModule.Departments,
+                        Action = LogAction.insert
+                    };
+                    InsertLog(log);
+
+                    bool result = db.lk_departments.Insert(() => new lk_departments
+                    {
+                        id = item.Id,
+                        c_title = item.Title,
+                        c_address = item.Address,
+                        c_work_time = item.WorkTime,
+                        n_longitude = (decimal)item.Longitude,
+                        n_latitude = (decimal)item.Latitude,
+                        b_disabled = item.Disabled, 
+                        f_site = _siteId
+                    }) > 0;
+
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Обновляет подразделение
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool UpdateDepartment(Department item)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var log = new LogModel
+                    {
+                        PageId = item.Id,
+                        PageName = item.Title,
+                        Section = LogModule.Departments,
+                        Action = LogAction.update
+                    };
+                    InsertLog(log);
+
+                    bool result = db.lk_departments
+                        .Where(w => w.id == item.Id)
+                        .Set(s => s.c_title, item.Title)
+                        .Set(s => s.c_address, item.Address)
+                        .Set(s => s.c_work_time, item.WorkTime)
+                        .Set(s => s.n_longitude, (decimal)item.Longitude)
+                        .Set(s => s.n_latitude, (decimal)item.Latitude)
+                        .Set(s => s.b_disabled, item.Disabled)
+                        .Update() > 0;
+
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Проверяет существование подразделения
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool CheckDepartmentExists(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_departments
+                    .Where(w => w.id == id).Any();
+            }
+        }
+
+        /// <summary>
+        /// Удаляет подразделение
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteDepartment(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    bool result = false;
+                    var item = db.lk_departments.Where(w => w.id == id).SingleOrDefault();
+                    if (item != null)
+                    {
+                        var log = new LogModel
+                        {
+                            PageId = id,
+                            PageName = item.c_title,
+                            Section = LogModule.Departments,
+                            Action = LogAction.delete
+                        };
+                        InsertLog(log, item);
+
+                        result = db.Delete(item) > 0;
+                    }
+
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
     }
 }
