@@ -1,32 +1,31 @@
 ﻿using LkModule.Areas.Admin.Models;
 using Portal.Areas.Admin.Controllers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Controllers
 {
+    [RouteArea("Admin")]
+    [RoutePrefix("SubscrsWidget")]
     public class SubscrsWidgetController : BaseController
     {
-
         // GET: Admin/SubscrsWidget
         [Route]
-        public ActionResult Index()
+        public ActionResult Index(Guid id)
         {
-            // привязываем лс к пользователю
-
-            //if (backModel.Item.Subscrs != null && backModel.Item.Subscrs.Count() > 0)
-            //{
-            //    _cmsRepository.UpdateUserSubscrs(id, backModel.Item.Subscrs);
-            //}
-
             SubscrViewModel model = new SubscrViewModel
             {
-                Subscrs = _cmsRepository.GetSubscrs()
+                Subscrs = _cmsRepository.GetSubscrs(),
+                SelectedSubscrs = _cmsRepository.GetSelectedSubscrs(id)
             };
             return View(model);
+        }
+
+        [Route("Update"), HttpPost]
+        public ActionResult Update(Guid[] items, Guid user)
+        {
+            _cmsRepository.UpdateUserSubscrs(user, items);
+            return null;
         }
     }
 }

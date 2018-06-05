@@ -39,22 +39,6 @@
 
             @{ Html.RenderAction("Index", "SubscrsWidget");}
 
-            @*@if (Model.Subscrs != null && Model.Subscrs.Count() > 0)
-            {
-                <div class="group-block open" title="Привязка лицевых счетов">
-                    <div class="form-group">
-                        <label for="subscr-select">Лицевые счета</label>
-                        <select name="Item.Subscrs" id="subscr-select" class="form-control select2" multiple>
-                            @foreach (var sub in Model.Subscrs)
-                            {
-                                string title = String.Format("{0} {1} {2} {3}", sub.Link, sub.Surname, sub.Name, sub.Patronymic);
-                                <option value="@sub.Id">@title</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-            }*@
-
         </div>
         <div class="dop_info-block">
             <div class="dop-caption">Настройки</div>

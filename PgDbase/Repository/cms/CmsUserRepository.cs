@@ -308,11 +308,7 @@ namespace PgDbase.Repository.cms
                     Email = s.Email,
                     EmailConfirmed = s.EmailConfirmed,
                     Phone = s.PhoneNumber,
-                    PhoneConfirmed = s.PhoneNumberConfirmed,
-                    Subscrs = db.lk_user_subscrs
-                        .Where(w => w.f_user == s.UserId)
-                        .Select(t => t.f_subscr)
-                        .ToArray()
+                    PhoneConfirmed = s.PhoneNumberConfirmed
                     //Roles = null
                     //Sites = null
                 });

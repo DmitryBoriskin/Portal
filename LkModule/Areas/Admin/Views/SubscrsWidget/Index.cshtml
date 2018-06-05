@@ -1,5 +1,9 @@
 ﻿@model LkModule.Areas.Admin.Models.SubscrViewModel
 
+@{ 
+    Layout = null;
+}
+
 @if (Model.Subscrs != null && Model.Subscrs.Count() > 0)
 {
     <div class="group-block open" title="Привязка лицевых счетов">
@@ -15,4 +19,27 @@
             </select>
         </div>
     </div>
+
+    <script>
+        $("#subscr-select").on("change", function (evt) {
+            var segments = $(location).attr('href').split('/');
+            var user = segments[6];
+            var items = $("#subscr-select").select2("data");
+            var array = [];
+            for (var i = 0; i < items.length; i++) {
+                if (items[i] !== null) {
+                    array.push(items[i].id);
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: '/Admin/SubscrsWidget/Update',
+                data: ({ items: array, user: user }),
+                error: function (data) {}
+            });
+        });
+    </script>
 }
+

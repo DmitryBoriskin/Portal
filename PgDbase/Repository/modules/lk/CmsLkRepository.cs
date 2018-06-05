@@ -126,7 +126,7 @@ namespace PgDbase.Repository.cms
                         Phone = s.c_phone,
                         Email = s.c_email,
                         Disabled = s.b_disabled,
-                        Created = s.d_created, 
+                        Created = s.d_created,
                         Department = s.f_department
                     }).SingleOrDefault();
             }
@@ -223,27 +223,64 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var listExistSubscrs = db.lk_user_subscrs
+                    var listExistsSubscrs = db.lk_user_subscrs
                         .Where(w => w.f_user == user)
                         .Select(s => s.f_subscr)
                         .ToArray();
-
-                    List<lk_user_subscrs> list = new List<lk_user_subscrs>();
-                    foreach (var subscr in subscrs)
+                    
+                    if (subscrs != null)
                     {
-                        if (!listExistSubscrs.Contains(subscr))
+                        foreach (var subscr in listExistsSubscrs)
                         {
-                            list.Add(new lk_user_subscrs
+                            if (!subscrs.Contains(subscr))
                             {
-                                f_user = user,
-                                f_subscr = subscr
-                            });
+                                db.lk_user_subscrs
+                                    .Where(w => w.f_user == user)
+                                    .Where(w => w.f_subscr == subscr)
+                                    .Delete();
+                            }
                         }
+
+                        List<lk_user_subscrs> list = new List<lk_user_subscrs>();
+                        foreach (var subscr in subscrs)
+                        {
+                            if (!listExistsSubscrs.Contains(subscr))
+                            {
+                                list.Add(new lk_user_subscrs
+                                {
+                                    f_user = user,
+                                    f_subscr = subscr,
+                                    d_attached = DateTime.Now
+                                });
+                            }
+                        }
+                        db.BulkCopy(list);
+                    }
+                    else
+                    {
+                        db.lk_user_subscrs
+                            .Where(w => w.f_user == user)
+                            .Delete();
                     }
 
-                    db.BulkCopy(list);
                     tr.Commit();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список прикреплённых ЛС
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public Guid[] GetSelectedSubscrs(Guid user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_user_subscrs
+                    .Where(w => w.f_user == user)
+                    .Select(s => s.f_subscr)
+                    .ToArray();
             }
         }
 
@@ -424,7 +461,7 @@ namespace PgDbase.Repository.cms
                         c_work_time = item.WorkTime,
                         n_longitude = (decimal)item.Longitude,
                         n_latitude = (decimal)item.Latitude,
-                        b_disabled = item.Disabled, 
+                        b_disabled = item.Disabled,
                         f_site = _siteId
                     }) > 0;
 
