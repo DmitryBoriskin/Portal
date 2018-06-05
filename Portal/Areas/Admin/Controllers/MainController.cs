@@ -24,7 +24,7 @@ namespace Portal.Areas.Admin.Controllers
                 ActionName = ActionName,
             };
             model.Menu = MenuCmsCore;
-            model.MenuModul = MenuModulCore;
+            model.MenuModules = MenuModulCore;
                           
              //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
 

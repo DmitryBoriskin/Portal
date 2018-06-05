@@ -16,12 +16,15 @@ namespace PgDbase.Repository.cms
         /// Список ролей
         /// </summary>
         /// <returns></returns>
-        public RoleModel[] GetRoles()
+        public RoleModel[] GetRoles(string[] excludeRoles = null)
         {
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_AspNetRoles
                     .Where(s => s.Discriminator == "ApplicationRole");
+
+                if(excludeRoles != null)
+                    query = query.Where(s => !excludeRoles.Contains(s.Name));
 
                 var data = query.Select(s => new RoleModel()
                 {
@@ -35,6 +38,10 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// Список сайтов из ролей
+        /// </summary>
+        /// <returns></returns>
         public RoleModel[] GetSites()
         {
             using (var db = new CMSdb(_context))

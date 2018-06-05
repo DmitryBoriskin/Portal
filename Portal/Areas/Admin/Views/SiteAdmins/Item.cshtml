@@ -1,30 +1,29 @@
 ﻿@model UsersViewModel
 @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
 {
-    @*if (Model.UserResolution.Write)*@
-    if (true)
+    if (User.Identity.HasClaim(Model.ControllerName, "view"))
     {
-<div class="content">
-    <h1>@Model.PageName</h1>
-    <div class="row">
-        <div class="col-xs-12">
-            <a class="li-caption">@Model.Item.FullName</a><br />
-            <div class="form-group">
-                <label>Email:</label> @Model.Item.Email<br />
-                <label>Телефон:</label> @Model.Item.Phone<br />
-                <label>Дата регистрации:</label>  @Model.Item.RegDate<br />
+        <div class="content">
+            <h1>@Model.PageName</h1>
+            <div class="row">
+                <div class="col-xs-12">
+                    <a class="li-caption">@Model.Item.FullName</a><br />
+                    <div class="form-group">
+                        <label>Email:</label> @Model.Item.Email<br />
+                        <label>Телефон:</label> @Model.Item.Phone<br />
+                        <label>Дата регистрации:</label>  @Model.Item.RegDate<br />
+                    </div>
+                    <br />
+                </div>
+                <div class="col-xs-12 text-right">
+                    <a title="" href="/admin/siteUsers/item/@Model.Item.Id/@ViewBag.urlQuery">Изменить личные данные пользователя</a>
+                </div>
             </div>
-            <br />
+            @if (Model.Item != null)
+            {
+                @Html.Partial("Part/Roles")
+            }
         </div>
-        <div class="col-xs-12 text-right">
-            <a title="" href="/admin/siteUsers/item/@Model.Item.Id/@ViewBag.urlQuery">Изменить личные данные пользователя</a>
-        </div>
-    </div>
-    @if (Model.Item != null)
-    {
-        @Html.Partial("Part/Roles")
-    }
-</div>
 
         <div class="dop_info-block">
             <div class="dop-caption">Настройки</div>
@@ -38,12 +37,6 @@
                 }
                 @Html.CheckBoxFor(m => m.Item.Disabled, new { @type = "checkbox", @title = "Доступ к CMS", @data_toggle = "toggle", @data_help = "123", @data_on = "Учетная запись отключена", @data_onstyle = "danger", @data_off = "Доступ разрешен", @data_offstyle = "success", @data_width = "248" })
             </div>
-            @if (Model.Item != null)
-            {
-                @Html.ActionLink("Изменить пароль", "ChangePass", "services", new { @id = Model.Item.Id }, new { @id = "ChengePass", @class = "button pop-up_frame icon-key-1", @data_class = "ChengePass", @title = "Изменить пароль" })
-                @Html.ActionLink("Журнал изменений", "Log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
-                @Html.ActionLink("Активность пользователя", "Log", "services", new { @id = Model.Item.Id, @type = "user" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
-            }
         </div>
     }
     else
@@ -52,17 +45,7 @@
     }
 
     <div class="buttons">
-        @*@if ((Model.Item != null && Model.UserResolution.Change) || (Model.Item == null && Model.UserResolution.Write))*@
-        @if (true)
-        {
-            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
-        }
-        @*@if (Model.Item != null && Model.UserResolution.Delete)*@
-        @if (true)
-        {
-            <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
-        }
-        <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
+         <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
     </div>
 }
 

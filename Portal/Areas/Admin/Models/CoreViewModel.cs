@@ -53,7 +53,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Меню модулей
         /// </summary>
-        public CmsMenuItemModel[] MenuModul { get; set; }
+        public CmsMenuItemModel[] MenuModules { get; set; }
 
         /// <summary>
         /// Логи, последние н записей

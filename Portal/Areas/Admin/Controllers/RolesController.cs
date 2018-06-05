@@ -33,7 +33,7 @@ namespace Portal.Areas.Admin.Controllers
             if (AccountInfo != null)
             {
                 model.Menu = MenuCmsCore;
-                model.MenuModul = MenuModulCore;
+                model.MenuModules = MenuModulCore;
             }
         }
 
@@ -41,7 +41,19 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Index()
         {
             filter = GetFilter();
-            model.List = _cmsRepository.GetRoles();
+#warning Кто какие роли может редактировать?
+
+            //Исключаем из выборки вышестоящие роли, например SiteAdmin не должен видеть Developer и PortalAdmin
+            string[] excludeRoles = null;
+
+            if (User.IsInRole("PortalAdmin"))
+                excludeRoles = new string[] { "Developer" };
+
+            else if (User.IsInRole("SiteAdmin"))
+                excludeRoles = new string[] { "Developer", "PortalAdmin" };
+            //else developer
+
+            model.List = _cmsRepository.GetRoles(excludeRoles);
             return View(model);
         }
 

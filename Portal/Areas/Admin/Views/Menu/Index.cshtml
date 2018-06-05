@@ -5,15 +5,15 @@
     {
         foreach (var Group in Model.MenuList)
         {
-            <a href="/admin/menu/item/@Group.Id" class="cms_menu-title">@Group.GroupName</a>
+            <a href="/admin/menu/item/@Group.Id" class="cms_menu-title">@Group.Childs</a>
 
-            if (Group.GroupItems != null)
+            if (Group.Childs != null)
             {
                 <div class="sortable ui-sortable" data-service="/Admin/Services/ChangePosition?group=cmsMenu">
-                    @foreach (CmsMenuItem Item in Group.GroupItems)
+                    @foreach (var Item in Group.Childs)
                     {
                         <div class="cms_menu-item ui-sortable-handle" data-id="@Item.Id">
-                            @Html.ActionLink(@Item.Title, "item", new { area = "admin", controller = "menu", Id = @Item.Id })
+                            @Html.ActionLink(@Item.Name, "item", new { area = "admin", controller = "menu", Id = @Item.Id })
                         </div>
                     }
                 </div>                

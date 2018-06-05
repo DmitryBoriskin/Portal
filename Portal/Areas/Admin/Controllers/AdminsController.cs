@@ -7,12 +7,12 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Developer,PortalAdmin")] 
     public class AdminsController : BeCoreController
     {
 
-        //public AllUsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        // : base(userManager, signInManager) { }
-
+        //Работать с администраторами в рамках портала могут только Developer и PortalAdmin
+       
         UsersViewModel model;
         FilterModel filter;
 
@@ -27,13 +27,22 @@ namespace Portal.Areas.Admin.Controllers
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                Roles = _cmsRepository.GetRoles()
+                
             };
             if (AccountInfo != null)
             {
                 model.Menu = MenuCmsCore;
-                model.MenuModul = MenuModulCore;
+                model.MenuModules = MenuModulCore;
             }
+
+            //Исключаем из выборки вышестоящие роли, например PortalAdmin не должен видеть Developer
+            string[] excludeRoles = null;
+
+            if (User.IsInRole("PortalAdmin"))
+                excludeRoles = new string[] { "Developer" };
+            //else developer
+            model.Roles = _cmsRepository.GetRoles(excludeRoles);
+
         }
 
         // GET: Admins/
@@ -41,7 +50,16 @@ namespace Portal.Areas.Admin.Controllers
         {
             filter = GetFilter();
             model.Filter = GetFilterTree();
-            model.List = _cmsRepository.GetPortalAdmins(filter);
+
+            var userFilter = FilterModel.Extend<UserFilter>(filter);
+
+            //Исключаем из выборки пользователей вышестоящих ролей, например PortalAdmin не должен видеть Developer
+            if (User.IsInRole("PortalAdmin"))
+                userFilter.ExcludeRoles = new string[] { "Developer" };
+            //else developer
+
+            model.List = _cmsRepository.GetPortalAdmins(userFilter);
+
             return View(model);
         }
 

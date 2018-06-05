@@ -2,6 +2,7 @@
 using PgDbase.entity;
 using PgDbase.models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PgDbase.Repository.cms
@@ -17,56 +18,39 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<UserModel> GetPortalAdmins(FilterModel filter)
+        public Paged<UserModel> GetPortalAdmins(UserFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
                 Paged<UserModel> result = new Paged<UserModel>();
 
-                var query = (from u in db.core_AspNetUsers
-                             join p in db.core_AspNetUserProfiles on u.Id equals p.UserId
-                             //Условие принадлежности к какой-либо роли
-                             where db.core_AspNetUserRoles.Any(r => r.UserId == u.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole") //исключить обычного пользователя
-                             select new
-                             {
-                                 u.Id,
-                                 u.UserId,
-                                 //u.UserName,
-                                 u.Email,
-                                 u.EmailConfirmed,
-                                 u.PhoneNumber,
-                                 u.PhoneNumberConfirmed,
-                                 //u.LockoutEndDateUtc,
-                                 //u.LockoutEnabled,
-                                 //u.AccessFailedCount,
-                                 u.SiteId,
-                                 p.Surname,
-                                 p.Name,
-                                 p.Patronymic,
-                                 p.Disabled,
-                                 p.BirthDate,
-                                 p.RegDate
-                             }
-                            );
+                var query = db.core_AspNetUsers
+                             //Условие принадлежности к какой-либо роли, исключая User
+                             .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"));
 
 
                 if (filter.Disabled.HasValue)
+                    query = query.Where(s => s.AspNetUserProfilesUserId.Disabled == filter.Disabled.Value);
+
+                if (filter.ExcludeRoles != null)
+                    query = query.Where(s => !filter.ExcludeRoles.Contains(s.AspNetUserRolesUserId.AspNetRolesRoleId.Name));
+
+                if (!String.IsNullOrWhiteSpace(filter.Group))
                 {
-                    query = query.Where(s => s.Disabled == filter.Disabled.Value);
+                    query = query.Where(s => s.AspNetUserRolesUserId.AspNetRolesRoleId.Name == filter.Group);
                 }
-                //if (!String.IsNullOrWhiteSpace(filter.Group))
-                //{
-                //    query = query.Where(w => w.fkusersitelinks.Any(a => a.f_user_group == Guid.Parse(filter.Group)));
-                //}
+
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     query = query.Where(s =>
-                                            (s.Surname + " " + s.Name + " " + s.Patronymic).ToLower().Contains(filter.SearchText.ToLower()) ||
-                                            s.Email == filter.SearchText
+                                            (s.AspNetUserProfilesUserId.Surname + " " + s.AspNetUserProfilesUserId.Name + " " + s.AspNetUserProfilesUserId.Patronymic)
+                                            .ToLower()
+                                            .Contains(filter.SearchText.ToLower())
+                                            || s.Email == filter.SearchText
                                         );
                 }
 
-                query = query.OrderBy(s => new { s.Surname, s.Name, s.Patronymic });
+                query = query.OrderBy(s => new { s.AspNetUserProfilesUserId.Surname, s.AspNetUserProfilesUserId.Name, s.AspNetUserProfilesUserId.Patronymic });
 
                 int itemsCount = query.Count();
 
@@ -75,19 +59,18 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.UserId,
                         SiteId = s.SiteId,
-                        Surname = s.Surname,
-                        Name = s.Name,
-                        Patronimyc = s.Patronymic,
-                        BirthDate = s.BirthDate,
+                        Surname = s.AspNetUserProfilesUserId.Surname,
+                        Name = s.AspNetUserProfilesUserId.Name,
+                        Patronimyc = s.AspNetUserProfilesUserId.Patronymic,
+                        BirthDate = s.AspNetUserProfilesUserId.BirthDate,
                         Email = s.Email,
                         EmailConfirmed = s.EmailConfirmed,
                         Phone = s.PhoneNumber,
                         PhoneConfirmed = s.PhoneNumberConfirmed,
-                        RegDate = s.RegDate,
-                        Disabled = s.Disabled,
+                        RegDate = s.AspNetUserProfilesUserId.RegDate,
+                        Disabled = s.AspNetUserProfilesUserId.Disabled,
 
-                        //Roles
-                        //и сайты к которым он прикреплен
+                        Roles = GetUserRoles(s.UserId)
                     });
 
 
@@ -109,59 +92,42 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<UserModel> GetSiteAdmins(FilterModel filter)
+        public Paged<UserModel> GetSiteAdmins(UserFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
                 Paged<UserModel> result = new Paged<UserModel>();
 
-                var query = (from u in db.core_AspNetUsers
-                             join p in db.core_AspNetUserProfiles on u.Id equals p.UserId
-                             //Условие принадлежности к какой-либо роли
-                             where db.core_AspNetUserRoles.Any(r => r.UserId == u.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole") //исключить обычного пользователя
+                var siteIdStr = _siteId.ToString();
+                var query = db.core_AspNetUsers
+                             //Условие принадлежности к какой-либо роли, исключая User
+                             .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"))
                              //Условие принадлежности к сайту
-                             where db.core_AspNetRoles.Any(s => s.Name == _siteId.ToString() && s.AspNetUserRolesRoleIds.Any(t => t.UserId == u.Id) && s.Discriminator == "IdentityRole")
-                             select new
-                             {
-                                 u.Id,
-                                 u.UserId,
-                                 //u.UserName,
-                                 u.Email,
-                                 u.EmailConfirmed,
-                                 u.PhoneNumber,
-                                 u.PhoneNumberConfirmed,
-                                 //u.LockoutEndDateUtc,
-                                 //u.LockoutEnabled,
-                                 //u.AccessFailedCount,
-                                 u.SiteId,
-                                 p.Surname,
-                                 p.Name,
-                                 p.Patronymic,
-                                 p.Disabled,
-                                 p.BirthDate,
-                                 p.RegDate
-                             }
-                            );
+                             .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == siteIdStr && r.AspNetRolesRoleId.Discriminator == "IdentityRole"));
+
 
                 if (filter.Disabled.HasValue)
-                {
-                    query = query.Where(s => s.Disabled == filter.Disabled.Value);
-                }
+                    query = query.Where(s => s.AspNetUserProfilesUserId.Disabled == filter.Disabled.Value);
 
-                //if (!String.IsNullOrWhiteSpace(filter.Group))
-                //{
-                //    query = query.Where(w => w.fkusersitelinks.Any(a => a.f_user_group == Guid.Parse(filter.Group)));
-                //}
+                if (filter.ExcludeRoles != null)
+                    query = query.Where(s => !filter.ExcludeRoles.Contains(s.AspNetUserRolesUserId.AspNetRolesRoleId.Name));
+
+                if (!String.IsNullOrWhiteSpace(filter.Group))
+                {
+                    query = query.Where(s => s.AspNetUserRolesUserId.AspNetRolesRoleId.Name == filter.Group);
+                }
 
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     query = query.Where(s =>
-                                           (s.Surname + " " + s.Name + " " + s.Patronymic).ToLower().Contains(filter.SearchText.ToLower()) ||
-                                            s.Email == filter.SearchText
+                                            (s.AspNetUserProfilesUserId.Surname + " " + s.AspNetUserProfilesUserId.Name + " " + s.AspNetUserProfilesUserId.Patronymic)
+                                            .ToLower()
+                                            .Contains(filter.SearchText.ToLower())
+                                            || s.Email == filter.SearchText
                                         );
                 }
 
-                query = query.OrderBy(s => new { s.Surname, s.Name, s.Patronymic });
+                query = query.OrderBy(s => new { s.AspNetUserProfilesUserId.Surname, s.AspNetUserProfilesUserId.Name, s.AspNetUserProfilesUserId.Patronymic });
 
                 int itemsCount = query.Count();
 
@@ -170,18 +136,18 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.UserId,
                         SiteId = s.SiteId,
-                        Surname = s.Surname,
-                        Name = s.Name,
-                        Patronimyc = s.Patronymic,
-                        BirthDate = s.BirthDate,
+                        Surname = s.AspNetUserProfilesUserId.Surname,
+                        Name = s.AspNetUserProfilesUserId.Name,
+                        Patronimyc = s.AspNetUserProfilesUserId.Patronymic,
+                        BirthDate = s.AspNetUserProfilesUserId.BirthDate,
                         Email = s.Email,
                         EmailConfirmed = s.EmailConfirmed,
                         Phone = s.PhoneNumber,
-                        PhoneConfirmed =s.PhoneNumberConfirmed,
-                        RegDate = s.RegDate,
-                        Disabled = s.Disabled,
-                        
-                        //Roles = null
+                        PhoneConfirmed = s.PhoneNumberConfirmed,
+                        RegDate = s.AspNetUserProfilesUserId.RegDate,
+                        Disabled = s.AspNetUserProfilesUserId.Disabled,
+
+                        Roles = GetUserRoles(s.UserId)
                     });
 
 
@@ -209,49 +175,30 @@ namespace PgDbase.Repository.cms
             {
                 Paged<UserModel> result = new Paged<UserModel>();
 
-                var query = (from u in db.core_AspNetUsers
-                             join p in db.core_AspNetUserProfiles on u.Id equals p.UserId
-                             //Условие принадлежности к сайту
-                             where db.core_AspNetRoles.Any(s => s.Name == _siteId.ToString() && s.AspNetUserRolesRoleIds.Any(t => t.UserId == u.Id) && s.Discriminator == "IdentityRole")
-                             select new {
-                                 u.Id,
-                                 u.UserId,
-                                 //u.UserName,
-                                 u.Email,
-                                 u.EmailConfirmed,
-                                 u.PhoneNumber,
-                                 u.PhoneNumberConfirmed,
-                                 //u.LockoutEndDateUtc,
-                                 //u.LockoutEnabled,
-                                 //u.AccessFailedCount,
-                                 u.SiteId,
-                                 p.Surname,
-                                 p.Name,
-                                 p.Patronymic,
-                                 p.Disabled,
-                                 p.BirthDate,
-                                 p.RegDate
-                             }
-                            );
+                var siteIdStr = _siteId.ToString();
+
+                var query = db.core_AspNetUsers
+                                //Условие принадлежности к роли User
+                                .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"))
+                                //Условие принадлежности к сайту
+                                .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == siteIdStr && r.AspNetRolesRoleId.Discriminator == "IdentityRole"));
 
 
                 if (filter.Disabled.HasValue)
-                {
-                    query = query.Where(s => s.Disabled == filter.Disabled.Value);
-                }
-                //if (!String.IsNullOrWhiteSpace(filter.Group))
-                //{
-                //    query = query.Where(w => w.fkusersitelinks.Any(a => a.f_user_group == Guid.Parse(filter.Group)));
-                //}
+                    query = query.Where(s => s.AspNetUserProfilesUserId.Disabled == filter.Disabled.Value);
+
+
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     query = query.Where(s =>
-                                            (s.Surname + " " + s.Name + " " + s.Patronymic).ToLower().Contains(filter.SearchText.ToLower()) ||
-                                            s.Email == filter.SearchText
+                                            (s.AspNetUserProfilesUserId.Surname + " " + s.AspNetUserProfilesUserId.Name + " " + s.AspNetUserProfilesUserId.Patronymic)
+                                            .ToLower()
+                                            .Contains(filter.SearchText.ToLower())
+                                            || s.Email == filter.SearchText
                                         );
                 }
 
-                query = query.OrderBy(s => new { s.Surname, s.Name, s.Patronymic });
+                query = query.OrderBy(s => new { s.AspNetUserProfilesUserId.Surname, s.AspNetUserProfilesUserId.Name, s.AspNetUserProfilesUserId.Patronymic });
 
                 int itemsCount = query.Count();
 
@@ -260,17 +207,16 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.UserId,
                         SiteId = s.SiteId,
-                        Surname = s.Surname,
-                        Name = s.Name,
-                        Patronimyc = s.Patronymic,
-                        BirthDate = s.BirthDate,
+                        Surname = s.AspNetUserProfilesUserId.Surname,
+                        Name = s.AspNetUserProfilesUserId.Name,
+                        Patronimyc = s.AspNetUserProfilesUserId.Patronymic,
+                        BirthDate = s.AspNetUserProfilesUserId.BirthDate,
                         Email = s.Email,
                         EmailConfirmed = s.EmailConfirmed,
                         Phone = s.PhoneNumber,
                         PhoneConfirmed = s.PhoneNumberConfirmed,
-                        RegDate = s.RegDate,
-                        Disabled = s.Disabled
-
+                        RegDate = s.AspNetUserProfilesUserId.RegDate,
+                        Disabled = s.AspNetUserProfilesUserId.Disabled,
                     });
 
 
@@ -284,6 +230,56 @@ namespace PgDbase.Repository.cms
                         TotalCount = itemsCount
                     }
                 };
+            }
+        }
+
+        /// <summary>
+        ///Список пользователей в виде массива. Для построения выпадающего списка
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public UserModel[] GetSiteUsersList(string searchText)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var siteIdStr = _siteId.ToString();
+
+                var query = db.core_AspNetUsers
+                                //Условие принадлежности к роли User
+                                .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"))
+                                //Условие принадлежности к сайту
+                                .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == siteIdStr && r.AspNetRolesRoleId.Discriminator == "IdentityRole"));
+
+
+                if (!String.IsNullOrWhiteSpace(searchText))
+                {
+                    query = query
+                            .Where(s =>
+                                    (s.AspNetUserProfilesUserId.Surname + " " + s.AspNetUserProfilesUserId.Name + " " + s.AspNetUserProfilesUserId.Patronymic)
+                                    .ToLower()
+                                    .Contains(searchText.ToLower())
+                                    || s.Email.ToLower().Contains(searchText.ToLower())
+                                );
+                }
+
+                query = query.OrderBy(s => new { s.AspNetUserProfilesUserId.Surname, s.AspNetUserProfilesUserId.Name, s.AspNetUserProfilesUserId.Patronymic });
+
+                int itemsCount = query.Count();
+
+                var list = query
+                    .Select(s => new UserModel
+                    {
+                        Id = s.UserId,
+                        Surname = s.AspNetUserProfilesUserId.Surname,
+                        Name = s.AspNetUserProfilesUserId.Name,
+                        Patronimyc = s.AspNetUserProfilesUserId.Patronymic,
+                        BirthDate = s.AspNetUserProfilesUserId.BirthDate,
+                        Email = s.Email,
+                    })
+                    .ToArray();
+                
+
+                return list;
             }
         }
 
@@ -313,7 +309,7 @@ namespace PgDbase.Repository.cms
                     EmailConfirmed = s.EmailConfirmed,
                     Phone = s.PhoneNumber,
                     PhoneConfirmed = s.PhoneNumberConfirmed,
-                    
+
                     //Roles = null
                     //Sites = null
                 });

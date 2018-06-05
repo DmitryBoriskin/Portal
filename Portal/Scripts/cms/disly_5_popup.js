@@ -8,6 +8,68 @@
     // устанавливаем курсор
     setCursor();
 
+    //Динамический поиск пользователей
+    $("#siteUser-select").select2({
+        language: "ru",
+        minimumInputLength: 3,
+        placeholder: "Выберите значение из списка",
+        triggerChange: true,
+        allowClear: true,
+        ajax: {
+            method: "POST",
+            url: "/admin/siteUsers/list",
+            dataType: 'json',
+            delay: 500,
+            data: function (params) {
+                return {
+                    query: params.term // Фильтр
+                    //param1: null,
+                };
+            },
+            processResults:
+                function (data, params) {
+                    //Mapping Dictionary
+                    var array = $.map(data, function (e, i) {
+                        return {
+                            id: e.id, text: e.text
+                        };
+                    });
+                    return { results: array };
+                },
+            cache: true
+        }
+    });
+
+
+    //Добавление пользователя сайта в администраторы
+    $("#add-newSiteAdmin-btn").on("click", function (e) {
+        e.preventDefault();
+        var _role = $("#siteUserRole-select").val();
+        var _userId = $("#siteUser-select").val();
+        var _action = $(this).data("url");
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { userId: _userId, role: _role },
+            })
+                .done(function (response) {
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+
 
     //удаление документов при помощи AJAX
     if ($('.delete-document').length > 0) {
@@ -348,71 +410,7 @@
         }
     });
 
-    //Привязка к гс
-    $("#modal-spec-table .spec-item-chkbx").on('ifToggled', function () {
-        var targetUrl = "/Admin/MainSpecialist/UpdateLinkToSpec";
-        var _objctId = $(this).data("objectId");
-        var _objectType = $(this).data("objectType");
-        var _linkId = $(this).data("linkId");
-        var _linkType = $(this).data("linkType");
-        var _checked = $(this).is(':checked');
 
-        var el = $(this);
-        var elTooltip = $(this).closest(".spec-item-row").find(".spec-item-tooltip").first();
-        var _chkbxHtml = $(this).closest(".spec-item-row").find(".spec-item-html").first().html();
-
-        var listBlock = $("#model-linksToSpec-ul", top.document);
-
-        try {
-            var params = {
-                ObjctId: _objctId,
-                ObjctType: _objectType,
-                LinkId: _linkId,
-                LinkType: _linkType,
-                Checked: _checked
-            };
-
-            var _data = JSON.stringify(params);
-
-            //ShowPreloader(content);
-
-            $.ajax({
-                url: targetUrl,
-                method: "POST",
-                async: true,
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(params)
-            })
-                .done(function (response) {
-                    elTooltip.attr("title", "Сохранено");
-                    elTooltip.tooltip('show');
-                    if (_checked) {
-                        if (listBlock.find("spec_" + _linkId).length === 0) {
-                            listBlock.append($("<li id='spec_" + _linkId + "' class='icon-link'/>").html(_chkbxHtml));
-                        }
-                    }
-                    else {
-                        listBlock.find("#spec_" + _linkId).remove();
-                    }
-                })
-                .fail(function (jqXHR, status) {
-                    console.log("Ошибка" + " " + status + " " + jqXHR);
-                    elTooltip.attr("title", "Ошибка сохранения");
-                    elTooltip.tooltip('show');
-                })
-                .always(function (response) {
-                    setTimeout(function () {
-                        elTooltip.tooltip('hide');
-                    }, 1000);
-                    //location.reload();
-                });
-        }
-        catch (ex) {
-            console.log(ex);
-        }
-    });
 
 
     function CheckFormData(form) {
@@ -433,55 +431,6 @@
         }
         return false;
     }
-
-    $("#member-save-btn").on("click", function (e) {
-        e.preventDefault();
-        var form = $("form");
-        if (CheckFormData(form)) {
-            form.submit();
-            setTimeout(top.document.location.reload(), 3000);
-        }
-        else {
-            $("#error-message-box").removeClass("hidden");
-        }
-    });
-
-    $("#member-people-select").on("change", function (e) {
-        $(".member-people-org-select").select2({
-            placeholder: "Выберите организацию",
-            language: "ru",
-            width: "100%",
-            triggerChange: true,
-            allowClear: true,
-            //minimumInputLength: 1,
-
-            ajax: {
-                method: "POST",
-                url: "/admin/orgs/orglistforselect",
-                dataType: 'json',
-                delay: 500,
-                data: { peopleId: $("#member-people-select").val() },
-                processResults:
-                function (data, params) {
-                    var obj = $.map(data, function (item, indx) {
-                        return {
-                            id: item.id,
-                            text: item.title
-                        }
-                    });
-                    return { results: obj };
-                },
-                cache: true
-            }
-        });
-    });
-
-    $("#mainSpec-orgSite-input").on("change", function (e) {
-        var newval = $(this).val().replace("http://", "");
-        newval = $(this).val().replace("https://", "");
-        $(this).val(newval);
-    });
-
 })
 
 

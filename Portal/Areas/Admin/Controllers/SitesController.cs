@@ -30,7 +30,7 @@ namespace Portal.Areas.Admin.Controllers
             if (AccountInfo != null)
             {
                 model.Menu = MenuCmsCore;
-                model.MenuModul = MenuModulCore;
+                model.MenuModules = MenuModulCore;
             }
         }
 

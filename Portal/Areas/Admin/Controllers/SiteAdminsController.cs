@@ -7,10 +7,11 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Developer,PortalAdmin,SiteAdmin")] 
     public class SiteAdminsController : BeCoreController
     {
-        //public UsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        //    : base(userManager, signInManager) { }
+
+        //Работать с администраторами в рамках сайта могут только Developer, PortalAdmin и SiteAdmin
 
         UsersViewModel model;
         FilterModel filter;
@@ -25,14 +26,25 @@ namespace Portal.Areas.Admin.Controllers
                 Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName,
-                Roles = _cmsRepository.GetRoles()
+                ActionName = ActionName
             };
             if (AccountInfo != null)
             {
                 model.Menu = MenuCmsCore;
-                model.MenuModul = MenuModulCore;
+                model.MenuModules = MenuModulCore;
             }
+
+            //Исключаем из выборки вышестоящие роли, например SiteAdmin не должен видеть Developer и PortalAdmin
+            string[] excludeRoles = null;
+
+            if (User.IsInRole("PortalAdmin"))
+                excludeRoles = new string[] { "Developer" };
+
+            else if (User.IsInRole("SiteAdmin"))
+                excludeRoles = new string[] { "Developer", "PortalAdmin" };
+            //else developer
+
+            model.Roles = _cmsRepository.GetRoles(excludeRoles);
         }
 
         // GET: Admin/Users
@@ -40,7 +52,18 @@ namespace Portal.Areas.Admin.Controllers
         {
             filter = GetFilter();
             model.Filter = GetFilterTree();
-            model.List = _cmsRepository.GetSiteAdmins(filter);
+            var userFilter = FilterModel.Extend<UserFilter>(filter);
+
+            //Исключаем из выборки пользователей вышестоящих ролей, например SiteAdmin не должен видеть Developer и PortalAdmin
+            if (User.IsInRole("PortalAdmin"))
+                userFilter.ExcludeRoles = new string[] { "Developer" };
+
+            else if (User.IsInRole("SiteAdmin"))
+                userFilter.ExcludeRoles = new string[] { "Developer", "PortalAdmin"};
+            //else developer
+
+            model.List = _cmsRepository.GetSiteAdmins(userFilter);
+
             return View(model);
         }
 
@@ -52,14 +75,16 @@ namespace Portal.Areas.Admin.Controllers
             return View("Item", model);
         }
 
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
         public ActionResult Insert()
         {
-            string query = HttpUtility.UrlDecode(Request.Url.Query);
-            query = AddFilterParam(query, "page", String.Empty);
-            
-            return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
+            filter = GetFilter();
+            //string query = HttpUtility.UrlDecode(Request.Url.Query);
+            //query = AddFilterParam(query, "page", String.Empty);
+
+            //return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
+            //ViewBag.Users = _cmsRepository.GetSiteUsers(filter).Items.ToArray();
+
+            return View("Part/FindUser", model);
         }
 
         [HttpPost]

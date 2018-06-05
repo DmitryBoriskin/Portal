@@ -1,7 +1,6 @@
 ﻿@model UsersViewModel
 
-@*if (Model.UserResolution.Read)*@
-@if (true)
+@if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
     <div class="content">
         <h1>@Model.PageName</h1>
@@ -12,7 +11,14 @@
                 string disabled = (item.Disabled) ? "disabled" : String.Empty;
                 <div class="list-item @disabled">
                     <a title="" class="li-caption" href="/admin/admins/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
-                    <div class="li-desc"><span>Группа:</span> @(item.Roles != null ? "есть роли" : "")</div>
+                    <div class="li-desc">
+                        <span>Роли:</span>
+                        @foreach (var role in item.Roles)
+                        {
+                            if (role.Name != "User")
+                            {<span>@role.Name</span>}
+                        }
+                    </div>
                     <div class="li-desc"><span>E-mail:</span> @item.Email</div>
                 </div>
             }
@@ -36,8 +42,7 @@
     </div>
 
     <div class="buttons">
-        @*@if (Model.UserResolution.Write)*@
-        @if (true)
+        @if (User.Identity.HasClaim(Model.ControllerName, "create"))
         {
             using (Html.BeginForm(Model.ActionName, Model.ControllerName))
             {

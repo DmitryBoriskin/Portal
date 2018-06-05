@@ -1,4 +1,6 @@
-﻿@model UsersViewModel
+﻿@using System.Security.Claims
+
+@model UsersViewModel
 
 @if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
@@ -11,7 +13,12 @@
                 string disabled = (item.Disabled) ? "disabled" : String.Empty;
                 <div class="list-item @disabled">
                     <a title="" class="li-caption" href="/admin/siteadmins/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
-                    <div class="li-desc"><span>Группа:</span> @(item.Roles != null? "есть роли": "") </div>
+                    <div class="li-desc"><span>Роли:</span> 
+                        @foreach (var role in item.Roles)
+                        { if (role.Name != "User")
+                            {<span>@role.Name</span>}
+                        }
+                    </div>
                     <div class="li-desc"><span>E-mail:</span> @item.Email</div>
                 </div>
             }
@@ -35,13 +42,15 @@
     </div>
 
     <div class="buttons">
-        @if (User.Identity.HasClaim(Model.ControllerName, "create"))
-        {
-            using (Html.BeginForm(Model.ActionName, Model.ControllerName))
-            {
-                <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
-            }
-        }
+        <div class="row">
+            <div class="col-xs-3">
+                @if (User.Identity.HasClaim(ClaimTypes.Role, "Developer") || User.Identity.HasClaim(ClaimTypes.Role, "PortalAdmin") || User.Identity.HasClaim(ClaimTypes.Role, "SiteAdmin"))
+                {
+                    @Html.ActionLink("Добавить",  "Insert", "SiteAdmins", new { }, new { @id = "addUserToAdmins-btn", @class = "button pop-up_frame icon-create", @data_class = "LogList", @title = "Добавить администратора" })
+                }
+            </div>
+        </div>
+       
     </div>
 }
 else

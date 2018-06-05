@@ -64,7 +64,7 @@ namespace PgDbase.Repository.cms
             }
         }
 
-        public CmsMenuItemModel[] GetModuleMenu(Guid UserId)
+        public CmsMenuItemModel[] GetModulesMenu(Guid UserId)
         {
             using (var db = new CMSdb(_context))
             {
@@ -73,7 +73,8 @@ namespace PgDbase.Repository.cms
                 //var query=db.re
                 var data = db.core_controllers
                            .Where(w => w.f_parent == null)
-                           .OrderBy(o => o.c_name)
+                           .Where(w => w.id != Guid.Empty)
+                           .OrderBy(w => w.n_sort)
                            .Select(s => new CmsMenuItemModel()
                            {
                                Alias = s.c_controller_name,

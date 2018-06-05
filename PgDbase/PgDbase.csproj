@@ -76,6 +76,7 @@
     <Compile Include="Entity\modules\lk\Department.cs" />
     <Compile Include="Entity\modules\lk\Subscr.cs" />
     <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
+    <Compile Include="Entity\services\Filters\UserFilter.cs" />
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
     <Compile Include="Entity\services\Filters\PageFilterModel.cs" />

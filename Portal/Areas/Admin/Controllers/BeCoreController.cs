@@ -178,7 +178,7 @@ namespace Portal.Areas.Admin
 
             //Права доступа пользователя к страницам
             MenuCmsCore = _cmsRepository.GetCmsMenu();
-            MenuModulCore = _cmsRepository.GetModuleMenu(AccountInfo.Id);
+            MenuModulCore = _cmsRepository.GetModulesMenu(AccountInfo.Id);
 
             //UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
             //if (UserResolutionInfo == null)

@@ -77,9 +77,9 @@
                                 <th>Создание</th>
                                 <th>Удаление</th>
                             </tr>
-                            @if (Model.MenuModul.Count() > 0)
+                            @if (Model.MenuModules.Count() > 0)
                             {
-                                foreach (var menu in Model.MenuModul)
+                                foreach (var menu in Model.MenuModules)
                                 {
                                     <tr>
                                         <td>@menu.Name (@menu.Alias)</td>

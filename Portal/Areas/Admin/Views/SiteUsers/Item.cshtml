@@ -3,41 +3,41 @@
 {
     if (User.Identity.HasClaim(Model.ControllerName, "view"))
     {
-<div class="content">
-    <h1>@Model.PageName</h1>
-    <div class="row">
-        <div class="col-xs-4">
-            @Html.TextBoxFor(m => Model.Item.Surname, new { @required = "", @Title = "Фамилия", @placeholder = "Фамилия", MaxLength = "128" })
-        </div>
-        <div class="col-xs-4">
-            @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @Title = "Имя", @placeholder = "Имя", @MaxLength = "128" })
-        </div>
-        <div class="col-xs-4">
-            @Html.TextBoxFor(m => Model.Item.Patronimyc, new { @Title = "Отчество", @placeholder = "Отчество", @MaxLength = "128" })
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-3">
-            @Html.TextBoxFor(m => Model.Item.RegDate, new { @Title = "Дата регистрации", @readOnly = "" })
-        </div>
-        <div class="col-xs-3">
-            @Html.TextBoxFor(m => Model.Item.BirthDate, new { @Title = "Дата рождения" })
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-3">
-            @Html.TextBoxFor(m => Model.Item.Phone, new { @Title = "Телефон" })
-        </div>
-        <div class="col-xs-3">
-            <div class="form-group" style="padding-top:23px;">
-                @Html.CheckBoxFor(m => Model.Item.PhoneConfirmed, new { @data_init = "false", @class = "iCheck" })  <label>Телефон подтвержден</label>
+        <div class="content">
+            <h1>@Model.PageName</h1>
+            <div class="row">
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(m => Model.Item.Surname, new { @required = "", @Title = "Фамилия", @placeholder = "Фамилия", MaxLength = "128" })
+                </div>
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @Title = "Имя", @placeholder = "Имя", @MaxLength = "128" })
+                </div>
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(m => Model.Item.Patronimyc, new { @Title = "Отчество", @placeholder = "Отчество", @MaxLength = "128" })
+                </div>
             </div>
-        </div>
-    </div>
 
-</div>
+            <div class="row">
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => Model.Item.RegDate, new { @Title = "Дата регистрации", @readOnly = "" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => Model.Item.BirthDate, new { @Title = "Дата рождения" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(m => Model.Item.Phone, new { @Title = "Телефон" })
+                </div>
+                <div class="col-xs-3">
+                    <div class="form-group" style="padding-top:23px;">
+                        @Html.CheckBoxFor(m => Model.Item.PhoneConfirmed, new { @data_init = "false", @class = "iCheck" })  <label>Телефон подтвержден</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="dop_info-block">
             <div class="dop-caption">Настройки</div>
             <div class="group-block rules open" title="Права авторизации">
@@ -66,16 +66,16 @@
         <div class="content"><p>У вас недостаточно прав.</p></div>
     }
 
-        <div class="buttons">
-            @if (User.Identity.HasClaim(Model.ControllerName, "view") || User.Identity.HasClaim(Model.ControllerName, "create"))
-            {
-                <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
-            }
-            @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
-            {
+    <div class="buttons">
+        @if (User.Identity.HasClaim(Model.ControllerName, "view") || User.Identity.HasClaim(Model.ControllerName, "create"))
+        {
+            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+        }
+        @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
+        {
             <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
-            }
-            <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
-        </div>
+        }
+        <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
+    </div>
 }
 

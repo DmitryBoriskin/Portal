@@ -1,17 +1,20 @@
-﻿using PgDbase.entity;
+﻿using Newtonsoft.Json;
+using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using Portal.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Developer,PortalAdmin,SiteAdmin")]
     public class SiteUsersController : BeCoreController
     {
-        //public UsersController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        //    : base(userManager, signInManager) { }
+        // С пользователями могут работать только роли Developer, PortalAdmin, SiteAdmin
 
         UsersViewModel model;
         FilterModel filter;
@@ -27,12 +30,11 @@ namespace Portal.Areas.Admin.Controllers
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                Roles = _cmsRepository.GetRoles()
             };
             if (AccountInfo != null)
             {
                 model.Menu = MenuCmsCore;
-                model.MenuModul = MenuModulCore;
+                model.MenuModules = MenuModulCore;
             }
         }
 
@@ -250,5 +252,15 @@ namespace Portal.Areas.Admin.Controllers
         {
             return Redirect(StartUrl);
         }
+
+        [HttpPost]
+        public string List (string query)
+        {
+            var users = _cmsRepository.GetSiteUsersList(query);
+            var data = users.Select(t => new { id = t.Id, text = $"{t.FullName} ({t.Email})" });
+
+            return JsonConvert.SerializeObject(data);
+        }
+
     }
 }

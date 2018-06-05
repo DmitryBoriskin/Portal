@@ -452,6 +452,7 @@ $(document).ready(function () {
         }
     });
 
+    
     $("#add-userSiteLink-btn").on("click", function (e) {
         e.preventDefault();
         var _role = $("#itemSite-select").val();
@@ -514,8 +515,6 @@ $(document).ready(function () {
             console.log(ex);
         }
     });
-
-
 
     //Домен по умолчанию
     $(".set-domain-default-btn").on("click", function (e) {

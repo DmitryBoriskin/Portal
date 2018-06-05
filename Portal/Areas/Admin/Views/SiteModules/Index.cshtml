@@ -1,6 +1,6 @@
 ﻿@model SitesViewModel
 @*@if (Model.UserResolution.Read)*@
-@if (true)
+@if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
     <div class="content">
         <h1>
@@ -17,16 +17,16 @@
             {
                 <div class="list-item">
                     <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/siteModules/item/@item.Id">@item.Title</a>
-                        @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
+                    @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
+                    {
+                        foreach (var part in item.ModuleParts)
                         {
-                            foreach (var part in item.ModuleParts)
-                            {
-                                <div class="list-item-part">
-                                    <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Title</a>
-                                    <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
-                                </div>
-                            }
+                            <div class="list-item-part">
+                                <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Title</a>
+                                <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
+                            </div>
                         }
+                    }
                 </div>
             }
         }
@@ -38,18 +38,8 @@
             {
                 @Html.Partial("Part/Filter")
             }*@
-
     </div>
     <div class="buttons">
-        @*@if (Model.UserResolution.Write)*@
-        @if (true)
-        {
-            using (Html.BeginForm(Model.ActionName, Model.ControllerName))
-            {
-                <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
-            }
-
-        }
     </div>
 }
 else

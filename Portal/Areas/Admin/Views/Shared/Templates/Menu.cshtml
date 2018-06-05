@@ -38,9 +38,9 @@
                 @*модули*@
                 @if (menuGroup.Alias == "site")
                 {
-                    if (Model.MenuModul != null)
+                    if (Model.MenuModules != null && Model.MenuModules.Count() > 0)
                     {
-                        foreach (var Item in Model.MenuModul)
+                        foreach (var Item in Model.MenuModules)
                         {
                             string Url = "/Admin/" + Item.Alias + "/";
                             try

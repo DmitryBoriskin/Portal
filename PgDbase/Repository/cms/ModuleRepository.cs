@@ -96,9 +96,9 @@ namespace PgDbase.Repository.cms
                         {
                             Id = s.f_controller,
                             Title = db.core_controllers
-                                                .Where(c => c.id == s.f_controller)
-                                                .First()
-                                                .c_name,
+                                                .Where(c => c.id == s.f_controller).Any()
+                                                ? db.core_controllers.Where(c => c.id == s.f_controller).First().c_name
+                                                : "!!! Возможно контроллер удален",
                         },
                         ViewPath = s.c_path,
                         Image = s.c_img,

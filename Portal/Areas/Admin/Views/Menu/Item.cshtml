@@ -5,7 +5,7 @@
         <h1>@ViewBag.Title</h1>
         <div class="row">
             <div class="col-xs-8">
-                @Html.TextBoxFor(m => m.Item.Title, new { @class = "uc_input", @required = "", @title = "Название", @placeholder = "Название", @MaxLength = "512" })
+                @Html.TextBoxFor(m => m.Item.Name, new { @class = "uc_input", @required = "", @title = "Название", @placeholder = "Название", @MaxLength = "512" })
             </div>
             <div class="col-xs-4">
                 @Html.TextBoxFor(m => m.Item.Alias, new { @class = "uc_input", @required = "", @Title = "Псевдоним", @placeholder = "Псевдоним", @MaxLength = "16", @data_help = "Уникальное имя раздела, по которому будут раздаваться права пользователям на данный раздел." })
@@ -14,8 +14,8 @@
     </div>
     <div class="dop_info-block">
         <div class="dop-caption icon-layers">Доп. параметры</div>
-        @Html.TextBoxFor(m => m.Item.Class, new { @class = "uc_input", @title = "Иконка", @placeholder = "Класс иконки", @MaxLength = "512" })
-        @Html.DropDownListFor(m=>m.Item.Pid,new SelectList(Model.MenuGroup, "Id", "GroupName",0), new {@class= "selectpicker", @title ="Группа меню"})
+        @Html.TextBoxFor(m => m.Item.Icon, new { @class = "uc_input", @title = "Иконка", @placeholder = "Класс иконки", @MaxLength = "512" })
+        @Html.DropDownListFor(m=>m.Item.Pid,new SelectList(Model.MenuGroups, "Id", "GroupName",0), new {@class= "selectpicker", @title ="Группа меню"})
 
         @if (Model.Item != null)
         {

@@ -888,6 +888,7 @@
     <Content Include="Areas\Admin\Views\SiteAdmins\Part\Roles.cshtml" />
     <Content Include="Areas\Admin\Views\Admins\Part\Roles.cshtml" />
     <Content Include="Areas\Admin\Views\Admins\Part\Sites.cshtml" />
+    <Content Include="Areas\Admin\Views\SiteAdmins\Part\FindUser.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Modules\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
