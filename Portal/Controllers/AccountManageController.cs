@@ -6,18 +6,14 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Portal.Areas.Admin;
+using PgDbase.Repository.front;
 using Portal.Models;
 
 namespace Portal.Controllers
 {
     [Authorize]
-    public class AccountManageController : BeCoreController
+    public class AccountManageController : CoreController
     {
-        public AccountManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        : base(userManager, signInManager) { }
-
-
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)

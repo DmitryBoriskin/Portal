@@ -23,17 +23,13 @@ namespace Portal.Areas.Admin.Controllers
             model = new UsersViewModel()
             {
                 PageName = PageName,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore,
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
 
             //Исключаем из выборки вышестоящие роли, например PortalAdmin не должен видеть Developer
             string[] excludeRoles = null;

@@ -21,22 +21,16 @@ namespace Portal.Areas.Admin.Controllers
             model = new PageViewModel
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                UserResolution = UserResolutionInfo,
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore,
                 MenuGroups = _cmsRepository.GetPageGroups()
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
 
             #region Метатеги
-            //ViewBag.Title = UserResolutionInfo.Title;
             ViewBag.Description = "";
             ViewBag.KeyWords = "";
             #endregion

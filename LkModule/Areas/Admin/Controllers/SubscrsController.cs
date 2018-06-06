@@ -23,12 +23,13 @@ namespace LkModule.Areas.Admin.Controllers
             model = new SubscrViewModel()
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                UserResolution = UserResolutionInfo,
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore,
+
                 Departments = new SelectList(_cmsRepository.GetDepartments()
                     .Select(s => new SelectListItem
                     {
@@ -36,12 +37,6 @@ namespace LkModule.Areas.Admin.Controllers
                         Value = s.Id.ToString()
                     }).ToArray(), "Value", "Text")
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Lk

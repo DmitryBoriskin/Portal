@@ -25,18 +25,13 @@ namespace LkModule.Areas.Admin.Controllers
             model = new DepartmentViewModel()
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Department

@@ -22,19 +22,13 @@ namespace Portal.Areas.Admin.Controllers
             model = new ModuleViewModel()
             {
                 PageName = PageName,
-                DomainName = Domain,
-                //DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Modules

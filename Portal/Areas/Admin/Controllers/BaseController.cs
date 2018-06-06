@@ -72,7 +72,7 @@ namespace Portal.Areas.Admin.Controllers
 
         public BaseController()
         {
-            _cmsRepository = new CmsRepository("dbConnection", Guid.Empty, RequestUserInfo.IP, SiteId);
+            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, Guid.Empty);
         }
 
         public BaseController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)

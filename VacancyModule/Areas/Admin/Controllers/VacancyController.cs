@@ -22,19 +22,13 @@ namespace VacancyModule.Areas.Admin.Controllers
             model = new VacancyViewModel()
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                UserResolution = UserResolutionInfo
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Vacancy

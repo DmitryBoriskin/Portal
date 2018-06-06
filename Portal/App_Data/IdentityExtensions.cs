@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PgDbase.entity;
 using Portal.Models;
 using System;
 using System.Collections.Generic;
@@ -34,5 +35,6 @@ namespace Portal
                 }
             return false;
         }
+
     }
 }

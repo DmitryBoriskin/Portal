@@ -2,6 +2,7 @@
 using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -23,25 +24,19 @@ namespace Portal.Areas.Admin.Controllers
             model = new RoleViewModel()
             {
                 PageName = PageName,
-                //DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName, 
-                
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Roles
         public ActionResult Index()
         {
             filter = GetFilter();
-#warning Кто какие роли может редактировать?
 
             //Исключаем из выборки вышестоящие роли, например SiteAdmin не должен видеть Developer и PortalAdmin
             string[] excludeRoles = null;
@@ -180,7 +175,30 @@ namespace Portal.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult UpdateRoleClaim(RoleClaimModel roleClaim)
         {
-            var res = _cmsRepository.UpdateRoleClaim(roleClaim);
+            var res = true;
+            //Ранее предполагалось, что компоненты модуля имеют один контроллер
+            //var res = _cmsRepository.UpdateRoleClaim(roleClaim);
+
+            //Права на дочерние контроллеры (компоненты модуля)
+            var module = _cmsRepository.GetModule(roleClaim.Type);
+            if(module != null && module.ModuleParts.Count() > 0)
+            {
+                var parts = module.ModuleParts.Distinct();
+                foreach (var part in parts)
+                {
+                    var newClaim = new RoleClaimModel()
+                    {
+                        RoleId = roleClaim.RoleId,
+                        Type = part.ControllerName,
+                        Value = roleClaim.Value,
+                        Checked = roleClaim.Checked
+                    };
+                    var updRes = _cmsRepository.UpdateRoleClaim(roleClaim);
+                    if (updRes)
+                        res = false;
+                }
+            }
+
             if (res)
                 return Json("Success");
 

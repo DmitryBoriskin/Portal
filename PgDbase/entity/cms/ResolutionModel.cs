@@ -30,10 +30,9 @@ namespace PgDbase.entity
 
         public string Desc { get; set; }
 
-        public string Desciminator { get; set; }
+        public string Discriminator { get; set; }
 
         public RoleClaimModel[] Claims { get; set; }
-
 
     }
 

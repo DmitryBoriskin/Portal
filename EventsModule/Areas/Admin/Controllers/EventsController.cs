@@ -25,20 +25,13 @@ namespace EventsModule.Areas.Admin.Controllers
             model = new EventViewModel
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
-                UserResolution = UserResolutionInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
-            ViewBag.Title = "События";
         }
 
         // GET: Admin/Events

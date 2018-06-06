@@ -21,7 +21,7 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_sites
-                    .AsQueryable();
+                    .Where(s => s.id != Guid.Empty);
 
                 if (filter.Disabled != null)
                     query = query.Where(w => w.b_disabled == filter.Disabled);

@@ -27,29 +27,20 @@ namespace Portal.Areas.Admin.Models
         public string PageName { get; set; }
 
         /// <summary>
-        /// Текущий домен
-        /// </summary>
-        public string DomainName { get; set; }
-
-        /// <summary>
         /// Настройки сайта
         /// </summary>
         public SettingsModel Settings { get; set; }
 
         /// <summary>
-        /// Подключенный пользователь
+        /// Сайты
         /// </summary>
-        public AccountModel Account { get; set; }
-
-        /// <summary>
-        /// Права пользователя
-        /// </summary>
-        public ResolutionModel UserResolution { get; set; }
+        public RoleModel[] Sites { get; set; }
 
         /// <summary>
         /// Меню админки из структуры CMS
         /// </summary>
         public CmsMenuItemModel[] Menu { get; set; }
+
         /// <summary>
         /// Меню модулей
         /// </summary>

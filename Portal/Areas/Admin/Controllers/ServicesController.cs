@@ -31,7 +31,6 @@ namespace Portal.Areas.Admin.Controllers
         {
             UsersViewModel model = new UsersViewModel()
             {
-                //UserResolution = UserResolutionInfo,
                 Item = _cmsRepository.GetUser(id)
             };
             return PartialView("ChangePass", model);
@@ -53,7 +52,6 @@ namespace Portal.Areas.Admin.Controllers
 
         //    model = new UsersViewModel()
         //    {
-        //        //UserResolution = UserResolutionInfo,
         //        Item = _cmsRepository.GetUser(id)
         //    };
 

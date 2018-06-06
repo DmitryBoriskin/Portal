@@ -93,18 +93,6 @@ namespace PgDbase.Repository.front
             //PageName = _Repository.GetPageName(ControllerName);
             //StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
 
-            //// Данные об авторизованном пользователе
-            //var userId = User.Identity.GetUserId();
-            ////var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            //var currentUser = UserManager.FindById(userId);
-            //var _userId = currentUser.UserId;
-
-            ////Проверка на права доступа к конкретному сайту
-            //var siteAuth = User.IsInRole(SiteId.ToString());
-
-            //if(!siteAuth)
-            //    filterContext.Result = new RedirectResult("~/Account/AccessDenied");
-
         }
 
         public CoreController()

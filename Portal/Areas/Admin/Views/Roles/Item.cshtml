@@ -11,7 +11,7 @@
                     @Html.HiddenFor(m => m.Item.Id)
                     @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @Title = "Название", @placeholder = "Название", MaxLength = "256" })
                     @Html.TextBoxFor(m => Model.Item.Desc, new { @required = "", @Title = "Описание", @placeholder = "Описание", MaxLength = "1024" })
-                    @Html.HiddenFor(m => m.Item.Desciminator, new { value = "ApplicationRole" })
+                    @Html.HiddenFor(m => m.Item.Discriminator, new { value = "ApplicationRole" })
                 </div>
             </div>
 
@@ -44,7 +44,9 @@
                                         <tr><td>@menu.Name (@menu.Alias)</td>
                                         <td>
                                             <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx"
-                                                   @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "view") ? "checked" : "") />
+                                                   @*@(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "view") ? "checked" : "")*@ 
+                                                   
+                                                   />
                                         </td>
                                         <td>
                                             <input type="checkbox" data-init="false" data-claim-type="@menu.Alias" data-claim-value="edit" class="iCheck roleClaim-chckbx"

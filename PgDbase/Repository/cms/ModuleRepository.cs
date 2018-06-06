@@ -418,6 +418,44 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Возвращает модуль (не компонент) по controllerName
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public ModuleModel GetModule(string name)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_controllers
+                    .Where(s => s.c_controller_name == name)
+                    .Where(s => s.f_parent == null)
+                   .Select(s => new ModuleModel()
+                   {
+                       Id = s.id,
+                       ParentId = s.f_parent,
+                       Title = s.c_name,
+                       ControllerName = s.c_controller_name,
+                       ActionName = s.c_action_name,
+                       View = s.c_default_view,
+                       Desc = s.c_desc,
+                       ModuleParts = db.core_controllers
+                                        .Where(m => m.f_parent == s.id)
+                                        .Select(m => new ModuleModel()
+                                        {
+                                            Id = m.id,
+                                            Title = m.c_name,
+                                            ControllerName = m.c_controller_name,
+                                            ActionName = m.c_action_name,
+                                            ParentId = m.id,
+                                            Desc = m.c_desc,
+                                            View = m.c_default_view
+                                        }).ToArray()
+                   });
+                return data.SingleOrDefault();
+            }
+        }
+
+        /// <summary>
         /// Добавляет модуль или компонент
         /// </summary>
         /// <param name="module"></param>

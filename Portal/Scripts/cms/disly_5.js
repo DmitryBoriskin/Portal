@@ -27,8 +27,10 @@ $(document).ready(function () {
 
 
 
-    $('#DomainSelect').change(function () {
-        window.location.href = this.options[this.selectedIndex].value
+    $('#adminDomain-select').change(function () {
+        //ajax get defaultdomain function mast be here
+
+        //window.location.href = this.options[this.selectedIndex].value
     });
 
     $modal = $('.modal');

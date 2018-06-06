@@ -17,16 +17,14 @@ namespace Portal.Areas.Admin.Controllers
             MainViewModel model = new MainViewModel()
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                Menu = MenuCmsCore,
+                MenuModules = MenuModulCore,
             };
-            model.Menu = MenuCmsCore;
-            model.MenuModules = MenuModulCore;
-                          
-             //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
+            //model.AccountLog = _cmsRepository.getCmsUserLog(AccountInfo.Id);
 
             return View(model);
         }

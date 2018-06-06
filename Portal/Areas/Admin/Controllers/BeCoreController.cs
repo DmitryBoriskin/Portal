@@ -50,7 +50,6 @@ namespace Portal.Areas.Admin
             }
         }
 
-
         /// <summary>
         /// Репозиторий для работы с сущностями
         /// </summary>
@@ -59,52 +58,46 @@ namespace Portal.Areas.Admin
         /// <summary>
         /// Домен
         /// </summary>
-        public string Domain;
+        public string Domain { get; set; }
         /// <summary>
         /// Корневая директория
         /// </summary>
-        public string SiteDir;
+        public string SiteDir { get; set; }
 
         /// <summary>
         /// Идентификатор сайта
         /// </summary>
-        public Guid SiteId;
+        public Guid SiteId { get; set; }
 
         /// <summary>
         /// Путь из адресной строки
         /// </summary>
-        public string StartUrl;
-
+        public string StartUrl { get; set; }
 
         /// <summary>
         /// В админке всегда авторизованный пользователь
         /// </summary>
-        public Guid UserId;
-
-        /// <summary>
-        /// Авторизованный пользователь
-        /// </summary>
-        public AccountModel AccountInfo;
+        public Guid UserId { get; set; }
 
         /// <summary>
         /// Настройки
         /// </summary>
-        public SettingsModel SettingsInfo;
+        public SettingsModel SettingsInfo { get; set; }
 
         /// <summary>
         /// Контроллер
         /// </summary>
-        public string ControllerName;
+        public string ControllerName { get; set; }
 
         /// <summary>
         /// Действие
         /// </summary>
-        public string ActionName;
+        public string ActionName { get; set; }
 
         /// <summary>
         /// Название страницы
         /// </summary>
-        public string PageName;
+        public string PageName { get; set; }
 
         /// <summary>
         /// Меню админки из структуры CMS
@@ -116,23 +109,20 @@ namespace Portal.Areas.Admin
         /// </summary>
         public CmsMenuItemModel[] MenuModulCore;
 
-        /// <summary>
-        /// Права пользователя
-        /// </summary>
-        public ResolutionModel UserResolutionInfo;
+
 
         public BeCoreController() { }
 
-        public BeCoreController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-        }
+        //Не используется параметрический вызов
+        //public BeCoreController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        //{
+        //    UserManager = userManager;
+        //    SignInManager = signInManager;
+        //}
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-
 
             ControllerName = filterContext.RouteData.Values["Controller"].ToString().ToLower();
             ActionName = filterContext.RouteData.Values["Action"].ToString().ToLower();
@@ -146,29 +136,18 @@ namespace Portal.Areas.Admin
             var currentUser = UserManager.FindById(_userId);
             var userId = currentUser.UserId;
 
-            //Mapping ApplicationUser to AccountModel
-            AccountInfo = new AccountModel()
-            {
-                Id = currentUser.UserId,
-                Name = currentUser.UserInfo.Name,
-                Surname = currentUser.UserInfo.Surname,
-                Patronymic = currentUser.UserInfo.Patronymic,
-                Disabled = currentUser.UserInfo.Disabled,
-                Mail = currentUser.Email
-            };
-
             //Проверка на права доступа к сайту
             var siteAuth = User.IsInRole(SiteId.ToString());
-            
+
             //Проверка на права доступа к контроллеру
             var controllerAuth = User.Identity.HasClaim(ControllerName, "view");
 
 
-            if(!siteAuth || !controllerAuth)
+            if (!siteAuth || !controllerAuth)
                 filterContext.Result = new RedirectResult("~/Account/AccessDenied");
 
 
-            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId );
+            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
 
             PageName = _cmsRepository.GetPageName(ControllerName);
 
@@ -178,21 +157,9 @@ namespace Portal.Areas.Admin
 
             //Права доступа пользователя к страницам
             MenuCmsCore = _cmsRepository.GetCmsMenu();
-            MenuModulCore = _cmsRepository.GetModulesMenu(AccountInfo.Id);
+            MenuModulCore = _cmsRepository.GetModulesMenu(userId);
 
-            //UserResolutionInfo = _cmsRepository.GetUserResolutionGroup(AccountInfo.Id, ControllerName);
-            //if (UserResolutionInfo == null)
-            //{
-            //    throw new Exception("У вас нет прав доступа к странице!");
-            //}
-
-            // Если нет прав на просмотр, то направляем на главную
-            //if (!UserResolutionInfo.IsRead)
-            //{
-            //    filterContext.Result = Redirect("/Admin/");
-            //}
-
-
+            ViewBag.SiteId = SiteId.ToString();
         }
 
 
@@ -379,24 +346,24 @@ namespace Portal.Areas.Admin
             return null;
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_userManager != null)
-                {
-                    _userManager.Dispose();
-                    _userManager = null;
-                }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        if (_userManager != null)
+        //        {
+        //            _userManager.Dispose();
+        //            _userManager = null;
+        //        }
 
-                if (_signInManager != null)
-                {
-                    _signInManager.Dispose();
-                    _signInManager = null;
-                }
-            }
+        //        if (_signInManager != null)
+        //        {
+        //            _signInManager.Dispose();
+        //            _signInManager = null;
+        //        }
+        //    }
 
-            base.Dispose(disposing);
-        }
+        //    base.Dispose(disposing);
+        //}
     }
 }
