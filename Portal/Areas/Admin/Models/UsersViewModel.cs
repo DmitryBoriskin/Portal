@@ -31,5 +31,10 @@ namespace Portal.Areas.Admin.Models
         /// Фильтр
         /// </summary>
         public FilterTreeModel Filter { get; set; }
+
+        /// <summary>
+        /// Список лицевых счетов
+        /// </summary>
+        public Subscr[] Subscrs { get; set; }
     }
 }

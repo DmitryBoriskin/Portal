@@ -310,8 +310,7 @@ namespace PgDbase.Repository.cms
                     Email = s.Email,
                     EmailConfirmed = s.EmailConfirmed,
                     Phone = s.PhoneNumber,
-                    PhoneConfirmed = s.PhoneNumberConfirmed,
-
+                    PhoneConfirmed = s.PhoneNumberConfirmed
                     //Roles = null
                     //Sites = null
                 });

@@ -1,7 +1,9 @@
 ﻿using LinqToDB;
+using LinqToDB.Data;
 using PgDbase.entity;
 using PgDbase.models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PgDbase.Repository.cms
@@ -81,6 +83,28 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
+        /// Возвращает список ЛС для привязки к пользователю
+        /// </summary>
+        /// <returns></returns>
+        public Subscr[] GetSubscrs()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_subscrs
+                    .Where(w => w.fkdepartments.f_site == _siteId)
+                    .OrderBy(o => o.c_link)
+                    .Select(s => new Subscr
+                    {
+                        Id = s.id,
+                        Link = s.c_link,
+                        Surname = s.c_surname,
+                        Name = s.c_name,
+                        Patronymic = s.c_patronymic
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
         /// Возвращает личный кабинет
         /// </summary>
         /// <param name="id"></param>
@@ -102,7 +126,7 @@ namespace PgDbase.Repository.cms
                         Phone = s.c_phone,
                         Email = s.c_email,
                         Disabled = s.b_disabled,
-                        Created = s.d_created, 
+                        Created = s.d_created,
                         Department = s.f_department
                     }).SingleOrDefault();
             }
@@ -184,6 +208,79 @@ namespace PgDbase.Repository.cms
                     tr.Commit();
                     return result;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Прикрепляет лицевые счета к пользователю
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="subscrs"></param>
+        /// <returns></returns>
+        public void UpdateUserSubscrs(Guid user, Guid[] subscrs)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var listExistsSubscrs = db.lk_user_subscrs
+                        .Where(w => w.f_user == user)
+                        .Select(s => s.f_subscr)
+                        .ToArray();
+                    
+                    if (subscrs != null)
+                    {
+                        foreach (var subscr in listExistsSubscrs)
+                        {
+                            if (!subscrs.Contains(subscr))
+                            {
+                                db.lk_user_subscrs
+                                    .Where(w => w.f_user == user)
+                                    .Where(w => w.f_subscr == subscr)
+                                    .Delete();
+                            }
+                        }
+
+                        List<lk_user_subscrs> list = new List<lk_user_subscrs>();
+                        foreach (var subscr in subscrs)
+                        {
+                            if (!listExistsSubscrs.Contains(subscr))
+                            {
+                                list.Add(new lk_user_subscrs
+                                {
+                                    f_user = user,
+                                    f_subscr = subscr,
+                                    d_attached = DateTime.Now
+                                });
+                            }
+                        }
+                        db.BulkCopy(list);
+                    }
+                    else
+                    {
+                        db.lk_user_subscrs
+                            .Where(w => w.f_user == user)
+                            .Delete();
+                    }
+
+                    tr.Commit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список прикреплённых ЛС
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public Guid[] GetSelectedSubscrs(Guid user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_user_subscrs
+                    .Where(w => w.f_user == user)
+                    .Select(s => s.f_subscr)
+                    .ToArray();
             }
         }
 
@@ -364,7 +461,7 @@ namespace PgDbase.Repository.cms
                         c_work_time = item.WorkTime,
                         n_longitude = (decimal)item.Longitude,
                         n_latitude = (decimal)item.Latitude,
-                        b_disabled = item.Disabled, 
+                        b_disabled = item.Disabled,
                         f_site = _siteId
                     }) > 0;
 

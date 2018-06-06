@@ -17,9 +17,13 @@
         @Html.TextBoxFor(m => m.Item.SourceName, new { @class = "uc_input", @title = "Источник", @placeholder = "Сайт органов власти" })
         @Html.TextBoxFor(m => m.Item.SourceUrl, new { @class = "uc_input", @title = "Источник", @placeholder = "http://example.com" })
 
+        @if (Model.Item != null)
+        {
+            @*виджет событий*@
+            Html.RenderAction("index", "EventsWidget");
+        }
 
-        @*виджет событий*@
-        @{Html.RenderAction("index", "EventsWidget");}
+
     </div>
     <div class="dop_info-block">
         <div class="dop-caption icon-layers">Доп. параметры</div>

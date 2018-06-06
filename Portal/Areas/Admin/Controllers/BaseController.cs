@@ -46,6 +46,25 @@ namespace Portal.Areas.Admin.Controllers
 
         protected CmsRepository _cmsRepository { get; private set; }
 
+        public BaseController()
+        {
+            //SiteId = GetCurrentSiteId();
+            //_cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, Guid.Empty);
+        }
+
+        public BaseController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+
+            // Данные об авторизованном пользователе
+            //var _userId = User.Identity.GetUserId();
+            //var currentUser = UserManager.FindById(_userId);
+            //var userId = currentUser.UserId;
+
+            //_cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -72,7 +91,7 @@ namespace Portal.Areas.Admin.Controllers
 
         public BaseController()
         {
-            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, Guid.Empty);
+            _cmsRepository = new CmsRepository("dbConnection", Guid.Empty, RequestUserInfo.IP, SiteId);
         }
 
         public BaseController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -84,8 +103,7 @@ namespace Portal.Areas.Admin.Controllers
             var _userId = User.Identity.GetUserId();
             var currentUser = UserManager.FindById(_userId);
             var userId = currentUser.UserId;
-
-            _cmsRepository = new CmsRepository("dbConnection", userId, RequestUserInfo.IP, SiteId);
+            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
         }
 
         private Guid GetCurrentSiteId()
@@ -101,7 +119,5 @@ namespace Portal.Areas.Admin.Controllers
             return siteId;
 
         }
-
-
     }
 }
