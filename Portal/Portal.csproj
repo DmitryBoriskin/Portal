@@ -890,6 +890,8 @@
     <Content Include="Areas\Admin\Views\SiteAdmins\Part\FindUser.cshtml" />
     <Content Include="ConnectionStrings.config" />
     <Content Include="AppSettings.config" />
+    <Content Include="Areas\Admin\Views\Services\ResetPassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\ResetPasswordConfirmation.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Modules\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
