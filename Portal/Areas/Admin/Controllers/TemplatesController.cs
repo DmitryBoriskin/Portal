@@ -26,7 +26,7 @@ namespace Portal.Areas.Admin.Controllers
                 ControllerName = ControllerName,
                 ActionName = ActionName,
                 Sites = _cmsRepository.GetSites(),
-                Menu = MenuCmsCore,
+                MenuCMS = MenuCmsCore,
                 MenuModules = MenuModulCore
             };
         }

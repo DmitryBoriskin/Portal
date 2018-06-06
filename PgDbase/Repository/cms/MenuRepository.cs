@@ -68,9 +68,6 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-
-
-                //var query=db.re
                 var data = db.core_controllers
                            .Where(w => w.f_parent == null)
                            .Where(w => w.id != Guid.Empty)
@@ -88,7 +85,7 @@ namespace PgDbase.Repository.cms
             }
         }
 
-
+        
         /// <summary>
         /// Единичный элемент cms menu
         /// </summary>

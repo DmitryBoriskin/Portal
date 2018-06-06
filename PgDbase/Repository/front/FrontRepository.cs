@@ -23,6 +23,17 @@ namespace PgDbase.Repository.front
         private Guid _siteId;
 
         /// <summary>
+        /// ip-адрес
+        /// </summary>
+        private string _ip = string.Empty;
+
+        /// <summary>
+        /// Текущий пользователь
+        /// </summary>
+        private Guid _currentUserId = Guid.Empty;
+
+
+        /// <summary>
         /// Конструктор
         /// </summary>
         public FrontRepository()
@@ -32,10 +43,12 @@ namespace PgDbase.Repository.front
         }
 
 
-        public FrontRepository(string connectionString, Guid siteId )
+        public FrontRepository(string connectionString, Guid siteId, string ip, Guid userId)
         {
             _context = connectionString;
             _siteId = siteId;
+            _ip = ip;
+            _currentUserId = userId;
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }

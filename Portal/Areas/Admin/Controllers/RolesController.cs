@@ -28,7 +28,7 @@ namespace Portal.Areas.Admin.Controllers
                 ControllerName = ControllerName,
                 ActionName = ActionName,
                 Sites = _cmsRepository.GetSites(),
-                Menu = MenuCmsCore,
+                MenuCMS = MenuCmsCore,
                 MenuModules = MenuModulCore
             };
         }
@@ -56,6 +56,39 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetRole(id);
+            model.Modules = _cmsRepository.GetModulesList();
+
+            model.Modules = _cmsRepository.GetModulesList();
+
+            //Права на модули
+            if(model.Modules.Count() > 0)
+            {
+                foreach(var module in model.Modules)
+                {
+                    module.RoleModuleClaims = new RoleModuleClaims()
+                    {
+                        View = true,
+                        Edit = true,
+                        Create = true,
+                        Delete = true
+                    };
+                    if(module.ModuleParts.Count()>0)
+                    {
+                        foreach(var part in module.ModuleParts.Distinct())
+                        {
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "view"))
+                                module.RoleModuleClaims.View = false;
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "edit"))
+                                module.RoleModuleClaims.Edit = false;
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "create"))
+                                module.RoleModuleClaims.Create = false;
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "delete"))
+                                module.RoleModuleClaims.Delete = false;
+                        }
+                    }
+                }
+            }
+
             return View("Item", model);
         }
 
@@ -176,28 +209,35 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult UpdateRoleClaim(RoleClaimModel roleClaim)
         {
             var res = true;
-            //Ранее предполагалось, что компоненты модуля имеют один контроллер
-            //var res = _cmsRepository.UpdateRoleClaim(roleClaim);
 
-            //Права на дочерние контроллеры (компоненты модуля)
-            var module = _cmsRepository.GetModule(roleClaim.Type);
-            if(module != null && module.ModuleParts.Count() > 0)
+            if (roleClaim.Section == ClaimSection.CMS)
             {
-                var parts = module.ModuleParts.Distinct();
-                foreach (var part in parts)
+                res = _cmsRepository.UpdateRoleClaim(roleClaim);
+            }
+            else if (roleClaim.Section == ClaimSection.Module)
+            {
+                //Ранее предполагалось, что компоненты модуля находятся в одном контроллере
+                //Права на дочерние контроллеры (компоненты модуля)
+                var module = _cmsRepository.GetModule(roleClaim.Type);
+                if (module != null && module.ModuleParts.Count() > 0)
                 {
-                    var newClaim = new RoleClaimModel()
+                    foreach (var part in module.ModuleParts.Distinct())
                     {
-                        RoleId = roleClaim.RoleId,
-                        Type = part.ControllerName,
-                        Value = roleClaim.Value,
-                        Checked = roleClaim.Checked
-                    };
-                    var updRes = _cmsRepository.UpdateRoleClaim(roleClaim);
-                    if (updRes)
-                        res = false;
+                        var newClaim = new RoleClaimModel()
+                        {
+                            RoleId = roleClaim.RoleId,
+                            Type = part.ControllerName,
+                            Value = roleClaim.Value,
+                            Checked = roleClaim.Checked
+                        };
+                        var updRes = _cmsRepository.UpdateRoleClaim(newClaim);
+                        if (updRes)
+                            res = false;
+                    }
                 }
             }
+            else
+                res = false;
 
             if (res)
                 return Json("Success");

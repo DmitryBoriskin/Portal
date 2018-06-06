@@ -266,7 +266,7 @@ namespace PgDbase.Repository.cms
         //    {
         //        using (var tran = db.BeginTransaction())
         //        {
-                   
+
         //            var dbUserRole = db.core_AspNetUserRoles
         //               .Where(s => s.RoleId == roleId)
         //               .Where(s => s.UserId == userId);
@@ -332,7 +332,7 @@ namespace PgDbase.Repository.cms
         //        }
         //    }
         //}
-        
+
         /// <summary>
         /// Возвращает группу пользователей для редактирования
         /// </summary>

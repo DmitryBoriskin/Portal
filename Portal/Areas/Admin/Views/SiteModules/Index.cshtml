@@ -16,13 +16,13 @@
             foreach (var item in Model.Item.Modules)
             {
                 <div class="list-item">
-                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/siteModules/item/@item.Id">@item.Title</a>
+                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/siteModules/item/@item.Id">@item.Name</a>
                     @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
                     {
                         foreach (var part in item.ModuleParts)
                         {
                             <div class="list-item-part">
-                                <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Title</a>
+                                <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Name</a>
                                 <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
                             </div>
                         }

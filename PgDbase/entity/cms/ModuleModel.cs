@@ -20,7 +20,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Имя модуля
         /// </summary>
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Имя контроллера
@@ -46,6 +46,19 @@ namespace PgDbase.entity
         /// Составляющие части модуля
         /// </summary>
         public ModuleModel[] ModuleParts { get; set; }
+
+        /// <summary>
+        /// Разрешения для роли (только для RolesController и заполняется там же)
+        /// </summary>
+        public RoleModuleClaims RoleModuleClaims { get; set; }
+    }
+
+    public class RoleModuleClaims
+    {
+        public bool View { get; set; }
+        public bool Create { get; set; }
+        public bool Edit { get; set; }
+        public bool Delete { get; set; }
     }
 
 }

@@ -154,9 +154,10 @@ namespace Portal.Areas.Admin
             var core_site = _cmsRepository.GetCoreSites(SiteId);
             SiteDir = core_site.c_serial.ToString();
 
-
-            //Права доступа пользователя к страницам
+            //Для построения меню в левой части админки
+            //Для всех админов один список
             MenuCmsCore = _cmsRepository.GetCmsMenu();
+            //Модули для всех - разные
             MenuModulCore = _cmsRepository.GetModulesMenu(userId);
 
             ViewBag.SiteId = SiteId.ToString();

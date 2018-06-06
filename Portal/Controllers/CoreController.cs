@@ -90,15 +90,21 @@ namespace PgDbase.Repository.front
             // Определяем сайт
             SiteId = GetCurrentSiteId();
 
+            var userId = Guid.Empty;
+            if (User.Identity.IsAuthenticated)
+            {
+                var _userId = User.Identity.GetUserId();
+                var currentUser = UserManager.FindById(_userId);
+                userId = currentUser.UserId;
+            }
+
+            _Repository = new FrontRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
+
             //PageName = _Repository.GetPageName(ControllerName);
             //StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
-
         }
 
-        public CoreController()
-        {
-            _Repository = new FrontRepository("dbConnection", SiteId);
-        }
+        public CoreController() { }
 
         /// <summary>
         /// Добавляет параметр
@@ -233,7 +239,6 @@ namespace PgDbase.Repository.front
             return filter;
         }
 
-
         /// <summary>
         /// Возвращает JSON фотоальбома
         /// </summary>
@@ -248,7 +253,10 @@ namespace PgDbase.Repository.front
                 return Json(null, JsonRequestBehavior.AllowGet);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private Guid GetCurrentSiteId()
         {
             var _repository = new Repository("dbConnection");

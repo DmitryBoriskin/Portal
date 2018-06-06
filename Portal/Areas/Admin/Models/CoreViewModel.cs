@@ -39,7 +39,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Меню админки из структуры CMS
         /// </summary>
-        public CmsMenuItemModel[] Menu { get; set; }
+        public CmsMenuItemModel[] MenuCMS { get; set; }
 
         /// <summary>
         /// Меню модулей

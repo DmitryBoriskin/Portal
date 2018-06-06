@@ -1,5 +1,5 @@
 ﻿@model SitesViewModel
-@*@if (Model.UserResolution.Read)*@
+
 @if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
 <div class="content">
@@ -17,7 +17,7 @@
             <div class="list-item">
                 <h4 style="margin:2px 0;font-weight:400; font-size:1.3em;">
                     <span class="icon-puzzle" style="color:#999;"></span>
-                    @item.Title <span class="description">(@(!string.IsNullOrEmpty(item.ActionName) ? @item.ControllerName + "/" + item.ActionName : @item.ControllerName))</span>
+                    @item.Name <span class="description">(@(!string.IsNullOrEmpty(item.ActionName) ? @item.ControllerName + "/" + item.ActionName : @item.ControllerName))</span>
                 </h4>
 
                 @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
@@ -25,7 +25,7 @@
                     foreach (var part in item.ModuleParts)
                     {
                         <div class="list-item-part">
-                            <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Title</a>
+                            <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Name</a>
                             <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
                         </div>
                     }

@@ -3,10 +3,6 @@ var change = 0;
 
 $(document).ready(function () {
 
-  
-
-
-
     //специфический для med.cap.ru
     //показываем селект "новове в медеицине" если выбрана соответствующая категория
     if ($('#itemGroups-select').length > 0) {
@@ -392,14 +388,14 @@ $(document).ready(function () {
 
     //Изменяет права роли
     $(".roleClaim-chckbx").on('ifToggled', function (e) {
-
-        var _checked = ($(this).val() === "on") ? true : false;
+        var _checked = ($(this).is(':checked')) ? true : false;
 
         var roleClaim = {
             Id : $(this).data("claimId"),
             RoleId : $("#Item_Id").val(),
             Type : $(this).data("claimType"),
-            Value : $(this).data("claimValue"),
+            Value: $(this).data("claimValue"),
+            Section: $(this).data("claimSection"),
             Checked: _checked
         };
 

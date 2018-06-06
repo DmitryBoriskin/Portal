@@ -17,5 +17,10 @@ namespace Portal.Areas.Admin.Models
         /// </summary>
         public RoleModel Item { get; set; }
 
+        /// <summary>
+        /// Список модулей
+        /// </summary>
+        public ModuleModel[] Modules { get; set; }
+
     }
 }
