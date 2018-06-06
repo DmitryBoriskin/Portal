@@ -43,27 +43,7 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         public Guid SiteId;
-
         protected CmsRepository _cmsRepository { get; private set; }
-
-        public BaseController()
-        {
-            //SiteId = GetCurrentSiteId();
-            //_cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, Guid.Empty);
-        }
-
-        public BaseController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-
-            // Данные об авторизованном пользователе
-            //var _userId = User.Identity.GetUserId();
-            //var currentUser = UserManager.FindById(_userId);
-            //var userId = currentUser.UserId;
-
-            //_cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
-        }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -71,6 +51,16 @@ namespace Portal.Areas.Admin.Controllers
 
             // Определяем сайт
             SiteId = GetCurrentSiteId();
+
+            var userId = Guid.Empty;
+            if (User.Identity.IsAuthenticated)
+            {
+                var _userId = User.Identity.GetUserId();
+                var currentUser = UserManager.FindById(_userId);
+                userId = currentUser.UserId;
+            }
+
+            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
 
             //PageName = _Repository.GetPageName(ControllerName);
             //StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
@@ -89,22 +79,8 @@ namespace Portal.Areas.Admin.Controllers
 
         }
 
-        public BaseController()
-        {
-            _cmsRepository = new CmsRepository("dbConnection", Guid.Empty, RequestUserInfo.IP, SiteId);
-        }
-
-        public BaseController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-
-            // Данные об авторизованном пользователе
-            var _userId = User.Identity.GetUserId();
-            var currentUser = UserManager.FindById(_userId);
-            var userId = currentUser.UserId;
-            _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
-        }
+        public BaseController() { }
+       
 
         private Guid GetCurrentSiteId()
         {
