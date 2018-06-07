@@ -18,6 +18,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new MenuViewModel
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

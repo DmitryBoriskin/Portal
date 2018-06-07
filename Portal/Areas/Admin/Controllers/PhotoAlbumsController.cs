@@ -25,6 +25,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new PhotoViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

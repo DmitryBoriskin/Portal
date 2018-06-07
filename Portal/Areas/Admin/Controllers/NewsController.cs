@@ -22,6 +22,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new NewsViewModel
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

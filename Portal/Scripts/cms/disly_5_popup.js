@@ -17,13 +17,43 @@
         allowClear: true,
         ajax: {
             method: "POST",
-            url: "/admin/siteUsers/list",
+            url: "/admin/siteAdmins/siteUsers",
+            dataType: 'json',
+            delay: 500,
+            data: function (params) {
+                return {
+                    query: params.term, // Фильтр
+                    siteId: $(this).data("siteId"),
+                };
+            },
+            processResults:
+                function (data, params) {
+                    //Mapping Dictionary
+                    var array = $.map(data, function (e, i) {
+                        return {
+                            id: e.id, text: e.text
+                        };
+                    });
+                    return { results: array };
+                },
+            cache: true
+        }
+    });
+
+    $("#portalUser-select").select2({
+        language: "ru",
+        minimumInputLength: 3,
+        placeholder: "Выберите значение из списка",
+        triggerChange: true,
+        allowClear: true,
+        ajax: {
+            method: "POST",
+            url: "/admin/admins/portalUsers",
             dataType: 'json',
             delay: 500,
             data: function (params) {
                 return {
                     query: params.term // Фильтр
-                    //param1: null,
                 };
             },
             processResults:

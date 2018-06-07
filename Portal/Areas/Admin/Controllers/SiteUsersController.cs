@@ -25,6 +25,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new UsersViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
@@ -248,15 +249,6 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult ClearFiltr()
         {
             return Redirect(StartUrl);
-        }
-
-        [HttpPost]
-        public string List (string query)
-        {
-            var users = _cmsRepository.GetSiteUsersList(query);
-            var data = users.Select(t => new { id = t.Id, text = $"{t.FullName} ({t.Email})" });
-
-            return JsonConvert.SerializeObject(data);
         }
 
     }

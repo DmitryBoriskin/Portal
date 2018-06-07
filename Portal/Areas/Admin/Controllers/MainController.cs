@@ -16,6 +16,7 @@ namespace Portal.Areas.Admin.Controllers
         {
             MainViewModel model = new MainViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

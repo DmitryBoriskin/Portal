@@ -18,7 +18,7 @@
                         <div class="text-right"><span class="description">Модуль:</span>
                         @if (item.Controller != null && item.Controller.Id != Guid.Empty)
                         {
-                            <a href="/Admin/Modules/item/@item.Controller.Id">@item.Controller.Title</a>
+                            <a href="/Admin/Modules/item/@item.Controller.Id">@item.Controller.Name</a>
                         }
                         else
                         {

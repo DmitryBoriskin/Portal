@@ -22,7 +22,7 @@
                                     @*@Html.ActionLink(" ", "SiteModuleTemplatesList", "Templates", new { @siteId = Model.Item.Id, @moduleId = module.Id }, new { @id = "ModuleSettings", @class = "button pop-up_frame icon-cog", @data_class = "LogList", @title = "Настройки модуля" })*@
                                 </td>
                                 <td>
-                                    @module.Title
+                                    @module.Name
                                 </td>
                                 <td class="text-right">
                                     <span id="module_@(module.Id)" data-container="body" data-toggle="popover" data-placement="left" data-content=""></span>
@@ -44,11 +44,11 @@
                         {
                             if (Model.Item != null && Model.Item.Modules != null && Model.Item.Modules.Any(m => m.ModuleId == module.Id))
                             {
-                                <option value="@module.Id" disabled> @module.Title </option>
+                                <option value="@module.Id" disabled>@module.Name</option>
                             }
                             else
                             {
-                                <option value="@module.Id"> @module.Title </option>
+                                <option value="@module.Id">@module.Name</option>
                             }
                         }
                     }
