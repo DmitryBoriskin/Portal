@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [RouteArea("Admin")]
     public class ServicesController : BeCoreController
     {
         //public ServicesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -136,7 +137,7 @@ namespace Portal.Areas.Admin.Controllers
                         break;
                 }
             }
-            model.Alias = section;
+            model.Section = section;
             return PartialView("FilterTreeItem", model);
         }
 
@@ -150,27 +151,27 @@ namespace Portal.Areas.Admin.Controllers
                 {
                     item.Id = Guid.NewGuid();
                 }
-                switch (item.Alias)
+                switch (item.Section)
                 {
                     case "pages":
                         _cmsRepository.SavePageGroup(item);
                         break;
                 }
             }
-            return Redirect($"/admin/{item.Alias}");
+            return Redirect($"/admin/{item.Section}");
         }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-filter-tree-btn")]
         public ActionResult DeleteFilterTreeItem(GroupsModel item)
         {
-            switch (item.Alias)
+            switch (item.Section)
             {
                 case "pages":
                     _cmsRepository.DeletePageGroup(item.Id);
                     break;
             }
-            return Redirect($"/admin/{item.Alias}");
+            return Redirect($"/admin/{item.Section}");
         }
 
 
@@ -181,7 +182,7 @@ namespace Portal.Areas.Admin.Controllers
             switch (group.ToLower())
             {
                 case "cmsmenu":
-                    _cmsRepository.ChangePositionMenu(id, position);
+                    result = _cmsRepository.ChangePositionMenu(id, position);
                     break;
                 case "pages":
                     result = _cmsRepository.ChangePositionPages(id, position);
@@ -196,6 +197,5 @@ namespace Portal.Areas.Admin.Controllers
             bool result = _cmsRepository.ChangePositionPhoto(album, id, permit);
             return Content(result.ToString());
         }
-
     }
 }

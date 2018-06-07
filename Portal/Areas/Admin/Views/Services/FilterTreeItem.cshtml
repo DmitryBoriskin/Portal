@@ -19,10 +19,14 @@
     <br />
     <div class="content">
         <div class="row">
-            @Html.HiddenFor(m => m.Id)
-            @Html.HiddenFor(m => m.Alias)
-            <div class="col-sm-12">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.Id)            
+            @Html.HiddenFor(m => m.Section)            
+            <div class="col-sm-6">
                 @Html.TextBoxFor(m => m.Title, new { type = "text", placeholder = "Название", @class = "form-control" })
+            </div>
+            <div class="col-sm-6">
+                @Html.HiddenFor(m => m.Alias, new { type = "text", placeholder = "Алиас", @class = "form-control" })
             </div>
         </div>
     </div>

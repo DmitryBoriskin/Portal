@@ -20,7 +20,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Родительский идентификатор
         /// </summary>
-        public Guid ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
         /// <summary>
         /// Путь
@@ -81,6 +81,11 @@ namespace PgDbase.entity
         /// Дочерние эл-ты
         /// </summary>
         public PageModel[] Childrens { get; set; }
+        
+        /// <summary>
+        /// Сестренские элементы
+        /// </summary>
+        public PageModel[] Sister { get; set; }
 
         /// <summary>
         /// Группы меню

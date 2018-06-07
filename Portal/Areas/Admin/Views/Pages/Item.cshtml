@@ -37,7 +37,11 @@
                 }*@
 
             @Html.TextBoxFor(m => m.Item.Url, new { @title = "Ссылка" })
-            @Html.HiddenFor(m => m.Item.ParentId)
+
+            @if (!(Model.Item.ParentId == null || Model.Item.ParentId==Guid.Empty))
+            {
+                @Html.HiddenFor(m => m.Item.ParentId)
+            }            
 
             <div class="group-block" title="Текст">
                 @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "300", data_dir = ViewBag.DataPath })
@@ -46,7 +50,6 @@
                 <div class="col-sm-6">
                     <h4 class="nesting_title">Список вложенностей</h4>
                 </div>
-
                 @*@if (Model.UserResolution.Write)*@
                 <div class="col-sm-6">
                     @if (true)

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [RouteArea("Admin")]
     public class NewsController : BeCoreController
     {
 
@@ -109,6 +110,7 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Save(Guid id, NewsViewModel backModel, HttpPostedFileBase upload)

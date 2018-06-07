@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [RouteArea("Admin")]
     public class PagesController : BeCoreController
     {
         //public PagesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -37,11 +38,17 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         // GET: Admin/Pages
-        public ActionResult Index()
+        public ActionResult Index(string group)
         {
             filter = GetFilter();
             var mfilter = FilterModel.Extend<PageFilterModel>(filter);
+            if (!String.IsNullOrEmpty(group))
+            {
+                mfilter.GroupId = Guid.Parse(group);
+            }
+
             model.List = _cmsRepository.GetPages(mfilter);
+
             model.Filter = GetFilterTree();
             return View(model);
         }
@@ -58,7 +65,7 @@ namespace Portal.Areas.Admin.Controllers
                     ParentId = Request.Params["parent"] != null
                                     ? Guid.Parse(Request.Params["parent"]) : Guid.Empty,
                     IsDeleteble = true
-                };
+                };                
             }
             GetBreadCrumbs(id);
             return View(model);
@@ -78,8 +85,14 @@ namespace Portal.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var parentElement = _cmsRepository.GetPage(backModel.Item.ParentId);
-                backModel.Item.Path = $"{parentElement.Path}{parentElement.Alias}/";
+                PageModel parentElement = null;
+
+                if ((backModel.Item.ParentId != null))
+                {
+                    parentElement = _cmsRepository.GetPage((Guid)backModel.Item.ParentId);
+                }                
+
+                backModel.Item.Path = (parentElement!=null)?$"{parentElement.Path}{parentElement.Alias}/":"/";
                 backModel.Item.Id = id;
                 if (Item_MenuGroups != null)
                 {

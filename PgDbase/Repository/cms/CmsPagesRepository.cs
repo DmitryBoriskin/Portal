@@ -19,9 +19,17 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_pages
+                var q = db.core_pages
                     .Where(w => w.fkpagesites.id == _siteId)
-                    .Where(w => w.pgid == filter.Parent)
+                    .Where(w => w.pgid == filter.Parent);
+
+
+                if (filter.GroupId != null)
+                {
+                    q = q.Join(db.core_page_group_links.Where(w=>w.f_page_group== filter.GroupId),n=>n.gid,m=>m.f_page,(n,m)=>n);
+                }
+
+                return q
                     .OrderBy(o => o.n_sort)
                     .Select(s => new PageModel
                     {
@@ -73,7 +81,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Guid GetPageParentId(Guid id)
+        public Guid? GetPageParentId(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
@@ -132,12 +140,18 @@ namespace PgDbase.Repository.cms
                     {
                         List<core_page_group_links> groups = new List<core_page_group_links>();
                         foreach (var g in page.MenuGroups)
-                        {
+                        {                            
+                            var _q = db.core_page_group_links.Where(w => w.f_page_group == g).Select(s => s.n_sort);
+                            int _sort = _q.Any() ? _q.Max() : 0;
+                            _sort++;
+
                             groups.Add(new core_page_group_links
                             {
                                 id = Guid.NewGuid(),
                                 f_page = page.Id,
-                                f_page_group = g
+                                f_page_group = g,
+                                n_sort=_sort
+                                
                             });
                         }
                         db.BulkCopy(groups);
@@ -273,7 +287,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private GroupsModel GetBreadCrumb(Guid id, CMSdb db)
+        private GroupsModel GetBreadCrumb(Guid? id, CMSdb db)
         {
             return db.core_pages
                 .Where(w => w.gid == id)
@@ -332,7 +346,8 @@ namespace PgDbase.Repository.cms
                     .Select(s => new GroupsModel
                     {
                         Id = s.id,
-                        Title = s.c_name
+                        Title = s.c_name,
+                        Alias=s.c_alias
                     })
                     .SingleOrDefault();
             }
@@ -352,17 +367,20 @@ namespace PgDbase.Repository.cms
 
                 if (query.Where(w => w.id == item.Id).Any())
                 {
-                    return query.Set(s => s.c_name, item.Title)
-                         .Update() > 0;
+                    return query
+                        .Set(s => s.c_name, item.Title)
+                        .Set(s => s.c_alias, item.Alias.ToLower())
+                        .Update() > 0;
                 }
                 else
                 {
                     int sort = query.Any() ? query.Select(s => s.n_sort).Max() : 1;
-
+                    sort++;
                     return db.core_page_groups.Insert(() => new core_page_groups
                     {
                         id = item.Id,
                         c_name = item.Title,
+                        c_alias=item.Alias.ToLower(),
                         f_site = _siteId,
                         n_sort = sort
                     }) > 0;
@@ -379,8 +397,19 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.core_page_groups
-                    .Where(w => w.id == id).Delete() > 0;
+                using (var tr = db.BeginTransaction())
+                {
+                    var q = db.core_page_groups.Where(w => w.id == id);
+
+                    db.core_page_groups.Where(w=>w.f_site==_siteId && w.n_sort>q.Single().n_sort)
+                      .Set(p => p.n_sort, p => p.n_sort - 1)
+                      .Update();
+
+                    var result= q.Delete() > 0;
+                    tr.Commit();
+
+                    return result;
+                }                    
             }
         }
 
@@ -402,7 +431,7 @@ namespace PgDbase.Repository.cms
                     if (query.Any())
                     {
                         var data = query.SingleOrDefault();
-                        Guid parent = data.pgid;
+                        Guid? parent = data.pgid;
                         int actualNum = data.n_sort;
                         if (newNum != actualNum)
                         {
