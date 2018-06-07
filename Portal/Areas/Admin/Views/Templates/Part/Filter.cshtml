@@ -17,13 +17,13 @@
                     {
                         foreach (var module in Model.Modules)
                         {
-                            <optgroup label="@module.Title">
+                            <optgroup label="@module.Name">
                                 @if (module.ModuleParts != null && module.ModuleParts.Count() > 0)
                                 {
                                     foreach (var modulePart in module.ModuleParts)
                                     {
                                         var selected = (!string.IsNullOrEmpty(group) && group == modulePart.Id.ToString()) ? true : false;
-                                        <option value="@modulePart.Id" @(selected ? "selected" : "") >@modulePart.Title</option>
+                                        <option value="@modulePart.Id" @(selected ? "selected" : "") >@modulePart.Name</option>
                                     }
                                 }
                             </optgroup>

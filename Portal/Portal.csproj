@@ -846,7 +846,6 @@
     <Content Include="Areas\Admin\Views\Account\MsgResult.cshtml" />
     <Content Include="Areas\Admin\Views\Account\MsgSendMail.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_popUp.cshtml" />
-    <Content Include="Areas\Admin\Views\Services\ChangePass.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Item.cshtml" />
