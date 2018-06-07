@@ -20,6 +20,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new PageViewModel
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

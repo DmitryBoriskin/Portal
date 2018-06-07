@@ -23,6 +23,7 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new RoleViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,

@@ -30,7 +30,7 @@ namespace Portal
             if (claims.Any())
                 foreach (var claim in claims)
                 {
-                    if (claim.Value == claimValue.ToLower())
+                    if (claim.Value.ToLower() == claimValue.ToLower())
                         return true;
                 }
             return false;

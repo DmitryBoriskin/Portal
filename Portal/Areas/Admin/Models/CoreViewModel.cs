@@ -12,6 +12,11 @@ namespace Portal.Areas.Admin.Models
     public class CoreViewModel
     {
         /// <summary>
+        /// Сайт
+        /// </summary>
+        public Guid SiteId { get; set; }
+
+        /// <summary>
         /// Название контроллера
         /// </summary>
         public string ControllerName { get; set; }
