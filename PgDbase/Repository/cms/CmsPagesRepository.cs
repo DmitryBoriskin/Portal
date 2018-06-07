@@ -253,9 +253,9 @@ namespace PgDbase.Repository.cms
             {
                 List<GroupsModel> list = new List<GroupsModel>();
                 var parent = db.core_pages.Where(w => w.gid == id).Select(s => s.pgid).SingleOrDefault();
-                if (parent != Guid.Empty)
+                if (parent.HasValue)
                 {
-                    var item = GetBreadCrumb(parent, db);
+                    var item = GetBreadCrumb(parent.Value, db);
                     while (item != null && item.Id != Guid.Empty)
                     {
                         list.Add(item);

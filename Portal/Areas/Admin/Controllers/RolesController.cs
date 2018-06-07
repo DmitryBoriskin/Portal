@@ -269,6 +269,35 @@ namespace Portal.Areas.Admin.Controllers
             return Json("An Error Has Occourred");
         }
 
+        [HttpPost]
+        public ActionResult AddUserSite(Guid userId, Guid siteId)
+        {
+            var res = UserManager.AddToRole(userId.ToString(), siteId.ToString());
+
+            //Дублируем аккаунт для указанного сайта
+            var dublicateRes = _cmsRepository.DublicateUser(userId, siteId);
+
+            if (res.Succeeded)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteUserSite(Guid userId, Guid siteId)
+        {
+            var res = UserManager.RemoveFromRole(userId.ToString(), siteId.ToString());
+
+            //Удаляем дубликат аккаунта для указанного сайта
+            var dublicateRes = _cmsRepository.DeleteDublicateUser(userId, siteId);
+
+            if (res.Succeeded)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
 
     }
 }

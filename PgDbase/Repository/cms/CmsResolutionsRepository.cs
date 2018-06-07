@@ -1,4 +1,5 @@
 ﻿using LinqToDB;
+using LinqToDB.Data;
 using PgDbase.entity;
 using PgDbase.models;
 using System;
@@ -23,7 +24,7 @@ namespace PgDbase.Repository.cms
                 var query = db.core_AspNetRoles
                     .Where(s => s.Discriminator == "ApplicationRole");
 
-                if(excludeRoles != null)
+                if (excludeRoles != null)
                     query = query.Where(s => !excludeRoles.Contains(s.Name));
 
                 var data = query.Select(s => new RoleModel()
@@ -47,7 +48,8 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 var query = db.core_AspNetRoles
-                    .Where(s => s.Discriminator == "IdentityRole");
+                    .Where(s => s.Discriminator == "IdentityRole")
+                    .Where(s => s.Name != Guid.Empty.ToString());
 
                 var data = query.Select(s => new RoleModel()
                 {
@@ -172,6 +174,7 @@ namespace PgDbase.Repository.cms
                 var _userId = userId.ToString();
                 var query = db.core_AspNetUserRoles
                     .Where(s => s.AspNetRolesRoleId.Discriminator == "IdentityRole")
+                    .Where(s => s.AspNetRolesRoleId.Name != Guid.Empty.ToString())
                     .Where(s => s.UserId == _userId);
 
                 var data = query.Select(s => new RoleModel()
@@ -248,6 +251,149 @@ namespace PgDbase.Repository.cms
                         }
 
                     }
+
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Дублируем пользователя на др. сайт
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="siteId"></param>
+        /// <returns></returns>
+        public bool DublicateUser(Guid userId, Guid siteId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    var newGuid = Guid.NewGuid();
+
+                    var dbUser = db.core_AspNetUsers
+                       .Where(s => s.Id == userId.ToString())
+                       .SingleOrDefault();
+
+                    if (dbUser != null)
+                    {
+                        //Аккаунт
+                        dbUser.Id = newGuid.ToString();
+                        dbUser.UserName = newGuid.ToString();
+                        dbUser.UserId = newGuid;
+
+                        db.Insert(dbUser);
+
+                        //Данные
+                        var dbUserProfile = db.core_AspNetUserProfiles
+                            .Where(s => s.UserId == userId.ToString())
+                            .SingleOrDefault();
+
+                        if (dbUserProfile == null)
+                            return false;
+
+                        dbUserProfile.UserId = newGuid.ToString();
+                        dbUserProfile.IsOriginal = false;
+                        db.Insert(dbUserProfile);
+
+                        //Права
+                        var dbUserRoles = db.core_AspNetUserRoles
+                            .Where(s => s.UserId == userId.ToString())
+                            .Select(s => s).ToArray();
+                            
+                        if(dbUserRoles.Count() > 0)
+                        {
+                            //Если не нужно создавать пользователя личного кабинета, то исключаем роль "User"
+                            foreach (var dbUserRole in dbUserRoles.ToArray())
+                            {
+                                dbUserRole.UserId = newGuid.ToString();
+                                //db.Insert(dbUserRole);
+                            }
+                            db.BulkCopy(dbUserRoles);
+                        }
+
+                        tran.Commit();
+                        return true;
+                    }
+
+                    //log
+                    //var log = new LogModel
+                    //{
+                    //    PageId = Guid.NewGuid,
+                    //    PageName = "",
+                    //    Section = LogModule.Users,
+                    //    Action = LogAction.update,
+                    //    Comment = "Изменена связь пользователя с сайтами"
+                    //};
+                    //InsertLog(log);
+
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Дублируем пользователя на др. сайт
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="siteId"></param>
+        /// <returns></returns>
+        public bool DeleteDublicateUser(Guid userId, Guid siteId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tran = db.BeginTransaction())
+                {
+                    //Оригинал записи
+                    var dbUser = db.core_AspNetUsers
+                       .Where(s => s.Id == userId.ToString())
+                       .SingleOrDefault();
+
+                    if(dbUser != null)
+                    {
+                        //Удаляемая запись (не оригинал, оригинал удалять нельзя)
+                        var dbDublicateUser = db.core_AspNetUsers
+                          .Where(s => s.Email == dbUser.Email)
+                          .Where(s => s.SiteId == siteId)
+                          .Where(s => s.Id != dbUser.Id)
+                          .Where(s => s.AspNetUserProfilesUserId.IsOriginal == false)
+                          .SingleOrDefault();
+
+                        if (dbDublicateUser == null)
+                            return false;
+
+                        var dbDublicateUserId = dbDublicateUser.Id;
+
+                        //Удаляем права
+                         db.core_AspNetUserRoles
+                            .Where(s => s.UserId == dbDublicateUserId)
+                            .Delete();
+
+                        //Удаляем Данные
+                        db.core_AspNetUserProfiles
+                            .Where(s => s.UserId == dbDublicateUserId)
+                            .Delete();
+
+                        //Аккаунт
+                        db.core_AspNetUsers
+                           .Where(s => s.Id == dbDublicateUserId)
+                           .Delete();
+
+                        tran.Commit();
+                        return true;
+                    }
+
+
+                    //log
+                    //var log = new LogModel
+                    //{
+                    //    PageId = Guid.NewGuid,
+                    //    PageName = "",
+                    //    Section = LogModule.Users,
+                    //    Action = LogAction.update,
+                    //    Comment = "Изменена связь пользователя с сайтами"
+                    //};
+                    //InsertLog(log);
 
                     return false;
                 }
