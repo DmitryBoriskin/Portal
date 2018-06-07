@@ -22,6 +22,10 @@ namespace EventsModule.Areas.Admin.Controllers
         {
             base.OnActionExecuting(filterContext);
 
+            //Есть ли у сайта доступ к модулю
+            if (!_cmsRepository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Admin/");
+
             model = new EventViewModel
             {
                 PageName = PageName,

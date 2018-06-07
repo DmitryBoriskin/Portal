@@ -18,7 +18,11 @@ namespace VacancyModule.Areas.Admin.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            
+
+            //Есть ли у сайта доступ к модулю
+            if (!_cmsRepository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Admin/");
+
             model = new VacancyViewModel()
             {
                 PageName = PageName,
