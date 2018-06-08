@@ -13,6 +13,8 @@ namespace PgDbase.Repository.cms
     /// </summary>
     public partial class CmsRepository
     {
+        #region Лицевые счета
+
         /// <summary>
         /// Возвращает список лицевых счетов
         /// </summary>
@@ -333,6 +335,10 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        #endregion
+
+        #region Подразделения
+
         /// <summary>
         /// Возвращает список подразделений
         /// </summary>
@@ -553,5 +559,56 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
+
+        #endregion
+
+        #region Выставленные счета
+
+        /// <summary>
+        /// Возвращает список выставленных счетов для пользователя
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <returns></returns>
+        public Paged<Charge> GetCharges(Guid subscr, LkFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Paged<Charge> result = new Paged<Charge>();
+                var query = db.lk_charges
+                    .Where(w => w.f_subscr == subscr);
+
+                if (filter.Payed.HasValue)
+                {
+                    query = query.Where(w => w.b_payed == filter.Payed.Value);
+                }
+
+                query = query.OrderByDescending(o => o.d_date);
+                int itemsCount = query.Count();
+
+                var list = query
+                    .Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size)
+                    .Select(s => new Charge
+                    {
+                        Id = s.id,
+                        Date = s.d_date,
+                        Debt = (decimal)s.n_debt,
+                        Payed = s.b_payed
+                    }).ToArray();
+
+                return new Paged<Charge>
+                {
+                    Items = list,
+                    Pager = new PagerModel
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
+        #endregion
     }
 }
