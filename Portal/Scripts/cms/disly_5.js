@@ -479,9 +479,9 @@ $(document).ready(function () {
     });
 
     //Удаляет связь пользователь-роль
-    $(".delete-role-btn").on("click", function (e) {
+    $(".delete-userRoleLink-btn").on("click", function (e) {
         e.preventDefault();
-        var _siteId = $(this).data("siteId");
+        var _role = $(this).data("role");
         var _userId = $(this).data("userId");
         var _action = $(this).data("url");
 
@@ -492,7 +492,7 @@ $(document).ready(function () {
                 method: "POST",
                 url: _action,
                 async: false,
-                data: { siteId: _siteId, userId: _userId },
+                data: { role: _role, userId: _userId },
             })
                 .done(function (response) {
                     if (response === "Success") {
@@ -501,6 +501,62 @@ $(document).ready(function () {
                     else {
                         alert("Произошла ошибка!");
                     }
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+    //Добавляет связь сайт-роль
+    $("#add-roleSiteLink-btn").on("click", function (e) {
+        e.preventDefault();
+        var _siteId = $("#portalRole-siteSelect").val();
+        var _roleId = $(this).data("roleId");
+        var _action = $(this).data("url");
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { roleId: _roleId, siteId: _siteId },
+            })
+                .done(function (response) {
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+    });
+
+    //Удаляет связь сайт-роль
+    $(".delete-roleSiteLink-btn").on("click", function (e) {
+        e.preventDefault();
+        var _siteId = $(this).data("siteId");
+        var _roleId = $(this).data("roleId");
+        var _action = $(this).data("url");
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { roleId: _roleId, siteId: _siteId },
+            })
+                .done(function (response) {
                 })
                 .fail(function (jqXHR, status) {
                     console.log("Ошибка" + " " + status + " " + jqXHR);

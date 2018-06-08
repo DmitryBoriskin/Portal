@@ -9,7 +9,7 @@
     setCursor();
 
     //Динамический поиск пользователей
-    $("#siteUser-select").select2({
+    $("#portal-userSelect").select2({
         language: "ru",
         minimumInputLength: 3,
         placeholder: "Выберите значение из списка",
@@ -17,7 +17,7 @@
         allowClear: true,
         ajax: {
             method: "POST",
-            url: "/admin/siteAdmins/siteUsers",
+            url: "/admin/services/userlist",
             dataType: 'json',
             delay: 500,
             data: function (params) {
@@ -40,42 +40,12 @@
         }
     });
 
-    $("#portalUser-select").select2({
-        language: "ru",
-        minimumInputLength: 3,
-        placeholder: "Выберите значение из списка",
-        triggerChange: true,
-        allowClear: true,
-        ajax: {
-            method: "POST",
-            url: "/admin/admins/portalUsers",
-            dataType: 'json',
-            delay: 500,
-            data: function (params) {
-                return {
-                    query: params.term // Фильтр
-                };
-            },
-            processResults:
-                function (data, params) {
-                    //Mapping Dictionary
-                    var array = $.map(data, function (e, i) {
-                        return {
-                            id: e.id, text: e.text
-                        };
-                    });
-                    return { results: array };
-                },
-            cache: true
-        }
-    });
-
-
     //Добавление пользователя сайта в администраторы
-    $("#add-newSiteAdmin-btn").on("click", function (e) {
+    $("#add-newAdmin-btn").on("click", function (e) {
         e.preventDefault();
-        var _role = $("#siteUserRole-select").val();
-        var _userId = $("#siteUser-select").val();
+        var _siteId = $("#portal-siteSelect").val()
+        var _role = $("#portal-roleSelect").val();
+        var _userId = $("#portal-userSelect").val();
         var _action = $(this).data("url");
 
         try {
@@ -83,7 +53,7 @@
                 method: "POST",
                 url: _action,
                 async: false,
-                data: { userId: _userId, role: _role },
+                data: { userId: _userId, role: _role, siteId:_siteId },
             })
                 .done(function (response) {
                 })
@@ -91,7 +61,7 @@
                     console.log("Ошибка" + " " + status + " " + jqXHR);
                 })
                 .always(function (response) {
-                    location.reload();
+                    window.parent.location.reload();
                 });
         }
         catch (ex) {

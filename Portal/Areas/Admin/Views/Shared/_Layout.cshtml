@@ -94,11 +94,8 @@
                     {
                         foreach (var site in Model.Sites)
                         {
-                            if (User.IsInRole(site.Name.ToString()))
-                            {
-                                string selected = (site.Name == ViewBag.SiteId) ? "selected" : "";
-                                <option value="@site.Name" @selected>@site.Desc</option>
-                            }
+                                string selected = (site.Id.ToString() == ViewBag.SiteId) ? "selected" : "";
+                                <option value="@site.Id" @selected>@site.Title</option>
                         }
                     }
 

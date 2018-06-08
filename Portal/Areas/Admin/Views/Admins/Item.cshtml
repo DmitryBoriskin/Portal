@@ -1,4 +1,5 @@
 ﻿@model UsersViewModel
+
 @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
 {
     if (User.Identity.HasClaim(Model.ControllerName, "view"))
@@ -12,20 +13,16 @@
                         <div class="form-group">
                             <label>Email:</label> @Model.Item.Email<br />
                             <label>Телефон:</label> @Model.Item.Phone<br />
-                            <label>Дата регистрации:</label>  @Model.Item.RegDate<br />
+                            <label>Дата регистрации:</label> @Model.Item.RegDate<br />
+                            <label>Зарегистрирован на сайте:</label> <a href="/admin/sites/item/@Model.Item.SiteId">@Model.Sites.SingleOrDefault(s => s.Id == Model.Item.SiteId).Title</a> 
                         </div>
-                        <br />
                     </div>
-                </div>
-                <div class="col-xs-12 text-right">
-                    <a title="" href="/admin/siteUsers/item/@Model.Item.Id/@ViewBag.urlQuery">Изменить личные данные пользователя</a>
                 </div>
             </div>
             @if (Model.Item != null)
             {
                 @Html.Partial("Part/Roles")
-                @Html.Partial("Part/Sites")
-            }
+             }
         </div>
 
         <div class="dop_info-block">
@@ -54,14 +51,6 @@
     }
 
     <div class="buttons">
-        @if (User.Identity.HasClaim(Model.ControllerName, "edit") || User.Identity.HasClaim(Model.ControllerName, "create"))
-        {
-            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
-        }
-        @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
-        {
-            <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
-        }
         <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
     </div>
 }

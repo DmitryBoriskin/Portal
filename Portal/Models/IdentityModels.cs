@@ -155,7 +155,8 @@ namespace Portal.Models
                 //Находим Claims для каждой из ролей
                 var roleClaims = _dbContext.RoleClaims
                     //.Where(x => userRoles.Any(role => role == x.Role.Name)).ToList()
-                    .Where(x => uRoles.Any(role => role == x.RoleId)).ToList();
+                    .Where(x => uRoles.Any(role => role == x.RoleId))
+                    .ToList();
 
                 //var roleClaims = t.Select(x => new Claim(x.ClaimType, x.ClaimValue));
 
@@ -163,7 +164,13 @@ namespace Portal.Models
                 if (roleClaims.Any())
                     foreach (var claim in roleClaims)
                     {
-                        userIdentity.AddClaim(new Claim(claim.ClaimType, claim.ClaimValue));
+                        //Права на сайты, которые есть у роли
+                        if (claim.ClaimType.ToLower() == "_siteidentity")
+                        {
+                            userIdentity.AddClaim(new Claim(ClaimTypes.Role, claim.ClaimValue));
+                        }
+                        else
+                            userIdentity.AddClaim(new Claim(claim.ClaimType, claim.ClaimValue));
                     }
             }
 

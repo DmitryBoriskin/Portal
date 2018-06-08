@@ -53,6 +53,10 @@ namespace PgDbase.entity
         public string SearchText { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public Guid? SiteId { get; set; }
+        /// <summary>
         /// Язык
         /// </summary>
         public string Lang { get; set; }
@@ -67,6 +71,7 @@ namespace PgDbase.entity
                 Disabled = f.Disabled,
                 Type = f.Type,
                 Category = f.Category,
+                SiteId = f.SiteId,
                 Group = f.Group,
                 Date = f.Date,
                 DateEnd = f.DateEnd,

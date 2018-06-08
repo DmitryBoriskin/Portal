@@ -1,0 +1,50 @@
+﻿@model RoleViewModel
+
+<div class="row group-block open topIndent-20" title="Права на разделы cms">
+    <div class="col-md-12">
+        <table class="table table-condensed topIndent-20">
+            <tr>
+                <th width="40%">Раздел</th>
+                <th>Просмотр</th>
+                <th>Редактирование</th>
+                <th>Создание</th>
+                <th>Удаление</th>
+            </tr>
+            @if (Model.MenuCMS.Count() > 0)
+            {
+                foreach (var group in Model.MenuCMS)
+                {
+                    <tr>
+                        <td colspan="5" class="bg-warning"><strong>@group.Name (@group.Alias)</strong></td>
+                    </tr>
+
+                    if (group.Childs.Count() > 0)
+                    {
+                        foreach (var menu in group.Childs)
+                        {
+                            <tr>
+                                <td>@menu.Name (@menu.Alias)</td>
+                                <td>
+                                    <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.CMS" data-claim-type="@menu.Alias" data-claim-value="view" class="iCheck roleClaim-chckbx"
+                                           @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "view") ? "checked" : "") />
+                                </td>
+                                <td>
+                                    <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.CMS" data-claim-type="@menu.Alias" data-claim-value="edit" class="iCheck roleClaim-chckbx"
+                                           @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "edit") ? "checked" : "") />
+                                </td>
+                                <td>
+                                    <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.CMS" data-claim-type="@menu.Alias" data-claim-value="create" class="iCheck roleClaim-chckbx"
+                                           @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "create") ? "checked" : "") />
+                                </td>
+                                <td>
+                                    <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.CMS" data-claim-type="@menu.Alias" data-claim-value="delete" class="iCheck roleClaim-chckbx"
+                                           @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "delete") ? "checked" : "") />
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+        </table>
+    </div>
+</div>

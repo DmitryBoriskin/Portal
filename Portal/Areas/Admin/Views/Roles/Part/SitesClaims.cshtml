@@ -1,14 +1,13 @@
-﻿@model UsersViewModel
+﻿@model RoleViewModel
 
 <div class="row topIndent-20">
     <div class="col-md-12">
-        <div class="group-block open" title="Сайты">
+        <div class="group-block open" title="Права на сайты">
             @if (Model.Item.Sites.Count() > 0)
             {
                 <table class="table admin-pannel-table">
                     <thead>
                         <tr>
-                            <th></th>
                             <th width="90%">Сайт</th>
                             <th></th>
                         </tr>
@@ -18,15 +17,10 @@
                         {
                             <tr>
                                 <td>
-                                </td>
-                                <td>
-                                    @site.Desc <span class="description"> (@site.Name)</span>
+                                    @site.Title <span class="description"> (@site.Id)</span>
                                 </td>
                                 <td class="text-right">
-                                    @if (Model.Item.SiteId.ToString() != site.Name)
-                                    {
-                                      <a class="delete-role-btn delete-item-link" data-site-id="@site.Name" data-user-id="@Model.Item.Id" data-url="/admin/roles/DeleteUserSite" data-init="false"></a>
-                                    }
+                                      <a class="delete-roleSiteLink-btn delete-item-link" data-site-id="@site.Id" data-role-id="@Model.Item.Id" data-url="/admin/roles/DeleteRoleFromSite/" data-init="false"></a>
                                 </td>
                             </tr>
                         }
@@ -37,18 +31,18 @@
                 <div class="form-group" style="margin-bottom: 0;">
                     <label>Сайт:</label>
                 </div>
-                <select id="itemSite-select" class="form-control select2">
+                <select id="portalRole-siteSelect" class="form-control select2">
                     @if (Model.Sites != null && Model.Sites.Count() > 0)
                     {
-                        foreach (var role in Model.Sites)
+                        foreach (var site in Model.Sites)
                         {
-                            if (Model.Item != null && Model.Item.Roles != null && Model.Item.Sites.Any(m => m.Name == role.Name))
+                            if (Model.Item != null && Model.Item.Claims != null && Model.Item.Claims.Any(m => m.Type == "_SiteIdentity" && m.Value == site.Id.ToString()))
                             {
-                                <option value="@role.Name" disabled>@role.Desc</option>
+                                <option value="@site.Id" disabled>@site.Title</option>
                             }
                             else
                             {
-                                <option value="@role.Name">@role.Desc</option>
+                                <option value="@site.Id">@site.Title</option>
                             }
                         }
                     }
@@ -56,7 +50,7 @@
 
             </div>
             <div class="col-md-4">
-                <button type="button" id="add-userSiteLink-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-user-id="@Model.Item.Id" data-url="/admin/roles/AddUserSite">Добавить</button>
+                <button type="button" id="add-roleSiteLink-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-role-id="@Model.Item.Id" data-url="/admin/roles/AddRoleToSite/" data-init="false">Добавить</button>
             </div>
         </div>
     </div>

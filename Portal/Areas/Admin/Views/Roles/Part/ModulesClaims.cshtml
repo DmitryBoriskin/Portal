@@ -1,0 +1,40 @@
+﻿@model RoleViewModel
+
+<div class="row group-block open topIndent-20" title="Права на модули">
+    <div class="col-md-12">
+        <table class="table table-striped table-condensed topIndent-20">
+            <tr>
+                <th width="40%">Модуль</th>
+                <th>Просмотр</th>
+                <th>Редактирование</th>
+                <th>Создание</th>
+                <th>Удаление</th>
+            </tr>
+            @if (Model.Modules.Count() > 0)
+            {
+                foreach (var menu in Model.Modules)
+                {
+                    <tr>
+                        <td>@menu.Name (@menu.ControllerName)</td>
+                        <td>
+                            <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.Module" data-claim-type="@menu.ControllerName" data-claim-value="view" class="iCheck roleClaim-chckbx"
+                                   @(menu.RoleModuleClaims.View ? "checked" : "") />
+                        </td>
+                        <td>
+                            <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.Module" data-claim-type="@menu.ControllerName" data-claim-value="edit" class="iCheck roleClaim-chckbx"
+                                   @(menu.RoleModuleClaims.Edit ? "checked" : "") />
+                        </td>
+                        <td>
+                            <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.Module" data-claim-type="@menu.ControllerName" data-claim-value="create" class="iCheck roleClaim-chckbx"
+                                   @(menu.RoleModuleClaims.Create ? "checked" : "") />
+                        </td>
+                        <td>
+                            <input type="checkbox" data-init="false" data-claim-Section="@ClaimSection.Module" data-claim-type="@menu.ControllerName" data-claim-value="delete" class="iCheck roleClaim-chckbx"
+                                   @(menu.RoleModuleClaims.Delete ? "checked" : "") />
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

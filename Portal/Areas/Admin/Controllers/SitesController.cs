@@ -83,7 +83,7 @@ namespace Portal.Areas.Admin.Controllers
                 }
                 else
                 {
-                    _cmsRepository.InsertSites(backModel.Item);
+                    _cmsRepository.InsertSite(backModel.Item);
                     message.Info = "Запись добавлена";
                 }
                 message.Buttons = new ErrorMessageBtnModel[]
