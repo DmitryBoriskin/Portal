@@ -1,45 +1,94 @@
 ﻿@model LkModule.Areas.Admin.Models.SubscrViewModel
 
-@{ 
+@{
     Layout = null;
+    int i = 0;
 }
 
-@if (Model.Subscrs != null && Model.Subscrs.Count() > 0)
-{
-    <div class="group-block open" title="Привязка лицевых счетов">
-        <div class="form-group">
-            <label for="subscr-select">Лицевые счета</label>
-            <select name="Item.Subscrs" id="subscr-select" class="form-control select2" multiple>
-                @foreach (var sub in Model.Subscrs)
-                {
-                    string title = String.Format("{0} {1} {2} {3}", sub.Link, sub.Surname, sub.Name, sub.Patronymic);
-                    string selected = Model.SelectedSubscrs.Any(a => a == sub.Id) ? "selected" : null;
-                    <option value="@sub.Id" @selected>@title</option>
-                }
-            </select>
+<div class="row topIndent-20">
+    <div class="col-md-12">
+        <div class="group-block open" title="Лицевые счета">
+            @if (Model.Subscrs != null && Model.Subscrs.Count() > 0)
+            {
+                <table class="table table-condensed admin-pannel-table">
+                    <thead>
+                        <tr>
+                            <th>Номер</th>
+                            <th>Абонент</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SelectedSubscrs)
+                        {
+                            string name = String.Format("{0} {1} {2}", item.Surname, item.Name, item.Patronymic);
+                            <tr>
+                                <td>@item.Link</td>
+                                <td>@name</td>
+                                <td class="text-right">
+                                    <span data-container="body" data-toggle="popover" data-placement="left"></span>
+                                    <a class="delete-item-link" data-id="@item.Id" data-init="false"></a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            }
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="subscr-select">Лицевые счета</label>
+                    <select name="Item.Subscrs" id="subscr-select" class="form-control select2" multiple>
+                        @foreach (var sub in Model.Subscrs)
+                        {
+                            string title = String.Format("{0} {1} {2} {3}", sub.Link, sub.Surname, sub.Name, sub.Patronymic);
+                            <option value="@sub.Id">@title</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <a id="attach" class="button icon-create green pull-right">Добавить</a>
+            </div>
         </div>
     </div>
+</div>
 
-    <script>
-        $("#subscr-select").on("change", function (evt) {
-            var segments = $(location).attr('href').split('/');
-            var user = segments[6];
-            var items = $("#subscr-select").select2("data");
-            var array = [];
-            for (var i = 0; i < items.length; i++) {
-                if (items[i] !== null) {
-                    array.push(items[i].id);
-                }
+<script>
+    var segments = $(location).attr('href').split('/');
+    var user = segments[6];
+
+    $("#attach").click(function (e) {
+        e.preventDefault();
+        var items = $("#subscr-select").select2("data");
+        var array = [];
+        for (var i = 0; i < items.length; i++) {
+            if (items[i] !== null) {
+                array.push(items[i].id);
             }
+        }
 
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: '/Admin/SubscrsWidget/Update',
-                data: ({ items: array, user: user }),
-                error: function (data) {}
-            });
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '/Admin/SubscrsWidget/Add',
+            data: ({ items: array, user: user }),
+            error: function (data) { }
         });
-    </script>
-}
+        location.reload();
+    });
 
+    $(".delete-item-link").click(function (e) {
+        e.preventDefault();
+        var s = $(this).data("id");
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '/Admin/SubscrsWidget/Drop',
+            data: ({ item: s, user: user }),
+            error: function (data) { }
+        });
+        location.reload();
+    });
+</script>

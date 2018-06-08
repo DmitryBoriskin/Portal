@@ -1,0 +1,16 @@
+﻿using PgDbase.entity;
+using Portal.Areas.Admin.Models;
+
+namespace LkModule.Areas.Admin.Models
+{
+    /// <summary>
+    /// Модель представления выставленных счетов
+    /// </summary>
+    public class ChargesViewModel : CoreViewModel
+    {
+        /// <summary>
+        /// Список
+        /// </summary>
+        public Paged<Charge> List { get; set; }
+    }
+}

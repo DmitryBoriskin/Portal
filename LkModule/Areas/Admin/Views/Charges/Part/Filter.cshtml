@@ -1,0 +1,19 @@
+﻿@{
+    var checkboxValue = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["payed"]))
+    {
+        bool.TryParse(Request.QueryString["payed"], out checkboxValue);
+    }
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-12">
+            @Html.CheckBox("payed", !checkboxValue, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Неоплаченные", data_off = "Оплаченные", data_width = "248" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6"><button type="submit" name="action" value="search-btn" class="button btn-primary">Применить</button></div>
+        <div class="col-md-6"><button type="submit" name="action" value="clear-btn" class="button btn-default">Сбросить</button></div>
+    </div>
+}

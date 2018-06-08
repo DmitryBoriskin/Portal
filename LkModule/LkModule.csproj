@@ -95,10 +95,16 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ChargesController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MeterDevicesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscrsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscrsWidgetController.cs" />
+    <Compile Include="Areas\Admin\Models\ChargesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\DepartmentViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\MeterDeviceViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\PaymentsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubscrViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -116,6 +122,12 @@
     <Content Include="Areas\Admin\Views\Departments\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Departments\Item.cshtml" />
     <Content Include="Areas\Admin\Views\SubscrsWidget\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Charges\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Charges\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\MeterDevices\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MeterDevices\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\Payments\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Payments\Part\Filter.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -175,7 +187,10 @@
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Subscrs\*" "$(SolutionDir)Portal\Areas\Admin\Views\Subscrs\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Departments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Departments\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\SubscrsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\SubscrsWidget\"</PostBuildEvent>
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\SubscrsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\SubscrsWidget\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Charges\*" "$(SolutionDir)Portal\Areas\Admin\Views\Charges\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\MeterDevices\*" "$(SolutionDir)Portal\Areas\Admin\Views\MeterDevices\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Payments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Payments\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
