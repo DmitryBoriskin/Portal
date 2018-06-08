@@ -21,19 +21,13 @@ namespace LkModule.Areas.Admin.Controllers
             model = new ChargesViewModel()
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                UserResolution = UserResolutionInfo
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore,
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Charges
