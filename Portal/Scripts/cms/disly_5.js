@@ -3,10 +3,6 @@ var change = 0;
 
 $(document).ready(function () {
 
-  
-
-
-
     //специфический для med.cap.ru
     //показываем селект "новове в медеицине" если выбрана соответствующая категория
     if ($('#itemGroups-select').length > 0) {
@@ -27,8 +23,10 @@ $(document).ready(function () {
 
 
 
-    $('#DomainSelect').change(function () {
-        window.location.href = this.options[this.selectedIndex].value
+    $('#adminDomain-select').change(function () {
+        //ajax get defaultdomain function mast be here
+
+        //window.location.href = this.options[this.selectedIndex].value
     });
 
     $modal = $('.modal');
@@ -390,14 +388,14 @@ $(document).ready(function () {
 
     //Изменяет права роли
     $(".roleClaim-chckbx").on('ifToggled', function (e) {
-
-        var _checked = ($(this).val() === "on") ? true : false;
+        var _checked = ($(this).is(':checked')) ? true : false;
 
         var roleClaim = {
             Id : $(this).data("claimId"),
             RoleId : $("#Item_Id").val(),
             Type : $(this).data("claimType"),
-            Value : $(this).data("claimValue"),
+            Value: $(this).data("claimValue"),
+            Section: $(this).data("claimSection"),
             Checked: _checked
         };
 
@@ -455,7 +453,7 @@ $(document).ready(function () {
     
     $("#add-userSiteLink-btn").on("click", function (e) {
         e.preventDefault();
-        var _role = $("#itemSite-select").val();
+        var _siteId = $("#itemSite-select").val();
         var _userId = $(this).data("userId");
         var _action = $(this).data("url");
 
@@ -464,7 +462,7 @@ $(document).ready(function () {
                 method: "POST",
                 url: _action,
                 async: false,
-                data: { userId: _userId, role: _role },
+                data: { userId: _userId, siteId: _siteId },
             })
                 .done(function (response) {
                 })
@@ -483,7 +481,7 @@ $(document).ready(function () {
     //Удаляет связь пользователь-роль
     $(".delete-role-btn").on("click", function (e) {
         e.preventDefault();
-        var _role = $(this).data("role");
+        var _siteId = $(this).data("siteId");
         var _userId = $(this).data("userId");
         var _action = $(this).data("url");
 
@@ -494,7 +492,7 @@ $(document).ready(function () {
                 method: "POST",
                 url: _action,
                 async: false,
-                data: { role: _role, userId: _userId },
+                data: { siteId: _siteId, userId: _userId },
             })
                 .done(function (response) {
                     if (response === "Success") {

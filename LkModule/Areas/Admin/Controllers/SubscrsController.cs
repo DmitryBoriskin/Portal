@@ -20,15 +20,20 @@ namespace LkModule.Areas.Admin.Controllers
         {
             base.OnActionExecuting(filterContext);
 
+            //Есть ли у сайта доступ к модулю
+            if (!_cmsRepository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Admin/");
+
             model = new SubscrViewModel()
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                UserResolution = UserResolutionInfo,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore,
+
                 Departments = new SelectList(_cmsRepository.GetDepartments()
                     .Select(s => new SelectListItem
                     {
@@ -36,12 +41,6 @@ namespace LkModule.Areas.Admin.Controllers
                         Value = s.Id.ToString()
                     }).ToArray(), "Value", "Text")
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Lk

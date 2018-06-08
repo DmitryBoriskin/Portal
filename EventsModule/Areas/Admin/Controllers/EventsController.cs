@@ -22,23 +22,20 @@ namespace EventsModule.Areas.Admin.Controllers
         {
             base.OnActionExecuting(filterContext);
 
+            //Есть ли у сайта доступ к модулю
+            if (!_cmsRepository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Admin/");
+
             model = new EventViewModel
             {
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
-                UserResolution = UserResolutionInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
-            ViewBag.Title = "События";
         }
 
         // GET: Admin/Events

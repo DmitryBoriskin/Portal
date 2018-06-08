@@ -5,9 +5,9 @@
     string ActiveClass = "";
 } 
 
-@if (Model.Menu != null && Model.Menu.Count() > 0)
+@if (Model.MenuCMS != null && Model.MenuCMS.Count() > 0)
 {
-    foreach (var menuGroup in Model.Menu)
+    foreach (var menuGroup in Model.MenuCMS)
     {
         if (menuGroup.Childs != null && menuGroup.Childs.Count() > 0)
         {

@@ -1,4 +1,5 @@
-﻿using PgDbase.entity;
+﻿using Newtonsoft.Json;
+using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
 using System.Linq;
@@ -22,18 +23,15 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new UsersViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
-                
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore,
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
 
             //Исключаем из выборки вышестоящие роли, например PortalAdmin не должен видеть Developer
             string[] excludeRoles = null;
@@ -73,14 +71,15 @@ namespace Portal.Areas.Admin.Controllers
             return View("Item", model);
         }
 
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
+
         public ActionResult Insert()
         {
-            string query = HttpUtility.UrlDecode(Request.Url.Query);
-            query = AddFilterParam(query, "page", String.Empty);
+            //string query = HttpUtility.UrlDecode(Request.Url.Query);
+            //query = AddFilterParam(query, "page", String.Empty);
 
-            return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
+            //return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
+            filter = GetFilter();
+            return View("Part/FindUser", model);
         }
 
         [HttpPost]
@@ -216,6 +215,15 @@ namespace Portal.Areas.Admin.Controllers
                 };
             }
             return null;
+        }
+
+        [HttpPost]
+        public string PortalUsers(string query)
+        {
+            var users = _cmsRepository.GetUsersList(query, null);
+            var data = users.Select(t => new { id = t.Id, text = $"{t.FullName} ({t.Email})" });
+
+            return JsonConvert.SerializeObject(data);
         }
 
     }

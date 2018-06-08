@@ -90,27 +90,21 @@ namespace PgDbase.Repository.front
             // Определяем сайт
             SiteId = GetCurrentSiteId();
 
+            var userId = Guid.Empty;
+            if (User.Identity.IsAuthenticated)
+            {
+                var _userId = User.Identity.GetUserId();
+                var currentUser = UserManager.FindById(_userId);
+                userId = currentUser.UserId;
+            }
+
+            _Repository = new FrontRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
+
             //PageName = _Repository.GetPageName(ControllerName);
             //StartUrl = "/Admin/" + (String)RouteData.Values["controller"] + "/";
-
-            //// Данные об авторизованном пользователе
-            //var userId = User.Identity.GetUserId();
-            ////var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            //var currentUser = UserManager.FindById(userId);
-            //var _userId = currentUser.UserId;
-
-            ////Проверка на права доступа к конкретному сайту
-            //var siteAuth = User.IsInRole(SiteId.ToString());
-
-            //if(!siteAuth)
-            //    filterContext.Result = new RedirectResult("~/Account/AccessDenied");
-
         }
 
-        public CoreController()
-        {
-            _Repository = new FrontRepository("dbConnection", SiteId);
-        }
+        public CoreController() { }
 
         /// <summary>
         /// Добавляет параметр
@@ -245,7 +239,6 @@ namespace PgDbase.Repository.front
             return filter;
         }
 
-
         /// <summary>
         /// Возвращает JSON фотоальбома
         /// </summary>
@@ -260,7 +253,10 @@ namespace PgDbase.Repository.front
                 return Json(null, JsonRequestBehavior.AllowGet);
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private Guid GetCurrentSiteId()
         {
             var _repository = new Repository("dbConnection");

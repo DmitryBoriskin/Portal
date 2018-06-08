@@ -23,10 +23,7 @@ namespace PgDbase.entity
         /// </summary>
         public PagerModel Pager;
 
-        public int CountAllSites;
-        public int CountOrgSites;
-        public int CountGsSites;
-        public int CountEventSites;
+        public int CountAllSites;      
     }
 
     /// <summary>

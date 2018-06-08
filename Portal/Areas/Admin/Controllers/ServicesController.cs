@@ -1,10 +1,14 @@
-﻿using PgDbase.entity;
+﻿using Microsoft.AspNet.Identity;
+using PgDbase.entity;
 using Portal.Areas.Admin.Models;
+using Portal.Models;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [RouteArea("Admin")]
     public class ServicesController : BeCoreController
     {
         //public ServicesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -27,39 +31,100 @@ namespace Portal.Areas.Admin.Controllers
             return PartialView("Log", model);
         }
 
-        public ActionResult ChangePass(Guid id)
+        public void ForgotPassword(Guid id)
         {
             UsersViewModel model = new UsersViewModel()
             {
-                //UserResolution = UserResolutionInfo,
                 Item = _cmsRepository.GetUser(id)
             };
+
+            string codeGenerated = UserManager.GeneratePasswordResetToken(id.ToString());
+            var callbackUrl = Url.Action("ResetPassword", "Services", new { userId = id.ToString(), code = codeGenerated }, protocol: Request.Url.Scheme);
+
+            Response.Redirect(callbackUrl);
+               //PartialView("ChangePass", model);
+        }
+
+        // GET: /Account/ResetPassword
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string userId, string code)
+        {
+            ViewBag.UserEmail = UserManager.FindById(userId).Email;
+            return code == null ? PartialView("Error") : PartialView("");
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var siteId = SiteId;
+            if (siteId == Guid.Empty)
+                return RedirectToAction("Error", "Main");
+
+            var getUser = UserManager.Users.Where(u => u.Email == model.Email && u.SiteId == siteId).SingleOrDefault();
+
+            if (getUser == null)
+                return RedirectToAction("ResetPasswordConfirmation", "Services");
+
+            var userId = getUser.Id;
+
+
+            var user = UserManager.FindById(userId);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Services");
+            }
+            var result = UserManager.ResetPassword(user.Id, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Services");
+            }
+
+            return View("");
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View("");
+        }
+
+
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "password-update")]
+        public ActionResult ChangePass(Guid id, UsersViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string NewPass = model.Password.Password;
+                Cripto pass = new Cripto(NewPass.ToCharArray());
+                string NewSalt = pass.Salt;
+                string NewHash = pass.Hash;
+               
+                //_cmsRepository.ChangePassword(id, NewSalt, NewHash);
+                ViewBag.SuccesAlert = "Пароль изменен";
+            }
+
+            model = new UsersViewModel()
+            {
+                Item = _cmsRepository.GetUser(id)
+            };
+
             return PartialView("ChangePass", model);
         }
 
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "password-update")]
-        //public ActionResult ChangePass(Guid id, UsersViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        string NewPass = model.Password.Password;
-        //        Cripto pass = new Cripto(NewPass.ToCharArray());
-        //        string NewSalt = pass.Salt;
-        //        string NewHash = pass.Hash;
-        //        _cmsRepository.ChangePassword(id, NewSalt, NewHash);
-        //        ViewBag.SuccesAlert = "Пароль изменен";
-        //    }
-
-        //    model = new UsersViewModel()
-        //    {
-        //        //UserResolution = UserResolutionInfo,
-        //        Item = _cmsRepository.GetUser(id)
-        //    };
-
-        //    return PartialView("ChangePass", model);
-        //}
-        
         public ActionResult AddFilterTree(string section, string id)
         {
             var model = new GroupsModel();
@@ -72,7 +137,7 @@ namespace Portal.Areas.Admin.Controllers
                         break;
                 }
             }
-            model.Alias = section;
+            model.Section = section;
             return PartialView("FilterTreeItem", model);
         }
 
@@ -86,27 +151,27 @@ namespace Portal.Areas.Admin.Controllers
                 {
                     item.Id = Guid.NewGuid();
                 }
-                switch (item.Alias)
+                switch (item.Section)
                 {
                     case "pages":
                         _cmsRepository.SavePageGroup(item);
                         break;
                 }
             }
-            return Redirect($"/admin/{item.Alias}");
+            return Redirect($"/admin/{item.Section}");
         }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-filter-tree-btn")]
         public ActionResult DeleteFilterTreeItem(GroupsModel item)
         {
-            switch (item.Alias)
+            switch (item.Section)
             {
                 case "pages":
                     _cmsRepository.DeletePageGroup(item.Id);
                     break;
             }
-            return Redirect($"/admin/{item.Alias}");
+            return Redirect($"/admin/{item.Section}");
         }
 
 
@@ -117,7 +182,7 @@ namespace Portal.Areas.Admin.Controllers
             switch (group.ToLower())
             {
                 case "cmsmenu":
-                    _cmsRepository.ChangePositionMenu(id, position);
+                    result = _cmsRepository.ChangePositionMenu(id, position);
                     break;
                 case "pages":
                     result = _cmsRepository.ChangePositionPages(id, position);
@@ -132,29 +197,5 @@ namespace Portal.Areas.Admin.Controllers
             bool result = _cmsRepository.ChangePositionPhoto(album, id, permit);
             return Content(result.ToString());
         }
-
-        //[HttpGet]
-        //public ActionResult GroupClaims(string id)
-        //{
-        //    UserGroupResolution[] model = null;
-            
-        //    if (!String.IsNullOrWhiteSpace(id))
-        //    {
-        //        Guid groupId = Guid.Parse(id);
-        //        model = _cmsRepository.GetGroupResolutions(groupId);
-        //    }
-        //    return PartialView("GroupClaims", model);
-        //}
-
-        //[HttpPost]
-        //public ActionResult UpdateGroupClaims(ClaimParams data)
-        //{
-        //    var res = _cmsRepository.UpdateGroupResolution(data);
-        //    if (res)
-        //    {
-        //        return Json("Success");
-        //    }
-        //    return Json("An Error Has occourred");
-        //}
     }
 }

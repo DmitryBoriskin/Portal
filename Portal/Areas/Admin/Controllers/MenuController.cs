@@ -18,18 +18,16 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new MenuViewModel
             {
+                SiteId = SiteId,
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore,
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
+           
             model.MenuGroups = _cmsRepository.GetCmsMenu();
             //ViewBag.StartUrl = StartUrl;
             ViewBag.Title = "Структура CMS";

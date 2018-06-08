@@ -17,13 +17,43 @@
         allowClear: true,
         ajax: {
             method: "POST",
-            url: "/admin/siteUsers/list",
+            url: "/admin/siteAdmins/siteUsers",
+            dataType: 'json',
+            delay: 500,
+            data: function (params) {
+                return {
+                    query: params.term, // Фильтр
+                    siteId: $(this).data("siteId"),
+                };
+            },
+            processResults:
+                function (data, params) {
+                    //Mapping Dictionary
+                    var array = $.map(data, function (e, i) {
+                        return {
+                            id: e.id, text: e.text
+                        };
+                    });
+                    return { results: array };
+                },
+            cache: true
+        }
+    });
+
+    $("#portalUser-select").select2({
+        language: "ru",
+        minimumInputLength: 3,
+        placeholder: "Выберите значение из списка",
+        triggerChange: true,
+        allowClear: true,
+        ajax: {
+            method: "POST",
+            url: "/admin/admins/portalUsers",
             dataType: 'json',
             delay: 500,
             data: function (params) {
                 return {
                     query: params.term // Фильтр
-                    //param1: null,
                 };
             },
             processResults:
@@ -94,66 +124,66 @@
         });
     }
 
-    //Назначение прав группе
-    $("#modal-userGroupResolutions-table input[type='checkbox']").on('ifChanged', function () {
+    ////Назначение прав группе
+    //$("#modal-userGroupResolutions-table input[type='checkbox']").on('ifChanged', function () {
 
-        var targetUrl = "/Admin/Services/UpdateGroupClaims";
-        var _group = $(this).data("group");
-        var _url = $(this).data("url");
-        var _action = $(this).data("action");
-        var _menu = $(this).data("menu");
-        var _checked = $(this).is(':checked');
+    //    var targetUrl = "/Admin/Services/UpdateGroupClaims";
+    //    var _group = $(this).data("group");
+    //    var _url = $(this).data("url");
+    //    var _action = $(this).data("action");
+    //    var _menu = $(this).data("menu");
+    //    var _checked = $(this).is(':checked');
 
-        var el = $(this);
-        var elTooltip = $(this).closest(".groupClaim-item").find(".groupClaim-item-tooltip").first();
+    //    var el = $(this);
+    //    var elTooltip = $(this).closest(".groupClaim-item").find(".groupClaim-item-tooltip").first();
 
-        var params = {
-            GroupId: _group,
-            ContentId: _url,
-            Claim: _action,
-            Checked: _checked
-        };
+    //    var params = {
+    //        GroupId: _group,
+    //        ContentId: _url,
+    //        Claim: _action,
+    //        Checked: _checked
+    //    };
         
-        try
-        {
-            var params = {
-                GroupId: _group,
-                ContentId: _url,
-                MenuId: _menu,
-                Claim: _action,
-                IsChecked: _checked
-            };
+    //    try
+    //    {
+    //        var params = {
+    //            GroupId: _group,
+    //            ContentId: _url,
+    //            MenuId: _menu,
+    //            Claim: _action,
+    //            IsChecked: _checked
+    //        };
 
-            var _data = JSON.stringify(params);
+    //        var _data = JSON.stringify(params);
 
-            //ShowPreloader(content);
+    //        //ShowPreloader(content);
 
-            $.ajax({
-                url: targetUrl,
-                method: "POST",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(params)
-            })
-                .done(function (response) {
-                    elTooltip.tooltip('show');
-                })
-                .fail(function (jqXHR, status) {
-                    console.log("Ошибка" + " " + status + " " + jqXHR);
-                    elTooltip.attr("title", "Ошибка сохранения");
-                })
-                .always(function (response) {
-                    setTimeout(function () {
-                        //content.fadeOut("slow");
-                        elTooltip.tooltip('hide');
-                    }, 1000);
-                });
-        }
-        catch(ex){
-            console.log(ex);
-        }
-    });
+    //        $.ajax({
+    //            url: targetUrl,
+    //            method: "POST",
+    //            cache: false,
+    //            contentType: "application/json; charset=utf-8",
+    //            dataType: "json",
+    //            data: JSON.stringify(params)
+    //        })
+    //            .done(function (response) {
+    //                elTooltip.tooltip('show');
+    //            })
+    //            .fail(function (jqXHR, status) {
+    //                console.log("Ошибка" + " " + status + " " + jqXHR);
+    //                elTooltip.attr("title", "Ошибка сохранения");
+    //            })
+    //            .always(function (response) {
+    //                setTimeout(function () {
+    //                    //content.fadeOut("slow");
+    //                    elTooltip.tooltip('hide');
+    //                }, 1000);
+    //            });
+    //    }
+    //    catch(ex){
+    //        console.log(ex);
+    //    }
+    //});
 
     //Привязка пользователей к сайтам 
     $("#modal-userSite-table .userSite-item-chkbx").on('ifToggled', function () {

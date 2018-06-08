@@ -24,16 +24,17 @@ namespace PgDbase.Repository.cms
             {
                 Paged<UserModel> result = new Paged<UserModel>();
 
+                var siteIdStr = _siteId.ToString();
+
                 var query = db.core_AspNetUsers
                              //Условие принадлежности к какой-либо роли, исключая User
                              .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"));
-
 
                 if (filter.Disabled.HasValue)
                     query = query.Where(s => s.AspNetUserProfilesUserId.Disabled == filter.Disabled.Value);
 
                 if (filter.ExcludeRoles != null)
-                    query = query.Where(s => !filter.ExcludeRoles.Contains(s.AspNetUserRolesUserId.AspNetRolesRoleId.Name));
+                    query = query.Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == siteIdStr && r.AspNetRolesRoleId.Discriminator == "IdentityRole"));
 
                 if (!String.IsNullOrWhiteSpace(filter.Group))
                 {
@@ -110,7 +111,8 @@ namespace PgDbase.Repository.cms
                     query = query.Where(s => s.AspNetUserProfilesUserId.Disabled == filter.Disabled.Value);
 
                 if (filter.ExcludeRoles != null)
-                    query = query.Where(s => !filter.ExcludeRoles.Contains(s.AspNetUserRolesUserId.AspNetRolesRoleId.Name));
+                    query = query.Where(s => !db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && filter.ExcludeRoles.Contains(r.AspNetRolesRoleId.Name) && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"));
+                //query = query.Where(s => !filter.ExcludeRoles.Contains(s.AspNetUserRolesUserId.AspNetRolesRoleId.Name));
 
                 if (!String.IsNullOrWhiteSpace(filter.Group))
                 {
@@ -238,17 +240,21 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public UserModel[] GetSiteUsersList(string searchText)
+        public UserModel[] GetUsersList(string searchText, string siteId)
         {
             using (var db = new CMSdb(_context))
             {
-                var siteIdStr = _siteId.ToString();
-
                 var query = db.core_AspNetUsers
                                 //Условие принадлежности к роли User
-                                .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"))
-                                //Условие принадлежности к сайту
-                                .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == siteIdStr && r.AspNetRolesRoleId.Discriminator == "IdentityRole"));
+                                .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"));
+
+                if (!string.IsNullOrEmpty(siteId))
+                {
+                    var siteIdStr = siteId.ToString();
+                    //Условие принадлежности к сайту
+                    query = query
+                        .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == siteIdStr && r.AspNetRolesRoleId.Discriminator == "IdentityRole"));
+                }
 
 
                 if (!String.IsNullOrWhiteSpace(searchText))

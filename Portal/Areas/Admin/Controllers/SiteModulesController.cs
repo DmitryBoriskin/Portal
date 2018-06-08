@@ -21,16 +21,17 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new SitesViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore,
             };
-            if (AccountInfo != null)
-                model.Menu = _cmsRepository.GetCmsMenu();
         }
+
 
         // GET: Admin/SiteModules
         public ActionResult Index()

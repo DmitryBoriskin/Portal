@@ -717,10 +717,12 @@
     <Compile Include="Controllers\AccountManageController.cs" />
     <Compile Include="Controllers\CoreController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Areas\Admin\Models\AccountModel.cs" />
+    <Compile Include="Models\PageWidgetModel.cs" />
     <Compile Include="Models\VacancyWidgetModel.cs" />
     <Compile Include="Models\WidgetCoreModel.cs" />
     <Compile Include="Models\WidgetParamHelper.cs" />
@@ -846,7 +848,6 @@
     <Content Include="Areas\Admin\Views\Account\MsgResult.cshtml" />
     <Content Include="Areas\Admin\Views\Account\MsgSendMail.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_popUp.cshtml" />
-    <Content Include="Areas\Admin\Views\Services\ChangePass.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Item.cshtml" />
@@ -890,6 +891,9 @@
     <Content Include="Areas\Admin\Views\SiteAdmins\Part\FindUser.cshtml" />
     <Content Include="ConnectionStrings.config" />
     <Content Include="AppSettings.config" />
+    <Content Include="Areas\Admin\Views\Services\ResetPassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Services\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\Admin\Views\Admins\Part\FindUser.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Modules\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -921,6 +925,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
     <Content Include="Views\Vacancy\Index.cshtml" />
+    <Content Include="Views\Page\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PgDbase.entity;
 using Portal.Models;
 using System;
 using System.Collections.Generic;
@@ -29,10 +30,11 @@ namespace Portal
             if (claims.Any())
                 foreach (var claim in claims)
                 {
-                    if (claim.Value == claimValue)
+                    if (claim.Value.ToLower() == claimValue.ToLower())
                         return true;
                 }
             return false;
         }
+
     }
 }

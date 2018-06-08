@@ -11,7 +11,7 @@ if (true)
         <h1>@Model.PageName</h1>
         <div class="row">
             <div class="col-md-12">
-                @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @title = "Название Модуля", @placeholder = "Название", MaxLength = "512" })
+                @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @title = "Название Модуля", @placeholder = "Название", MaxLength = "512" })
                 
                 @if (isModulePart)
                 {
@@ -65,7 +65,7 @@ if (true)
                                 <tr class="ui-sortable-handle" data-id="@part.Id">
                                     <td>
                                         <span class="icon-puzzle" style="color:#999;"></span>
-                                        <a title="@part.Desc" class="li-caption" href="/admin/modules/item/@part.Id">@part.Title</a>
+                                        <a title="@part.Desc" class="li-caption" href="/admin/modules/item/@part.Id">@part.Name</a>
                                         <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
                                     </td>
                                 </tr>

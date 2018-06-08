@@ -9,7 +9,6 @@
     // User.Identity  Изменения в админке не обновляют User.Identity, требуется логинится заново
     //string userFullName = User.Identity.GetUserFullName();
 }
-
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -18,9 +17,10 @@
 
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @Html.ActionLink("Здавствуйте, " + user.UserInfo.FullName + ".", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @Html.ActionLink("Здавствуйте, " + user.UserInfo.FullName + "!", "Index", "AccountManage", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            <li>@Html.ActionLink("АдминПанель", "Index", "Admin/Main/", routeValues: null, htmlAttributes: new { title = "АдминПанель" })</li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
         </ul>
     }
 }

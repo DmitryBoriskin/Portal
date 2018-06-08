@@ -28,11 +28,6 @@ namespace Portal.Areas.Admin.Models
         public RoleModel[] Roles { get; set; }
 
         /// <summary>
-        /// Группы вообще все
-        /// </summary>
-        public RoleModel[] Sites { get; set; }
-
-        /// <summary>
         /// Фильтр
         /// </summary>
         public FilterTreeModel Filter { get; set; }

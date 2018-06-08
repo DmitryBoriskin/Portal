@@ -14,18 +14,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var role in Model.Item.Sites)
+                        @foreach (var site in Model.Item.Sites)
                         {
                             <tr>
                                 <td>
-                                    <a class="item-settings-link" href="/admin/roles/item/@role.Id/" data-init="false"></a>
                                 </td>
                                 <td>
-                                    @role.Desc <span class="description"> (@role.Name)</span>
+                                    @site.Desc <span class="description"> (@site.Name)</span>
                                 </td>
                                 <td class="text-right">
-                                    <span id="role_@(role.Id)" data-container="body" data-toggle="popover" data-placement="left" data-content=""></span>
-                                    <a class="delete-role-btn delete-item-link" data-role="@role.Name" data-user-id="@Model.Item.Id" data-url="/admin/roles/DeleteUserRole" data-init="false"></a>
+                                    @if (Model.Item.SiteId.ToString() != site.Name)
+                                    {
+                                      <a class="delete-role-btn delete-item-link" data-site-id="@site.Name" data-user-id="@Model.Item.Id" data-url="/admin/roles/DeleteUserSite" data-init="false"></a>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -55,7 +56,7 @@
 
             </div>
             <div class="col-md-4">
-                <button type="button" id="add-userSiteLink-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-user-id="@Model.Item.Id" data-url="/admin/roles/addUserRole">Добавить</button>
+                <button type="button" id="add-userSiteLink-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-user-id="@Model.Item.Id" data-url="/admin/roles/AddUserSite">Добавить</button>
             </div>
         </div>
     </div>

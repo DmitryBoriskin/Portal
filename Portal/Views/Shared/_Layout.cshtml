@@ -17,27 +17,29 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Главная", "Index", "Main", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    @Html.Partial("_LoginPartial")
                 </ul>
             </div>
         </div>
     </div>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-    
+    <div class="container body-content topIndent-20">
+        <div class="topIndent-20"><br /><br /><br /></div>
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
 
-    <script src="~/Content/plugins/jquery/jquery.js"></script>
-    <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/Content/plugins/mobileGallery/js/jquery.swipebox.js"></script>
-    <script src="~/Scripts/main.js"></script>
+
+        <script src="~/Content/plugins/jquery/jquery.js"></script>
+        <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/Content/plugins/mobileGallery/js/jquery.swipebox.js"></script>
+        <script src="~/Scripts/main.js"></script>
 </body>
 </html>

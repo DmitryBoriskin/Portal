@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity\cms\AccountModel.cs" />
     <Compile Include="Entity\cms\BreadCrumb.cs" />
     <Compile Include="Entity\cms\CatalogList.cs" />
     <Compile Include="Entity\cms\CmsMenuModel.cs" />

@@ -25,8 +25,6 @@ namespace EventsModule.Areas.Admin.Controllers
                 SelectList Events = new SelectList(SelectList, "Guid", "Title");
                 ViewBag.Events = Events;
             }
-
-
             ViewBag.NewsId = id;
             return View(model);
         }

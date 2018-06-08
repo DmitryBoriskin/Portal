@@ -9,10 +9,9 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
+    [RouteArea("Admin")]
     public class NewsController : BeCoreController
     {
-        //public NewsController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        //    : base(userManager, signInManager) { }
 
         NewsViewModel model;
         FilterModel filter;
@@ -23,24 +22,19 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new NewsViewModel
             {
+                SiteId = SiteId,
                 PageName = PageName,
-                DomainName = Domain,
-                Account = AccountInfo,
-                UserResolution = UserResolutionInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore,
             };
-
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
 
             model.Category = _cmsRepository.GetNewsCategory();
             //ViewBag.StartUrl = StartUrl;
-            ViewBag.Title = "Новости";            
+            ViewBag.Title = "Новости";
         }
 
         // GET: Admin/News
@@ -95,7 +89,7 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetNewsItem(id);
-            var Date = DateTime.Today;            
+            var Date = DateTime.Today;
             if (model.Item != null)
             {
                 ViewBag.Photo = model.Item.Photo;
@@ -117,6 +111,7 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Save(Guid id, NewsViewModel backModel, HttpPostedFileBase upload)
@@ -298,7 +293,7 @@ namespace Portal.Areas.Admin.Controllers
             {
                 ViewBag.DankerAler = "Произошла ошибка.";
             }
-            return View();            
+            return View();
         }
         #endregion
     }

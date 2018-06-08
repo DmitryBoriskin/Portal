@@ -1,4 +1,5 @@
-﻿using PgDbase.entity;
+﻿using Newtonsoft.Json;
+using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
 using System.Linq;
@@ -22,18 +23,16 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new UsersViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
-
+            
             //Исключаем из выборки вышестоящие роли, например SiteAdmin не должен видеть Developer и PortalAdmin
             string[] excludeRoles = null;
 
@@ -213,6 +212,15 @@ namespace Portal.Areas.Admin.Controllers
                 };
             }
             return null;
+        }
+
+        [HttpPost]
+        public string SiteUsers(string query, string siteId)
+        {
+            var users = _cmsRepository.GetUsersList(query, siteId);
+            var data = users.Select(t => new { id = t.Id, text = $"{t.FullName} ({t.Email})" });
+
+            return JsonConvert.SerializeObject(data);
         }
     }
 }

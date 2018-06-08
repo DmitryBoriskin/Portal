@@ -25,18 +25,15 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new PhotoViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                UserResolution = UserResolutionInfo,
-                ActionName = ActionName
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/PhotoAlbums

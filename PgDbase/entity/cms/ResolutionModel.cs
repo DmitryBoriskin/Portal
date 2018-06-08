@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PgDbase.entity
 {
+    public enum ClaimSection
+    {
+        Undefined,
+        CMS,
+        Module
+    }
+
     public class RoleClaimModel
     {
   
@@ -19,6 +26,11 @@ namespace PgDbase.entity
 
         public bool Checked { get; set; }
 
+        /// <summary>
+        /// Раздел (CMS/Modules)
+        /// </summary>
+        public ClaimSection Section { get; set; }
+
     }
 
 
@@ -30,10 +42,9 @@ namespace PgDbase.entity
 
         public string Desc { get; set; }
 
-        public string Desciminator { get; set; }
+        public string Discriminator { get; set; }
 
         public RoleClaimModel[] Claims { get; set; }
-
 
     }
 

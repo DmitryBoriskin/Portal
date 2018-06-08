@@ -2,6 +2,7 @@
 using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -22,26 +23,21 @@ namespace Portal.Areas.Admin.Controllers
 
             model = new RoleViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
-                //DomainName = Domain,
-                Account = AccountInfo,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
-                ActionName = ActionName, 
-                
+                ActionName = ActionName,
+                Sites = _cmsRepository.GetSites(),
+                MenuCMS = MenuCmsCore,
+                MenuModules = MenuModulCore
             };
-            if (AccountInfo != null)
-            {
-                model.Menu = MenuCmsCore;
-                model.MenuModules = MenuModulCore;
-            }
         }
 
         // GET: Admin/Roles
         public ActionResult Index()
         {
             filter = GetFilter();
-#warning Кто какие роли может редактировать?
 
             //Исключаем из выборки вышестоящие роли, например SiteAdmin не должен видеть Developer и PortalAdmin
             string[] excludeRoles = null;
@@ -61,6 +57,39 @@ namespace Portal.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetRole(id);
+            model.Modules = _cmsRepository.GetModulesList();
+
+            model.Modules = _cmsRepository.GetModulesList();
+
+            //Права на модули
+            if(model.Modules.Count() > 0)
+            {
+                foreach(var module in model.Modules)
+                {
+                    module.RoleModuleClaims = new RoleModuleClaims()
+                    {
+                        View = true,
+                        Edit = true,
+                        Create = true,
+                        Delete = true
+                    };
+                    if(module.ModuleParts.Count()>0)
+                    {
+                        foreach(var part in module.ModuleParts.Distinct())
+                        {
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "view"))
+                                module.RoleModuleClaims.View = false;
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "edit"))
+                                module.RoleModuleClaims.Edit = false;
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "create"))
+                                module.RoleModuleClaims.Create = false;
+                            if (!model.Item.Claims.Any(t => t.Type == part.ControllerName && t.Value == "delete"))
+                                module.RoleModuleClaims.Delete = false;
+                        }
+                    }
+                }
+            }
+
             return View("Item", model);
         }
 
@@ -180,7 +209,37 @@ namespace Portal.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult UpdateRoleClaim(RoleClaimModel roleClaim)
         {
-            var res = _cmsRepository.UpdateRoleClaim(roleClaim);
+            var res = true;
+
+            if (roleClaim.Section == ClaimSection.CMS)
+            {
+                res = _cmsRepository.UpdateRoleClaim(roleClaim);
+            }
+            else if (roleClaim.Section == ClaimSection.Module)
+            {
+                //Ранее предполагалось, что компоненты модуля находятся в одном контроллере
+                //Права на дочерние контроллеры (компоненты модуля)
+                var module = _cmsRepository.GetModule(roleClaim.Type);
+                if (module != null && module.ModuleParts.Count() > 0)
+                {
+                    foreach (var part in module.ModuleParts.Distinct())
+                    {
+                        var newClaim = new RoleClaimModel()
+                        {
+                            RoleId = roleClaim.RoleId,
+                            Type = part.ControllerName,
+                            Value = roleClaim.Value,
+                            Checked = roleClaim.Checked
+                        };
+                        var updRes = _cmsRepository.UpdateRoleClaim(newClaim);
+                        if (updRes)
+                            res = false;
+                    }
+                }
+            }
+            else
+                res = false;
+
             if (res)
                 return Json("Success");
 
@@ -206,6 +265,35 @@ namespace Portal.Areas.Admin.Controllers
 
             if (res.Succeeded)
                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
+        [HttpPost]
+        public ActionResult AddUserSite(Guid userId, Guid siteId)
+        {
+            var res = UserManager.AddToRole(userId.ToString(), siteId.ToString());
+
+            //Дублируем аккаунт для указанного сайта
+            var dublicateRes = _cmsRepository.DublicateUser(userId, siteId);
+
+            if (res.Succeeded)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteUserSite(Guid userId, Guid siteId)
+        {
+            var res = UserManager.RemoveFromRole(userId.ToString(), siteId.ToString());
+
+            //Удаляем дубликат аккаунта для указанного сайта
+            var dublicateRes = _cmsRepository.DeleteDublicateUser(userId, siteId);
+
+            if (res.Succeeded)
+                return Json("Success");
 
             return Json("An Error Has Occourred");
         }
