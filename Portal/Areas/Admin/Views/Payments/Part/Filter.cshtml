@@ -9,7 +9,8 @@
                 <option value="">не выбрано</option>
                 @foreach (var item in Model.Statuses)
                 {
-                    string selected = (item.Id == ViewBag.Status) ? "selected" : "";
+                    Guid status = ViewBag.Status != null ? Guid.Parse(ViewBag.Status) : Guid.Empty;
+                    string selected = (item.Id == status) ? "selected" : "";
                     <option value="@item.Id" @selected>@item.Title</option>
                 }
             </select>
@@ -22,7 +23,8 @@
                 <option value="">не выбрано</option>
                 @foreach (var item in Model.Types)
                 {
-                    string selected = (item.Id == ViewBag.Types) ? "selected" : "";
+                    Guid type = ViewBag.Type != null ? Guid.Parse(ViewBag.Type) : Guid.Empty;
+                    string selected = (item.Id == type) ? "selected" : "";
                     <option value="@item.Id" @selected>@item.Title</option>
                 }
             </select>

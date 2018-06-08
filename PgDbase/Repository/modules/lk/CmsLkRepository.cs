@@ -687,13 +687,24 @@ namespace PgDbase.Repository.cms
         /// <param name="subscr"></param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<Payment> GetPayments(Guid subscr, FilterModel filter)
+        public Paged<Payment> GetPayments(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
                 Paged<Payment> result = new Paged<Payment>();
                 var query = db.lk_payments
                     .Where(w => w.f_subscr == subscr);
+
+                if (!String.IsNullOrWhiteSpace(filter.Status))
+                {
+                    Guid status = Guid.Parse(filter.Status);
+                    query = query.Where(w => w.f_status == status);
+                }
+                if (!String.IsNullOrWhiteSpace(filter.Type))
+                {
+                    Guid type = Guid.Parse(filter.Type);
+                    query = query.Where(w => w.f_type == type);
+                }
 
                 query = query.OrderByDescending(o => o.d_date);
                 int itemsCount = query.Count();

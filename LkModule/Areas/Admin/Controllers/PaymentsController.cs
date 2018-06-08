@@ -44,17 +44,22 @@ namespace LkModule.Areas.Admin.Controllers
                 return Redirect("/admin/subscrs");
             }
             filter = GetFilter();
-            model.List = _cmsRepository.GetPayments((Guid)subscr, filter);
+            var mFilter = FilterModel.Extend<LkFilter>(filter);
+            mFilter.Status = ViewBag.Status = Request.Params["status"];
+            mFilter.Type = ViewBag.Type = Request.Params["type"];
+            model.List = _cmsRepository.GetPayments((Guid)subscr, mFilter);
             return View(model);
         }
 
         [Route, HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string size, string page)
+        public ActionResult Search(string size, string page, string status, string type)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "page", String.Empty);
             query = AddFilterParam(query, "size", size);
+            query = AddFilterParam(query, "status", status);
+            query = AddFilterParam(query, "type", type);
 
             return Redirect(StartUrl + query);
         }
