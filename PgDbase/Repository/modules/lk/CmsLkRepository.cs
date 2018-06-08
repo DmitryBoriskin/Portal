@@ -88,12 +88,13 @@ namespace PgDbase.Repository.cms
         /// Возвращает список ЛС для привязки к пользователю
         /// </summary>
         /// <returns></returns>
-        public Subscr[] GetSubscrs()
+        public Subscr[] GetSubscrs(Guid user)
         {
             using (var db = new CMSdb(_context))
             {
                 return db.lk_subscrs
                     .Where(w => w.fkdepartments.f_site == _siteId)
+                    .Where(w => !w.fkusersubscrs.Any(a => a.f_user == user))
                     .OrderBy(o => o.c_link)
                     .Select(s => new Subscr
                     {
@@ -219,29 +220,18 @@ namespace PgDbase.Repository.cms
         /// <param name="user"></param>
         /// <param name="subscrs"></param>
         /// <returns></returns>
-        public void UpdateUserSubscrs(Guid user, Guid[] subscrs)
+        public bool AddUserSubscr(Guid user, Guid[] subscrs)
         {
             using (var db = new CMSdb(_context))
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var listExistsSubscrs = db.lk_user_subscrs
-                        .Where(w => w.f_user == user)
-                        .Select(s => s.f_subscr)
-                        .ToArray();
-                    
-                    if (subscrs != null)
+                    try
                     {
-                        foreach (var subscr in listExistsSubscrs)
-                        {
-                            if (!subscrs.Contains(subscr))
-                            {
-                                db.lk_user_subscrs
-                                    .Where(w => w.f_user == user)
-                                    .Where(w => w.f_subscr == subscr)
-                                    .Delete();
-                            }
-                        }
+                        var listExistsSubscrs = db.lk_user_subscrs
+                            .Where(w => w.f_user == user)
+                            .Select(s => s.f_subscr)
+                            .ToArray();
 
                         List<lk_user_subscrs> list = new List<lk_user_subscrs>();
                         foreach (var subscr in subscrs)
@@ -257,15 +247,37 @@ namespace PgDbase.Repository.cms
                             }
                         }
                         db.BulkCopy(list);
+
+                        tr.Commit();
+                        return true;
                     }
-                    else
+                    catch
                     {
-                        db.lk_user_subscrs
-                            .Where(w => w.f_user == user)
-                            .Delete();
+                        return false;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Удаляет связь пользователя с ЛС
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool DropUserSubscr(Guid id, Guid user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    bool result = db.lk_user_subscrs
+                        .Where(w => w.f_subscr == id)
+                        .Where(w => w.f_user == user)
+                        .Delete() > 0;
 
                     tr.Commit();
+                    return result;
                 }
             }
         }
@@ -275,14 +287,20 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public Guid[] GetSelectedSubscrs(Guid user)
+        public Subscr[] GetSelectedSubscrs(Guid user)
         {
             using (var db = new CMSdb(_context))
             {
                 return db.lk_user_subscrs
                     .Where(w => w.f_user == user)
-                    .Select(s => s.f_subscr)
-                    .ToArray();
+                    .Select(s => new Subscr
+                    {
+                        Id = s.f_subscr,
+                        Link = s.fkusersubscrssubscr.c_link,
+                        Surname = s.fkusersubscrssubscr.c_surname,
+                        Name = s.fkusersubscrssubscr.c_name,
+                        Patronymic = s.fkusersubscrssubscr.c_patronymic
+                    }).ToArray();
             }
         }
 
@@ -597,6 +615,56 @@ namespace PgDbase.Repository.cms
                     }).ToArray();
 
                 return new Paged<Charge>
+                {
+                    Items = list,
+                    Pager = new PagerModel
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
+        #endregion
+
+        #region Приборы учёта
+
+        /// <summary>
+        /// Возвращает список приборов учёта
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Paged<MeterDevice> GetMeterDevices(Guid subscr, FilterModel filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Paged<MeterDevice> result = new Paged<MeterDevice>();
+                var query = db.lk_meter_devices
+                    .Where(w => w.f_subscr == subscr);
+
+                if (filter.Disabled.HasValue)
+                {
+                    query = query.Where(w => w.b_disabled == filter.Disabled.Value);
+                }
+
+                query = query.OrderByDescending(o => o.d_install);
+                int itemsCount = query.Count();
+
+                var list = query
+                    .Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size)
+                    .Select(s => new MeterDevice
+                    {
+                        Number = s.c_number,
+                        Mark = s.c_mark,
+                        InstallDate = s.d_install,
+                        Disabled = s.b_disabled
+                    }).ToArray();
+
+                return new Paged<MeterDevice>
                 {
                     Items = list,
                     Pager = new PagerModel
