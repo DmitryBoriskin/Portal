@@ -35,6 +35,7 @@
             {
                 @Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
                 @Html.ActionLink("Выставленные счета", "Index", "Charges", new { subscr = Model.Item.Id }, new { @class = "button icon-archive", @title = "Выставленные счета" })
+                @Html.ActionLink("Приборы учёта", "Index", "MeterDevices", new { subscr = Model.Item.Id }, new { @class = "button icon-archive", @title = "Приборы учёта" })
             }
         </div>
 

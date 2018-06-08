@@ -22,7 +22,7 @@ namespace LkModule.Areas.Admin.Controllers
             model = new ChargesViewModel()
             {
                 SiteId = SiteId,
-                PageName = PageName,
+                PageName = "Выставленные счета",
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
@@ -63,9 +63,9 @@ namespace LkModule.Areas.Admin.Controllers
 
         [Route, HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
-        public ActionResult ClearFiltr()
+        public ActionResult ClearFiltr(Guid subscr)
         {
-            return Redirect(StartUrl);
+            return Redirect($"{StartUrl}?subscr={subscr}");
         }
     }
 }
