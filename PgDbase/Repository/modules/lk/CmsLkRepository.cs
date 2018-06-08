@@ -678,5 +678,94 @@ namespace PgDbase.Repository.cms
         }
 
         #endregion
+
+        #region Платежи
+
+        /// <summary>
+        /// Возвращает список платежей
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Paged<Payment> GetPayments(Guid subscr, FilterModel filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                Paged<Payment> result = new Paged<Payment>();
+                var query = db.lk_payments
+                    .Where(w => w.f_subscr == subscr);
+
+                query = query.OrderByDescending(o => o.d_date);
+                int itemsCount = query.Count();
+
+                var list = query
+                    .Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size)
+                    .Select(s => new Payment
+                    {
+                        Date = s.d_date,
+                        Amount = (decimal)s.n_amount,
+                        Status = new GroupsModel
+                        {
+                            Id = s.fkpaymentstatuses.id,
+                            Title = s.fkpaymentstatuses.c_title
+                        },
+                        Type = new GroupsModel
+                        {
+                            Id = s.fkpaymenttypes.id,
+                            Title = s.fkpaymenttypes.c_title
+                        }
+                    }).ToArray();
+
+                return new Paged<Payment>
+                {
+                    Items = list,
+                    Pager = new PagerModel
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список статусов по платежам
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetPaymentStatuses()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_payment_statuses
+                    .OrderBy(o => o.c_title)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_title
+                    }).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список типов платежей
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetPaymentTypes()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_payment_types
+                    .OrderBy(o => o.c_title)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_title
+                    }).ToArray();
+            }
+        }
+
+        #endregion
     }
 }

@@ -10,30 +10,32 @@ using System.Web.Mvc;
 namespace LkModule.Areas.Admin.Controllers
 {
     [RouteArea("Admin")]
-    [RoutePrefix("MeterDevices")]
-    public class MeterDevicesController : BeCoreController
+    [RoutePrefix("Payments")]
+    public class PaymentsController : BeCoreController
     {
         FilterModel filter;
-        MeterDeviceViewModel model;
+        PaymentsViewModel model;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
-            model = new MeterDeviceViewModel()
+            model = new PaymentsViewModel()
             {
                 SiteId = SiteId,
-                PageName = "Приборы учёта",
+                PageName = "Поступившие платежи",
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
                 Sites = _cmsRepository.GetSites(),
                 MenuCMS = MenuCmsCore,
                 MenuModules = MenuModulCore,
+                Statuses = _cmsRepository.GetPaymentStatuses(),
+                Types = _cmsRepository.GetPaymentTypes()
             };
         }
 
-        // GET: Admin/MeterDevices
+        // GET: Admin/Payments
         [Route]
         public ActionResult Index(Guid? subscr)
         {
@@ -42,18 +44,17 @@ namespace LkModule.Areas.Admin.Controllers
                 return Redirect("/admin/subscrs");
             }
             filter = GetFilter();
-            model.List = _cmsRepository.GetMeterDevices((Guid)subscr, filter);
+            model.List = _cmsRepository.GetPayments((Guid)subscr, filter);
             return View(model);
         }
 
         [Route, HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string size, string page, bool enabled)
+        public ActionResult Search(string size, string page)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "page", String.Empty);
             query = AddFilterParam(query, "size", size);
-            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
 
             return Redirect(StartUrl + query);
         }

@@ -34,8 +34,12 @@ namespace LkModule.Areas.Admin.Controllers
 
         // GET: Admin/Charges
         [Route]
-        public ActionResult Index(Guid subscr)
+        public ActionResult Index(Guid? subscr)
         {
+            if (subscr == null)
+            {
+                return Redirect("/admin/subscrs");
+            }
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
             bool payed = false;
@@ -44,7 +48,7 @@ namespace LkModule.Areas.Admin.Controllers
                 bool.TryParse(Request.QueryString["disabled"], out payed);
                 mFilter.Payed = payed;
             }
-            model.List = _cmsRepository.GetCharges(subscr, mFilter);
+            model.List = _cmsRepository.GetCharges((Guid)subscr, mFilter);
 
             return View(model);
         }
