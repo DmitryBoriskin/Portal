@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace LkModule.Areas.Admin.Controllers
 {
@@ -63,6 +64,15 @@ namespace LkModule.Areas.Admin.Controllers
         public ActionResult ClearFiltr(Guid subscr)
         {
             return Redirect($"{StartUrl}?subscr={subscr}");
+        }
+
+        [Route("GetInfo"), HttpPost]
+        public ActionResult GetInfo(Guid device)
+        {
+            var meters = _cmsRepository.GetMeters(device);
+
+            var json = new JavaScriptSerializer().Serialize(meters);
+            return Json(json);
         }
     }
 }

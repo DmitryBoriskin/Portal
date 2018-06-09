@@ -658,6 +658,7 @@ namespace PgDbase.Repository.cms
                     .Take(filter.Size)
                     .Select(s => new MeterDevice
                     {
+                        Id = s.id,
                         Number = s.c_number,
                         Mark = s.c_mark,
                         InstallDate = s.d_install,
