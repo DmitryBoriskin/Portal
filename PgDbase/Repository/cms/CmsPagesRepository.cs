@@ -20,17 +20,19 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 var q = db.core_pages
-                    .Where(w => w.fkpagesites.id == _siteId)
-                    .Where(w => w.pgid == filter.Parent);
-
+                    .Where(w => w.fkpagesites.id == _siteId);
 
                 if (filter.GroupId != null)
                 {
-                    q = q.Join(db.core_page_group_links.Where(w=>w.f_page_group== filter.GroupId),n=>n.gid,m=>m.f_page,(n,m)=>n);
+                    q = q.Join(db.core_page_group_links.Where(w => w.f_page_group == filter.GroupId), n => n.gid, m => m.f_page, (n, m) => new { n, m })
+                         .OrderBy(o => o.m.n_sort)
+                         .Select(s => s.n);
                 }
-
-                return q
-                    .OrderBy(o => o.n_sort)
+                else
+                {
+                    q=q.Where(w => w.pgid == filter.Parent).OrderBy(o => o.n_sort);
+                }
+                return q                    
                     .Select(s => new PageModel
                     {
                         Id = s.gid,
@@ -198,21 +200,79 @@ namespace PgDbase.Repository.cms
                         .Update() > 0;
 
                     // группы меню
-                    db.core_page_group_links.Where(w => w.f_page == page.Id).Delete();
-
                     if (page.MenuGroups != null)
                     {
-                        List<core_page_group_links> groups = new List<core_page_group_links>();
-                        foreach (var g in page.MenuGroups)
+                        //группы меню к которым элемент уже прицпелен
+                        var GroupExist = db.core_page_group_links.Where(w => w.f_page == page.Id);
+
+                        #region удаляем привязки к группам меню, раннее существовавших а теперь нет
+                        if (GroupExist.Any())
                         {
-                            groups.Add(new core_page_group_links
+                            var Elements = GroupExist.ToArray().Select(s => s.f_page_group).Except<Guid>(page.MenuGroups).ToArray<Guid>();
+
+                            if (Elements.Any())
                             {
-                                id = Guid.NewGuid(),
-                                f_page = page.Id,
-                                f_page_group = g
-                            });
+                                foreach (Guid PageGroup in Elements)
+                                {
+                                    var delelement = db.core_page_group_links.Where(w => w.f_page_group == PageGroup && w.f_page == page.Id);
+                                    //смещаем sort
+                                    db.core_page_group_links
+                                      .Where(w => w.f_page_group == PageGroup && w.n_sort > delelement.Single().n_sort)
+                                      .Set(p => p.n_sort, p => p.n_sort - 1)
+                                      .Update();
+                                    delelement.Delete();
+                                }
+                            }                            
+                        }                        
+                        #endregion
+
+
+
+                        if (GroupExist.Any())
+                        {
+                            foreach (var g in page.MenuGroups)
+                            {
+                                if (GroupExist.Where(w => w.f_page_group == g).Any())
+                                {
+
+                                }
+                                else
+                                {
+                                    var _q = db.core_page_group_links.Where(w => w.f_page_group == g).Select(s => s.n_sort);
+                                    int _sort = _q.Any() ? _q.Max() : 0;
+                                    _sort++;
+
+                                    db.core_page_group_links.Insert(() => new core_page_group_links
+                                    {
+                                        f_page = page.Id,
+                                        f_page_group = g,
+                                        n_sort= _sort
+                                    });
+                                }
+                            }
                         }
-                        db.BulkCopy(groups);
+                        else
+                        {
+                            //случай когда раньше элемент к никакой группе не принадлежал
+                            List<core_page_group_links> groups = new List<core_page_group_links>();
+                            foreach (var g in page.MenuGroups)
+                            {
+                                var _q = db.core_page_group_links.Where(w => w.f_page_group == g).Select(s => s.n_sort);
+                                int _sort = _q.Any() ? _q.Max() : 0;
+                                _sort++;
+
+                                db.core_page_group_links.Insert(() => new core_page_group_links
+                                {
+                                    f_page = page.Id,
+                                    f_page_group = g,
+                                    n_sort = _sort
+                                });                                
+                            }                            
+                        }
+                    }
+                    else
+                    {
+                        db.core_page_group_links.Where(w => w.f_page == page.Id).Delete();
                     }
 
                     tr.Commit();
@@ -245,6 +305,41 @@ namespace PgDbase.Repository.cms
                             Action = LogAction.delete
                         };
                         InsertLog(log, page);
+
+
+                        #region смещаем n_sort
+                        //в карте сайта
+                        db.core_pages
+                            .Where(w => w.gid==page.pgid && w.n_sort>page.n_sort)
+                            .Set(p => p.n_sort, p => p.n_sort - 1)
+                            .Update();
+
+                        //в группах меню
+                        var pagegrouplist = db.core_page_group_links.Where(w => w.f_page == id).ToArray();
+                        if (pagegrouplist.Any())
+                        {
+                            foreach (var item in pagegrouplist)
+                            {
+                                db.core_page_group_links
+                                  .Where(w=>w.f_page_group==item.f_page_group && w.n_sort>item.n_sort)
+                                  .Set(p => p.n_sort, p => p.n_sort - 1)
+                                  .Update();
+                            }
+                        }
+                        
+
+                        #endregion
+
+                        #region удаляем дочерние элементы
+                        var childid = db.core_pages.Where(w => w.pgid == page.gid).Select(s => s.gid);
+                        if (childid.Any())
+                            foreach (var item in childid.ToArray())
+                            {
+                                DeletePage(item);
+                            }
+                        #endregion
+
+
 
                         db.Delete(page);
 
@@ -412,7 +507,51 @@ namespace PgDbase.Repository.cms
                 }                    
             }
         }
+        public bool ChangePositionPagesGroup(Guid id, int new_num, string group)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var groupid =Guid.Parse(group);
+                    var q = db.core_page_group_links.Where(w => w.f_page_group == groupid && w.f_page==id);
+                    if (q.Any())
+                    {
+                        var data = q.Single();
+                        int actualNum = data.n_sort;
+                        if (new_num != actualNum)
+                        {
+                            if (new_num > actualNum)
+                            {
+                                db.core_page_group_links
+                                  .Where(w => w.f_page_group == groupid)
+                                  .Where(w => w.n_sort > actualNum)
+                                  .Where(w => w.n_sort <= new_num)
+                                  .Set(s => s.n_sort, s => s.n_sort - 1)
+                                  .Update();
+                            }
+                            else
+                            {
+                                db.core_page_group_links
+                                  .Where(w => w.f_page_group == groupid)
+                                  .Where(w => w.n_sort < actualNum)
+                                  .Where(w => w.n_sort >= new_num)
+                                  .Set(s => s.n_sort, s => s.n_sort + 1)
+                                  .Update();
+                            }
+                            var result= db.core_page_group_links
+                                          .Where(w => w.id == data.id)
+                                          .Set(s => s.n_sort, new_num)
+                                          .Update() > 0;
+                            tr.Commit();
+                            return result;
+                        }
 
+                    }
+                    return false;
+                }
+            }
+        }
         /// <summary>
         /// Меняет порядок сортировки
         /// </summary>
@@ -431,7 +570,7 @@ namespace PgDbase.Repository.cms
                     if (query.Any())
                     {
                         var data = query.SingleOrDefault();
-                        Guid? parent = data.pgid;
+                        Guid? parent = data.pgid; 
                         int actualNum = data.n_sort;
                         if (newNum != actualNum)
                         {

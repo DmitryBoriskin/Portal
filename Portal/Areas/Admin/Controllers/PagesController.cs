@@ -46,6 +46,7 @@ namespace Portal.Areas.Admin.Controllers
             if (!String.IsNullOrEmpty(group))
             {
                 mfilter.GroupId = Guid.Parse(group);
+                ViewBag.Group = group;
             }
 
             model.List = _cmsRepository.GetPages(mfilter);
@@ -81,7 +82,7 @@ namespace Portal.Areas.Admin.Controllers
                 Title = "Информация"
             };
 
-            string _parent = backModel.Item.ParentId != Guid.Empty ? $"item/{backModel.Item.ParentId.ToString()}" : "";
+            string _parent = backModel.Item.ParentId != null ? $"item/{backModel.Item.ParentId.ToString()}" : "";
             string backToListUrl = $"{StartUrl}{_parent}{Request.Url.Query}";
 
             if (ModelState.IsValid)
