@@ -55,6 +55,8 @@ namespace Portal.Areas.Admin.Controllers
             return View(model);
         }
 
+        
+
         // GET: Admin/Pages/<id>
         [HttpGet]
         public ActionResult Item(Guid id)
@@ -74,6 +76,7 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Item(Guid id, PageViewModel backModel, string[] Item_MenuGroups)
         {
@@ -106,6 +109,9 @@ namespace Portal.Areas.Admin.Controllers
                 }
                 backModel.Item.Alias = Transliteration.Translit(backModel.Item.Alias);
 
+                //
+                backModel.Item.Alias=SpotAlias(backModel.Item.Alias, backModel.Item.Path,id);
+
                 if (_cmsRepository.CheckPageExists(id))
                 {
                     _cmsRepository.UpdatePage(backModel.Item);
@@ -135,6 +141,15 @@ namespace Portal.Areas.Admin.Controllers
             GetBreadCrumbs(id);
             model.ErrorInfo = message;
             return View("item", model);
+        }
+
+        protected string SpotAlias(string alias, string path, Guid id)
+        {
+            while (_cmsRepository.ChechPageAlias(path, alias, id))
+            {
+                alias = alias + "1";
+            }
+            return alias;
         }
 
         [HttpPost]

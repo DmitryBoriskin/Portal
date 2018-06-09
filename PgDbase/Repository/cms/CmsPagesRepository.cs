@@ -189,7 +189,7 @@ namespace PgDbase.Repository.cms
                         .Where(w => w.gid == page.Id)
                         .Set(s => s.c_name, page.Name)
                         .Set(s => s.pgid, page.ParentId)
-                        .Set(s => s.c_path, page.Path)
+                        //.Set(s => s.c_path, page.Path)
                         .Set(s => s.c_alias, page.Alias)
                         .Set(s => s.c_text, page.Text)
                         .Set(s => s.c_url, page.Url)
@@ -310,7 +310,7 @@ namespace PgDbase.Repository.cms
                         #region смещаем n_sort
                         //в карте сайта
                         db.core_pages
-                            .Where(w => w.gid==page.pgid && w.n_sort>page.n_sort)
+                            .Where(w => w.pgid==page.pgid && w.f_site==_siteId && w.n_sort>page.n_sort)
                             .Set(p => p.n_sort, p => p.n_sort - 1)
                             .Update();
 
@@ -343,7 +343,7 @@ namespace PgDbase.Repository.cms
 
                         db.Delete(page);
 
-                        result = page.pgid != Guid.Empty ? $"item/{page.pgid.ToString()}" : null;
+                        result = page.pgid != null? $"item/{page.pgid.ToString()}" : null;
                         tr.Commit();
                     }
                     return result;
@@ -405,6 +405,21 @@ namespace PgDbase.Repository.cms
             {
                 return db.core_pages
                     .Where(w => w.gid == id).Any();
+            }
+        }
+        /// <summary>
+        /// Проверяем есть ли на этом уровне такой же алиас
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public bool ChechPageAlias(string path, string alias,Guid id) {
+            using (var db = new CMSdb(_context))
+            {
+                return db.core_pages
+                         .Where(w => w.f_site == _siteId && w.c_path==path && w.c_alias==alias)
+                         .Where(w=>w.gid!=id)
+                         .Any();                
             }
         }
 

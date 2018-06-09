@@ -109,6 +109,7 @@ namespace PgDbase.Repository.front
                 return null;
             }
         }
+
         /// <summary>
         /// сестренские элементы
         /// </summary>
@@ -135,7 +136,7 @@ namespace PgDbase.Repository.front
         }
 
         /// <summary>
-        /// 
+        /// Возвращает элементы карты сайта по группе
         /// </summary>
         /// <param name="Alias"></param>
         /// <returns></returns>
