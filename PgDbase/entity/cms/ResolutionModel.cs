@@ -46,6 +46,8 @@ namespace PgDbase.entity
 
         public RoleClaimModel[] Claims { get; set; }
 
+        public SitesModel[] Sites { get; set; }
+
     }
 
     public class UserRoleModel

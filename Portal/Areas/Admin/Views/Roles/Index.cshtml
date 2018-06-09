@@ -11,8 +11,8 @@
             foreach (var item in Model.List)
             {
             <div class="list-item">
-                <a title="@item.Name" class="li-caption" href="/admin/roles/item/@item.Id/@ViewBag.urlQuery">@item.Name</a>
-                <div class="li-desc">@item.Desc</div>
+                <a class="li-caption" href="/admin/roles/item/@item.Id/@ViewBag.urlQuery">@item.Desc</a>
+                <div class="li-desc">@item.Name</div>
             </div>
             }
         

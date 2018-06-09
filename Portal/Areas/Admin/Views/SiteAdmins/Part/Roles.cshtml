@@ -25,7 +25,7 @@
                                 </td>
                                 <td class="text-right">
                                     <span id="role_@(role.Id)" data-container="body" data-toggle="popover" data-placement="left" data-content=""></span>
-                                    <a class="delete-role-btn delete-item-link" data-role="@role.Name" data-user-id="@Model.Item.Id" data-url="/admin/roles/DeleteUserRole" data-init="false"></a>
+                                    <a class="delete-userRoleLink-btn delete-item-link" data-role="@role.Name" data-user-id="@Model.Item.Id" data-url="/admin/roles/DeleteUserFromRole" data-init="false"></a>
                                 </td>
                             </tr>
                         }
@@ -55,7 +55,7 @@
 
             </div>
             <div class="col-md-4">
-                <button type="button" id="add-userRoleLink-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-user-id="@Model.Item.Id" data-url="/admin/roles/addUserRole">Добавить</button>
+                <button type="button" id="add-userRoleLink-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-user-id="@Model.Item.Id" data-url="/admin/roles/addUserToRole">Добавить</button>
             </div>
         </div>
     </div>

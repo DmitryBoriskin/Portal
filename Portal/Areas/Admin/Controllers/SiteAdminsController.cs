@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
@@ -54,11 +55,11 @@ namespace Portal.Areas.Admin.Controllers
             var userFilter = FilterModel.Extend<UserFilter>(filter);
 
             //Исключаем из выборки пользователей вышестоящих ролей, например SiteAdmin не должен видеть Developer и PortalAdmin
-            if (User.IsInRole("PortalAdmin"))
-                userFilter.ExcludeRoles = new string[] { "Developer" };
+            //if (User.IsInRole("PortalAdmin"))
+            //    userFilter.ExcludeRoles = new string[] { "Developer" };
 
-            else if (User.IsInRole("SiteAdmin"))
-                userFilter.ExcludeRoles = new string[] { "Developer", "PortalAdmin"};
+            //else if (User.IsInRole("SiteAdmin"))
+            //    userFilter.ExcludeRoles = new string[] { "Developer", "PortalAdmin"};
             //else developer
 
             model.List = _cmsRepository.GetSiteAdmins(userFilter);
@@ -189,7 +190,7 @@ namespace Portal.Areas.Admin.Controllers
             if (model.Roles != null)
             {
                 string link = Request.Url.Query;
-                string editGroupUrl = "/admin/services/groupclaims/";
+                string editGroupUrl = "/admin/roles/item/";
                 string alias = "group";
                 string active = Request.QueryString[alias];
                 return new FilterTreeModel()
@@ -202,25 +203,26 @@ namespace Portal.Areas.Admin.Controllers
                     Items = model.Roles.Select(p =>
                         new CatalogList()
                         {
-                            Title = p.Name,
-                            Alias = p.Id.ToString(),
-                            Link = AddFilterParam(link, alias, p.Id.ToString()),
+                            Title = p.Desc,
+                            Alias = p.Name.ToString(),
+                            Link = AddFilterParam(link, alias, p.Name),
                             Url = $"{editGroupUrl}{p.Id}",
-                            IsSelected = active == p.Id.ToString()
+                            IsSelected = active == p.Name.ToString()
                         }).ToArray(),
-                    Link = "/admin/siteadmins"
+                    Link = "/admin/siteadmins/"
                 };
             }
             return null;
         }
 
         [HttpPost]
-        public string SiteUsers(string query, string siteId)
+        public ActionResult AddNewAdmin(Guid userId, string role)
         {
-            var users = _cmsRepository.GetUsersList(query, siteId);
-            var data = users.Select(t => new { id = t.Id, text = $"{t.FullName} ({t.Email})" });
+            var res = UserManager.AddToRole(userId.ToString(), role);
+            if (res.Succeeded)
+                return Json("Success");
 
-            return JsonConvert.SerializeObject(data);
+            return Json("An Error Has Occourred");
         }
     }
 }

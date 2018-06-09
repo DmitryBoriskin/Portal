@@ -13,36 +13,44 @@
     {
         <div class="row" style="min-height:550px;">
             <div class="col-xs-10">
-                <div class="description">* Поиск пользователей производится по всему порталу</div>
                 <div class="form-group">
                     <label>Пользователь:</label>
                 </div>
-                <select id="portalUser-select" class="form-control"></select>
+                <select id="portal-userSelect" class="form-control" data-site-id=""></select>
+                <div class="form-group">
+                    <label>* Поиск пользователей производится по всему порталу</label>
+                </div>
+            </div>
+            <div class="col-xs-10">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>На сайт:</label>
+                </div>
+                <select id="portal-siteSelect" class="form-control select2">
+                    @if (Model.Sites != null && Model.Sites.Count() > 0)
+                    {
+                        foreach (var site in Model.Sites)
+                        {
+                            <option value="@site.Id">@site.Title</option>
+                        }
+                    }
+                </select>
             </div>
             <div class="col-xs-6">
                 <div class="form-group" style="margin-bottom: 0;">
                     <label>Роль:</label>
                 </div>
-                <select id="siteUserRole-select" class="form-control">
+                <select id="portal-roleSelect" class="form-control">
                     @if (Model.Roles != null && Model.Roles.Count() > 0)
                     {
                         foreach (var role in Model.Roles)
                         {
-                            if (Model.Item != null && Model.Item.Roles != null && Model.Item.Roles.Any(m => m.Name == role.Name))
-                            {
-                                <option value="@role.Name" disabled>@role.Desc</option>
-                            }
-                            else
-                            {
-                                <option value="@role.Name">@role.Desc</option>
-                            }
+                            <option value="@role.Name">@role.Desc</option>
                         }
                     }
                 </select>
-
             </div>
             <div class="col-xs-4">
-                <button type="button" id="add-newSiteAdmin-btn" style="margin-top: 25px;" class="button icon-create green pull-right" data-url="/admin/roles/addUserRole">Добавить</button>
+                <button type="button" id="add-newAdmin-btn" style="margin-top: 25px;" class="button btn-default icon-create pull-right" data-url="/admin/roles/addUserToSiteRole" disabled>Добавить</button>
             </div>
         </div>
     }
@@ -54,6 +62,15 @@ else
 
 <script>
     $(document).ready(function () {
-        $("#siteUserRole-select").select2();
+
+        $("#portal-siteSelect").select2();
+        $("#portal-roleSelect").select2();
+
+        $("#portal-userSelect").on("select2:select", function () {
+            $("#add-newAdmin-btn").attr("disabled", false);
+        });
+        $("#portal-userSelect").on("select2:unselect", function () {
+            $("#add-newAdmin-btn").attr("disabled", true);
+        });
     });
 </script>

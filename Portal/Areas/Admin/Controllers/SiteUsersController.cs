@@ -201,16 +201,25 @@ namespace Portal.Areas.Admin.Controllers
             {
 
                 var user = await UserManager.FindByIdAsync(Id.ToString());
+                var userFullName = user.UserInfo.FullName;
+                var userEmail = user.Email;
+
                 var deleteUserResult = await UserManager.DeleteAsync(user);
 
                 if (deleteUserResult.Succeeded)
                 {
-                    string text = "<p>Уважаемый " + user.UserInfo.FullName + ", Ваша учетная запись на сайте " + Request.Url.Host + " была удалена администратором.</p>";
+                    string text = "<p>Уважаемый " + userFullName + ", Ваша учетная запись на сайте " + Request.Url.Host + " была удалена администратором.</p>";
                     text += "<p>Если у вас возникли вопросы, вам необходимо обратиться в службу поддержки компании.</p>";
                     text += "<p>С уважением, администрация сайта!</p>";
                     text += "<hr><i><span style=\"font-size:11px\">Данное сообщение отправлено роботом, на него не нужно отвечать</i></span>";
 
-                    await UserManager.SendEmailAsync(user.Id, "Удаление учетной записи", text);
+                    var letter = new Mailer()
+                    {
+                        Theme = "Удаление учетной записи",
+                        MailTo = userEmail,
+                        Text = text
+                    };
+                    letter.SendMail();
 
                     message.Info = "Запись удалена";
                 }

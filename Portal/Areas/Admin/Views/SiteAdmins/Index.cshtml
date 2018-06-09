@@ -13,11 +13,9 @@
                 string disabled = (item.Disabled) ? "disabled" : String.Empty;
                 <div class="list-item @disabled">
                     <a title="" class="li-caption" href="/admin/siteadmins/item/@item.Id/@ViewBag.urlQuery">@item.FullName</a>
-                    <div class="li-desc"><span>Роли:</span> 
-                        @foreach (var role in item.Roles)
-                        { if (role.Name != "User")
-                            {<span>@role.Name</span>}
-                        }
+                    <div class="li-desc">
+                        <span>Роли:</span>
+                        @string.Join(", ", item.Roles.Select(r => r.Desc).ToArray())
                     </div>
                     <div class="li-desc"><span>E-mail:</span> @item.Email</div>
                 </div>
@@ -35,9 +33,13 @@
 
     <div class="dop_info-block">
         <div class="dop-caption">Фильтр</div>
+        @Html.Partial("Part/Filter")
+        <br />
+        <br />
+
         @if (Model.Filter != null)
         {
-            @Html.Partial("Partial/_filter", Model.Filter)
+            @Html.Partial("Part/RoleFilter", Model.Filter)
         }
     </div>
 

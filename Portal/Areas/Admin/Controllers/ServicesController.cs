@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using Portal.Models;
@@ -11,8 +12,25 @@ namespace Portal.Areas.Admin.Controllers
     [RouteArea("Admin")]
     public class ServicesController : BeCoreController
     {
-        //public ServicesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
-        //   : base(userManager, signInManager) { }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="siteId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public string UserList(string query, Guid? siteId)
+        {
+            
+            var users = _cmsRepository.GetUsersList(query, siteId);
+            if (users.Count() > 0)
+            {
+                var data = users.Select(t => new { id = t.Id, text = $"{t.FullName} ({t.Email})" });
+                return JsonConvert.SerializeObject(data);
+            }
+
+            return JsonConvert.SerializeObject(null);
+        }
 
 
         public ActionResult Log(Guid id, string type)

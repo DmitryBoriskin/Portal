@@ -39,7 +39,7 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Сайты
         /// </summary>
-        public RoleModel[] Sites { get; set; }
+        public SitesModel[] Sites { get; set; }
 
         /// <summary>
         /// Меню админки из структуры CMS

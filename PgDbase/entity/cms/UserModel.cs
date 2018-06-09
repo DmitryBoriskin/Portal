@@ -83,9 +83,5 @@ namespace PgDbase.entity
         /// </summary>
         public RoleModel[] Roles { get; set; }
 
-        /// <summary>
-        /// Группа 
-        /// </summary>
-        public RoleModel[] Sites { get; set; }
     }
 }
