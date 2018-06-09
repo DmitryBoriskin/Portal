@@ -67,7 +67,7 @@ else
                     result += "<tbody>";
                     for (var i = 0; i < obj.length; i++) {
                         var date = new Date(parseInt(dateReplace(obj[i].Send)));
-                        result += "<tr><td>" + dateParser(date) + "</td><td>" + obj[i].Output + "</td><td>" + obj[i].DrawlType.Title + "</td></tr>";
+                        result += "<tr><td>" + dateParse(date) + "</td><td>" + obj[i].Output + "</td><td>" + obj[i].DrawlType.Title + "</td></tr>";
                     }
                     result += "</tbody>";
                     result += "</table>";
@@ -82,7 +82,7 @@ else
         return date.replace('/Date(', '').replace(')/', '');
     }
 
-    function dateParser(date) {
+    function dateParse(date) {
         var hour = addZeros(date.getHours());
         var minutes = addZeros(date.getMinutes());
         var seconds = addZeros(date.getSeconds());
