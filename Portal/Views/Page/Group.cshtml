@@ -1,0 +1,18 @@
+﻿@model PageFrontModel
+@{
+    Layout = null;
+} 
+@if (Model.PageGroup != null)
+{
+    foreach (var item in Model.PageGroup)
+    {
+        if (item.Url == null)
+        {
+            <a href="/page@(item.Path)@item.Alias">@item.Name</a>
+        }
+        else
+        {
+            <a href="@item.Url">@item.Name</a>
+        }
+    }
+}

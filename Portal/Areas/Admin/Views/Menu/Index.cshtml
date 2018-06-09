@@ -9,7 +9,7 @@
 
             if (Group.Childs != null)
             {
-                <div class="sortable ui-sortable" data-service="/Admin/Services/ChangePosition?group=cmsMenu">
+                <div class="sortable ui-sortable" data-service="/Admin/Services/ChangePosition?section=cmsMenu">
                     @foreach (var Item in Group.Childs)
                     {
                         <div class="cms_menu-item ui-sortable-handle" data-id="@Item.Id">

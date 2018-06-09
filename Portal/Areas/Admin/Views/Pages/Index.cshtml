@@ -1,8 +1,8 @@
 ﻿@model PageViewModel
 @{
     string groupMenu = ViewBag.Group;
-    string urlParam = "/admin/services/ChangePosition/?group=pages";
-    urlParam += !String.IsNullOrEmpty(groupMenu) ? "&menuSort=" + groupMenu : String.Empty;
+    string urlParam = "/admin/services/ChangePosition/?section=pages";
+    urlParam += !String.IsNullOrEmpty(groupMenu) ? "&menuSort=" + groupMenu : String.Empty; 
 }
 
 @using (Html.BeginForm())

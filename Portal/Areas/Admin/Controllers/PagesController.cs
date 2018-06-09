@@ -46,6 +46,7 @@ namespace Portal.Areas.Admin.Controllers
             if (!String.IsNullOrEmpty(group))
             {
                 mfilter.GroupId = Guid.Parse(group);
+                ViewBag.Group = group;
             }
 
             model.List = _cmsRepository.GetPages(mfilter);
@@ -53,6 +54,8 @@ namespace Portal.Areas.Admin.Controllers
             model.Filter = GetFilterTree();
             return View(model);
         }
+
+        
 
         // GET: Admin/Pages/<id>
         [HttpGet]
@@ -73,6 +76,7 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Item(Guid id, PageViewModel backModel, string[] Item_MenuGroups)
         {
@@ -81,7 +85,7 @@ namespace Portal.Areas.Admin.Controllers
                 Title = "Информация"
             };
 
-            string _parent = backModel.Item.ParentId != Guid.Empty ? $"item/{backModel.Item.ParentId.ToString()}" : "";
+            string _parent = backModel.Item.ParentId != null ? $"item/{backModel.Item.ParentId.ToString()}" : "";
             string backToListUrl = $"{StartUrl}{_parent}{Request.Url.Query}";
 
             if (ModelState.IsValid)
@@ -104,6 +108,9 @@ namespace Portal.Areas.Admin.Controllers
                     backModel.Item.Alias = backModel.Item.Name;
                 }
                 backModel.Item.Alias = Transliteration.Translit(backModel.Item.Alias);
+
+                //
+                backModel.Item.Alias=SpotAlias(backModel.Item.Alias, backModel.Item.Path,id);
 
                 if (_cmsRepository.CheckPageExists(id))
                 {
@@ -134,6 +141,15 @@ namespace Portal.Areas.Admin.Controllers
             GetBreadCrumbs(id);
             model.ErrorInfo = message;
             return View("item", model);
+        }
+
+        protected string SpotAlias(string alias, string path, Guid id)
+        {
+            while (_cmsRepository.ChechPageAlias(path, alias, id))
+            {
+                alias = alias + "1";
+            }
+            return alias;
         }
 
         [HttpPost]
