@@ -1,0 +1,40 @@
+﻿@model UsersViewModel
+
+@{
+    var checkboxValue = false;
+    if (!string.IsNullOrEmpty(Request.QueryString["disabled"]))
+    {
+        bool.TryParse(Request.QueryString["disabled"], out checkboxValue);
+    }
+    string siteId = Request.QueryString["siteId"];
+}
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-12">
+            @Html.TextBox("searchtext", Request.QueryString["searchtext"], new { @title = "Поиск по ключевым словам", @placeholder = "поиск...", @MaxLength = "512" })
+        </div>
+        <div class="col-md-12">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>Сайт:</label>
+            </div>
+            <select id="itemSite-select" name="siteId" class="form-control select2">
+                <option></option>
+                @if (Model.Sites != null && Model.Sites.Count() > 0)
+                {
+                    foreach (var site in Model.Sites)
+                    {
+                        <option value="@site.Id" @(site.Id.ToString()==siteId? "selected":"")>@site.Title</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-12">
+            @Html.CheckBox("enabled", !checkboxValue, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Только разрешенные", data_off = "Только запрещенные", data_width = "270" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6"><button type="submit" name="action" value="search-btn" class="button btn-primary">Применить</button></div>
+        <div class="col-md-6"><button type="submit" name="action" value="clear-btn" class="button btn-default">Сбросить</button></div>
+    </div>
+}

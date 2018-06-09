@@ -242,6 +242,7 @@ namespace Portal.Areas.Admin
         /// <returns></returns>
         protected FilterModel GetFilter(int defaultPageSize = 20)
         {
+
             var filter = new FilterModel()
             {
                 Type = Request.QueryString["type"],
@@ -292,6 +293,13 @@ namespace Portal.Areas.Admin
 
                 if (dateend != DateTime.MinValue)
                     filter.DateEnd = dateend;
+            }
+
+            if (!string.IsNullOrEmpty(Request.QueryString["siteId"]))
+            {
+                var siteId = Guid.Empty;
+                if (Guid.TryParse(Request.QueryString["siteId"], out siteId))
+                    filter.SiteId = siteId;
             }
 
             return filter;

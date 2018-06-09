@@ -12,5 +12,10 @@ namespace PgDbase.entity
         /// Оплаченность
         /// </summary>
         public bool? Payed { get; set; }
+
+        /// <summary>
+        /// Статус
+        /// </summary>
+        public string Status { get; set; }
     }
 }

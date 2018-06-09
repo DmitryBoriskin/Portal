@@ -74,6 +74,9 @@
     <Compile Include="Entity\modules\event\EventsModel.cs" />
     <Compile Include="Entity\modules\lk\Charge.cs" />
     <Compile Include="Entity\modules\lk\Department.cs" />
+    <Compile Include="Entity\modules\lk\Meter.cs" />
+    <Compile Include="Entity\modules\lk\MeterDevice.cs" />
+    <Compile Include="Entity\modules\lk\Payment.cs" />
     <Compile Include="Entity\modules\lk\Subscr.cs" />
     <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
     <Compile Include="Entity\services\Filters\LkFilter.cs" />

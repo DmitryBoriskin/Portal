@@ -11,7 +11,7 @@
         <div class="col-md-12">
             @Html.TextBox("searchtext", Request.QueryString["searchtext"], new { @title = "Поиск по ключевым словам", @placeholder = "поиск...", @MaxLength = "512" })
 
-            @Html.CheckBox("enabled", !checkboxValue, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Только разрешенные", data_off = "Только запрещенные", data_width = "248" })
+            @Html.CheckBox("enabled", !checkboxValue, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Только разрешенные", data_off = "Только запрещенные", data_width = "270" })
         </div>
     </div>
     <div class="row">

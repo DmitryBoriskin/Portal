@@ -34,6 +34,6 @@ namespace LkModule.Areas.Admin.Models
         /// <summary>
         /// Список выбранных ЛС
         /// </summary>
-        public Guid[] SelectedSubscrs { get; set; }
+        public Subscr[] SelectedSubscrs { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
@@ -66,7 +67,6 @@ namespace Portal.Areas.Admin.Controllers
         {
             model.Item = _cmsRepository.GetUser(id);
             model.Item.Roles = _cmsRepository.GetUserRoles(id);
-            model.Item.Sites = _cmsRepository.GetUserSites(id);
             model.Sites = _cmsRepository.GetSites();
             return View("Item", model);
         }
@@ -165,9 +165,10 @@ namespace Portal.Areas.Admin.Controllers
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string searchtext, bool enabled, string size)
+        public ActionResult Search(string siteId, string searchtext, bool enabled, string size)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "siteid", siteId);
             query = AddFilterParam(query, "searchtext", searchtext);
             query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
             query = AddFilterParam(query, "page", String.Empty);
@@ -192,7 +193,7 @@ namespace Portal.Areas.Admin.Controllers
             if (model.Roles != null)
             {
                 string link = Request.Url.Query;
-                string editGroupUrl = "/admin/services/groupclaims/";
+                string editGroupUrl = "/admin/roles/item/";
                 string alias = "group";
                 string active = Request.QueryString[alias];
                 return new FilterTreeModel()
@@ -205,25 +206,16 @@ namespace Portal.Areas.Admin.Controllers
                     Items = model.Roles.Select(p =>
                         new CatalogList()
                         {
-                            Title = p.Name,
-                            Alias = p.Id.ToString(),
-                            Link = AddFilterParam(link, alias, p.Id.ToString()),
+                            Title = p.Desc,
+                            Alias = p.Name.ToString(),
+                            Link = AddFilterParam(link, alias, p.Name),
                             Url = $"{editGroupUrl}{p.Id}",
-                            IsSelected = active == p.Id.ToString()
+                            IsSelected = active == p.Name.ToString()
                         }).ToArray(),
-                    Link = "/admin/admins"
+                    Link = "/admin/admins/"
                 };
             }
             return null;
-        }
-
-        [HttpPost]
-        public string PortalUsers(string query)
-        {
-            var users = _cmsRepository.GetUsersList(query, null);
-            var data = users.Select(t => new { id = t.Id, text = $"{t.FullName} ({t.Email})" });
-
-            return JsonConvert.SerializeObject(data);
         }
 
     }

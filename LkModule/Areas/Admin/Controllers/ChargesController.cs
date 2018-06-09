@@ -3,6 +3,7 @@ using PgDbase.entity;
 using Portal.Areas.Admin;
 using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Controllers
@@ -20,7 +21,8 @@ namespace LkModule.Areas.Admin.Controllers
 
             model = new ChargesViewModel()
             {
-                PageName = PageName,
+                SiteId = SiteId,
+                PageName = "Выставленные счета",
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
@@ -31,13 +33,43 @@ namespace LkModule.Areas.Admin.Controllers
         }
 
         // GET: Admin/Charges
-        public ActionResult Index(Guid id)
+        [Route]
+        public ActionResult Index(Guid? subscr)
         {
+            if (subscr == null)
+            {
+                return Redirect("/admin/subscrs");
+            }
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
-            model.List = _cmsRepository.GetCharges(id, mFilter);
+            bool payed = false;
+            if (!String.IsNullOrEmpty(Request.QueryString["payed"]))
+            {
+                bool.TryParse(Request.QueryString["payed"], out payed);
+                mFilter.Payed = payed;
+            }
+            model.List = _cmsRepository.GetCharges((Guid)subscr, mFilter);
 
             return View(model);
+        }
+
+        [Route, HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
+        public ActionResult Search(string size, string page, bool payed)
+        {
+            string query = HttpUtility.UrlDecode(Request.Url.Query);
+            query = AddFilterParam(query, "page", String.Empty);
+            query = AddFilterParam(query, "size", size);
+            query = AddFilterParam(query, "payed", payed.ToString().ToLower());
+
+            return Redirect(StartUrl + query);
+        }
+
+        [Route, HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr(Guid subscr)
+        {
+            return Redirect($"{StartUrl}?subscr={subscr}");
         }
     }
 }

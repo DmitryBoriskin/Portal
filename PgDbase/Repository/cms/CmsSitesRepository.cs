@@ -12,6 +12,28 @@ namespace PgDbase.Repository.cms
     public partial class CmsRepository
     {
         /// <summary>
+        /// Список сайтов в виде массива
+        /// </summary>
+        /// <returns></returns>
+        public SitesModel[] GetSites()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_sites
+                    .Where(s => s.id != Guid.Empty);
+                    //.Where(s => s.b_disabled == false);
+
+                var data = query.Select(s => new SitesModel()
+                {
+                    Id = s.id,
+                    Title = s.c_name
+                });
+
+                return data.ToArray();
+            }
+        }
+
+        /// <summary>
         /// Возвращает список сайтов с постраничной разбивкой
         /// </summary>
         /// <param name="filter">параметры для фильтрации</param>
@@ -102,24 +124,6 @@ namespace PgDbase.Repository.cms
             }
         }
 
-        /// <summary>
-        ///  Возвращает еденичный элемент сайта или пустое значение
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private string GetSiteName(string id)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var _id = Guid.Parse(id);
-
-                var query = db.core_sites
-                         .Where(w => w.id == _id)
-                         .Select(s => s.c_name);
-
-                return query.FirstOrDefault();
-            }
-        }
 
         /// <summary>
         /// true если существует сайт с таким идентифктаором
@@ -166,7 +170,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="site"></param>
         /// <returns></returns>
-        public bool InsertSites(SitesModel site)
+        public bool InsertSite(SitesModel site)
         {
             using (var db = new CMSdb(_context))
             {
@@ -317,7 +321,11 @@ namespace PgDbase.Repository.cms
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public bool DeleteDomain(Guid id)
         {
             using (var db = new CMSdb(_context))

@@ -59,8 +59,6 @@ namespace Portal.Areas.Admin.Controllers
             model.Item = _cmsRepository.GetRole(id);
             model.Modules = _cmsRepository.GetModulesList();
 
-            model.Modules = _cmsRepository.GetModulesList();
-
             //Права на модули
             if(model.Modules.Count() > 0)
             {
@@ -89,6 +87,12 @@ namespace Portal.Areas.Admin.Controllers
                     }
                 }
             }
+
+            //Потом добавить фильтрацию по доступным сайтам
+            //model.Item.Sites = _cmsRepository.GetSites();
+            model.Item.Sites = model.Sites
+                .Where(s => model.Item.Claims.Any(c => c.Type.ToLower() == "_siteidentity" && c.Value.ToLower() == s.Id.ToString().ToLower()))
+                .ToArray();
 
             return View("Item", model);
         }
@@ -205,7 +209,11 @@ namespace Portal.Areas.Admin.Controllers
             return Redirect(StartUrl);
         }
 
-
+        /// <summary>
+        /// Проставляем права у роли
+        /// </summary>
+        /// <param name="roleClaim"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult UpdateRoleClaim(RoleClaimModel roleClaim)
         {
@@ -246,19 +254,32 @@ namespace Portal.Areas.Admin.Controllers
             return Json("An Error Has Occourred");
         }
 
+        /// <summary>
+        /// Добавляем пользователю текущего сайта роль
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult AddUserRole(Guid userId, string role)
+        public ActionResult AddUserToRole(Guid userId, string role)
         {
+
             var res = UserManager.AddToRole(userId.ToString(), role);
+
             if (res.Succeeded)
                 return Json("Success");
 
             return Json("An Error Has Occourred");
         }
 
-
+        /// <summary>
+        /// Удаляем у пользователя текущего сайта роль
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult DeleteUserRole(Guid userId, string role)
+        public ActionResult DeleteUserFromRole(Guid userId, string role)
         {
 
             var res = UserManager.RemoveFromRole(userId.ToString(), role);
@@ -269,15 +290,65 @@ namespace Portal.Areas.Admin.Controllers
             return Json("An Error Has Occourred");
         }
 
+        /// <summary>
+        /// Добавляем админа на конкретный сайт с определенной ролью
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult AddUserSite(Guid userId, Guid siteId)
+        public ActionResult AddUserToSiteRole(Guid userId, string role, Guid siteId)
         {
-            var res = UserManager.AddToRole(userId.ToString(), siteId.ToString());
 
-            //Дублируем аккаунт для указанного сайта
-            var dublicateRes = _cmsRepository.DublicateUser(userId, siteId);
+            //Если пользователь зарегистрирован на сайте, на котором назначаются права
+            //то просто назначаем права
+            var user = UserManager.FindById(userId.ToString());
+            if(user != null)
+            {
+                if(user.SiteId == siteId)
+                {
+                    var res = UserManager.AddToRole(userId.ToString(), role);
 
-            if (res.Succeeded)
+                    if (res.Succeeded)
+                        return Json("Success");
+
+                    return Json("An Error Has Occourred");
+                }
+                else
+                {
+                    //Если назначаем права на другом сайте, то
+                    //Дублируем аккаунт для указанного сайта
+
+                    var newId = Guid.NewGuid(); 
+                    var dublicateRes = _cmsRepository.DublicateUser(newId, userId, siteId);
+                    //Задаем этому пользователю роль
+                    //var res = UserManager.AddToRole(newId.ToString(), "User");
+                    var res = UserManager.AddToRole(newId.ToString(), role);
+
+                    if (res.Succeeded)
+                        return Json("Success");
+
+                    return Json("An Error Has Occourred");
+
+                }
+            }
+            return Json("An Error Has Occourred");
+        }
+
+        
+        [HttpPost]
+        public ActionResult AddRoleToSite(Guid roleId, Guid siteId)
+        {
+            var roleClaim = new RoleClaimModel()
+            {
+                RoleId = roleId,
+                Type = "_SiteIdentity",
+                Value = siteId.ToString(),
+                Checked = true
+            };
+            var res = _cmsRepository.UpdateRoleClaim(roleClaim);
+
+            if (res)
                 return Json("Success");
 
             return Json("An Error Has Occourred");
@@ -285,19 +356,22 @@ namespace Portal.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public ActionResult DeleteUserSite(Guid userId, Guid siteId)
+        public ActionResult DeleteRoleFromSite(Guid roleId, Guid siteId)
         {
-            var res = UserManager.RemoveFromRole(userId.ToString(), siteId.ToString());
+            var roleClaim = new RoleClaimModel()
+            {
+                RoleId = roleId,
+                Type = "_SiteIdentity",
+                Value = siteId.ToString(),
+                Checked = false
+            };
+            var res = _cmsRepository.UpdateRoleClaim(roleClaim);
 
-            //Удаляем дубликат аккаунта для указанного сайта
-            var dublicateRes = _cmsRepository.DeleteDublicateUser(userId, siteId);
-
-            if (res.Succeeded)
+            if (res)
                 return Json("Success");
 
             return Json("An Error Has Occourred");
         }
-
 
     }
 }

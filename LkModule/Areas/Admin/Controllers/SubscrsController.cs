@@ -26,6 +26,7 @@ namespace LkModule.Areas.Admin.Controllers
 
             model = new SubscrViewModel()
             {
+                SiteId = SiteId,
                 PageName = PageName,
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
