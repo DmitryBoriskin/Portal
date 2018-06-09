@@ -45,7 +45,7 @@ namespace LkModule.Areas.Admin.Controllers
             bool payed = false;
             if (!String.IsNullOrEmpty(Request.QueryString["payed"]))
             {
-                bool.TryParse(Request.QueryString["disabled"], out payed);
+                bool.TryParse(Request.QueryString["payed"], out payed);
                 mFilter.Payed = payed;
             }
             model.List = _cmsRepository.GetCharges((Guid)subscr, mFilter);
