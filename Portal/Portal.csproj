@@ -723,6 +723,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Areas\Admin\Models\AccountModel.cs" />
+    <Compile Include="Models\LayoutViewModel.cs" />
     <Compile Include="Models\NewsFrontModel.cs" />
     <Compile Include="Models\PageFrontModel.cs" />
     <Compile Include="Models\VacancyWidgetModel.cs" />
@@ -941,6 +942,7 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Shared\Partial\_pager.cshtml" />
     <Content Include="Views\News\NewsItem.cshtml" />
+    <Content Include="Views\Shared\_Layout - Copy.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

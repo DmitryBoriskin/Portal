@@ -20,7 +20,8 @@ namespace Portal
                 defaults: new { controller = "Page", action = "Index", path = UrlParameter.Optional },
                 namespaces: new[] { "Portal.Controllers" }
             );
-            
+
+
             routes.MapRoute(
                 name: "News",
                 url: "news/",
@@ -32,7 +33,7 @@ namespace Portal
                 name: "NewsItem",
                 url: "news/{*path}",
                 defaults: new { controller = "News", action = "NewsItem", path = UrlParameter.Optional },
-                namespaces: new[] { "Portal.Controllers" }                
+                namespaces: new[] { "Portal.Controllers" }
             );
 
             routes.MapRoute(

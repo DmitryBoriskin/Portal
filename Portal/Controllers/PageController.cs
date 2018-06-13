@@ -50,11 +50,16 @@ namespace Portal.Controllers
             model.Page = _Repository.GetPage(_path,_alias);
             return View(model);
         }
-        public ActionResult Group(string alias)
+        public ActionResult Group(string alias,string view)
         {
             model.PageGroup = _Repository.GetPageGroup(alias);
 
-            return View(model);
+            if (String.IsNullOrEmpty(view))
+            {
+                return View(model);
+            }
+            else return View(view,model);
+
         }
         public ActionResult Child()
         {
