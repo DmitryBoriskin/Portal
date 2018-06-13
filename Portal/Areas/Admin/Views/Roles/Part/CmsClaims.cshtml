@@ -22,6 +22,9 @@
                     {
                         foreach (var menu in group.Childs)
                         {
+                            //Может назначать, только то из того, что доступно ему
+                            if (User.Identity.HasClaim(menu.Alias, "view") || User.IsInRole("Developer"))
+                            {
                             <tr>
                                 <td>@menu.Name (@menu.Alias)</td>
                                 <td>
@@ -41,6 +44,7 @@
                                            @(Model.Item.Claims.Any(s => s.RoleId == Model.Item.Id && s.Type == menu.Alias && s.Value == "delete") ? "checked" : "") />
                                 </td>
                             </tr>
+                            }
                         }
                     }
                 }

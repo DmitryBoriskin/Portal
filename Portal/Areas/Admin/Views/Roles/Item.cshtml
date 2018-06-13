@@ -22,10 +22,14 @@
 
                 @Html.Partial("Part/ModulesClaims")
 
-                //Только для разработчиков и администраторов портала
-                if (Model.Item.Name == "Developer" || Model.Item.Name == "PortalAdmin")
+                //Только разработчик может назначать сайты администратору портала и себе
+                if (User.IsInRole("Developer"))
                 {
+                    //Только для разработчиков и администраторов портала
+                    if (Model.Item.Name == "Developer" || Model.Item.Name == "PortalAdmin")
+                    {
                     @Html.Partial("Part/SitesClaims")
+                    }
                 }
             }
         </div>

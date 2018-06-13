@@ -14,25 +14,30 @@
             <div class="admin-menu @menuGroup.Alias">
                 @foreach (var item in menuGroup.Childs)
                 {
-                    string Url = "/Admin/" + item.Alias + "/";
+                    //Проверяем права
+                    if (User.Identity.HasClaim(item.Alias, "view") && item.ShowInMenu)
+                    {
+                        string Url = "/Admin/" + item.Alias + "/";
 
-                    try
-                    {
-                        if (Request.Url.Segments[2].ToString().ToLower() == item.Alias.ToLower() + "/")
+                        try
                         {
-                            ActiveClass = "selected";
+                            if (Request.Url.Segments[2].ToString().ToLower() == item.Alias.ToLower() + "/")
+                            {
+                                ActiveClass = "selected";
+                            }
                         }
-                    }
-                    catch
-                    {
-                        if (item.Alias.ToLower() == "main")
+                        catch
                         {
-                            ActiveClass = "selected";
+                            if (item.Alias.ToLower() == "main")
+                            {
+                                ActiveClass = "selected";
+                            }
                         }
-                    }
-                    <div class="admin-menu_item @ActiveClass">
+
+                        <div class="admin-menu_item @ActiveClass">
                         <a class="@item.Icon" href="@Url">@item.Name</a>
                     </div>
+                    }
                     ActiveClass = String.Empty;
                 }
                 @*модули*@
@@ -40,27 +45,30 @@
                 {
                     if (Model.MenuModules != null && Model.MenuModules.Count() > 0)
                     {
-                        foreach (var Item in Model.MenuModules)
+                        foreach (var item in Model.MenuModules)
                         {
-                            string Url = "/Admin/" + Item.Alias + "/";
-                            try
+                            if(User.Identity.HasClaim(item.Alias, "view"))
                             {
-                                if (Request.Url.Segments[2].ToString().ToLower() == Item.Alias.ToLower() + "/")
+                                string Url = "/Admin/" + item.Alias + "/";
+                                try
                                 {
-                                    ActiveClass = "selected";
+                                    if (Request.Url.Segments[2].ToString().ToLower() == item.Alias.ToLower() + "/")
+                                    {
+                                        ActiveClass = "selected";
+                                    }
                                 }
-                            }
-                            catch
-                            {
-                                if (Item.Alias.ToLower() == "main")
+                                catch
                                 {
-                                    ActiveClass = "selected";
+                                    if (item.Alias.ToLower() == "main")
+                                    {
+                                        ActiveClass = "selected";
+                                    }
                                 }
-                            }
                             <div class="admin-menu_item @ActiveClass">
-                                <a class="@Item.Icon" href="@Url">@Item.Name</a>
+                                <a class="@item.Icon" href="@Url">@item.Name</a>
                             </div>
-                            ActiveClass = String.Empty;
+                                ActiveClass = String.Empty;
+                            }
                         }
                     }
                 }

@@ -26,13 +26,15 @@ namespace PgDbase.Repository.cms
                             {
                                 Alias = s.c_alias,
                                 Name = s.c_title,
+                                ShowInMenu = s.b_show,
                                 Childs = s.fk_menu_parent_BackReferences
                                                 .OrderBy(m => m.n_sort)
                                                 .Select(m => new CmsMenuItemModel()
                                                 {
                                                     Alias = m.c_alias,
                                                     Name = m.c_title,
-                                                    Icon = m.c_class
+                                                    Icon = m.c_class,
+                                                    ShowInMenu = m.b_show
                                                 }).ToArray()
                             });
 

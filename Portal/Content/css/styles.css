@@ -234,6 +234,7 @@ a:hover:after {
 }
 .account-links {
     padding: 10px 20px;
+    min-height:40px;
     background: #f5f8fa;
     min-width: 250px;
 }

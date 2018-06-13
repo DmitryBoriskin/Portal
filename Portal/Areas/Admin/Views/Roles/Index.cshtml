@@ -20,10 +20,7 @@
     </div>
     <div class="dop_info-block">
         <div class="dop-caption">Фильтр</div>
-        @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
-        {
-            @*@Html.Partial("Part/Filter")*@
-        }
+            @Html.Partial("Part/Filter")
 
     </div>
     <div class="buttons">

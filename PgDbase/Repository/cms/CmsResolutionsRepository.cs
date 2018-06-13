@@ -17,15 +17,28 @@ namespace PgDbase.Repository.cms
         /// Список ролей
         /// </summary>
         /// <returns></returns>
-        public RoleModel[] GetRoles(string[] excludeRoles = null)
+        public RoleModel[] GetRoles()
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.core_AspNetRoles
-                    .Where(s => s.Discriminator == "ApplicationRole");
+                var maxRole = 1000; //роль User
+                //Исключаем роли выше роли текущего пользователя
+                var userId = _currentUserId.ToString();
+                var userRoles = db.core_AspNetUserRoles
+                    .Where(r => r.AspNetRolesRoleId.Discriminator == "ApplicationRole")
+                    .Where(r => r.UserId == userId);
 
-                if (excludeRoles != null)
-                    query = query.Where(s => !excludeRoles.Contains(s.Name));
+                if (userRoles != null)
+                {
+                    maxRole = userRoles
+                        .Min(r => r.AspNetRolesRoleId.Lvl);
+                }
+
+                var query = db.core_AspNetRoles
+               .Where(s => s.Discriminator == "ApplicationRole")
+               //Исключаем роли выше роли текущего пользователя
+               .Where(s => s.Lvl >= maxRole)
+               .OrderBy(s => s.Lvl);
 
                 var data = query.Select(s => new RoleModel()
                 {
@@ -36,9 +49,9 @@ namespace PgDbase.Repository.cms
                 });
 
                 return data.ToArray();
+
             }
         }
-
 
         /// <summary>
         /// Роль

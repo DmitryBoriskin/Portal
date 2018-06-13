@@ -35,9 +35,15 @@ namespace PgDbase.entity
         ///// <summary>
         ///// Группа. Определяет, в каком разделе будет отображен данный пункт меню.
         ///// </summary>
-        //[Required(ErrorMessage = "Поле «Сайт отключен» не должно быть пустым.")]
-        //public string Group { get; set; }
 
+        /// <summary>
+        /// Показывать в меню
+        /// </summary>
+        public bool ShowInMenu { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public CmsMenuItemModel[] Childs { get; set; }
     }
 }

@@ -22,13 +22,30 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
+                var maxRole = 1000; //роль User
+                //Исключаем пользователей с ролями выше роли текущего пользователя
+                var userId = _currentUserId.ToString();
+                var userRoles = db.core_AspNetUserRoles
+                    .Where(r => r.AspNetRolesRoleId.Discriminator == "ApplicationRole")
+                    .Where(r => r.UserId == userId);
+               
+                if (userRoles != null)
+                {
+                    maxRole = userRoles
+                        .Min(r => r.AspNetRolesRoleId.Lvl);
+                }
+
                 Paged<UserModel> result = new Paged<UserModel>();
 
                 var siteIdStr = _siteId.ToString();
 
                 var query = db.core_AspNetUsers
                              //Условие принадлежности к какой-либо роли, исключая User
-                             .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"));
+                             //сортировка пользователей с ролями не выше роли текущего пользователя
+                             .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id 
+                                            && r.AspNetRolesRoleId.Name != "User" 
+                                            && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"
+                                            && r.AspNetRolesRoleId.Lvl >= maxRole));
 
                 if (filter.SiteId.HasValue)
                     query = query.Where(s => s.SiteId == filter.SiteId);
@@ -36,9 +53,7 @@ namespace PgDbase.Repository.cms
                 if (filter.Disabled.HasValue)
                     query = query.Where(s => s.AspNetUserProfilesUserId.Disabled == filter.Disabled.Value);
 
-                if (filter.ExcludeRoles != null)
-                    query = query.Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name == siteIdStr && r.AspNetRolesRoleId.Discriminator == "IdentityRole"));
-
+               
                 if (!String.IsNullOrWhiteSpace(filter.Group))
                 {
                     query = query.Where(s => s.AspNetUserRolesUserId.AspNetRolesRoleId.Name.ToLower() == filter.Group.ToLower());
@@ -100,12 +115,28 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
+                var maxRole = 1000; //роль User
+                //Исключаем пользователей с ролями выше роли текущего пользователя
+                var userId = _currentUserId.ToString();
+                var userRoles = db.core_AspNetUserRoles
+                    .Where(r => r.AspNetRolesRoleId.Discriminator == "ApplicationRole")
+                    .Where(r => r.UserId == userId);
+
+                if (userRoles != null)
+                {
+                    maxRole = userRoles
+                        .Min(r => r.AspNetRolesRoleId.Lvl);
+                }
+
                 Paged<UserModel> result = new Paged<UserModel>();
 
                 var siteIdStr = _siteId.ToString();
                 var query = db.core_AspNetUsers
                              //Условие принадлежности к какой-либо роли, исключая User
-                             .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && r.AspNetRolesRoleId.Name != "User" && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"))
+                             .Where(s => db.core_AspNetUserRoles.Any(r => r.UserId == s.Id
+                                                && r.AspNetRolesRoleId.Name != "User"
+                                                && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"
+                                                && r.AspNetRolesRoleId.Lvl >= maxRole))
                              //Условие принадлежности к сайту
                              .Where(s => s.SiteId == _siteId);
 
@@ -113,9 +144,6 @@ namespace PgDbase.Repository.cms
                 if (filter.Disabled.HasValue)
                     query = query.Where(s => s.AspNetUserProfilesUserId.Disabled == filter.Disabled.Value);
 
-                if (filter.ExcludeRoles != null)
-                    query = query.Where(s => !db.core_AspNetUserRoles.Any(r => r.UserId == s.Id && filter.ExcludeRoles.Contains(r.AspNetRolesRoleId.Name) && r.AspNetRolesRoleId.Discriminator == "ApplicationRole"));
-                //query = query.Where(s => !filter.ExcludeRoles.Contains(s.AspNetUserRolesUserId.AspNetRolesRoleId.Name));
 
                 if (!String.IsNullOrWhiteSpace(filter.Group))
                 {

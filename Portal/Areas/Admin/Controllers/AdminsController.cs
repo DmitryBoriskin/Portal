@@ -34,13 +34,7 @@ namespace Portal.Areas.Admin.Controllers
                 MenuModules = MenuModulCore,
             };
 
-            //Исключаем из выборки вышестоящие роли, например PortalAdmin не должен видеть Developer
-            string[] excludeRoles = null;
-
-            if (User.IsInRole("PortalAdmin"))
-                excludeRoles = new string[] { "Developer" };
-            //else developer
-            model.Roles = _cmsRepository.GetRoles(excludeRoles);
+            model.Roles = _cmsRepository.GetRoles();
 
         }
 
@@ -51,12 +45,6 @@ namespace Portal.Areas.Admin.Controllers
             model.Filter = GetFilterTree();
 
             var userFilter = FilterModel.Extend<UserFilter>(filter);
-
-            //Исключаем из выборки пользователей вышестоящих ролей, например PortalAdmin не должен видеть Developer
-            if (User.IsInRole("PortalAdmin"))
-                userFilter.ExcludeRoles = new string[] { "Developer" };
-            //else developer
-
             model.List = _cmsRepository.GetPortalAdmins(userFilter);
 
             return View(model);

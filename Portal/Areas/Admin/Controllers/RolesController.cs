@@ -39,17 +39,7 @@ namespace Portal.Areas.Admin.Controllers
         {
             filter = GetFilter();
 
-            //Исключаем из выборки вышестоящие роли, например SiteAdmin не должен видеть Developer и PortalAdmin
-            string[] excludeRoles = null;
-
-            if (User.IsInRole("PortalAdmin"))
-                excludeRoles = new string[] { "Developer" };
-
-            else if (User.IsInRole("SiteAdmin"))
-                excludeRoles = new string[] { "Developer", "PortalAdmin" };
-            //else developer
-
-            model.List = _cmsRepository.GetRoles(excludeRoles);
+            model.List = _cmsRepository.GetRoles();
             return View(model);
         }
 
