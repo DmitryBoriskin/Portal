@@ -13,13 +13,26 @@ namespace Portal
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //типовая страница 
+            //типовая страница
             routes.MapRoute(
                 name: "Page",
                 url: "page/{*path}",
                 defaults: new { controller = "Page", action = "Index", path = UrlParameter.Optional },
-                namespaces: new[] { "Portal.Controllers" },
-                constraints: new { controller = "Admin" }
+                namespaces: new[] { "Portal.Controllers" }
+            );
+            
+            routes.MapRoute(
+                name: "News",
+                url: "news/",
+                defaults: new { controller = "News", action = "Index", path = UrlParameter.Optional },
+                namespaces: new[] { "Portal.Controllers" }
+            );
+
+            routes.MapRoute(
+                name: "NewsItem",
+                url: "news/{*path}",
+                defaults: new { controller = "News", action = "NewsItem", path = UrlParameter.Optional },
+                namespaces: new[] { "Portal.Controllers" }                
             );
 
             routes.MapRoute(

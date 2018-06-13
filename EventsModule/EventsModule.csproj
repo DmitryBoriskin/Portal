@@ -132,7 +132,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Events\Models\" />
-    <Folder Include="Areas\Events\Views\Index\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">

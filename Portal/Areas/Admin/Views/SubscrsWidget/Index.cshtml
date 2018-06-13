@@ -13,6 +13,7 @@
                 <table class="table table-condensed admin-pannel-table">
                     <thead>
                         <tr>
+                            <th>Основной</th>
                             <th>Номер</th>
                             <th>Абонент</th>
                             <th></th>
@@ -23,6 +24,11 @@
                         {
                             string name = String.Format("{0} {1} {2}", item.Surname, item.Name, item.Patronymic);
                             <tr>
+                                <td>
+                                    <div class="host-chkbx-div">
+                                        <a class="item-default-link @(item.Default ? "active" : "")" data-subscr="@item.Id"></a>
+                                    </div>
+                                </td>
                                 <td>@item.Link</td>
                                 <td>@name</td>
                                 <td class="text-right">
@@ -90,5 +96,20 @@
             error: function (data) { }
         });
         location.reload();
+    });
+
+    $(".item-default-link").click(function (e) {
+        e.preventDefault();
+        $(".item-default-link.active").removeClass("active");
+        $(this).addClass("active");
+        var subscr = $(this).data("subscr");
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: '/Admin/SubscrsWidget/SetDefault',
+            data: ({ item: subscr, user: user }),
+            error: function (data) { }
+        });
     });
 </script>

@@ -274,12 +274,59 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var link = db.lk_user_subscrs
+                    var query = db.lk_user_subscrs
                         .Where(w => w.f_subscr == id)
-                        .Where(w => w.f_user == user)
-                        .SingleOrDefault();
+                        .Where(w => w.f_user == user);
 
-                    bool result = db.Delete(link) > 0;
+                    var link = query.SingleOrDefault();
+
+                    bool result = query.Delete() > 0;
+
+                    if (link.b_default)
+                    {
+                        var newDefault = db.lk_user_subscrs
+                            .Where(w => w.f_user == user)
+                            .FirstOrDefault();
+
+                        if (newDefault != null)
+                        {
+                            result = db.lk_user_subscrs
+                                .Where(w => w.f_user == user)
+                                .Where(w => w.f_subscr == newDefault.f_subscr)
+                                .Set(s => s.b_default, true)
+                                .Update() > 0;
+                        }
+                    }
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Выставляет дефолтный ЛС для пользователя
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool SetDefaultUserSubscrLink(Guid subscr, Guid user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.lk_user_subscrs
+                        .Where(w => w.f_user == user);
+
+                    bool result = query
+                        .Set(s => s.b_default, false)
+                        .Update() > 0;
+
+                    result = query
+                        .Where(w => w.f_subscr == subscr)
+                        .Set(s => s.b_default, true)
+                        .Update() > 0;
+
                     tr.Commit();
                     return result;
                 }
@@ -297,6 +344,7 @@ namespace PgDbase.Repository.cms
             {
                 return db.lk_user_subscrs
                     .Where(w => w.f_user == user)
+                    .OrderBy(o => o.d_attached)
                     .Select(s => new SubscrModel
                     {
                         Id = s.f_subscr,

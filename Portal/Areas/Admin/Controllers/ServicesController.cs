@@ -9,7 +9,6 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    [RouteArea("Admin")]
     public class ServicesController : BeCoreController
     {
         /// <summary>

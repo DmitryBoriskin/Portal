@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
 {
-    [RouteArea("Admin")]
+
     public class PagesController : BeCoreController
     {
         //public PagesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
