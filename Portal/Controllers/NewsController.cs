@@ -32,14 +32,13 @@ namespace Portal.Controllers
             {
                 path = path.Substring(0, n);
             }
-            int number;
-            if (Int32.TryParse(path, out number))
+            if (Int32.TryParse(path, out int number))
             {
                 model.Item = _Repository.GetNewsItem(number);
                 if (model.Item != null)
                 {
                     return View(model);
-                }                
+                }
             }
             return HttpNotFound();
         }

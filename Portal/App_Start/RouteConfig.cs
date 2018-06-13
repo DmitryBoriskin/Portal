@@ -18,10 +18,10 @@ namespace Portal
                 name: "Page",
                 url: "page/{*path}",
                 defaults: new { controller = "Page", action = "Index", path = UrlParameter.Optional },
-                namespaces: new[] { "Portal.Controllers" },
-                constraints: new { controller = "Admin" }
+                namespaces: new[] { "Portal.Controllers" }
+                //,
+                //constraints: new { controller = "Admin" }
             );
-
 
             routes.MapRoute(
                 name: "News",
@@ -33,7 +33,7 @@ namespace Portal
                 name: "NewsItem",
                 url: "news/{*path}",
                 defaults: new { controller = "News", action = "NewsItem", path = UrlParameter.Optional },
-                namespaces: new[] { "Portal.Controllers" }                
+                namespaces: new[] { "Portal.Controllers" }
             );
 
             routes.MapRoute(

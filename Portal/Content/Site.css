@@ -1,5 +1,13 @@
-﻿/*фотогаллерея*/
-.gallery {    display: inline-block;}
+﻿/*@media (min-width: 1200px){
+    .container {
+width:1368px;
+    }
+}*/ 
+
+/*фотогаллерея*/
+.gallery {
+    display: inline-block;
+}
 .swip_wr {    display: inline-block;  margin-bottom: 15px;    margin-right: 15px;}
 .swip_wr a {    background: 50% 50% no-repeat;   background-size: cover;    display: block;    width: 150px;    height: 150px;}
 #swipebox-original {    display: block;   width: 50px;    height: 50px;    position: absolute;    left: 50%;    margin-left: -25px;    top: 14px;    z-index: 999;}
