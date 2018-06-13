@@ -818,7 +818,26 @@ namespace PgDbase.Repository.cms
         /// <returns></returns>
         public TariffModel[] GetTariffes(Guid device)
         {
-            return null;
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_tariffes
+                    .Where(w => w.fkmeterdevices.Any(a => a.f_device == device))
+                    .Select(s => new TariffModel
+                    {
+                        Id = s.id,
+                        Title = s.c_title,
+                        Begin = s.d_begin,
+                        End = s.d_end,
+                        Disabled = s.b_disabled,
+                        Values = s.fktariffvaluess
+                            .Select(t => new TariffValueModel
+                            {
+                                Id = t.id,
+                                Title = t.c_title,
+                                Price = t.n_price
+                            }).ToArray()
+                    }).ToArray();
+            }
         }
 
         #endregion

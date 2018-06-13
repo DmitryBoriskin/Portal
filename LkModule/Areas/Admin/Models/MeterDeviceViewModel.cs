@@ -10,6 +10,9 @@ namespace LkModule.Areas.Admin.Models
     /// </summary>
     public class MeterDeviceViewModel : CoreViewModel
     {
+        /// <summary>
+        /// Список
+        /// </summary>
         public Paged<MeterDeviceModel> List { get; set; }
     }
 }

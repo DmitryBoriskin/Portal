@@ -74,5 +74,14 @@ namespace LkModule.Areas.Admin.Controllers
             var json = new JavaScriptSerializer().Serialize(meters);
             return Json(json);
         }
+
+        [Route("GetTariffes"), HttpPost]
+        public ActionResult GetTariffes(Guid device)
+        {
+            var tariffes = _cmsRepository.GetTariffes(device);
+
+            var json = new JavaScriptSerializer().Serialize(tariffes);
+            return Json(json);
+        }
     }
 }
