@@ -979,6 +979,17 @@ a.button.icon-cancel{
 .icon-layers:before {
     content: '\eead';
 }
+
+.icon-gauge-1:before {
+    content: '\eae0';
+}
+.icon-money:before {
+    content: '\e95c';
+}
+.icon-rouble:before {
+    content: '\e962';
+}
+
 .row {
     margin-left: -5px;
     margin-right: -5px;
