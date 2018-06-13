@@ -20,11 +20,11 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<Subscr> GetSubscrs(FilterModel filter)
+        public Paged<SubscrModel> GetSubscrs(FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<Subscr> result = new Paged<Subscr>();
+                Paged<SubscrModel> result = new Paged<SubscrModel>();
                 var query = db.lk_subscrs
                     .Where(w => w.fkdepartments.f_site == _siteId);
 
@@ -60,7 +60,7 @@ namespace PgDbase.Repository.cms
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new Subscr
+                    .Select(s => new SubscrModel
                     {
                         Id = s.id,
                         Link = s.c_link,
@@ -71,7 +71,7 @@ namespace PgDbase.Repository.cms
                         Patronymic = s.c_patronymic
                     }).ToArray();
 
-                return new Paged<Subscr>
+                return new Paged<SubscrModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -88,7 +88,7 @@ namespace PgDbase.Repository.cms
         /// Возвращает список ЛС для привязки к пользователю
         /// </summary>
         /// <returns></returns>
-        public Subscr[] GetSubscrs(Guid user)
+        public SubscrModel[] GetSubscrs(Guid user)
         {
             using (var db = new CMSdb(_context))
             {
@@ -96,7 +96,7 @@ namespace PgDbase.Repository.cms
                     .Where(w => w.fkdepartments.f_site == _siteId)
                     .Where(w => !w.fkusersubscrs.Any(a => a.f_user == user))
                     .OrderBy(o => o.c_link)
-                    .Select(s => new Subscr
+                    .Select(s => new SubscrModel
                     {
                         Id = s.id,
                         Link = s.c_link,
@@ -112,13 +112,13 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Subscr GetSubscr(Guid id)
+        public SubscrModel GetSubscr(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 return db.lk_subscrs
                     .Where(w => w.id == id)
-                    .Select(s => new Subscr
+                    .Select(s => new SubscrModel
                     {
                         Id = s.id,
                         Link = s.c_link,
@@ -140,7 +140,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool InsertSubscr(Subscr item)
+        public bool InsertSubscr(SubscrModel item)
         {
             using (var db = new CMSdb(_context))
             {
@@ -181,7 +181,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool UpdateSubscr(Subscr item)
+        public bool UpdateSubscr(SubscrModel item)
         {
             using (var db = new CMSdb(_context))
             {
@@ -287,13 +287,13 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public Subscr[] GetSelectedSubscrs(Guid user)
+        public SubscrModel[] GetSelectedSubscrs(Guid user)
         {
             using (var db = new CMSdb(_context))
             {
                 return db.lk_user_subscrs
                     .Where(w => w.f_user == user)
-                    .Select(s => new Subscr
+                    .Select(s => new SubscrModel
                     {
                         Id = s.f_subscr,
                         Link = s.fkusersubscrssubscr.c_link,
@@ -362,11 +362,11 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<Department> GetDepartments(FilterModel filter)
+        public Paged<DepartmentModel> GetDepartments(FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<Department> result = new Paged<Department>();
+                Paged<DepartmentModel> result = new Paged<DepartmentModel>();
                 var query = db.lk_departments
                     .Where(w => w.f_site == _siteId);
 
@@ -390,7 +390,7 @@ namespace PgDbase.Repository.cms
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new Department
+                    .Select(s => new DepartmentModel
                     {
                         Id = s.id,
                         Title = s.c_title,
@@ -401,7 +401,7 @@ namespace PgDbase.Repository.cms
                         Disabled = s.b_disabled
                     }).ToArray();
 
-                return new Paged<Department>
+                return new Paged<DepartmentModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -438,13 +438,13 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Department GetDepartment(Guid id)
+        public DepartmentModel GetDepartment(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 return db.lk_departments
                     .Where(w => w.id == id)
-                    .Select(s => new Department
+                    .Select(s => new DepartmentModel
                     {
                         Id = s.id,
                         Title = s.c_title,
@@ -462,7 +462,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool InsertDepartment(Department item)
+        public bool InsertDepartment(DepartmentModel item)
         {
             using (var db = new CMSdb(_context))
             {
@@ -500,7 +500,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool UpdateDepartment(Department item)
+        public bool UpdateDepartment(DepartmentModel item)
         {
             using (var db = new CMSdb(_context))
             {
@@ -587,11 +587,11 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="subscr"></param>
         /// <returns></returns>
-        public Paged<Charge> GetCharges(Guid subscr, LkFilter filter)
+        public Paged<ChargeModel> GetCharges(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<Charge> result = new Paged<Charge>();
+                Paged<ChargeModel> result = new Paged<ChargeModel>();
                 var query = db.lk_charges
                     .Where(w => w.f_subscr == subscr);
 
@@ -606,7 +606,7 @@ namespace PgDbase.Repository.cms
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new Charge
+                    .Select(s => new ChargeModel
                     {
                         Id = s.id,
                         Date = s.d_date,
@@ -614,7 +614,7 @@ namespace PgDbase.Repository.cms
                         Payed = s.b_payed
                     }).ToArray();
 
-                return new Paged<Charge>
+                return new Paged<ChargeModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -624,6 +624,43 @@ namespace PgDbase.Repository.cms
                         TotalCount = itemsCount
                     }
                 };
+            }
+        }
+
+        /// <summary>
+        /// Возвращает выставленный счёт
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ChargeModel GetCharge(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_charges
+                    .Where(w => w.id == id)
+                    .Select(s => new ChargeModel
+                    {
+                        Id = s.id,
+                        Date = s.d_date,
+                        Debt = (decimal)s.n_debt,
+                        Payed = s.b_payed
+                    }).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает ЛС по выставленному счёту
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Guid GetSubscrByCharge(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_charges
+                    .Where(w => w.id == id)
+                    .Select(s => s.f_subscr)
+                    .SingleOrDefault();
             }
         }
 
@@ -637,11 +674,11 @@ namespace PgDbase.Repository.cms
         /// <param name="subscr"></param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<MeterDevice> GetMeterDevices(Guid subscr, FilterModel filter)
+        public Paged<MeterDeviceModel> GetMeterDevices(Guid subscr, FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<MeterDevice> result = new Paged<MeterDevice>();
+                Paged<MeterDeviceModel> result = new Paged<MeterDeviceModel>();
                 var query = db.lk_meter_devices
                     .Where(w => w.f_subscr == subscr);
 
@@ -654,9 +691,7 @@ namespace PgDbase.Repository.cms
                 int itemsCount = query.Count();
 
                 var list = query
-                    .Skip(filter.Size * (filter.Page - 1))
-                    .Take(filter.Size)
-                    .Select(s => new MeterDevice
+                    .Select(s => new MeterDeviceModel
                     {
                         Id = s.id,
                         Number = s.c_number,
@@ -665,7 +700,7 @@ namespace PgDbase.Repository.cms
                         Disabled = s.b_disabled
                     }).ToArray();
 
-                return new Paged<MeterDevice>
+                return new Paged<MeterDeviceModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -687,7 +722,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
-        public Meter[] GetMeters(Guid device)
+        public MeterModel[] GetMeters(Guid device)
         {
             using (var db = new CMSdb(_context))
             {
@@ -695,7 +730,7 @@ namespace PgDbase.Repository.cms
                     .Where(w => w.f_meter_device == device)
                     .OrderBy(o => o.d_send)
                     .Take(20)
-                    .Select(s => new Meter
+                    .Select(s => new MeterModel
                     {
                         Id = s.id,
                         Send = s.d_send,
@@ -719,11 +754,11 @@ namespace PgDbase.Repository.cms
         /// <param name="subscr"></param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<Payment> GetPayments(Guid subscr, LkFilter filter)
+        public Paged<PaymentModel> GetPayments(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<Payment> result = new Paged<Payment>();
+                Paged<PaymentModel> result = new Paged<PaymentModel>();
                 var query = db.lk_payments
                     .Where(w => w.f_subscr == subscr);
 
@@ -744,7 +779,7 @@ namespace PgDbase.Repository.cms
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new Payment
+                    .Select(s => new PaymentModel
                     {
                         Date = s.d_date,
                         Amount = (decimal)s.n_amount,
@@ -760,7 +795,7 @@ namespace PgDbase.Repository.cms
                         }
                     }).ToArray();
 
-                return new Paged<Payment>
+                return new Paged<PaymentModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -805,6 +840,39 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         Title = s.c_title
+                    }).ToArray();
+            }
+        }
+
+        #endregion
+
+        #region Тарифы
+
+        /// <summary>
+        /// Возвращает список тарифов ПУ
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public TariffModel[] GetTariffes(Guid device)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_tariffes
+                    .Where(w => w.fkmeterdevices.Any(a => a.f_device == device))
+                    .Select(s => new TariffModel
+                    {
+                        Id = s.id,
+                        Title = s.c_title,
+                        Begin = s.d_begin,
+                        End = s.d_end,
+                        Disabled = s.b_disabled,
+                        Values = s.fktariffvaluess
+                            .Select(t => new TariffValueModel
+                            {
+                                Id = t.id,
+                                Title = t.c_title,
+                                Price = t.n_price
+                            }).ToArray()
                     }).ToArray();
             }
         }

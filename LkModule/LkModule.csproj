@@ -128,6 +128,7 @@
     <Content Include="Areas\Admin\Views\MeterDevices\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Payments\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Payments\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\Charges\Item.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

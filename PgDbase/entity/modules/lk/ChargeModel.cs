@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 
 namespace PgDbase.entity
 {
     /// <summary>
-    /// Платёж
+    /// Выставленный счёт
     /// </summary>
-    public class Payment
+    public class ChargeModel
     {
         /// <summary>
         /// Идентификатор
@@ -14,23 +13,18 @@ namespace PgDbase.entity
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Сумма
-        /// </summary>
-        public decimal Amount { get; set; }
-
-        /// <summary>
         /// Дата
         /// </summary>
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// Статус платежа
+        /// Сумма
         /// </summary>
-        public GroupsModel Status { get; set; }
+        public decimal Debt { get; set; }
 
         /// <summary>
-        /// Тип платежа
+        /// Оплаченность
         /// </summary>
-        public GroupsModel Type { get; set; }
+        public bool Payed { get; set; }
     }
 }

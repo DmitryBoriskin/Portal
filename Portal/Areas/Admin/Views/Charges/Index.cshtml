@@ -10,6 +10,9 @@
             {
                 string disabled = item.Payed ? "disabled" : "";
                 <div class="list-item @disabled">
+                    <a class="li-caption" href="/admin/charges/item/@item.Id">
+                        Счёт за @item.Date.ToString("dd.MM.yyyy")
+                    </a>
                     <div class="li-desc"><span>Сумма:</span> @item.Debt.ToString("0.##")</div>
                     <div class="li-desc"><span>Дата:</span> @item.Date.ToString("dd.MM.yyyy")</div>
                 </div>
@@ -30,7 +33,12 @@
         @Html.Partial("Part/Filter")
     </div>
 
-    <div class="buttons"></div>
+    <div class="buttons">
+        @using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+        {
+            <button type="submit" name="action" value="back-btn" data-action="cancel" class="button icon-cancel">Назад</button>
+        }
+    </div>
 }
 else
 {

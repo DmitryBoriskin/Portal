@@ -11,11 +11,11 @@ namespace LkModule.Areas.Admin.Models
         /// <summary>
         /// Список
         /// </summary>
-        public Paged<Department> List { get; set; }
+        public Paged<DepartmentModel> List { get; set; }
 
         /// <summary>
         /// Единичная запись
         /// </summary>
-        public Department Item { get; set; }
+        public DepartmentModel Item { get; set; }
     }
 }

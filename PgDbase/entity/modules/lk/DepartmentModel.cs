@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Подразделение
     /// </summary>
-    public class Department
+    public class DepartmentModel
     {
         /// <summary>
         /// Идентификатор
