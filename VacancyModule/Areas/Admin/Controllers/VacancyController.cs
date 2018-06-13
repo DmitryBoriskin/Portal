@@ -9,8 +9,7 @@ using VacancyModule.Areas.Admin.Models;
 
 namespace VacancyModule.Areas.Admin.Controllers
 {
-    //[RouteArea("Admin")]
-    //[RoutePrefix("Vacancy")]
+
     public class VacancyController : BeCoreController
     {
         FilterModel filter;
@@ -37,7 +36,6 @@ namespace VacancyModule.Areas.Admin.Controllers
         }
 
         // GET: Admin/Vacancy
-        //[Route]
         public ActionResult Index()
         {
             filter = GetFilter();
@@ -45,15 +43,12 @@ namespace VacancyModule.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Route("item/{id:guid}")]
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetVacancy(id);
             return View("Item", model);
         }
 
-        //[Route, HttpPost]
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
         public ActionResult Insert()
@@ -64,8 +59,6 @@ namespace VacancyModule.Areas.Admin.Controllers
             return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
         }
 
-        //[Route, HttpPost]
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         public ActionResult Search(string searchtext, bool enabled, string size)
@@ -79,8 +72,6 @@ namespace VacancyModule.Areas.Admin.Controllers
             return Redirect(StartUrl + query);
         }
 
-        //[Route, HttpPost]
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
         public ActionResult ClearFiltr()
@@ -88,8 +79,6 @@ namespace VacancyModule.Areas.Admin.Controllers
             return Redirect(StartUrl);
         }
 
-        //[Route("item/{id:guid}"), HttpPost]
-        //[Route]
         [HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
@@ -132,8 +121,6 @@ namespace VacancyModule.Areas.Admin.Controllers
             return View("Item", model);
         }
 
-        //[Route("item/{id:guid}"), HttpPost]
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel()
@@ -141,8 +128,6 @@ namespace VacancyModule.Areas.Admin.Controllers
             return Redirect($"{StartUrl}{Request.Url.Query}");
         }
 
-        //[Route("item/{id:guid}"), HttpPost]
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
         public ActionResult Delete(Guid id)

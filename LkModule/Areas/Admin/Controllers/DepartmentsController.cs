@@ -12,8 +12,6 @@ using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Controllers
 {
-    //[RouteArea("Admin")]
-    //[RoutePrefix("Departments")]
     public class DepartmentsController : BeCoreController
     {
         FilterModel filter;
@@ -40,7 +38,6 @@ namespace LkModule.Areas.Admin.Controllers
         }
 
         // GET: Admin/Department
-        //[Route]
         public ActionResult Index()
         {
             filter = GetFilter();
@@ -48,7 +45,6 @@ namespace LkModule.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
         public ActionResult Insert()
@@ -59,7 +55,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect($"{StartUrl}item/{Guid.NewGuid()}/{query}");
         }
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         public ActionResult Search(string searchtext, bool enabled, string size)
@@ -73,7 +68,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect(StartUrl + query);
         }
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
         public ActionResult ClearFiltr()
@@ -81,7 +75,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect(StartUrl);
         }
 
-        //[Route("item/{id:guid}"), HttpPost]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel()
@@ -89,7 +82,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect($"{StartUrl}{Request.Url.Query}");
         }
 
-        //[Route("item/{id:guid}"), HttpPost]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
         public ActionResult Delete(Guid id)
@@ -112,7 +104,6 @@ namespace LkModule.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        //[Route("item/{id:guid}"), HttpGet]
         [HttpPost]
         public ActionResult Item(Guid id)
         {
@@ -126,7 +117,6 @@ namespace LkModule.Areas.Admin.Controllers
             return View("Item", model);
         }
 
-        //[Route("item/{id:guid}"), HttpPost]
         [HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]

@@ -5,12 +5,9 @@ using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Controllers
 {
-    //[RouteArea("Admin")]
-    //[RoutePrefix("SubscrsWidget")]
     public class SubscrsWidgetController : BaseController
     {
         // GET: Admin/SubscrsWidget
-        //[Route]
         public ActionResult Index(Guid id)
         {
             SubscrViewModel model = new SubscrViewModel
@@ -21,14 +18,12 @@ namespace LkModule.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Route("Add")]
         [HttpPost]
         public ActionResult Add(Guid[] items, Guid user)
         {
             return _cmsRepository.AddUserSubscr(user, items) ? Json("Success") : Json("False");
         }
 
-        //[Route("Drop")]
         [HttpPost]
         public ActionResult Drop(Guid item, Guid user)
         {

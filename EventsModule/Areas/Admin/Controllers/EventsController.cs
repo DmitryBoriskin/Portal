@@ -12,8 +12,6 @@ using System.Web.Mvc;
 
 namespace EventsModule.Areas.Admin.Controllers
 {
-    //[RouteArea("Admin")]
-    //[RoutePrefix("Events")]
     public class EventsController : BeCoreController
     {
         EventViewModel model;
@@ -40,7 +38,6 @@ namespace EventsModule.Areas.Admin.Controllers
         }
 
         // GET: Admin/Events
-        //[Route]
         public ActionResult Index()
         {
             #region filter
@@ -59,7 +56,6 @@ namespace EventsModule.Areas.Admin.Controllers
         }
 
 
-        //[Route("Item/{id:guid}")]
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetEventItem(id);
@@ -73,7 +69,6 @@ namespace EventsModule.Areas.Admin.Controllers
             return View("Item", model);
         }
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
         public ActionResult Insert()
@@ -83,7 +78,6 @@ namespace EventsModule.Areas.Admin.Controllers
             return Redirect(StartUrl + "item/" + Guid.NewGuid() + "/" + query);
         }
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         public ActionResult Search(string searchtext, bool enabled, bool annual, string size, DateTime? datestart, DateTime? dateend)
@@ -103,7 +97,6 @@ namespace EventsModule.Areas.Admin.Controllers
         }
 
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
         public ActionResult ClearFiltr()
@@ -111,7 +104,6 @@ namespace EventsModule.Areas.Admin.Controllers
             return Redirect(StartUrl);
         }
 
-        //[Route("Item/{id:guid}")]
         [HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
@@ -192,7 +184,6 @@ namespace EventsModule.Areas.Admin.Controllers
         }
 
 
-        //[Route("item/{id:guid}")]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
         public ActionResult Delete(Guid id)
@@ -212,7 +203,6 @@ namespace EventsModule.Areas.Admin.Controllers
         }
 
 
-        //[Route("item/{id:guid}")]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel()

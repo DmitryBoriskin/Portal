@@ -8,8 +8,7 @@ using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Controllers
 {
-    //[RouteArea("Admin")]
-    //[RoutePrefix("Charges")]
+
     public class ChargesController : BeCoreController
     {
         FilterModel filter;
@@ -36,7 +35,6 @@ namespace LkModule.Areas.Admin.Controllers
             };
         }
 
-        //[Route]
         public ActionResult Index(Guid? subscr)
         {
             if (subscr == null)
@@ -56,7 +54,6 @@ namespace LkModule.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         public ActionResult Search(string size, string page, bool payed)
@@ -69,7 +66,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect(StartUrl + query);
         }
 
-        //[Route]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
         public ActionResult ClearFiltr(Guid subscr)
@@ -77,7 +73,7 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect($"{StartUrl}?subscr={subscr}");
         }
 
-        [Route, HttpPost]
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
         public ActionResult Back()
         {
@@ -87,14 +83,14 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect(url);
         }
 
-        [Route("item/{id:guid}"), HttpGet]
+
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetCharge(id);
             return View("Item", model);
         }
 
-        [Route("item/{id:guid}"), HttpPost]
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel(Guid id)
         {

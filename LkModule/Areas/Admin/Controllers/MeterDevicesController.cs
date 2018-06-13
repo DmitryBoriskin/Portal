@@ -11,8 +11,6 @@ using System.Web.Script.Serialization;
 
 namespace LkModule.Areas.Admin.Controllers
 {
-    //[RouteArea("Admin")]
-    //[RoutePrefix("MeterDevices")]
     public class MeterDevicesController : BeCoreController
     {
         FilterModel filter;
@@ -40,7 +38,6 @@ namespace LkModule.Areas.Admin.Controllers
         }
 
         // GET: Admin/MeterDevices
-        //[Route]
         public ActionResult Index(Guid? subscr)
         {
             if (subscr == null)
@@ -52,7 +49,6 @@ namespace LkModule.Areas.Admin.Controllers
             return View(model);
         }
 
-        //[Route, HttpPost]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         public ActionResult Search(string size, string page, bool enabled)
@@ -65,7 +61,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect(StartUrl + query);
         }
 
-        //[Route, HttpPost]
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
         public ActionResult ClearFiltr(Guid subscr)
@@ -73,7 +68,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect($"{StartUrl}?subscr={subscr}");
         }
 
-        //[Route("GetInfo"), HttpPost]
         [HttpPost]
         public ActionResult GetInfo(Guid device)
         {
@@ -83,7 +77,7 @@ namespace LkModule.Areas.Admin.Controllers
             return Json(json);
         }
 
-        [Route("GetTariffes"), HttpPost]
+        [HttpPost]
         public ActionResult GetTariffes(Guid device)
         {
             var tariffes = _cmsRepository.GetTariffes(device);
@@ -92,7 +86,7 @@ namespace LkModule.Areas.Admin.Controllers
             return Json(json);
         }
 
-        [Route, HttpPost]
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
         public ActionResult Back()
         {
