@@ -1,6 +1,7 @@
 ﻿using LkModule.Areas.Admin.Models;
 using PgDbase.entity;
 using Portal.Areas.Admin;
+using Portal.Areas.Admin.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ using System.Web.Mvc;
 
 namespace LkModule.Areas.Admin.Controllers
 {
-    [RouteArea("Admin")]
-    [RoutePrefix("Payments")]
+    //[RouteArea("Admin")]
+    //[RoutePrefix("Payments")]
     public class PaymentsController : BeCoreController
     {
         FilterModel filter;
@@ -19,6 +20,10 @@ namespace LkModule.Areas.Admin.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
+
+            //Есть ли у сайта доступ к модулю
+            if (!_cmsRepository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Admin/");
 
             model = new PaymentsViewModel()
             {
@@ -36,7 +41,7 @@ namespace LkModule.Areas.Admin.Controllers
         }
 
         // GET: Admin/Payments
-        [Route]
+        //[Route]
         public ActionResult Index(Guid? subscr)
         {
             if (subscr == null)
@@ -51,7 +56,8 @@ namespace LkModule.Areas.Admin.Controllers
             return View(model);
         }
 
-        [Route, HttpPost]
+        //[Route]
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         public ActionResult Search(string size, string page, string status, string type)
         {
@@ -64,7 +70,8 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect(StartUrl + query);
         }
 
-        [Route, HttpPost]
+        //[Route]
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
         public ActionResult ClearFiltr(Guid subscr)
         {

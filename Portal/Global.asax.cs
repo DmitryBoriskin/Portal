@@ -15,6 +15,7 @@ namespace Portal
 
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+           
         }
     }
 }

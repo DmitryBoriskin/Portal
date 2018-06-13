@@ -18,7 +18,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace Portal.Areas.Admin
+namespace Portal.Areas.Admin.Controllers
 {
     [Authorize]
     public class BeCoreController : Controller

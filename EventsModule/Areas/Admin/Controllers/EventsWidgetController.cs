@@ -5,8 +5,8 @@ using System.Web.Mvc;
 
 namespace EventsModule.Areas.Admin.Controllers
 {
-    [RouteArea("Admin")]
-    [RoutePrefix("EventsWidget")]
+    //[RouteArea("Admin")]
+    //[RoutePrefix("EventsWidget")]
     public class EventsWidgetController : BaseController
     {
         //protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -15,7 +15,7 @@ namespace EventsModule.Areas.Admin.Controllers
         //}   
 
         // GET: Admin/EventsWidget
-        [Route]
+        //[Route]
         public ActionResult Index(Guid id)
         {
             var model = _cmsRepository.GetAttachEventsForNews(id);
@@ -28,7 +28,8 @@ namespace EventsModule.Areas.Admin.Controllers
             ViewBag.NewsId = id;
             return View(model);
         }
-        [Route("Attach"), HttpPost]
+        //[Route("Attach")]
+        [HttpPost]
         public ActionResult Attach(Guid NewsId, Guid EventId)//
         {
             if (_cmsRepository.AttachEventsForNews(NewsId, EventId))
@@ -36,7 +37,8 @@ namespace EventsModule.Areas.Admin.Controllers
             else
                 return Json("Произошла ошибка!");
         }
-        [Route("DeleteAttach"), HttpPost]
+        //[Route("DeleteAttach")]
+        [HttpPost]
         public ActionResult DeleteAttach(Guid AttachId)
         {
             if (_cmsRepository.DeleteAttachEventsForNews(AttachId))
