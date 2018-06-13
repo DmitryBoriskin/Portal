@@ -81,5 +81,25 @@ namespace LkModule.Areas.Admin.Controllers
             string url = $"/admin/subscrs/item/{subscr}";
             return Redirect(url);
         }
+
+        [Route("item/{id:guid}"), HttpGet]
+        public ActionResult Item(Guid id)
+        {
+            model.Item = _cmsRepository.GetCharge(id);
+            return View("Item", model);
+        }
+
+        [Route("item/{id:guid}"), HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
+        public ActionResult Cancel(Guid id)
+        {
+            var subscr = _cmsRepository.GetSubscrByCharge(id);
+            string url = "/admin/subscrs/";
+            if (subscr != null && subscr != Guid.Empty)
+            {
+                url += $"item/{subscr}";
+            }
+            return Redirect(url);
+        }
     }
 }

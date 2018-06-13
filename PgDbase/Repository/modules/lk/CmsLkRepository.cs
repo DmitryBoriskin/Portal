@@ -627,6 +627,43 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        /// <summary>
+        /// Возвращает выставленный счёт
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ChargeModel GetCharge(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_charges
+                    .Where(w => w.id == id)
+                    .Select(s => new ChargeModel
+                    {
+                        Id = s.id,
+                        Date = s.d_date,
+                        Debt = (decimal)s.n_debt,
+                        Payed = s.b_payed
+                    }).SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает ЛС по выставленному счёту
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Guid GetSubscrByCharge(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_charges
+                    .Where(w => w.id == id)
+                    .Select(s => s.f_subscr)
+                    .SingleOrDefault();
+            }
+        }
+
         #endregion
 
         #region Приборы учёта

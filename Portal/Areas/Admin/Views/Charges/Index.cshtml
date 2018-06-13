@@ -10,6 +10,9 @@
             {
                 string disabled = item.Payed ? "disabled" : "";
                 <div class="list-item @disabled">
+                    <a class="li-caption" href="/admin/charges/item/@item.Id">
+                        Счёт за @item.Date.ToString("dd.MM.yyyy")
+                    </a>
                     <div class="li-desc"><span>Сумма:</span> @item.Debt.ToString("0.##")</div>
                     <div class="li-desc"><span>Дата:</span> @item.Date.ToString("dd.MM.yyyy")</div>
                 </div>

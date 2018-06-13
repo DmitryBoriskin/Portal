@@ -12,5 +12,10 @@ namespace LkModule.Areas.Admin.Models
         /// Список
         /// </summary>
         public Paged<ChargeModel> List { get; set; }
+
+        /// <summary>
+        /// Единичная запись счёта
+        /// </summary>
+        public ChargeModel Item { get; set; }
     }
 }
