@@ -194,16 +194,23 @@ namespace Portal.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public ActionResult ChangePosition(string group, string menusort, Guid id, int position)
+        public ActionResult ChangePosition(string section,string group, string menusort, Guid id, int position)
         {
             bool result = false;
-            switch (group.ToLower())
+            switch (section.ToLower())
             {
                 case "cmsmenu":
-                    result = _cmsRepository.ChangePositionMenu(id, position);
+                    result = _cmsRepository.ChangePositionMenu(id, position);                    
                     break;
                 case "pages":
-                    result = _cmsRepository.ChangePositionPages(id, position);
+                    if (String.IsNullOrEmpty(menusort))
+                    {
+                        result = _cmsRepository.ChangePositionPages(id, position);
+                    }
+                    else
+                    {
+                        result = _cmsRepository.ChangePositionPagesGroup(id,position, menusort);
+                    }                    
                     break;
             }
             return Content(result.ToString());

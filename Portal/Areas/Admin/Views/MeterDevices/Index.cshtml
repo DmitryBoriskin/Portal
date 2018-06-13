@@ -9,11 +9,22 @@
             foreach (var item in Model.List.Items)
             {
                 string disabled = item.Disabled ? "disabled" : "";
-                <div class="list-item @disabled">
-                    <div class="li-desc"><span>Номер:</span> @item.Number</div>
-                    <div class="li-desc"><span>Марка:</span> @item.Mark</div>
-                    <div class="li-desc"><span>Дата:</span> @item.InstallDate.ToString("dd.MM.yyyy")</div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="list-item @disabled">
+                            <div class="li-desc"><span>Номер:</span> @item.Number</div>
+                            <div class="li-desc"><span>Марка:</span> @item.Mark</div>
+                            <div class="li-desc"><span>Дата:</span> @item.InstallDate.ToString("dd.MM.yyyy")</div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="pull-right">
+                            <a href="#@item.Id" class="meter-info" data-device="@item.Id" data-toggle="collapse">Подробнее</a>
+                        </div>
+                    </div>
                 </div>
+                <div id="@item.Id" class="collapse"></div>
+                <hr />
             }
             if (Model.List != null && Model.List.Pager != null)
             {
@@ -37,3 +48,65 @@ else
 {
     <div class="content"><p>У вас недостаточно прав.</p></div>
 }
+
+<script>
+    $(".meter-info").on("click", function () {
+        $(this).toggleClass("open-info");
+
+        if ($(this).hasClass("open-info")) {
+            $(this).text("Скрыть");
+        }
+        else {
+            $(this).text("Подробнее");
+        }
+        var device = $(this).data("device");
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "/Admin/MeterDevices/GetInfo",
+            data: ({ device: device }),
+            success: function (data) {
+                var obj = JSON.parse(data);
+
+                if (obj.length > 0) {
+                    var result = '<table class="table">';
+                    result += "<thead><tr><th>Дата</th><th>Показание</th><th>Тип</th></tr></thead>";
+                    result += "<tbody>";
+                    for (var i = 0; i < obj.length; i++) {
+                        var date = new Date(parseInt(dateReplace(obj[i].Send)));
+                        result += "<tr><td>" + dateParse(date) + "</td><td>" + obj[i].Output + "</td><td>" + obj[i].DrawlType.Title + "</td></tr>";
+                    }
+                    result += "</tbody>";
+                    result += "</table>";
+                    var dev = $("#" + device + "");
+                    dev.empty();
+                    dev.append(result);
+                }
+            },
+            error: function (data) { }
+        });
+    });
+
+    function dateReplace(date) {
+        return date.replace('/Date(', '').replace(')/', '');
+    }
+
+    function dateParse(date) {
+        var hour = addZeros(date.getHours());
+        var minutes = addZeros(date.getMinutes());
+        var seconds = addZeros(date.getSeconds());
+        var day = addZeros(date.getDate());
+        var month = addZeros(date.getMonth());
+        var year = date.getFullYear();
+
+        return day + '.' + month + '.' + year + ' ' + hour + ':' + minutes + ':' + seconds;
+    }
+
+    function addZeros(d) {
+        if (d < 10) {
+            d = '0' + d;
+        }
+        return d;
+    }
+</script>

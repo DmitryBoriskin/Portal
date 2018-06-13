@@ -658,6 +658,7 @@ namespace PgDbase.Repository.cms
                     .Take(filter.Size)
                     .Select(s => new MeterDevice
                     {
+                        Id = s.id,
                         Number = s.c_number,
                         Mark = s.c_mark,
                         InstallDate = s.d_install,
@@ -674,6 +675,37 @@ namespace PgDbase.Repository.cms
                         TotalCount = itemsCount
                     }
                 };
+            }
+        }
+
+        #endregion
+
+        #region Показания ПУ
+
+        /// <summary>
+        /// Возвращает показание по ПУ
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public Meter[] GetMeters(Guid device)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_meters
+                    .Where(w => w.f_meter_device == device)
+                    .OrderBy(o => o.d_send)
+                    .Take(20)
+                    .Select(s => new Meter
+                    {
+                        Id = s.id,
+                        Send = s.d_send,
+                        Output = s.n_output,
+                        DrawlType = new GroupsModel
+                        {
+                            Id = s.f_drawl_type,
+                            Title = s.fkmeterdrawltypes.c_title
+                        }
+                    }).ToArray();
             }
         }
 

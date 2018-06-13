@@ -66,40 +66,34 @@ namespace PgDbase.Repository.front
                         Name = s.c_name,
                         Text = s.c_text,
                         Url = s.c_url,
-                        Childrens = GetPageChilds(s.pgid,db)
+                        Childrens =(db.core_pages.Where(w=>w.pgid==s.gid).Select(e => new PageModel()
+                                        {
+                                            Name = e.c_name,
+                                            Path = e.c_path,
+                                            Alias = e.c_alias,
+                                            Url = e.c_url
+                                        }).ToArray())
                     }).Single();
                 }
                 return null;                              
             }
-        }
-        /// <summary>
-        /// дочерние элементы
-        /// </summary>
-        /// <param name="PatentId"></param>
-        /// <param name="db"></param>
-        /// <returns></returns>
-        public PageModel[] GetPageChilds(Guid? PatentId, CMSdb db) => db.core_pages
-                                                                     .Where(w => w.pgid == PatentId && w.b_disabled == false && w.f_site==_siteId)
-                                                                     .OrderBy(o => o.n_sort)
-                                                                     .Select(s => new PageModel()
-                                                                     {
-                                                                         Name = s.c_name,
-                                                                         Path = s.c_path,
-                                                                         Alias = s.c_alias,
-                                                                         Url = s.c_url
-                                                                     }).ToArray();
+        }        
+         
         /// <summary>
         /// сестренские элементы по пути
         /// </summary>
         /// <param name="path"></param>
         /// <param name="alias"></param>
         /// <returns></returns>
-        public PageModel[] GetPageSister(string path, string alias)
+        public PageModel[] GetPageChild(string path, string alias)
         {
             using (var db = new CMSdb(_context))
             {
                 var q = db.core_pages
-                              .Where(w => w.c_path == path && w.c_alias == alias && w.f_site == _siteId && w.b_disabled == false);
+                              .Where(w => w.c_path == path && w.c_alias == alias && w.f_site == _siteId)
+                              .Select(s=>s.gid)
+                              .Join(db.core_pages,n=>n,m=>m.pgid,(n,m)=>m);
+
                 if (q.Any())
                 {
                     return q.OrderBy(o=>o.n_sort)
@@ -107,12 +101,15 @@ namespace PgDbase.Repository.front
                             {
                                 Name = s.c_name,
                                 Text = s.c_text,
-                                Url = s.c_url
+                                Url = s.c_url,
+                                Alias=s.c_alias,
+                                Path=s.c_path
                             }).ToArray();
                 }
                 return null;
             }
         }
+
         /// <summary>
         /// сестренские элементы
         /// </summary>
@@ -138,25 +135,32 @@ namespace PgDbase.Repository.front
             }
         }
 
-        //public PageModel[] GetPageGroup(string Alias)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        var q = db.core_pages
-        //                      .Where(w => w.pgid == ParentId && w.f_site == _siteId && w.b_disabled == false);
-        //        if (q.Any())
-        //        {
-        //            return q.OrderBy(o => o.n_sort)
-        //                    .Select(s => new PageModel
-        //                    {
-        //                        Name = s.c_name,
-        //                        Text = s.c_text,
-        //                        Url = s.c_url
-        //                    }).ToArray();
-        //        }
-        //        return null;
-        //    }
-        //}
+        /// <summary>
+        /// Возвращает элементы карты сайта по группе
+        /// </summary>
+        /// <param name="Alias"></param>
+        /// <returns></returns>
+        public PageModel[] GetPageGroup(string Alias)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == Alias)
+                          .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
+                          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) =>new {e,o});
+                if (q.Any())
+                {
+                    return q.OrderBy(o => o.e.n_sort)
+                            .Select(s => new PageModel
+                            {
+                                Name = s.o.c_name,
+                                Alias=s.o.c_alias,
+                                Path=s.o.c_path,
+                                Url = s.o.c_url
+                            }).ToArray();
+                }              
+                return null;
+            }
+        }
 
 
 
