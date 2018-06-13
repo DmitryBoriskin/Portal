@@ -51,6 +51,14 @@ else
 
 <script>
     $(".meter-info").on("click", function () {
+        $(this).toggleClass("open-info");
+
+        if ($(this).hasClass("open-info")) {
+            $(this).text("Скрыть");
+        }
+        else {
+            $(this).text("Подробнее");
+        }
         var device = $(this).data("device");
 
         $.ajax({
@@ -71,7 +79,9 @@ else
                     }
                     result += "</tbody>";
                     result += "</table>";
-                    $("#" + device + "").append(result);
+                    var dev = $("#" + device + "");
+                    dev.empty();
+                    dev.append(result);
                 }
             },
             error: function (data) { }
