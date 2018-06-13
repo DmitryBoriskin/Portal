@@ -1,6 +1,7 @@
 ﻿using EventsModule.Areas.Admin.Models;
 using PgDbase.entity;
 using Portal.Areas.Admin;
+using Portal.Areas.Admin.Controllers;
 using Portal.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,6 @@ using System.Web.Mvc;
 
 namespace EventsModule.Areas.Admin.Controllers
 {
-    [RouteArea("Admin")]
-    [RoutePrefix("Events")]
     public class EventsController : BeCoreController
     {
         EventViewModel model;
@@ -39,7 +38,6 @@ namespace EventsModule.Areas.Admin.Controllers
         }
 
         // GET: Admin/Events
-        [Route]
         public ActionResult Index()
         {
             #region filter
@@ -55,8 +53,23 @@ namespace EventsModule.Areas.Admin.Controllers
             #endregion
             model.List=_cmsRepository.GetEventsList(mfilter);
             return View(model);
-        }        
-        [Route, HttpPost]
+        }
+
+
+        public ActionResult Item(Guid id)
+        {
+            model.Item = _cmsRepository.GetEventItem(id);
+            var Date = DateTime.Today;
+            if (model.Item != null)
+            {
+                ViewBag.Photo = model.Item.Photo;
+                Date = model.Item.Date;
+            }
+            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + Date.ToString("yyyy_MM") + "/" + Date.ToString("dd") + "/" + id + "/";
+            return View("Item", model);
+        }
+
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
         public ActionResult Insert()
         {
@@ -65,8 +78,7 @@ namespace EventsModule.Areas.Admin.Controllers
             return Redirect(StartUrl + "item/" + Guid.NewGuid() + "/" + query);
         }
 
-
-        [Route, HttpPost]
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         public ActionResult Search(string searchtext, bool enabled, bool annual, string size, DateTime? datestart, DateTime? dateend)
         {
@@ -85,21 +97,14 @@ namespace EventsModule.Areas.Admin.Controllers
         }
 
 
-  
-        [Route("item/{id:guid}"), HttpGet]
-        public ActionResult Item(Guid id)
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
         {
-            model.Item = _cmsRepository.GetEventItem(id);
-            var Date = DateTime.Today;
-            if (model.Item != null)
-            {
-                ViewBag.Photo = model.Item.Photo;
-                Date = model.Item.Date;
-            }
-            ViewBag.DataPath = Settings.UserFiles + SiteDir + Settings.MaterialsDir + Date.ToString("yyyy_MM") + "/" + Date.ToString("dd") + "/" + id + "/";
-            return View("Item", model);
+            return Redirect(StartUrl);
         }
-        [Route("item/{id:guid}"), HttpPost]
+
+        [HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Save(Guid id, EventViewModel backModel, HttpPostedFileBase upload)
@@ -178,7 +183,8 @@ namespace EventsModule.Areas.Admin.Controllers
             return View("item", model);
         }
 
-        [Route("item/{id:guid}"), HttpPost]
+
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
         public ActionResult Delete(Guid id)
         {
@@ -196,23 +202,13 @@ namespace EventsModule.Areas.Admin.Controllers
             return RedirectToAction("index");
         }
 
-        [Route("item/{id:guid}"), HttpPost]
+
+        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel()
         {
             return Redirect(StartUrl + Request.Url.Query);
         }
-        [Route, HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
-        public ActionResult ClearFiltr()
-        {
-            return Redirect(StartUrl);
-        }
 
-        [Route("item/{id:guid}"), HttpGet]
-        public ActionResult Widget()
-        {
-            return View();
-        }
     }
 }

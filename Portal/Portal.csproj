@@ -903,6 +903,9 @@
     <Content Include="Areas\Admin\Views\Admins\Part\RoleFilter.cshtml" />
     <Content Include="Areas\Admin\Views\SiteAdmins\Part\RoleFilter.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Views\Modules\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
