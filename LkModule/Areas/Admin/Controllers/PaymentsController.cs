@@ -70,5 +70,15 @@ namespace LkModule.Areas.Admin.Controllers
         {
             return Redirect($"{StartUrl}?subscr={subscr}");
         }
+
+        [Route, HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
+        public ActionResult Back()
+        {
+            string par = Request.UrlReferrer.Query;
+            string subscr = par.Replace("?subscr=", "");
+            string url = $"/admin/subscrs/item/{subscr}";
+            return Redirect(url);
+        }
     }
 }

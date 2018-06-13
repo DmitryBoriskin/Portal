@@ -83,5 +83,15 @@ namespace LkModule.Areas.Admin.Controllers
             var json = new JavaScriptSerializer().Serialize(tariffes);
             return Json(json);
         }
+
+        [Route, HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
+        public ActionResult Back()
+        {
+            string par = Request.UrlReferrer.Query;
+            string subscr = par.Replace("?subscr=", "");
+            string url = $"/admin/subscrs/item/{subscr}";
+            return Redirect(url);
+        }
     }
 }
