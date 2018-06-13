@@ -14,12 +14,12 @@ namespace LkModule.Areas.Admin.Models
         /// <summary>
         /// Список
         /// </summary>
-        public Paged<Subscr> List { get; set; }
+        public Paged<SubscrModel> List { get; set; }
 
         /// <summary>
         /// Единичная запись
         /// </summary>
-        public Subscr Item { get; set; }
+        public SubscrModel Item { get; set; }
 
         /// <summary>
         /// Подразделения
@@ -29,11 +29,11 @@ namespace LkModule.Areas.Admin.Models
         /// <summary>
         /// Список лицевых счетов
         /// </summary>
-        public Subscr[] Subscrs { get; set; }
+        public SubscrModel[] Subscrs { get; set; }
 
         /// <summary>
         /// Список выбранных ЛС
         /// </summary>
-        public Subscr[] SelectedSubscrs { get; set; }
+        public SubscrModel[] SelectedSubscrs { get; set; }
     }
 }

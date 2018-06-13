@@ -8,8 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Controllers
-{
-
+{    
     public class NewsController : BeCoreController
     {
 
@@ -110,7 +109,7 @@ namespace Portal.Areas.Admin.Controllers
             return Redirect(StartUrl + "item/" + Guid.NewGuid() + "/" + query);
         }
 
-        [HttpPost]
+        [HttpPost]        
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
         public ActionResult Save(Guid id, NewsViewModel backModel, HttpPostedFileBase upload)

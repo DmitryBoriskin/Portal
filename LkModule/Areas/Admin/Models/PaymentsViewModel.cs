@@ -13,7 +13,7 @@ namespace LkModule.Areas.Admin.Models
         /// <summary>
         /// Список 
         /// </summary>
-        public Paged<Payment> List { get; set; }
+        public Paged<PaymentModel> List { get; set; }
 
         /// <summary>
         /// Статусы

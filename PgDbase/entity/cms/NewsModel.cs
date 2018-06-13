@@ -32,6 +32,10 @@ namespace PgDbase.entity
         public bool Important { get; set; }
         public Guid[] CategoryId { get; set; }
         public NewsCategoryModel[] Category {get;set;}
+        /// <summary>
+        /// Ссылка на новость
+        /// </summary>
+        public string LinkNews { get; set; }
     }
 
     public class NewsCategoryModel

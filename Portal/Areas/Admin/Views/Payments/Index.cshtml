@@ -31,7 +31,12 @@
         @Html.Partial("Part/Filter")
     </div>
 
-    <div class="buttons"></div>
+    <div class="buttons">
+        @using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+        {
+            <button type="submit" name="action" value="back-btn" data-action="cancel" class="button icon-cancel">Назад</button>
+        }
+    </div>
 }
 else
 {

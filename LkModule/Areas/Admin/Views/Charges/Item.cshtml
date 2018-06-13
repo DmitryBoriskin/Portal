@@ -1,0 +1,38 @@
+﻿@model LkModule.Areas.Admin.Models.ChargesViewModel
+
+@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
+{
+    if (User.Identity.HasClaim(Model.ControllerName, "view"))
+    {
+        string payed = Model.Item.Payed ? "оплачено" : "неоплачено";
+        <div class="content">
+            <h1>@Model.PageName</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Сумма</th>
+                        <th>Оплачено?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.Item.Date.ToString("dd.MM.yyyy")</td>
+                        <td>@Model.Item.Debt.ToString("0.##")</td>
+                        <td>@payed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="dop_info-block"></div>
+
+        <div class="buttons">
+            <button type="submit" name="action" value="cancel-btn" data-action="cancel" class="button icon-cancel">Закрыть</button>
+        </div>
+    }
+    else
+    {
+        <div class="content"><p>У вас недостаточно прав.</p></div>
+    }
+}

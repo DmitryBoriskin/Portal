@@ -6,7 +6,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Показание ПУ
     /// </summary>
-    public class Meter
+    public class MeterModel
     {
         /// <summary>
         /// Идентификатор
