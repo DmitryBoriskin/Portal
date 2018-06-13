@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Личевой счёт
     /// </summary>
-    public class Subscr
+    public class SubscrModel
     {
         /// <summary>
         /// Идентификатор

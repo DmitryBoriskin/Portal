@@ -21,15 +21,17 @@
                         <div class="pull-right">
                             <a href="#@item.Id" class="meter-info" data-device="@item.Id" data-toggle="collapse">Подробнее</a>
                         </div>
+
+                        @*<div class="group-block meter-info" id="@item.Id" title="Переданные показания"></div>*@
                     </div>
                 </div>
                 <div id="@item.Id" class="collapse"></div>
                 <hr />
             }
-            if (Model.List != null && Model.List.Pager != null)
-            {
-                @Html.Partial("Partial/_pager", Model.List.Pager)
-            }
+            @*if (Model.List != null && Model.List.Pager != null)
+                {
+                    @Html.Partial("Partial/_pager", Model.List.Pager)
+                }*@
         }
         else
         {
@@ -59,6 +61,7 @@ else
         else {
             $(this).text("Подробнее");
         }
+        //console.log("test");
         var device = $(this).data("device");
 
         $.ajax({
@@ -70,7 +73,7 @@ else
                 var obj = JSON.parse(data);
 
                 if (obj.length > 0) {
-                    var result = '<table class="table">';
+                    var result = '<h4>Переданные показания</h4><table class="table">';
                     result += "<thead><tr><th>Дата</th><th>Показание</th><th>Тип</th></tr></thead>";
                     result += "<tbody>";
                     for (var i = 0; i < obj.length; i++) {
@@ -79,6 +82,7 @@ else
                     }
                     result += "</tbody>";
                     result += "</table>";
+                    //var dev = $("#" + device + "").find(".group-block_info");
                     var dev = $("#" + device + "");
                     dev.empty();
                     dev.append(result);

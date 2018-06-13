@@ -35,6 +35,6 @@ namespace Portal.Areas.Admin.Models
         /// <summary>
         /// Список лицевых счетов
         /// </summary>
-        public Subscr[] Subscrs { get; set; }
+        public SubscrModel[] Subscrs { get; set; }
     }
 }
