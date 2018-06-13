@@ -230,20 +230,23 @@ namespace PgDbase.Repository.cms
                     {
                         var listExistsSubscrs = db.lk_user_subscrs
                             .Where(w => w.f_user == user)
-                            .Select(s => s.f_subscr)
+                            .Select(s => new { s.f_subscr, s.b_default })
                             .ToArray();
 
                         List<lk_user_subscrs> list = new List<lk_user_subscrs>();
+                        int count = 0;
                         foreach (var subscr in subscrs)
                         {
-                            if (!listExistsSubscrs.Contains(subscr))
+                            if (!listExistsSubscrs.Select(s => s.f_subscr).Contains(subscr))
                             {
                                 list.Add(new lk_user_subscrs
                                 {
                                     f_user = user,
                                     f_subscr = subscr,
-                                    d_attached = DateTime.Now
+                                    d_attached = DateTime.Now,
+                                    b_default = !listExistsSubscrs.Any(a => a.b_default) && count == 0
                                 });
+                                count++;
                             }
                         }
                         db.BulkCopy(list);
@@ -271,11 +274,12 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    bool result = db.lk_user_subscrs
+                    var link = db.lk_user_subscrs
                         .Where(w => w.f_subscr == id)
                         .Where(w => w.f_user == user)
-                        .Delete() > 0;
+                        .SingleOrDefault();
 
+                    bool result = db.Delete(link) > 0;
                     tr.Commit();
                     return result;
                 }
@@ -299,7 +303,8 @@ namespace PgDbase.Repository.cms
                         Link = s.fkusersubscrssubscr.c_link,
                         Surname = s.fkusersubscrssubscr.c_surname,
                         Name = s.fkusersubscrssubscr.c_name,
-                        Patronymic = s.fkusersubscrssubscr.c_patronymic
+                        Patronymic = s.fkusersubscrssubscr.c_patronymic,
+                        Default = s.b_default
                     }).ToArray();
             }
         }

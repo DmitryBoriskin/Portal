@@ -53,6 +53,11 @@ namespace PgDbase.entity
         public bool Disabled { get; set; }
 
         /// <summary>
+        /// По умолчанию
+        /// </summary>
+        public bool Default { get; set; }
+
+        /// <summary>
         /// Дата создания
         /// </summary>
         public DateTime Created { get; set; }
