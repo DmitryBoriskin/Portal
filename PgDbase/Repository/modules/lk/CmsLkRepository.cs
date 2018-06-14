@@ -64,7 +64,6 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         Link = s.c_link,
-                        Created = s.d_created,
                         Disabled = s.b_disabled,
                         Surname = s.c_surname,
                         Name = s.c_name,
@@ -103,7 +102,8 @@ namespace PgDbase.Repository.cms
                         Surname = s.c_surname,
                         Name = s.c_name,
                         Patronymic = s.c_patronymic
-                    }).ToArray();
+                    })
+                    .ToArray();
             }
         }
 
@@ -121,17 +121,35 @@ namespace PgDbase.Repository.cms
                     .Select(s => new SubscrModel
                     {
                         Id = s.id,
+                        Subscr = s.c_subscr,
                         Link = s.c_link,
+                        Ee = s.b_ee,
+                        OrgName = s.c_org,
                         Surname = s.c_surname,
                         Name = s.c_name,
                         Patronymic = s.c_patronymic,
                         Address = s.c_address,
+                        PostAddress = s.c_post_address,
                         Phone = s.c_phone,
                         Email = s.c_email,
                         Disabled = s.b_disabled,
-                        Created = s.d_created,
-                        Department = s.f_department
-                    }).SingleOrDefault();
+                        Department = s.f_department,
+                        Contract = s.c_contract,
+                        ContractDate = s.d_contract_date,
+                        Begin = s.d_begin,
+                        End = s.d_end,
+                        Bank = new BankModel()
+                        {
+                            Name = s.c_bank_name,
+                            Dep = s.c_bank_dep,
+                            Bik = s.c_bank_bik,
+                            Kpp = s.c_bank_kpp,
+                            Inn = s.c_bank_inn,
+                            Ks = s.c_bank_ks,
+                            Rs = s.c_bank_rs
+                        }
+                    })
+                    .SingleOrDefault();
             }
         }
 
@@ -166,7 +184,6 @@ namespace PgDbase.Repository.cms
                         c_phone = item.Phone,
                         c_email = item.Email,
                         b_disabled = item.Disabled,
-                        d_created = item.Created,
                         f_department = item.Department
                     }) > 0;
 

@@ -13,8 +13,8 @@
                     <a title="@(item.Surname + " " + item.Name + " " + item.Patronymic)" class="li-caption" href="/admin/subscrs/item/@item.Id">
                         @(item.Surname + " " + item.Name + " " + item.Patronymic)
                     </a>
-                    <div class="li-desc"><span>Номер ЛС:</span> @item.Link</div>
-                    <div class="li-desc"><span>Дата создания:</span> @item.Created.ToString("dd.MM.yyyy")</div>
+                    <div class="li-desc"><span>Лс:</span> @item.Link</div>
+                    @*<div class="li-desc"><span>Дата создания:</span> @item.Created.ToString("dd.MM.yyyy")</div>*@
                 </div>
             }
             if (Model.List != null && Model.List.Pager != null)

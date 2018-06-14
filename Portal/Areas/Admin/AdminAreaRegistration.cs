@@ -27,6 +27,13 @@ namespace Portal.Areas.Admin
                             new { controller = "Admins", action = "Index", id = UrlParameter.Optional },
                             new[] { "portal.areas.admin.controllers" }
                         );
+            
+            context.MapRoute(
+                            "Portal_BE_Services",
+                            "admin/Services/{action}/{id}",
+                            new { controller = "Services", action = "Index", id = UrlParameter.Optional },
+                            new[] { "portal.areas.admin.controllers" }
+                        );
             context.MapRoute(
                             "Portal_BE_Main",
                             "admin/Main/{action}/{id}",

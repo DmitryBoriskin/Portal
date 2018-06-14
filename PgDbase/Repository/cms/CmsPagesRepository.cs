@@ -640,5 +640,19 @@ namespace PgDbase.Repository.cms
                 return data.SingleOrDefault();
             }
         }
+
+        public string GetModulePageName(string controller)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_controllers
+                    .Where(w => w.c_controller_name.ToLower() == controller.ToLower())
+                     .Where(w => w.c_action_name.ToLower() == null)
+                    .Select(s => s.c_name);
+
+
+                return data.FirstOrDefault();
+            }
+        }
     }
 }
