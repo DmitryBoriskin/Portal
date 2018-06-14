@@ -63,6 +63,11 @@ namespace PgDbase.entity
         public string Desc { get; set; }
 
         /// <summary>
+        /// Font Awesome icon
+        /// </summary>
+        public string FaIcon { get; set; }
+
+        /// <summary>
         /// Идентификатор контроллера
         /// </summary>
         public int? SiteController { get; set; }

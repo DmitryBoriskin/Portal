@@ -71,6 +71,7 @@ namespace PgDbase.Repository.cms
                         IsDeleteble = s.b_deleteble,
                         Keywords = s.c_keyw,
                         Desc = s.c_desc,
+                        FaIcon=s.c_fa_icon,
                         SiteController = s.f_sites_controller,
                         Childrens = GetPages(new PageFilterModel { Parent = s.gid }),
                         MenuGroups = s.fkpagegrouplinkpages.Select(g => g.f_page_group).ToArray()
@@ -134,6 +135,7 @@ namespace PgDbase.Repository.cms
                         b_disabled = page.IsDisabled,
                         c_keyw = page.Keywords,
                         c_desc = page.Desc,
+                        c_fa_icon=page.FaIcon,
                         f_sites_controller = page.SiteController
                     }) > 0;
 
@@ -196,6 +198,7 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.b_disabled, page.IsDisabled)
                         .Set(s => s.c_keyw, page.Keywords)
                         .Set(s => s.c_desc, page.Desc)
+                        .Set(s => s.c_fa_icon, page.FaIcon)
                         .Set(s => s.f_sites_controller, page.SiteController)
                         .Update() > 0;
 

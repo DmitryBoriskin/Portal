@@ -242,7 +242,7 @@ namespace Portal.Controllers
                             await UserManager.SendEmailAsync(user.Id, "Подтверждение регистрации", text);
 
 
-                            return RedirectToAction("Index", "AccountHome");
+                            return RedirectToAction("Index", "Main");
                         }
                         AddErrors(addUserResult);
 
@@ -575,7 +575,7 @@ namespace Portal.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "AccountHome");
+            return RedirectToAction("Index", "Main");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
