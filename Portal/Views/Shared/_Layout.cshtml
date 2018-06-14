@@ -170,11 +170,23 @@
                                         <a href="/settings" class="btn btn-default btn-flat">Настройки</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-default btn-flat">Выйти</a>
+                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-default btn-flat">Выйти</a>
+                                        }
+                                        
                                     </div>
                                 </li>
                             </ul>
                         </li>                      
+                        }
+                        else
+                        {
+                            <li class="tasks-menu">
+                                <a href="/account/Login">Войти</a>
+                            </li>
+
                         }
                     </ul>
                 </div>

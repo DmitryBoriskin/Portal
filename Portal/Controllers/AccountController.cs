@@ -575,7 +575,7 @@ namespace Portal.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "AccountHome");
+            return RedirectToAction("Index", "Main");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
