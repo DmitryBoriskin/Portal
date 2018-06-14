@@ -918,7 +918,6 @@
     <Content Include="Areas\Admin\Views\SiteAdmins\Part\RoleFilter.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Part\Filter.cshtml" />
     <None Include="packages.config" />
-    <Content Include="Views\Modules\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
@@ -947,14 +946,13 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
-    <Content Include="Views\Vacancy\Index.cshtml" />
     <Content Include="Views\Page\Index.cshtml" />
     <Content Include="Views\Page\Group.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Shared\Partial\_pager.cshtml" />
     <Content Include="Views\News\NewsItem.cshtml" />
     <Content Include="Views\Shared\_Layout - Copy.cshtml" />
-    <Content Include="Views\Shared\_Layout - Copy %282%29.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -963,9 +961,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Connection\" />
-    <Folder Include="Areas\Admin\Views\Core\" />
-    <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="bin\" />
     <Folder Include="Views\Layout\" />
   </ItemGroup>

@@ -230,20 +230,23 @@ namespace PgDbase.Repository.cms
                     {
                         var listExistsSubscrs = db.lk_user_subscrs
                             .Where(w => w.f_user == user)
-                            .Select(s => s.f_subscr)
+                            .Select(s => new { s.f_subscr, s.b_default })
                             .ToArray();
 
                         List<lk_user_subscrs> list = new List<lk_user_subscrs>();
+                        int count = 0;
                         foreach (var subscr in subscrs)
                         {
-                            if (!listExistsSubscrs.Contains(subscr))
+                            if (!listExistsSubscrs.Select(s => s.f_subscr).Contains(subscr))
                             {
                                 list.Add(new lk_user_subscrs
                                 {
                                     f_user = user,
                                     f_subscr = subscr,
-                                    d_attached = DateTime.Now
+                                    d_attached = DateTime.Now,
+                                    b_default = !listExistsSubscrs.Any(a => a.b_default) && count == 0
                                 });
+                                count++;
                             }
                         }
                         db.BulkCopy(list);
@@ -271,10 +274,58 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    bool result = db.lk_user_subscrs
+                    var query = db.lk_user_subscrs
                         .Where(w => w.f_subscr == id)
-                        .Where(w => w.f_user == user)
-                        .Delete() > 0;
+                        .Where(w => w.f_user == user);
+
+                    var link = query.SingleOrDefault();
+
+                    bool result = query.Delete() > 0;
+
+                    if (link.b_default)
+                    {
+                        var newDefault = db.lk_user_subscrs
+                            .Where(w => w.f_user == user)
+                            .FirstOrDefault();
+
+                        if (newDefault != null)
+                        {
+                            result = db.lk_user_subscrs
+                                .Where(w => w.f_user == user)
+                                .Where(w => w.f_subscr == newDefault.f_subscr)
+                                .Set(s => s.b_default, true)
+                                .Update() > 0;
+                        }
+                    }
+                    tr.Commit();
+                    return result;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Выставляет дефолтный ЛС для пользователя
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool SetDefaultUserSubscrLink(Guid subscr, Guid user)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.lk_user_subscrs
+                        .Where(w => w.f_user == user);
+
+                    bool result = query
+                        .Set(s => s.b_default, false)
+                        .Update() > 0;
+
+                    result = query
+                        .Where(w => w.f_subscr == subscr)
+                        .Set(s => s.b_default, true)
+                        .Update() > 0;
 
                     tr.Commit();
                     return result;
@@ -293,13 +344,15 @@ namespace PgDbase.Repository.cms
             {
                 return db.lk_user_subscrs
                     .Where(w => w.f_user == user)
+                    .OrderBy(o => o.d_attached)
                     .Select(s => new SubscrModel
                     {
                         Id = s.f_subscr,
                         Link = s.fkusersubscrssubscr.c_link,
                         Surname = s.fkusersubscrssubscr.c_surname,
                         Name = s.fkusersubscrssubscr.c_name,
-                        Patronymic = s.fkusersubscrssubscr.c_patronymic
+                        Patronymic = s.fkusersubscrssubscr.c_patronymic,
+                        Default = s.b_default
                     }).ToArray();
             }
         }

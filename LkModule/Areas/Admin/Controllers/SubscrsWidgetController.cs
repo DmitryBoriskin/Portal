@@ -29,5 +29,11 @@ namespace LkModule.Areas.Admin.Controllers
         {
             return _cmsRepository.DropUserSubscr(item, user) ? Json("Success") : Json("False");
         }
+
+        [HttpPost]
+        public ActionResult SetDefault(Guid item, Guid user)
+        {
+            return _cmsRepository.SetDefaultUserSubscrLink(item, user) ? Json("Success") : Json("False");
+        }
     }
 }

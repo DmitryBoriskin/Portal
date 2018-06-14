@@ -95,10 +95,10 @@ namespace LkModule.Areas.Admin.Controllers
         public ActionResult Cancel(Guid id)
         {
             var subscr = _cmsRepository.GetSubscrByCharge(id);
-            string url = "/admin/subscrs/";
+            string url = "/admin/charges/?subscr=";
             if (subscr != null && subscr != Guid.Empty)
             {
-                url += $"item/{subscr}";
+                url += subscr;
             }
             return Redirect(url);
         }
