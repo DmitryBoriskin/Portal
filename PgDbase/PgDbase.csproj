@@ -68,6 +68,7 @@
     <Compile Include="Entity\cms\UserGroupResolution.cs" />
     <Compile Include="Entity\cms\UserModel.cs" />
     <Compile Include="Entity\cms\UserResolution.cs" />
+    <Compile Include="Entity\common\LayoutModel.cs" />
     <Compile Include="Entity\common\PhotoGallery.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
     <Compile Include="Entity\modules\event\EventFilterModel.cs" />

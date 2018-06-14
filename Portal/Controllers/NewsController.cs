@@ -9,14 +9,16 @@ using System.Web.Mvc;
 
 namespace Portal.Controllers
 {
-    public class NewsController : CoreController
+    public class NewsController : LayoutController
     {
         private NewsFrontModel model;
         private FilterModel filter;
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            model = new NewsFrontModel();
+            model = new NewsFrontModel() {
+                LayutInfo = _layoutmodel
+            };
         }
         // GET: News
         public ActionResult Index()

@@ -1,5 +1,6 @@
 ﻿using LinqToDB;
 using PgDbase.entity;
+using PgDbase.Entity.common;
 using PgDbase.models;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,32 @@ namespace PgDbase.Repository.front
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
+
+        public LayoutModel GetLayoutInfo()
+        {
+            LayoutModel model = new LayoutModel();
+            using (var db = new CMSdb(_context))
+            {
+                #region главное меню
+                var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == "main")
+                          .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
+                          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o });
+                if (q.Any())
+                {
+                    model.MainMenu= q.OrderBy(o => o.e.n_sort)
+                            .Select(s => new PageModel
+                            {
+                                Name = s.o.c_name,                                
+                                Url = (String.IsNullOrEmpty(s.o.c_url))? s.o.c_path+ s.o.c_alias: s.o.c_url,
+                                FaIcon=s.o.c_fa_icon
+                            }).ToArray();
+                }
+                #endregion
+            }
+
+            return model;
+        }
+
 
         #region Page
 

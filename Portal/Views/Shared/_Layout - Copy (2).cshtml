@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>    
+    <link href="~/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/plugins/mobileGallery/swipebox.css" rel="stylesheet" />    
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>  
+    <div class="container">
+        <div class="row" style="position:relative;">
+            <div class="col-md-3 menu_wr">
+                <div class="menu">
+                    <div class="menu_scroll">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+        
+        
+    </div>
+    
+    
+
+        <script src="~/Content/plugins/jquery/jquery.js"></script>
+        <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/Content/plugins/mobileGallery/js/jquery.swipebox.js"></script>
+        <script src="~/Scripts/main.js"></script>
+</body>
+</html>

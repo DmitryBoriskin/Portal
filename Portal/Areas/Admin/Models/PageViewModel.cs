@@ -1,4 +1,6 @@
 ﻿using PgDbase.entity;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace Portal.Areas.Admin.Models
 {
@@ -31,5 +33,7 @@ namespace Portal.Areas.Admin.Models
         /// Группы меню
         /// </summary>
         public GroupsModel[] MenuGroups { get; set; }
+        
+        
     }
 }

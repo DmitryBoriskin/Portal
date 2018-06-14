@@ -40,6 +40,7 @@ $(document).ready(function () {
         top.location.href = location.href;
     }
 
+
     //locked removed in v > 4.0 (it was in v3.5.2)
     //<option locked="locked">
     $(".select2").select2({
@@ -65,6 +66,25 @@ $(document).ready(function () {
             e.preventDefault();
         }
     });
+
+    function iformat(icon) {
+        var originalOption = icon.element;
+        return $('<span><i class="fa ' + $(originalOption).data('icon') + '"></i> ' + icon.text + '</span>');
+    }
+    $(".select2ico").select2({
+        language: "ru",
+        width: "100%",
+        allowClear: false,
+        templateSelection: iformat,
+        templateResult: iformat,
+    })
+        .on('select2ico:unselecting', function (e) {
+            // before removing tag we check option element of tag and 
+            // if it has property 'locked' we will create error to prevent all select2 functionality
+            if ($(e.params.args.data.element).attr('locked')) {
+                e.preventDefault();
+            }
+        });
 
 
 

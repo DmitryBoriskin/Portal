@@ -1,12 +1,17 @@
-﻿using PgDbase.entity;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PgDbase.entity;
 using Portal.Areas.Admin.Models;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Portal.Areas.Admin.Controllers
 {
-
     public class PagesController : BeCoreController
     {
         //public PagesController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -31,6 +36,22 @@ namespace Portal.Areas.Admin.Controllers
                 MenuModules = MenuModulCore,
                 MenuGroups = _cmsRepository.GetPageGroups()
             };
+
+            #region font awesome select list
+            List<SelectListItem> FaList = new List<SelectListItem>();
+            FaList.Add(new SelectListItem() { Text = "не выбрано" });
+            string json = Server.MapPath("~/Content/fonts/fa/fa-icons.json");
+            using (StreamReader r = new StreamReader(json))
+            {
+                string response = r.ReadToEnd();
+                dynamic array = JsonConvert.DeserializeObject(response);
+                foreach (var item in array)
+                {
+                    FaList.Add(new SelectListItem() { Text = ((JContainer)item).First.ToString(), Value = ((JProperty)item).Name });
+                }
+            }
+            ViewBag.FaIconList = FaList;
+            #endregion
 
             #region Метатеги
             ViewBag.Description = "";
@@ -72,13 +93,16 @@ namespace Portal.Areas.Admin.Controllers
                 };                
             }
             GetBreadCrumbs(id);
+
+            
+
             return View(model);
         }
 
         [HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
-        public ActionResult Item(Guid id, PageViewModel backModel, string[] Item_MenuGroups)
+        public ActionResult Item(Guid id, PageViewModel backModel, string[] Item_MenuGroups, string FaIconList)
         {
             ErrorMessage message = new ErrorMessage
             {
@@ -87,6 +111,8 @@ namespace Portal.Areas.Admin.Controllers
 
             string _parent = backModel.Item.ParentId != null ? $"item/{backModel.Item.ParentId.ToString()}" : "";
             string backToListUrl = $"{StartUrl}{_parent}{Request.Url.Query}";
+
+       
 
             if (ModelState.IsValid)
             {
@@ -103,6 +129,13 @@ namespace Portal.Areas.Admin.Controllers
                 {
                     backModel.Item.MenuGroups = Item_MenuGroups.Select(s => Guid.Parse(s)).ToArray();
                 }
+                if (!String.IsNullOrEmpty(FaIconList))
+                {
+                    backModel.Item.FaIcon = FaIconList;
+                }
+                
+
+
                 if (String.IsNullOrWhiteSpace(backModel.Item.Alias))
                 {
                     backModel.Item.Alias = backModel.Item.Name;

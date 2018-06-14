@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Portal.Controllers
 {
-    public class PageController : CoreController
+    public class PageController : LayoutController
     {
         private PageFrontModel model;
 
@@ -19,7 +19,9 @@ namespace Portal.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            model = new PageFrontModel();
+            model = new PageFrontModel() {
+                LayutInfo = _layoutmodel
+            };
 
             #region Определяем путь и алиас
             var url = HttpContext.Request.Url.AbsolutePath.ToLower();
@@ -43,6 +45,7 @@ namespace Portal.Controllers
             }
             #endregion
         }
+
 
         // GET: Page
         public ActionResult Index()

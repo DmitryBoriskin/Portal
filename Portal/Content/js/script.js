@@ -1,5 +1,9 @@
 ﻿$(document).ready(function () {
-    $('.select2').select2();
+    $('.select2').select2();    
+
+
+
+   
 
     $('.type-page').find('table').addClass("table-responsive");
 

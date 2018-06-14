@@ -313,6 +313,7 @@
     <Content Include="Content\css\styles_login.css" />
     <Content Include="Content\css\styles_popUp.css" />
     <Content Include="Content\favicon.ico" />
+    <Content Include="Content\fonts\fa\fa-icons.json" />
     <Content Include="Content\fonts\fontello\fontello.css" />
     <Content Include="Content\fonts\fontello\fontello.svg" />
     <Content Include="Content\fonts\OpenSans\opensans.css" />
@@ -371,6 +372,8 @@
     <Content Include="Content\plugins\datatables\datatables.min.js" />
     <Content Include="Content\plugins\Disly\DislyControls.css" />
     <Content Include="Content\plugins\Disly\DislyControls.js" />
+    <Content Include="Content\plugins\fastclick\fastclick.js" />
+    <Content Include="Content\plugins\fastclick\fastclick.min.js" />
     <Content Include="Content\plugins\formSerialize\jquery.serialize-object.min.js" />
     <Content Include="Content\plugins\icheck\icheck.js" />
     <Content Include="Content\plugins\icheck\icheck.min.js" />
@@ -566,6 +569,8 @@
     <Content Include="Content\plugins\select2\select2.min.js" />
     <Content Include="Content\plugins\select2\select2_mod.css" />
     <Content Include="Content\plugins\select2\select2_mod.js" />
+    <Content Include="Content\plugins\slimScroll\jquery.slimscroll.js" />
+    <Content Include="Content\plugins\slimScroll\jquery.slimscroll.min.js" />
     <Content Include="Content\plugins\tinymce\jquery.tinymce.min.js" />
     <Content Include="Content\plugins\tinymce\langs\ru.js" />
     <Content Include="Content\plugins\tinymce\license.txt" />
@@ -646,6 +651,12 @@
     <Content Include="Content\plugins\tinymce\themes\modern\theme.min.js" />
     <Content Include="Content\plugins\tinymce\tinymce.min.js" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\template\css\AdminLTE.css" />
+    <Content Include="Content\template\css\skin.css" />
+    <Content Include="Content\template\css\_all-skins.css" />
+    <Content Include="Content\template\img\logo.png" />
+    <Content Include="Content\template\js\app.min.js" />
+    <Content Include="Content\template\js\demo.js" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Views\Account\LogIn.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_login.cshtml" />
@@ -702,6 +713,7 @@
     <Compile Include="Areas\Admin\Models\ErrorMessageBtnModel.cs" />
     <Compile Include="Areas\Admin\Models\ErrorMessageModel.cs" />
     <Compile Include="Areas\Admin\Models\FilterTreeModel.cs" />
+    <Compile Include="Areas\Admin\Models\LayoutViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NewsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MenuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\MainViewModel.cs" />
@@ -716,6 +728,7 @@
     <Compile Include="Controllers\AccountHomeController.cs" />
     <Compile Include="Controllers\AccountManageController.cs" />
     <Compile Include="Controllers\CoreController.cs" />
+    <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\PageController.cs" />
@@ -724,6 +737,7 @@
     </Compile>
     <Compile Include="Areas\Admin\Models\AccountModel.cs" />
     <Compile Include="Models\LayoutViewModel.cs" />
+    <Compile Include="Models\MainFrontViewModel.cs" />
     <Compile Include="Models\NewsFrontModel.cs" />
     <Compile Include="Models\PageFrontModel.cs" />
     <Compile Include="Models\VacancyWidgetModel.cs" />
@@ -903,9 +917,6 @@
     <Content Include="Areas\Admin\Views\Admins\Part\RoleFilter.cshtml" />
     <Content Include="Areas\Admin\Views\SiteAdmins\Part\RoleFilter.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Part\Filter.cshtml" />
-    <Content Include="Areas\Admin\web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="packages.config" />
     <Content Include="Views\Modules\Default.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -943,6 +954,7 @@
     <Content Include="Views\Shared\Partial\_pager.cshtml" />
     <Content Include="Views\News\NewsItem.cshtml" />
     <Content Include="Views\Shared\_Layout - Copy.cshtml" />
+    <Content Include="Views\Shared\_Layout - Copy %282%29.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -955,6 +967,7 @@
     <Folder Include="Areas\Admin\Views\Core\" />
     <Folder Include="Areas\Admin\Views\Groups\" />
     <Folder Include="bin\" />
+    <Folder Include="Views\Layout\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
