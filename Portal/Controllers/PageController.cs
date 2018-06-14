@@ -20,7 +20,8 @@ namespace Portal.Controllers
         {
             base.OnActionExecuting(filterContext);
             model = new PageFrontModel() {
-                LayoutInfo = _layoutmodel
+                LayoutInfo = _layoutmodel,
+                User = _user
             };
 
             #region Определяем путь и алиас

@@ -9,6 +9,6 @@ namespace PgDbase.Entity.common
 {
     public class LayoutModel
     {
-        public PageModel[] MainMenu { get; set; }
+        public PageModel[] MainMenu { get; set; }        
     }
 }
