@@ -9,6 +9,7 @@ namespace Portal.Models
 {
     public class LayoutViewModel
     {
-        public LayoutModel LayutInfo { get; set; }
+        public LayoutModel LayoutInfo { get; set; }
+        
     }
 }

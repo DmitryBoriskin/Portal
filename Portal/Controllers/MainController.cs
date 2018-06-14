@@ -15,7 +15,7 @@ namespace Portal.Controllers
             base.OnActionExecuting(filterContext);
             model = new MainFrontViewModel
             {
-                LayutInfo=_layoutmodel                
+                LayoutInfo=_layoutmodel                
             };
         }
         // GET: Main

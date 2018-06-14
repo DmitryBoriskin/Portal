@@ -242,7 +242,7 @@ namespace Portal.Controllers
                             await UserManager.SendEmailAsync(user.Id, "Подтверждение регистрации", text);
 
 
-                            return RedirectToAction("Index", "AccountHome");
+                            return RedirectToAction("Index", "Main");
                         }
                         AddErrors(addUserResult);
 

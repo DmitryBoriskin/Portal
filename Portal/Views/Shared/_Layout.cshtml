@@ -185,9 +185,9 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">  
                     
-                    @if (Model.LayutInfo.MainMenu != null)
+                    @if (Model.LayoutInfo.MainMenu != null)
                     {
-                        foreach (var item in Model.LayutInfo.MainMenu)
+                        foreach (var item in Model.LayoutInfo.MainMenu)
                         {
                             <li class="treeview">
                                 <a href="@item.Url">

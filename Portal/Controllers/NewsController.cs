@@ -17,7 +17,7 @@ namespace Portal.Controllers
         {
             base.OnActionExecuting(filterContext);
             model = new NewsFrontModel() {
-                LayutInfo = _layoutmodel
+                LayoutInfo = _layoutmodel
             };
         }
         // GET: News
