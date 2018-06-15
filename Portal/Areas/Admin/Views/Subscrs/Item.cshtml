@@ -80,9 +80,9 @@
             </div>
             <div class="group-block open" title="Договор">
                 @Html.TextBoxFor(m => m.Item.Contract, new { title = "№ договора", placeholder = "№ договора", @MaxLength = "24" })
-                @Html.TextBoxFor(m => m.Item.ContractDate, new { data_type = "date", title = "Дата заключения", value = ViewBag.Date })
-                @Html.TextBoxFor(m => m.Item.Begin, new { data_type = "date", title = "Действителен с", value = ViewBag.Date })
-                @Html.TextBoxFor(m => m.Item.End, new { data_type = "date", title = "Действителен по", value = ViewBag.Date })
+                @Html.TextBoxFor(m => m.Item.ContractDate, new { data_type = "date", title = "Дата заключения" })
+                @Html.TextBoxFor(m => m.Item.Begin, new { data_type = "date", title = "Действителен с" })
+                @Html.TextBoxFor(m => m.Item.End, new { data_type = "date", title = "Действителен по" })
 
                 @Html.TextBoxFor(m => m.Item.Link, new { required = "", title = "№ в ОМНИС", placeholder = "№ в ОМНИС" })
             </div>
