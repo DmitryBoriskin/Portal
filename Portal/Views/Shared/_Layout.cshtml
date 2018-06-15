@@ -72,33 +72,39 @@
 
                         <li class="dropdown notifications-menu subscr-list-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ 556-1237-001-01-29</span>
+                                <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.LayoutInfo.DefaultSubscr.Subscr</span>
                                 @*<span class="label label-warning">10</span>*@
                             </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">Подключенные лицевые счета</li>
-                                <li>
-                                    <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-star text-orange"></i> 556-1237-001-01-29
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-star-o text-orange"></i> 556-1237-234-65-85
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-star-o text-orange"></i> 556-1237-019-91-12
-                                            </a>
-                                        </li>
-                                        
-                                    </ul>
-                                </li>                                
-                            </ul>
+                            @if (Model.LayoutInfo.ConnectionSubscrList != null)
+                            {
+                                <ul class="dropdown-menu">
+                                    <li class="header">Подключенные лицевые счета</li>
+                                    <li>
+                                        <!-- inner menu: contains the actual data -->
+                                        <ul class="menu">
+                                            @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
+                                            {
+                                                string _class = "";
+                                                if (item.Default)
+                                                {
+                                                    _class = " fa-star";
+                                                }
+                                                else
+                                                {
+                                                    _class = " fa-star-o";
+                                                }
+                                                <li>
+                                                    <a href="#" data-id="@item.Id" class="select_ls">
+                                                        <i class="fa @_class text-orange"></i> @item.Subscr - @item.Name
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                </ul>
+                                
+                            }
+                           
                         </li>
 
 

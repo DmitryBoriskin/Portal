@@ -38,6 +38,13 @@
         });
     }
 
+
+    //выбор лс
+    $('.select_ls').click(function () {
+        var id = $(this).attr('data-id');
+        
+    });
+
 });
 
 

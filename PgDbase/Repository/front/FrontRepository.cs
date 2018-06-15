@@ -54,7 +54,7 @@ namespace PgDbase.Repository.front
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
 
-        public LayoutModel GetLayoutInfo()
+        public LayoutModel GetLayoutInfo(Guid UserId)
         {
             LayoutModel model = new LayoutModel();
             using (var db = new CMSdb(_context))
@@ -76,6 +76,28 @@ namespace PgDbase.Repository.front
                                 Childrens= GetChildMenu(s.o.gid)
                             }).ToArray();
                 }
+                #endregion
+
+                #region  лицевые счета                
+                var ls_q = db.lk_user_subscrs.Where(w => w.f_user == UserId)
+                             .Join(db.lk_subscrs, u => u.f_subscr, s => s.id, (u, s) => new { u, s });
+                //подключенные ЛС
+                model.ConnectionSubscrList = ls_q                                                
+                                                .OrderByDescending(o=>o.u.d_attached)
+                                                .Select(s => new SubscrModel() {
+                                                    Subscr=s.s.c_subscr,
+                                                    Name=s.s.c_surname,
+                                                    Default=s.u.b_default,
+                                                    Id=s.s.id
+                                                }).ToArray();
+                //выбранный ЛС(по умолчанию)
+                model.DefaultSubscr = ls_q.Where(w => w.u.b_default == true)
+                                          .Select(s=>new SubscrModel {
+                                              Address=s.s.c_address,
+                                              Subscr = s.s.c_subscr,
+                                              Name = s.s.c_surname
+                                          }).Single();
+                                                                    
                 #endregion
             }
             return model;
