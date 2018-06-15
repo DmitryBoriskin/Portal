@@ -29,6 +29,15 @@
         $('body').find('.swipebox').swipebox();
     }
 
+
+    if ($('.iCheck').length > 0) {
+        $('.iCheck').iCheck({
+            checkboxClass: 'icheckbox_square-orange',
+            radioClass: 'iradio_square-orange',
+            increaseArea: '20%' // optional
+        });
+    }
+
 });
 
 
