@@ -22,4 +22,116 @@
 #swipebox-original {    display: block;   width: 50px;    height: 50px;    position: absolute;    left: 50%;    margin-left: -25px;    top: 14px;    z-index: 999;}
 #swipebox-original:before {font-family: fontello;content: '\ea6d';color: #fff;font-size: 21px;position: relative;left: 14px;}
 
+.content{
+font-family:Roboto;
+}
 
+.block__white{
+    background-color:#fff;
+}
+.block {
+    margin-bottom: 10px
+}
+.block {
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 23px;
+    border-radius: 4px;
+    min-height: 100px;
+    position: relative;
+    display:block;
+
+}
+
+.block__white.block__opacity {
+    padding-top: 15px;
+    padding-bottom: 52px;
+    background-color:rgba(255,255,255,.7);
+}
+
+.block_img {
+    float: left;
+    margin-top: 14px;
+}
+.block_info {
+    padding-left: 92px;
+    color: #262626;
+}
+.block_info .block_info_text {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 16px;
+    
+    position: absolute;
+    top: 50%;
+    
+    transform: translate(0, -50%);
+}
+
+.block_headr{
+    text-transform:uppercase;
+    font-size:16px;
+    font-weight:bold;
+margin-bottom:16px;
+}
+.list_item{
+margin-bottom:10px;
+}
+.list_item a {
+    color: #262626;
+}
+.list_date {
+    color: #737780;
+    font-size:11px;
+}
+
+.ramka {
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    padding:12px 20px 30px;
+    margin:10px 0 10px;
+}
+
+.link{
+text-decoration:underline;
+font-size:15px;
+}
+.link__orange,
+.link__orange:hover {
+    color: #ff7900;
+}
+.link__orange:hover{
+text-decoration:none;
+}
+
+.block_check{
+font-size:13px;
+margin-bottom:10px;
+cursor:pointer;
+}
+.block_check span{
+vertical-align:middle;
+margin-left:4px;
+}
+
+.block_btnarea{
+    padding-top:17px;
+}
+
+.btn_orange {
+    color: #999;
+    border:2px solid #ccc;
+    border-radius: 22px;
+    background-color: #fff;
+    padding: 6px 20px;
+    font-weight:bold;
+    
+}
+.btn_orange:focus{
+    outline:none;
+}
+.btn_orange:hover{
+    color:#ffa000;
+    border:2px solid #ffa000;
+}

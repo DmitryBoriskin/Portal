@@ -69,14 +69,33 @@ namespace PgDbase.Repository.front
                             .Select(s => new PageModel
                             {
                                 Name = s.o.c_name,                                
-                                Url = (String.IsNullOrEmpty(s.o.c_url))? s.o.c_path+ s.o.c_alias: s.o.c_url,
-                                FaIcon=s.o.c_fa_icon
+                                Url = (String.IsNullOrEmpty(s.o.c_url))? "/page"+s.o.c_path+ s.o.c_alias: s.o.c_url,
+                                FaIcon=s.o.c_fa_icon,
+                                Childrens= GetChildMenu(s.o.gid)
                             }).ToArray();
                 }
                 #endregion
             }
-
             return model;
+        }
+
+        public PageModel[] GetChildMenu(Guid parentId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var q = db.core_pages
+                                      .Where(w => w.pgid == parentId && w.f_site == _siteId && w.b_disabled == false);
+                if (q.Any())
+                {
+                    return q.OrderBy(o => o.n_sort)
+                            .Select(s => new PageModel
+                            {
+                                Name = s.c_name,
+                                Url = (String.IsNullOrEmpty(s.c_url)) ? "/page" + s.c_path + s.c_alias : s.c_url,
+                            }).ToArray();
+                }
+                return null;
+            }                      
         }
 
 

@@ -654,6 +654,13 @@
     <Content Include="Content\template\css\AdminLTE.css" />
     <Content Include="Content\template\css\skin.css" />
     <Content Include="Content\template\css\_all-skins.css" />
+    <Content Include="Content\template\img\ico\handshake.png" />
+    <Content Include="Content\template\img\ico\help.png" />
+    <Content Include="Content\template\img\ico\map.png" />
+    <Content Include="Content\template\img\ico\people.png" />
+    <Content Include="Content\template\img\ico\schet.png" />
+    <Content Include="Content\template\img\ico\stat.png" />
+    <Content Include="Content\template\img\ico\workflow.png" />
     <Content Include="Content\template\img\logo-mini.png" />
     <Content Include="Content\template\img\logo.png" />
     <Content Include="Content\template\js\app.min.js" />
@@ -954,6 +961,7 @@
     <Content Include="Views\News\NewsItem.cshtml" />
     <Content Include="Views\Shared\_Layout - Copy.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Shared\Partial\testmenu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
