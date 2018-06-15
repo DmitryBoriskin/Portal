@@ -23,7 +23,7 @@
             data: function (params) {
                 return {
                     query: params.term, // Фильтр
-                    siteId: $(this).data("siteId"),
+                    siteId: $("#portal-userSelect").data("siteId"),
                 };
             },
             processResults:

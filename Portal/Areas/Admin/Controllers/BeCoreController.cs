@@ -150,6 +150,8 @@ namespace Portal.Areas.Admin.Controllers
             _cmsRepository = new CmsRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);
 
             PageName = _cmsRepository.GetPageName(ControllerName);
+            if (string.IsNullOrEmpty(PageName))
+                PageName = _cmsRepository.GetModulePageName(ControllerName);
 
             var core_site = _cmsRepository.GetCoreSites(SiteId);
             SiteDir = core_site.c_serial.ToString();

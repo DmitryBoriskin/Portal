@@ -394,13 +394,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/13/2012 12:19:34</publishTime>
     </File>
     <File Include="bin/PgDbase.dll">
-      <publishTime>06/14/2018 10:08:53</publishTime>
+      <publishTime>06/14/2018 17:18:28</publishTime>
     </File>
     <File Include="bin/PgDbase.dll.config">
       <publishTime>06/01/2018 14:27:33</publishTime>
     </File>
     <File Include="bin/PgDbase.pdb">
-      <publishTime>06/14/2018 10:08:53</publishTime>
+      <publishTime>06/14/2018 17:18:28</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -412,10 +412,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2018 13:43:30</publishTime>
     </File>
     <File Include="bin/Portal.dll">
-      <publishTime>06/14/2018 10:08:56</publishTime>
+      <publishTime>06/14/2018 17:18:32</publishTime>
     </File>
     <File Include="bin/Portal.pdb">
-      <publishTime>06/14/2018 10:08:56</publishTime>
+      <publishTime>06/14/2018 17:18:32</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -2032,7 +2032,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/26/2018 08:50:34</publishTime>
     </File>
     <File Include="Scripts/cms/disly_5_popup.js">
-      <publishTime>06/08/2018 16:17:33</publishTime>
+      <publishTime>06/14/2018 13:12:10</publishTime>
     </File>
     <File Include="Scripts/main.js">
       <publishTime>06/01/2018 09:38:52</publishTime>
@@ -2155,7 +2155,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/04/2018 09:12:50</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/14/2018 10:08:57</publishTime>
+      <publishTime>06/14/2018 13:24:07</publishTime>
     </File>
   </ItemGroup>
 </Project>

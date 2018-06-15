@@ -52,6 +52,12 @@ namespace LkModule.Areas.Admin.Controllers
             return View(model);
         }
 
+        public ActionResult Item(Guid id)
+        {
+            model.Item = _cmsRepository.GetSubscr(id);
+            return View("Item", model);
+        }
+
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]
         public ActionResult Insert()
@@ -110,12 +116,6 @@ namespace LkModule.Areas.Admin.Controllers
 
             model.ErrorInfo = message;
             return RedirectToAction("Index");
-        }
-
-        public ActionResult Item(Guid id)
-        {
-            model.Item = _cmsRepository.GetSubscr(id);
-            return View("Item", model);
         }
 
         [HttpPost]
