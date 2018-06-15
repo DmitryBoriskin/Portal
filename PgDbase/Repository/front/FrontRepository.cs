@@ -62,7 +62,9 @@ namespace PgDbase.Repository.front
                 #region главное меню
                 var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == "main")
                           .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
-                          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o });
+                          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o })
+                          .Where(w=>w.o.b_disabled==false);
+
                 if (q.Any())
                 {
                     model.MainMenu= q.OrderBy(o => o.e.n_sort)
