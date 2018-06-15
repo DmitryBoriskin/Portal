@@ -412,10 +412,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2018 13:43:30</publishTime>
     </File>
     <File Include="bin/Portal.dll">
-      <publishTime>06/15/2018 09:51:44</publishTime>
+      <publishTime>06/15/2018 09:59:00</publishTime>
     </File>
     <File Include="bin/Portal.pdb">
-      <publishTime>06/15/2018 09:51:44</publishTime>
+      <publishTime>06/15/2018 09:59:00</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
