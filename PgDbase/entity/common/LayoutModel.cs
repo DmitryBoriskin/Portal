@@ -9,6 +9,17 @@ namespace PgDbase.Entity.common
 {
     public class LayoutModel
     {
-        public PageModel[] MainMenu { get; set; }        
+        /// <summary>
+        /// Главное меню
+        /// </summary>
+        public PageModel[] MainMenu { get; set; }  
+        /// <summary>
+        /// Подключенный лицевой счет
+        /// </summary>
+        public SubscrModel[] ConnectionSubscrList { get; set; }
+        /// <summary>
+        /// Выбранный лицевой счет
+        /// </summary>
+        public SubscrModel DefaultSubscr { get; set; }
     }
 }

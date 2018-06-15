@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Portal.Controllers
-{
+{    
     public class LayoutController : CoreController
     {
         protected LayoutModel _layoutmodel;
@@ -22,7 +22,7 @@ namespace Portal.Controllers
             base.OnActionExecuting(filterContext);
 
 
-            _layoutmodel = _Repository.GetLayoutInfo();
+            
 
             #region Определяем путь и алиас
             var url = HttpContext.Request.Url.AbsolutePath.ToLower();
@@ -49,6 +49,9 @@ namespace Portal.Controllers
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             _user = manager.FindById(User.Identity.GetUserId());
+
+            //наполнение шаблона
+            _layoutmodel = _Repository.GetLayoutInfo(Guid.Parse(User.Identity.GetUserId()));
 
         }      
     }
