@@ -162,33 +162,71 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                using (var tr = db.BeginTransaction())
+                using (var tran = db.BeginTransaction())
                 {
-                    var log = new LogModel
-                    {
-                        PageId = item.Id,
-                        PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
-                        Section = LogModule.Subscrs,
-                        Action = LogAction.insert
-                    };
-                    InsertLog(log);
+                    var dbSubscr = db.lk_subscrs
+                      .Where(s => s.id == item.Id || s.c_subscr == item.Subscr);
 
-                    bool result = db.lk_subscrs.Insert(() => new lk_subscrs
+                    if (!dbSubscr.Any())
                     {
-                        id = item.Id,
-                        c_link = item.Link,
-                        c_surname = item.Surname,
-                        c_name = item.Name,
-                        c_patronymic = item.Patronymic,
-                        c_address = item.Address,
-                        c_phone = item.Phone,
-                        c_email = item.Email,
-                        b_disabled = item.Disabled,
-                        f_department = item.Department
-                    }) > 0;
+                        var subscr = new lk_subscrs()
+                        {
+                            id = item.Id,
+                            c_subscr = item.Subscr,
 
-                    tr.Commit();
-                    return result;
+                            b_disabled = item.Disabled,
+                            b_ee = item.Ee,
+
+                            c_address = item.Address,
+                            c_post_address = item.PostAddress,
+
+                            c_contract = item.Contract,
+                            d_contract_date = item.ContractDate,
+                            d_begin = item.Begin,
+                            d_end = item.End,
+                            c_link = item.Link
+                        };
+
+                        
+                        if (item.Ee)
+                        {
+                            subscr.c_org = item.OrgName;
+                            if (item.Bank != null)
+                            {
+                                subscr.c_bank_name = item.Bank.Name;
+                                subscr.c_bank_dep = item.Bank.Dep;
+                                subscr.c_bank_bik = item.Bank.Bik;
+                                subscr.c_bank_kpp = item.Bank.Kpp;
+                                subscr.c_bank_inn = item.Bank.Inn;
+                                subscr.c_bank_ks = item.Bank.Ks;
+                                subscr.c_bank_rs = item.Bank.Rs;
+                            };
+                        }
+                        else
+                        {
+                            subscr.c_surname = item.Surname;
+                            subscr.c_name = item.Name;
+                            subscr.c_patronymic = item.Patronymic;
+                        }
+
+
+                        db.Insert(subscr);
+
+                        var log = new LogModel
+                        {
+                            PageId = item.Id,
+                            PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
+                            Section = LogModule.Subscrs,
+                            Action = LogAction.insert
+                        };
+                        InsertLog(log);
+
+                        tran.Commit();
+                        return true;
+
+                    }
+
+                    return false;
                 }
             }
         }
@@ -202,7 +240,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                using (var tr = db.BeginTransaction())
+                using (var tran = db.BeginTransaction())
                 {
                     var log = new LogModel
                     {
@@ -213,20 +251,55 @@ namespace PgDbase.Repository.cms
                     };
                     InsertLog(log);
 
-                    bool result = db.lk_subscrs
-                        .Where(w => w.id == item.Id)
-                        .Set(s => s.c_surname, item.Surname)
-                        .Set(s => s.c_name, item.Name)
-                        .Set(s => s.c_patronymic, item.Patronymic)
-                        .Set(s => s.c_address, item.Address)
-                        .Set(s => s.c_phone, item.Phone)
-                        .Set(s => s.c_email, item.Email)
-                        .Set(s => s.b_disabled, item.Disabled)
-                        .Set(s => s.f_department, item.Department)
-                        .Update() > 0;
+                    var dbSubscr = db.lk_subscrs
+                        .Where(s => s.id == item.Id);
 
-                    tr.Commit();
-                    return result;
+                    if (dbSubscr.Any())
+                    {
+                        var subscr = dbSubscr.Single();
+
+                        subscr.c_subscr = item.Subscr;
+
+                        subscr.b_disabled = item.Disabled;
+                        subscr.b_ee = item.Ee;
+
+                        if (item.Ee)
+                        {
+                            subscr.c_org = item.OrgName;
+                        }
+                        else
+                        {
+                            subscr.c_surname = item.Surname;
+                            subscr.c_name = item.Name;
+                            subscr.c_patronymic = item.Patronymic;
+                        }
+
+                        subscr.c_address = item.Address;
+                        subscr.c_post_address = item.PostAddress;
+
+                        subscr.c_contract = item.Contract;
+                        subscr.d_contract_date = item.ContractDate;
+                        subscr.d_begin = item.Begin;
+                        subscr.d_end = item.End;
+                        subscr.c_link = item.Link;
+
+                        if (item.Ee && item.Bank != null)
+                        {
+                            subscr.c_bank_name = item.Bank.Name;
+                            subscr.c_bank_dep = item.Bank.Dep;
+                            subscr.c_bank_bik = item.Bank.Bik;
+                            subscr.c_bank_kpp = item.Bank.Kpp;
+                            subscr.c_bank_inn = item.Bank.Inn;
+                            subscr.c_bank_ks = item.Bank.Ks;
+                            subscr.c_bank_rs = item.Bank.Rs;
+                        }
+
+                        db.Update(subscr);
+                        tran.Commit();
+                        return true;
+                    }
+
+                    return false;
                 }
             }
         }
@@ -399,7 +472,6 @@ namespace PgDbase.Repository.cms
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    bool result = false;
                     var item = db.lk_subscrs
                         .Where(w => w.id == id)
                         .SingleOrDefault();
@@ -413,12 +485,14 @@ namespace PgDbase.Repository.cms
                             Section = LogModule.Subscrs,
                             Action = LogAction.delete
                         };
+
                         InsertLog(log, item);
-                        result = db.Delete(item) > 0;
+                        db.Delete(item);
+                        tr.Commit();
+                        return true;
                     }
 
-                    tr.Commit();
-                    return result;
+                    return false;
                 }
             }
         }

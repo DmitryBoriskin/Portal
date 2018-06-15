@@ -96,27 +96,6 @@ namespace LkModule.Areas.Admin.Controllers
             return Redirect($"{StartUrl}{Request.Url.Query}");
         }
 
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
-        public ActionResult Delete(Guid id)
-        {
-            ErrorMessage message = new ErrorMessage
-            {
-                Title = "Информация"
-            };
-            bool result = _cmsRepository.DeleteSubscr(id);
-            if (result)
-            {
-                message.Info = "Запись удалена";
-                message.Buttons = new ErrorMessageBtnModel[]
-                {
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}{Request.Url.Query}", Text = "ок", Action = "false" }
-                };
-            }
-
-            model.ErrorInfo = message;
-            return RedirectToAction("Index");
-        }
 
         [HttpPost]
         [ValidateInput(false)]
@@ -159,5 +138,28 @@ namespace LkModule.Areas.Admin.Controllers
             model.ErrorInfo = message;
             return View("Item", model);
         }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
+        public ActionResult Delete(Guid id)
+        {
+            ErrorMessage message = new ErrorMessage
+            {
+                Title = "Информация"
+            };
+            bool result = _cmsRepository.DeleteSubscr(id);
+            if (result)
+            {
+                message.Info = "Запись удалена";
+                message.Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}{Request.Url.Query}", Text = "ок", Action = "false" }
+                };
+            }
+
+            model.ErrorInfo = message;
+            return RedirectToAction("Index");
+        }
+
     }
 }
