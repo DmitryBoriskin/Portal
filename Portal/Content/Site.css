@@ -135,3 +135,33 @@ margin-left:4px;
     color:#ffa000;
     border:2px solid #ffa000;
 }
+.subscr-list-menu .fa-file-text {
+    color: #0b4587;
+}
+.subscr-list-menu-num{
+font-weight:bold;
+margin-left:4px;
+}
+
+.balance {
+    line-height: 18px!important;
+}
+.balance span{
+font-size:1.3em;
+font-weight:bold;
+font-family:Roboto;
+}
+.balance i{
+font-size:1.1em;
+}
+.balance__green i, .balance__green span {
+    color: #00a61c;
+}
+/*.balance-menu-pay {
+    color: #ff7900!important;
+text-decoration:underline!important;
+}
+.balance-menu-pay:hover{
+    text-decoration:none;
+    background-color:#fff!important;
+}*/
