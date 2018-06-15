@@ -99,6 +99,11 @@ body {
     overflow-y:scroll;
     background:#ffffff;
 }
+.table td
+{
+    font-size:13px;
+}
+
 img {
     border:none;
 }
