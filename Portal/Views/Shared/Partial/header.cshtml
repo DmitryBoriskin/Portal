@@ -1,0 +1,12 @@
+﻿<section class="content-header">
+    <h1>@ViewBag.Title</h1>
+    @if (Model.Breadcrumbs != null)
+    {
+        <ol class="breadcrumb">            
+             @foreach (var item in Model.Breadcrumbs)
+             {
+                 <li><a href="@item.Url">@item.Title</a></li>
+             }                       
+        </ol>   
+    }
+</section>

@@ -13,5 +13,10 @@ namespace Portal.Models
     {
         public LayoutModel LayoutInfo { get; set; }
         public ApplicationUser User { get; set; }
+
+        /// <summary>
+        /// Хлебные крошки
+        /// </summary>
+        public List<Breadcrumbs> Breadcrumbs { get; set; }
     }
 }
