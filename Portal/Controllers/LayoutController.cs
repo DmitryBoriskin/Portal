@@ -51,6 +51,7 @@ namespace Portal.Controllers
             _user = manager.FindById(User.Identity.GetUserId());
 
             //наполнение шаблона
+            if(_user!=null)
             _layoutmodel = _Repository.GetLayoutInfo(Guid.Parse(User.Identity.GetUserId()));
 
         }      

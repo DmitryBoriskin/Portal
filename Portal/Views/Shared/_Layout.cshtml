@@ -50,7 +50,9 @@
                     <img src="~/Content/template/img/logo.png" alt="Лого" />
                 </span>
             </a>
-            <!-- Header Navbar: style can be found in header.less -->
+
+            
+            
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -59,85 +61,86 @@
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
 
-                        <li class="dropdown balance-menu">
-                            <a href="#" class="dropdown-toggle balance balance__green" data-toggle="dropdown">
-                                <span>2&nbsp;580,54</span>&nbsp;<i class="fa fa-rub"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">Баланс на 19.05.2018</li>
-                                <li> <a class="balance-menu-pay" href="#">Оплатить</a></li>
-                                <li class="footer"><a href="#">История платежей</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="dropdown notifications-menu subscr-list-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.LayoutInfo.DefaultSubscr.Subscr</span>
-                                @*<span class="label label-warning">10</span>*@
-                            </a>
-                            @if (Model.LayoutInfo.ConnectionSubscrList != null)
-                            {
+                       
+                        
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li class="dropdown balance-menu">
+                                <a href="#" class="dropdown-toggle balance balance__green" data-toggle="dropdown">
+                                    <span>2&nbsp;580,54</span>&nbsp;<i class="fa fa-rub"></i>
+                                </a>
                                 <ul class="dropdown-menu">
-                                    <li class="header">Подключенные лицевые счета</li>
+                                    <li class="header">Баланс на 19.05.2018</li>
+                                    <li> <a class="balance-menu-pay" href="#">Оплатить</a></li>
+                                    <li class="footer"><a href="#">История платежей</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown notifications-menu subscr-list-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.LayoutInfo.DefaultSubscr.Subscr</span>
+                                    <span class="label label-primary">@Model.LayoutInfo.ConnectionSubscrList.Length</span>
+                                </a>
+                                @if (Model.LayoutInfo.ConnectionSubscrList != null)
+                                {
+                                    <ul class="dropdown-menu">
+                                        <li class="header">Подключенные лицевые счета</li>
+                                        <li>
+                                            <!-- inner menu: contains the actual data -->
+                                            <ul class="menu">
+                                                @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
+                                                {
+                                                    string _class = "";
+                                                    if (item.Default)
+                                                    {
+                                                        _class = " fa-star";
+                                                    }
+                                                    else
+                                                    {
+                                                        _class = " fa-star-o";
+                                                    }
+                                                    <li>
+                                                        <a href="#" data-id="@item.Id" class="select_ls">
+                                                            <i class="fa @_class text-orange"></i> @item.Subscr - @item.Name
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+                                }
+                            </li>
+
+
+
+                            <li class="dropdown messages-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="label label-success">1</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">You have 1 messages</li>
                                     <li>
                                         <!-- inner menu: contains the actual data -->
                                         <ul class="menu">
-                                            @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
-                                            {
-                                                string _class = "";
-                                                if (item.Default)
-                                                {
-                                                    _class = " fa-star";
-                                                }
-                                                else
-                                                {
-                                                    _class = " fa-star-o";
-                                                }
-                                                <li>
-                                                    <a href="#" data-id="@item.Id" class="select_ls">
-                                                        <i class="fa @_class text-orange"></i> @item.Subscr - @item.Name
-                                                    </a>
-                                                </li>
-                                            }
+                                            <li>
+                                                <!-- start message -->
+                                                <a href="#">
+
+                                                    <h4>
+                                                        Тема сообщения
+                                                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                    </h4>
+                                                    <p>Информация о тарифах...</p>
+                                                </a>
+                                            </li><!-- end message -->
                                         </ul>
                                     </li>
+                                    <li class="footer"><a href="#">See All Messages</a></li>
                                 </ul>
-                                
-                            }
-                           
-                        </li>
+                            </li>
 
-
-                        <!-- Messages: style can be found in dropdown.less-->
-                        <li class="dropdown messages-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="label label-success">1</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="header">You have 1 messages</li>
-                                <li>
-                                    <!-- inner menu: contains the actual data -->
-                                    <ul class="menu">
-                                        <li>
-                                            <!-- start message -->
-                                            <a href="#">
-                                                
-                                                <h4>
-                                                    Тема сообщения
-                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                                </h4>
-                                                <p>Информация о тарифах...</p>
-                                            </a>
-                                        </li><!-- end message -->
-                                    </ul>
-                                </li>
-                                <li class="footer"><a href="#">See All Messages</a></li>
-                            </ul>
-                        </li>
-                        <!-- User Account: style can be found in dropdown.less -->
-                        @if (Request.IsAuthenticated)
-                        {
                             <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 @{
@@ -196,47 +199,17 @@
             </nav>
         </header>
         <!-- =============================================== -->
-        <!-- Left side column. contains the sidebar -->
-        <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">                     
-                <!-- sidebar menu: : style can be found in sidebar.less -->
-                <ul class="sidebar-menu">  
-                    
-                    @if (Model.LayoutInfo.MainMenu != null)
-                    {
-                        foreach (var item in Model.LayoutInfo.MainMenu)
-                        {
-                            <li class="treeview">
-                                <a href="@item.Url">
-                                    <i class="fa @item.FaIcon"></i><span>@item.Name</span>
-                                    @if (item.Childrens != null)
-                                    {
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    }                                    
-                                </a>
-                                @if (item.Childrens != null)
-                                {
-                                    <ul class="treeview-menu">
-                                        @foreach(var child in item.Childrens){
-                                            <li class="">
-                                                <a href="@child.Url">
-                                                    <i class="fa fa-circle-o"></i>
-                                                    @child.Name
-                                                </a>
-                                            </li>
-                                        }
-                                    </ul>                                    
-                                }
-                            </li>
-                        }
-                    }
-                    
-                    @*@Html.Partial("Partial/testmenu")*@
-                </ul>
-            </section>
-            <!-- /.sidebar -->
-        </aside>
+        @if (Request.IsAuthenticated)
+        {
+            { Html.RenderAction("PageGroup", "Widget", new { @alias = "authorize", @view = "partial/mainmenu" });}
+        }
+        else
+        {
+             { Html.RenderAction("PageGroup", "Widget", new { @alias = "anonymous", @view = "partial/mainmenu" });}
+        }
+        
+        
+            
         <!-- =============================================== -->
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">

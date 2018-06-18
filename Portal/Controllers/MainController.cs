@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace Portal.Controllers
-{
+{    
     public class MainController : LayoutController
     {
         private MainFrontViewModel model;

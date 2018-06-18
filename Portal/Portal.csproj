@@ -740,6 +740,7 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -962,6 +963,7 @@
     <Content Include="Views\Shared\_Layout - Copy.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Shared\Partial\testmenu.cshtml" />
+    <Content Include="Views\Shared\Partial\mainmenu.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -972,6 +974,7 @@
   <ItemGroup>
     <Folder Include="bin\" />
     <Folder Include="Views\Layout\" />
+    <Folder Include="Views\PageWidget\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">

@@ -223,11 +223,11 @@ namespace PgDbase.Repository.front
                 {
                     return q.OrderBy(o => o.e.n_sort)
                             .Select(s => new PageModel
-                            {
+                            {                                
                                 Name = s.o.c_name,
-                                Alias = s.o.c_alias,
-                                Path = s.o.c_path,
-                                Url = s.o.c_url
+                                Url = (String.IsNullOrEmpty(s.o.c_url)) ? "/page" + s.o.c_path + s.o.c_alias : s.o.c_url,
+                                FaIcon = s.o.c_fa_icon,
+                                Childrens = GetChildMenu(s.o.gid)
                             }).ToArray();
                 }
                 return null;
