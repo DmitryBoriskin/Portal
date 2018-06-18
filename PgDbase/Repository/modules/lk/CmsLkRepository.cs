@@ -839,9 +839,26 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         Number = s.c_number,
-                        Mark = s.c_mark,
+                        Name = s.c_name,
+                        InstallPlace = s.c_install_place,
                         InstallDate = s.d_install,
-                        Disabled = s.b_disabled
+                        CheckDate = s.d_check,
+                        Disabled = s.b_disabled,
+                        DeviceInfo = (s.f_device_type!= null)?
+                                new DeviceModel()
+                                {
+                                    Name = s.fkmeterdevicedevicetypes.c_name,
+                                    Tariff = s.fkmeterdevicedevicetypes.n_tariff,
+                                    Modification = s.fkmeterdevicedevicetypes.c_modification,
+                                    Manufactirer = s.fkmeterdevicedevicetypes.c_manufacturer,
+                                    Phase3 = s.fkmeterdevicedevicetypes.b_phase3,
+                                    DeviceCategory = s.fkmeterdevicedevicetypes.c_device_category,
+                                    EnergyCategory = s.fkmeterdevicedevicetypes.c_energy_category,
+                                    PrecissionClass = s.fkmeterdevicedevicetypes.c_precission_class,
+                                    VoltageNominal = s.fkmeterdevicedevicetypes.c_voltage_nominal
+                                }
+                                : null
+
                     }).ToArray();
 
                 return new Paged<MeterDeviceModel>
