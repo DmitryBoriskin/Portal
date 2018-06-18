@@ -41,8 +41,20 @@
 
     //выбор лс
     $('.select_ls').click(function () {
-        var id = $(this).attr('data-id');
-        
+        var idsubscr = $(this).attr('data-id');
+
+        $.ajax({
+            url: "Widget/SelectSubscr",
+            type: 'POST',
+            data: { SubscrId: idsubscr },
+            //success: function (data) {
+            //    alert('1_' + data);
+            //},
+            //error: function (data) {
+            //    alert('2_' + data);
+            //},
+        });
+        location.reload();
     });
 
 });

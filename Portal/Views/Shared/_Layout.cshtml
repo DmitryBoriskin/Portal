@@ -11,7 +11,8 @@
     <link href="~/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link href="~/Content/fonts/Roboto/roboto.css" rel="stylesheet" />
+    @*<link href="~/Content/fonts/Roboto/roboto.css" rel="stylesheet" />*@
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!--icheck-->
@@ -65,52 +66,62 @@
                         
                         @if (Request.IsAuthenticated)
                         {
-                            <li class="dropdown balance-menu">
-                                <a href="#" class="dropdown-toggle balance balance__green" data-toggle="dropdown">
-                                    <span>2&nbsp;580,54</span>&nbsp;<i class="fa fa-rub"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="header">Баланс на 19.05.2018</li>
-                                    <li> <a class="balance-menu-pay" href="#">Оплатить</a></li>
-                                    <li class="footer"><a href="#">История платежей</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown notifications-menu subscr-list-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.LayoutInfo.DefaultSubscr.Subscr</span>
-                                    <span class="label label-primary">@Model.LayoutInfo.ConnectionSubscrList.Length</span>
-                                </a>
-                                @if (Model.LayoutInfo.ConnectionSubscrList != null)
-                                {
+                            if (Model.LayoutInfo.DefaultSubscr != null)
+                            {
+                                <li class="dropdown balance-menu">
+                                    <a href="#" class="dropdown-toggle balance balance__green" data-toggle="dropdown">
+                                        <span>2&nbsp;580,54</span>&nbsp;<i class="fa fa-rub"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
-                                        <li class="header">Подключенные лицевые счета</li>
-                                        <li>
-                                            <!-- inner menu: contains the actual data -->
-                                            <ul class="menu">
-                                                @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
-                                                {
-                                                    string _class = "";
-                                                    if (item.Default)
-                                                    {
-                                                        _class = " fa-star";
-                                                    }
-                                                    else
-                                                    {
-                                                        _class = " fa-star-o";
-                                                    }
-                                                    <li>
-                                                        <a href="#" data-id="@item.Id" class="select_ls">
-                                                            <i class="fa @_class text-orange"></i> @item.Subscr - @item.Name
-                                                        </a>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </li>
+                                        <li class="header">Баланс на 19.05.2018</li>
+                                        <li> <a class="balance-menu-pay" href="#">Оплатить</a></li>
+                                        <li class="footer"><a href="#">История платежей</a></li>
                                     </ul>
+                                </li>
 
-                                }
-                            </li>
+                                <li class="dropdown notifications-menu subscr-list-menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.LayoutInfo.DefaultSubscr.Subscr</span>
+                                        @*<span class="label label-primary">@Model.LayoutInfo.ConnectionSubscrList.Length</span>*@
+                                    </a>
+                                    @if (Model.LayoutInfo.ConnectionSubscrList != null)
+                                    {
+                                        <ul class="dropdown-menu">
+                                            <li class="header">Подключенные лицевые счета</li>
+                                            <li>
+                                                <!-- inner menu: contains the actual data -->
+                                                <ul class="menu">
+                                                    @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
+                                                    {
+                                                        string _class = "";
+                                                        if (item.Default)
+                                                        {
+                                                            _class = " fa-star";
+                                                        }
+                                                        else
+                                                        {
+                                                            _class = " fa-star-o";
+                                                        }
+                                                        <li>
+                                                            <a href="#" data-id="@item.Id" class="select_ls">
+                                                                <i class="fa @_class text-orange"></i> @item.Subscr - @item.Name
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                    }
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/settings" class="text-orange">Подключить лицевой счет</a>
+                                </li>
+                            }
+
 
 
 
@@ -210,26 +221,17 @@
         
         
             
-        <!-- =============================================== -->
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            @*<section class="content-header">
-                <h1>
-                    Boxed Layout
-                    <small>Blank example to the boxed layout</small>
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li><a href="#">Layout</a></li>
-                    <li class="active">Boxed</li>
-                </ol>
-            </section>*@
-            <!-- Main content -->
+        
+        @*<div class="content-wrapper">            
             <section class="content">
                 @RenderBody()
-            </section><!-- /.content -->
-        </div><!-- /.content-wrapper -->
+            </section>
+        </div>*@
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+
+
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
                 <b>right text</b> 

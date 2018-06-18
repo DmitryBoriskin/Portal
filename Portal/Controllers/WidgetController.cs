@@ -1,4 +1,5 @@
-﻿using PgDbase.entity;
+﻿using Microsoft.AspNet.Identity;
+using PgDbase.entity;
 using PgDbase.Repository.front;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,18 @@ namespace Portal.Controllers
         public ActionResult PageGroup(string alias, string view)
         {
             PageModel[] model = _Repository.GetPageGroup(alias);
-
             if (String.IsNullOrEmpty(view))
             {
                 return PartialView(model);
             }
             else return PartialView(view, model);
         } 
+
+
+        public ActionResult SelectSubscr(Guid SubscrId)
+        {
+            _Repository.SelectSubscr(SubscrId, Guid.Parse(User.Identity.GetUserId()));
+            return Json("success");
+        }
     }
 }

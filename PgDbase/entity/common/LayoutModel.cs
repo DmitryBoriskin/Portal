@@ -12,7 +12,7 @@ namespace PgDbase.Entity.common
         /// <summary>
         /// Главное меню
         /// </summary>
-        public PageModel[] MainMenu { get; set; }  
+        //public PageModel[] MainMenu { get; set; }  
         /// <summary>
         /// Подключенный лицевой счет
         /// </summary>

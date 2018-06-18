@@ -60,49 +60,101 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 #region главное меню
-                var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == "main")
-                          .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
-                          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o })
-                          .Where(w=>w.o.b_disabled==false);
+                //var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == "main")
+                //          .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
+                //          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o })
+                //          .Where(w=>w.o.b_disabled==false);
 
-                if (q.Any())
-                {
-                    model.MainMenu= q.OrderBy(o => o.e.n_sort)
-                            .Select(s => new PageModel
-                            {
-                                Name = s.o.c_name,                                
-                                Url = (String.IsNullOrEmpty(s.o.c_url))? "/page"+s.o.c_path+ s.o.c_alias: s.o.c_url,
-                                FaIcon=s.o.c_fa_icon,
-                                Childrens= GetChildMenu(s.o.gid)
-                            }).ToArray();
-                }
+                //if (q.Any())
+                //{
+                //    model.MainMenu= q.OrderBy(o => o.e.n_sort)
+                //            .Select(s => new PageModel
+                //            {
+                //                Name = s.o.c_name,                                
+                //                Url = (String.IsNullOrEmpty(s.o.c_url))? "/page"+s.o.c_path+ s.o.c_alias: s.o.c_url,
+                //                FaIcon=s.o.c_fa_icon,
+                //                Childrens= GetChildMenu(s.o.gid)
+                //            }).ToArray();
+                //}
                 #endregion
 
                 #region  лицевые счета                
                 var ls_q = db.lk_user_subscrs.Where(w => w.f_user == UserId)
                              .Join(db.lk_subscrs, u => u.f_subscr, s => s.id, (u, s) => new { u, s });
-                //подключенные ЛС
-                model.ConnectionSubscrList = ls_q                                                
-                                                .OrderByDescending(o=>o.u.d_attached)
-                                                .Select(s => new SubscrModel() {
-                                                    Subscr=s.s.c_subscr,
-                                                    Name=s.s.c_surname,
-                                                    Default=s.u.b_default,
-                                                    Id=s.s.id
-                                                }).ToArray();
-                //выбранный ЛС(по умолчанию)
-                model.DefaultSubscr = ls_q.Where(w => w.u.b_default == true)
-                                          .Select(s=>new SubscrModel {
-                                              Address=s.s.c_address,
-                                              Subscr = s.s.c_subscr,
-                                              Name = s.s.c_surname
-                                          }).Single();
+                if (ls_q.Any())
+                {
+                    //подключенные ЛС
+                    model.ConnectionSubscrList = ls_q
+                                                    .OrderByDescending(o => o.u.d_attached)
+                                                    .Select(s => new SubscrModel()
+                                                    {
+                                                        Subscr = s.s.c_subscr,
+                                                        Name = s.s.c_surname,
+                                                        Default = s.u.b_default,
+                                                        Id = s.s.id
+                                                    }).ToArray();
+                    //выбранный ЛС(по умолчанию)
+                    model.DefaultSubscr = ls_q.Where(w => w.u.b_default == true)
+                                              .Select(s => new SubscrModel
+                                              {
+                                                  Address = s.s.c_address,
+                                                  Subscr = s.s.c_subscr,
+                                                  Name = s.s.c_surname
+                                              }).Single();
+                }                
                                                                     
                 #endregion
             }
             return model;
         }
+        /// <summary>
+        /// Информация о ЛС по умолчанию
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public SubscrModel GetInfoSubscrDefault(Guid UserId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_user_subscrs.Where(w => w.f_user == UserId && w.b_default==true)
+                             .Join(db.lk_subscrs, u => u.f_subscr, s => s.id, (u, s) => s );
+                if (query.Any())
+                {
+                    return query.Select(s => new SubscrModel {
+                        Address=s.c_address,
+                        Bank=new BankModel
+                        {
+                            Bik=s.c_bank_bik,
+                            Dep=s.c_bank_dep,
+                            Inn=s.c_bank_inn,
+                            Kpp=s.c_bank_kpp,
+                            Ks=s.c_bank_ks,
+                            Name=s.c_bank_name,
+                            Rs=s.c_bank_ks
+                        },
 
+                        Begin=s.d_begin,
+                        End = s.d_end,
+
+                        Contract =s.c_contract,
+                        ContractDate= s.d_contract_date,
+
+                        Ee =s.b_ee,
+
+                        Email =s.c_email,
+                        Surname=s.c_surname,
+                        Name=s.c_name,
+                        Patronymic=s.c_patronymic,
+                        Subscr=s.c_subscr,
+                        OrgName=s.c_org,
+                        PostAddress=s.c_post_address,
+                        Phone=s.c_phone,
+                        Department=s.f_department
+                    }).Single();
+                }
+                return null;
+            }
+        }
         public PageModel[] GetChildMenu(Guid parentId)
         {
             using (var db = new CMSdb(_context))
@@ -120,6 +172,30 @@ namespace PgDbase.Repository.front
                 }
                 return null;
             }                      
+        }
+
+        /// <summary>
+        /// выбираем лицевой счет
+        /// </summary>
+        /// <param name="IdSubscr">ид лицевого счета</param>
+        /// <param name="IdUser">ид  пользователя</param>
+        /// <returns></returns>
+        public bool SelectSubscr(Guid IdSubscr, Guid IdUser)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    //находим все подключенные лицевые счета пользователя
+                    var ls_connect_user = db.lk_user_subscrs.Where(w => w.f_user == IdUser);
+                    //убираем признак выбранности у выбранного ЛС
+                    ls_connect_user.Where(w => w.b_default == true).Set(s => s.b_default, false).Update();
+                    // ставим признак выбранности на другой ЛС
+                    ls_connect_user.Where(w => w.f_subscr == IdSubscr).Set(s => s.b_default, true).Update();
+                    tr.Commit();                    
+                }
+            }
+            return true;
         }
 
 

@@ -20,10 +20,6 @@ namespace Portal.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-
-
-            
-
             #region Определяем путь и алиас
             var url = HttpContext.Request.Url.AbsolutePath.ToLower();
             //Обрезаем  query string (Все, что после ? )
@@ -45,7 +41,6 @@ namespace Portal.Controllers
                 }
             }
             #endregion
-
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             _user = manager.FindById(User.Identity.GetUserId());
