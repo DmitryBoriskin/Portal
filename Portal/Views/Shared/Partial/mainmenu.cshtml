@@ -1,0 +1,37 @@
+﻿@model PageModel[]
+
+<aside class="main-sidebar">    
+    <section class="sidebar">        
+        <ul class="sidebar-menu">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <li class="treeview">
+                        <a href="@item.Url">
+                            <i class="fa @item.FaIcon"></i><span>@item.Name</span>
+                            @if (item.Childrens != null)
+                            {
+                                <i class="fa fa-angle-left pull-right"></i>
+                            }
+                        </a>
+                        @if (item.Childrens != null)
+                        {
+                            <ul class="treeview-menu">
+                                @foreach (var child in item.Childrens)
+                                {
+                                    <li class="">
+                                        <a href="@child.Url">
+                                            <i class="fa fa-circle-o"></i>
+                                            @child.Name
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            }
+        </ul>
+    </section>    
+</aside>
