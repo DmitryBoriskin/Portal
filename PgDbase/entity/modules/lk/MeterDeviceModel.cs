@@ -19,9 +19,9 @@ namespace PgDbase.entity
         public string Number { get; set; }
 
         /// <summary>
-        /// Марка
+        /// Наименование
         /// </summary>
-        public string Mark { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Дата установки
@@ -34,8 +34,70 @@ namespace PgDbase.entity
         public string InstallPlace { get; set; }
 
         /// <summary>
+        /// Дата проверки
+        /// </summary>
+        public DateTime? CheckDate { get; set; }
+
+        /// <summary>
         /// Запрещённость
         /// </summary>
         public bool Disabled { get; set; }
+
+
+        /// <summary>
+        /// Марка
+        /// </summary>
+        public DeviceModel DeviceInfo { get; set; }
+    }
+
+
+    public class DeviceModel
+    {
+
+        /// <summary>
+        /// Место установки, др характ. параметры
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Разрядность
+        /// </summary>
+        public string Modification { get; set; }
+
+        /// <summary>
+        /// Тариф
+        /// </summary>
+        public int? Tariff { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string EnergyCategory { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string DeviceCategory { get; set; }
+
+        /// <summary>
+        /// Трехфазный
+        /// </summary>
+        public bool Phase3 { get; set; }
+
+        /// <summary>
+        /// Производитель
+        /// </summary>
+        public string Manufactirer { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string PrecissionClass { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string VoltageNominal { get; set; }
+
     }
 }
