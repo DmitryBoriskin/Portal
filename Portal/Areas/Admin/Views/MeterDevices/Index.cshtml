@@ -20,10 +20,10 @@
                             <div class="li-desc"><span>Номер:</span> @item.Number</div>
                             <div class="li-desc"><span>Дата установки:</span> @item.InstallDate.ToString("dd.MM.yyyy")</div>
                             <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
-                            <div class="li-desc"><span>Дата проверки:</span>@(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                            <div class="li-desc"><span>Дата проверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
                             @if (item.DeviceInfo != null)
                             {
-                                <div class="li-desc"><span>Марка:</span>@item.DeviceInfo.Name</div>
+                                <div class="li-desc"><span>Марка:</span> @item.DeviceInfo.Name</div>
                                 <div class="li-desc"><span>Разрядность:</span> @item.DeviceInfo.Modification</div>
                                 <div class="li-desc"><span>Производитель:</span> @item.DeviceInfo.Manufactirer</div>
                                 <div class="li-desc"><span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
