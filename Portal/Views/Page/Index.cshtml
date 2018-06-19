@@ -2,7 +2,10 @@
 
 @Html.Partial("Partial/header")
 <div class="content">
-    @Html.Raw(Model.Page.Text)
+    <h1>@Model.PageName</h1>
+    <div class="content">
+        @Html.Raw(Model.Page.Text)
+    </div>
 </div>
 
 

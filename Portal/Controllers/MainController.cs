@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace Portal.Controllers
-{    
+{
     public class MainController : LayoutController
     {
         private MainFrontViewModel model;
@@ -15,8 +15,8 @@ namespace Portal.Controllers
             base.OnActionExecuting(filterContext);
             model = new MainFrontViewModel
             {
-                LayoutInfo=_layoutmodel,
-                User= _user
+                LayoutInfo = _layoutData,
+                User = CurrentUser
             };
         }
         // GET: Main

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public class PageFrontModel:LayoutViewModel
+    public class PageFrontModel:LayoutFrontModel
     {
         public PageModel Page { get; set; }
         public List<PageModel> PageGroup { get; set; }

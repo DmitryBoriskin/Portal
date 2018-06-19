@@ -19,15 +19,16 @@ namespace Portal.Controllers
             base.OnActionExecuting(filterContext);
             model = new SettingsFrontModel()
             {
-                LayoutInfo = _layoutmodel,
-                User = _user,
+                LayoutInfo = _layoutData,
+                PageName = _pageName,
+                User = CurrentUser,
                 Breadcrumbs = _breadcrumb
             };
         }
         // GET: Settings
         public ActionResult Index()
         {
-            model.UserModel = _Repository.GetUser(Guid.Parse(_user.Id));
+            model.UserModel = _Repository.GetUser(CurrentUser.UserId);
             return View(model);
         }
       

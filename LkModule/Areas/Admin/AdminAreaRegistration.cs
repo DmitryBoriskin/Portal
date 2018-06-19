@@ -32,9 +32,9 @@ namespace LkModule.Areas.Admin
             new[] { "LkModule.Areas.Admin.Controllers" }
          );
             context.MapRoute(
-            "Charges_BE",
-            "Admin/Charges/{action}/{id}",
-            new { controller = "Charges", action = "Index", id = UrlParameter.Optional },
+            "Accruals_BE",
+            "Admin/Accruals/{action}/{id}",
+            new { controller = "Accruals", action = "Index", id = UrlParameter.Optional },
             new[] { "LkModule.Areas.Admin.Controllers" }
          );
             context.MapRoute(

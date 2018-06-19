@@ -1,4 +1,5 @@
-﻿@model LayoutViewModel
+﻿@model LayoutFrontModel
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,9 +12,9 @@
     <link href="~/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    @*<link href="~/Content/fonts/Roboto/roboto.css" rel="stylesheet" />*@
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">    
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">    
+    <link href="~/Content/fonts/Roboto/roboto.css" rel="stylesheet" />
+    @*<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">*@    
+    @*<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">*@    
     <link href="~/Content/plugins/icheck/skins/all.css" rel="stylesheet" />
     
     <link href="~/Content/plugins/mobileGallery/swipebox.css" rel="stylesheet" />    
@@ -36,7 +37,7 @@
                     <img src="~/Content/template/img/logo-mini.png" alt="Alternate Text" />
                 </span>
                 <span class="logo-lg">
-                    <img src="~/Content/template/img/logo.png" alt="Лого" />
+                    <img src="~/Content/template/img/logo.png" alt="Лого"  style="    max-width: 230px;"/>
                 </span>
             </a>            
             
@@ -103,10 +104,8 @@
                             }
 
 
-
-
                             <li class="dropdown messages-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <a href="/page/message" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-envelope-o"></i>
                                     <span class="label label-success">1</span>
                                 </a>
@@ -117,7 +116,7 @@
                                         <ul class="menu">
                                             <li>
                                                 <!-- start message -->
-                                                <a href="#">
+                                                <a href="/page/message">
 
                                                     <h4>
                                                         Тема сообщения
@@ -128,7 +127,7 @@
                                             </li><!-- end message -->
                                         </ul>
                                     </li>
-                                    <li class="footer"><a href="#">See All Messages</a></li>
+                                    <li class="footer"><a href="/page/message">See All Messages</a></li>
                                 </ul>
                             </li>
 
@@ -141,7 +140,7 @@
                                 <img src="https://filin.mail.ru/letters/default/32x32/@Bukva/02/1.png" class="user-image visible-xs" alt="User Image">                                
                                 <span class="hidden-xs">@Model.User.UserInfo.Surname @Model.User.UserInfo.Name</span>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu user-menu-bl">
                                 <!-- User image -->
                                 <li class="user-header">
                                     @*<img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">*@
@@ -192,11 +191,11 @@
         <!-- =============================================== -->
         @if (Request.IsAuthenticated)
         {
-            { Html.RenderAction("PageGroup", "Widget", new { @alias = "authorize", @view = "partial/mainmenu" });}
+            { Html.RenderAction("PageGroup", "Widget", new {@area = "", @alias = "authorize", @view = "partial/mainmenu",@url= ViewBag.ThisUrl });}
         }
         else
         {
-             { Html.RenderAction("PageGroup", "Widget", new { @alias = "anonymous", @view = "partial/mainmenu" });}
+            { Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "anonymous", @view = "partial/mainmenu", @url = ViewBag.ThisUrl });}
         }
         
         
@@ -214,7 +213,7 @@
 
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>right text</b> 
+                
             </div>
             <strong>Copyright &copy; @DateTime.Today.Year.</strong> 
         </footer>

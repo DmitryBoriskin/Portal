@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public class NewsFrontModel:LayoutViewModel
+    public class NewsFrontModel: LayoutFrontModel
     {
         public Paged<NewsModel> List { get; set; }
         public NewsModel Item { get; set; }

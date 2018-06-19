@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public class SettingsFrontModel:LayoutViewModel
+    public class SettingsFrontModel:LayoutFrontModel
     {
         public UserModel UserModel { get; set; }
         //public PageModel Page { get; set; }

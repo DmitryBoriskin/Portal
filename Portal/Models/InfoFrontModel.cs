@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public class InfoFrontModel:LayoutViewModel
+    public class InfoFrontModel:LayoutFrontModel
     {
         public SubscrModel DefaultSubscrInfo { get; set; }
         //public PageModel Page { get; set; }

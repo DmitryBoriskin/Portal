@@ -15,10 +15,12 @@ namespace Portal.Controllers
 {
     public class WidgetController : CoreController
     {
-        public ActionResult PageGroup(string alias, string view)
+        public ActionResult PageGroup(string alias, string view, string url)
         {
 
             List<PageModel> model = _Repository.GetPageGroup(alias);
+            ViewBag.ThisUrl = url;
+            //model.Where(w => w.Url == url).Set(w => w.Active, true).Update();
 
 
             if (String.IsNullOrEmpty(view))
@@ -31,7 +33,7 @@ namespace Portal.Controllers
 
         public ActionResult SelectSubscr(Guid SubscrId)
         {
-            _Repository.SelectSubscr(SubscrId, Guid.Parse(User.Identity.GetUserId()));
+            _Repository.SetUserSubscrDefault(SubscrId, Guid.Parse(User.Identity.GetUserId()));
             return Json("success");
         }
 

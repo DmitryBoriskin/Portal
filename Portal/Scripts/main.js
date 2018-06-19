@@ -1,5 +1,12 @@
 ﻿$(document).ready(function () {
 
+
+    if ($('.treeview-menu li.active').length > 0) {
+        var parenttree = $('.treeview-menu li.active').closest('.treeview-menu');
+        parenttree.addClass('menu-open');
+        parenttree.closest('.treeview').addClass('active');
+    }
+
     //вид меню (схлопнутый/раскрытый)
     $('.sidebar-toggle').click(function () {
         if ($('body').hasClass('sidebar-collapse')) {

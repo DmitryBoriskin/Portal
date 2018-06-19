@@ -16,9 +16,10 @@ namespace Portal.Controllers
             base.OnActionExecuting(filterContext);
             model = new InfoFrontModel()
             {
-                LayoutInfo = _layoutmodel,
-                User = _user,
-                Breadcrumbs= _breadcrumb
+                LayoutInfo = _layoutData,
+                PageName = _pageName,
+                User = CurrentUser,
+                Breadcrumbs = _breadcrumb
             };
         }
         // GET: Info
@@ -26,10 +27,10 @@ namespace Portal.Controllers
         {
             if (model.LayoutInfo.DefaultSubscr != null)
             {
-                model.DefaultSubscrInfo=_Repository.GetInfoSubscrDefault(Guid.Parse(User.Identity.GetUserId()));
+                model.DefaultSubscrInfo = _Repository.GetUserSubscrDefault(Guid.Parse(User.Identity.GetUserId()));
                 return View(model);
             }
-            else return  Redirect("/settings");            
+            else return Redirect("/settings");
         }
     }
 }

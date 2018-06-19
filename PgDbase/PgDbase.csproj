@@ -73,7 +73,7 @@
     <Compile Include="Entity\common\SitesModel.cs" />
     <Compile Include="Entity\modules\event\EventFilterModel.cs" />
     <Compile Include="Entity\modules\event\EventsModel.cs" />
-    <Compile Include="Entity\modules\lk\ChargeModel.cs" />
+    <Compile Include="Entity\modules\lk\AccrualModel.cs" />
     <Compile Include="Entity\modules\lk\DepartmentModel.cs" />
     <Compile Include="Entity\modules\lk\MeterModel.cs" />
     <Compile Include="Entity\modules\lk\MeterDeviceModel.cs" />
@@ -102,6 +102,7 @@
     <Compile Include="Repository\front\FrontRepository.cs" />
     <Compile Include="Repository\modules\events\CmsEventsRepository.cs" />
     <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />
+    <Compile Include="Repository\modules\lk\FrontLkRepository.cs" />
     <Compile Include="Repository\modules\lk\CmsLkRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />

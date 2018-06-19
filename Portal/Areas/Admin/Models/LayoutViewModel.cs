@@ -8,6 +8,6 @@ namespace Portal.Areas.Admin.Models
 {
     public class LayoutViewModel
     {
-        public LayoutModel LayoutModel { get; set; }
+        public LayoutModel LayoutInfo { get; set; }
     }
 }
