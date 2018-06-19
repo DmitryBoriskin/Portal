@@ -25,7 +25,7 @@ namespace LkModule.Areas.Lk.Controllers
             {
                 LayoutInfo = _layoutData,
                 Breadcrumbs = _breadcrumb,
-                PageName = _page,
+                PageName = _pageName,
                 User = CurrentUser
             };
         }

@@ -18,7 +18,7 @@ namespace Portal.Controllers
         protected List<Breadcrumbs> _breadcrumb;
         protected string _path = "/";
         protected string _alias = "";
-        protected string _page = "";
+        protected string _pageName = "";
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -48,7 +48,7 @@ namespace Portal.Controllers
 
             //хлебные крошки
             _breadcrumb = _Repository.GetBreadCrumbCollection(_alias, _path);
-            _page = ViewBag.ThisUrl = _breadcrumb.Last().Title;
+            _pageName = ViewBag.ThisUrl = _breadcrumb.Last().Title;
             ViewBag.ThisUrl = _breadcrumb.Last().Url;
 
             //наполнение шаблона
