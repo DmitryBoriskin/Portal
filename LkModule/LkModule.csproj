@@ -138,6 +138,7 @@
     <Content Include="Areas\Lk\Views\Payments\Index.cshtml" />
     <Content Include="Areas\Lk\Views\Payments\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\Accruals\Part\Filter.cshtml" />
+    <Content Include="Areas\Lk\Views\Accruals\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
