@@ -172,3 +172,7 @@ font-size:1.1em;
 .todo-list > li.activ .btn_orange,.todo-list > li.activ .btn_orange:hover{
     background-color: #ffe3b4!important;
 }
+
+.user-menu-bl {
+    box-shadow: 0.5px 0.8px 1px #000;
+}
