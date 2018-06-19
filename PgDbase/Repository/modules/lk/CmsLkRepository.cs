@@ -38,23 +38,15 @@ namespace PgDbase.Repository.cms
                 }
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
-                    string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (search != null && search.Count() > 0)
-                    {
-                        foreach (string p in filter.SearchText.Split(' '))
-                        {
-                            if (!String.IsNullOrWhiteSpace(p))
-                            {
-                                query = query.Where(w => w.c_surname.Contains(p)
-                                                      || w.c_name.Contains(p)
-                                                      || w.c_patronymic.Contains(p)
-                                                      || w.c_link.Contains(p));
-                            }
-                        }
-                    }
+                    var text = filter.SearchText.ToLower();
+                    query = query.Where(w => (w.c_surname + " " + w.c_name + " " + w.c_patronymic).ToLower().Contains(text)
+                                                     
+                                                      || w.c_org.ToLower().Contains(text)
+                                                      || w.c_subscr.Contains(text));
                 }
 
                 query = query.OrderBy(o => new { o.c_surname, o.c_name, o.c_patronymic });
+
                 int itemsCount = query.Count();
 
                 var list = query
@@ -63,7 +55,7 @@ namespace PgDbase.Repository.cms
                     .Select(s => new SubscrModel
                     {
                         Id = s.id,
-                        Link = s.c_link,
+                        Subscr = s.c_subscr,
                         Disabled = s.b_disabled,
                         Surname = s.c_surname,
                         Name = s.c_name,

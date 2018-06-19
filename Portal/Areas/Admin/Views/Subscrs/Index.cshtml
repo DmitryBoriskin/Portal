@@ -1,4 +1,5 @@
-﻿@model LkModule.Areas.Admin.Models.SubscrViewModel
+﻿@using LkModule.Areas.Admin.Models
+@model SubscrViewModel
 
 @if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
@@ -13,7 +14,7 @@
                     <a title="@(item.Surname + " " + item.Name + " " + item.Patronymic)" class="li-caption" href="/admin/subscrs/item/@item.Id">
                         @(item.Surname + " " + item.Name + " " + item.Patronymic)
                     </a>
-                    <div class="li-desc"><span>Лс:</span> @item.Link</div>
+                    <div class="li-desc"><span>Лс:</span> @item.Subscr</div>
                     @*<div class="li-desc"><span>Дата создания:</span> @item.Created.ToString("dd.MM.yyyy")</div>*@
                 </div>
             }
