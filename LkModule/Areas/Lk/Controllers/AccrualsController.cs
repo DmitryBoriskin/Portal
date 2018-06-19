@@ -18,8 +18,8 @@ namespace LkModule.Areas.Lk.Controllers
             base.OnActionExecuting(filterContext);
 
             //Есть ли у сайта доступ к модулю
-            if (!_Repository.ModuleAllowed(ControllerName))
-                Response.Redirect("/Page/ModuleDenied");
+            //if (!_Repository.ModuleAllowed(ControllerName))
+            //    Response.Redirect("/Page/ModuleDenied");
 
             model = new AccrualFrontModel()
             {
@@ -33,15 +33,21 @@ namespace LkModule.Areas.Lk.Controllers
         // GET: Admin/Payments
         public ActionResult Index(Guid? subscr)
         {
-            if (subscr == null)
-            {
-                return Redirect("/admin/subscrs");
-            }
             filter = GetFilter();
+
+            var userId = CurrentUser.UserId;
+
             var mFilter = FilterModel.Extend<LkFilter>(filter);
             mFilter.Status = ViewBag.Status = Request.Params["status"];
             mFilter.Type = ViewBag.Type = Request.Params["type"];
-            model.List = _Repository.GetAccruals((Guid)subscr, mFilter);
+
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            if (userSubscr != null)
+            {
+                model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
+            }
+
             return View(model);
         }
 

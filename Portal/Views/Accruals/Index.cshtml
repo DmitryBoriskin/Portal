@@ -11,7 +11,9 @@
 
     @foreach (var item in Model.List.Items)
     {
-        <div class="box box-info topIndent-20">
+        
+        @item.Debt.ToString("0.##")
+        <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">Счет-фактура №  от @item.Date.ToString("dd.MM.yyyy")</h3>
 

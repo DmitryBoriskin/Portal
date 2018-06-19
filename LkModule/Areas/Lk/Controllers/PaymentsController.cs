@@ -18,8 +18,8 @@ namespace LkModule.Areas.Lk.Controllers
             base.OnActionExecuting(filterContext);
 
             //Есть ли у сайта доступ к модулю
-            if (!_Repository.ModuleAllowed(ControllerName))
-                Response.Redirect("/Page/ModuleDenied");
+            //if (!_Repository.ModuleAllowed(ControllerName))
+            //    Response.Redirect("/Page/ModuleDenied");
 
             model = new PaymentFrontModel()
             {
