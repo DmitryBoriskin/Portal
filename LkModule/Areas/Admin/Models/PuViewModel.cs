@@ -8,11 +8,11 @@ namespace LkModule.Areas.Admin.Models
     /// <summary>
     /// Модель представления приборов учёта
     /// </summary>
-    public class MeterDeviceViewModel : CoreViewModel
+    public class PuViewModel : CoreViewModel
     {
         /// <summary>
         /// Список
         /// </summary>
-        public Paged<MeterDeviceModel> List { get; set; }
+        public Paged<PuModel> List { get; set; }
     }
 }

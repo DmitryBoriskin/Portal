@@ -12,24 +12,26 @@ namespace Portal.Controllers
     public class PageController : LayoutController
     {
         private PageFrontModel model;
-        
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            model = new PageFrontModel() {
-                LayoutInfo = _layoutmodel,
-                User = _user,
+            model = new PageFrontModel()
+            {
+                LayoutInfo = _layoutData,
+                User = CurrentUser,
                 Breadcrumbs = _breadcrumb
-            };       
+            };
         }
 
         // GET: Page
         public ActionResult Index()
-        { 
-            model.Page = _Repository.GetPage(_path,_alias);
+        {
+            model.Page = _Repository.GetPage(_path, _alias);
             return View(model);
         }
-        public ActionResult Group(string alias,string view)
+
+        public ActionResult Group(string alias, string view)
         {
             model.PageGroup = _Repository.GetPageGroup(alias);
 
@@ -37,13 +39,19 @@ namespace Portal.Controllers
             {
                 return View(model);
             }
-            else return View(view,model);
+            else return View(view, model);
 
         }
+
         public ActionResult Child()
         {
-            model.PageGroup = _Repository.GetPageChild(_path,_alias);
-            return View("Group",model);
+            model.PageGroup = _Repository.GetPageChild(_path, _alias);
+            return View("Group", model);
+        }
+
+        public ActionResult ModuleDenied()
+        {
+            return View("Shared/NotFound");
         }
     }
 }

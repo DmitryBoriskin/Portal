@@ -6,16 +6,16 @@ namespace LkModule.Areas.Admin.Models
     /// <summary>
     /// Модель представления выставленных счетов
     /// </summary>
-    public class ChargesViewModel : CoreViewModel
+    public class AccrualViewModel : CoreViewModel
     {
         /// <summary>
         /// Список
         /// </summary>
-        public Paged<ChargeModel> List { get; set; }
+        public Paged<AccrualModel> List { get; set; }
 
         /// <summary>
         /// Единичная запись счёта
         /// </summary>
-        public ChargeModel Item { get; set; }
+        public AccrualModel Item { get; set; }
     }
 }

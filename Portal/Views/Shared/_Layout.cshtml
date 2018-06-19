@@ -1,4 +1,5 @@
-﻿@model LayoutViewModel
+﻿@model LayoutFrontModel
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -123,8 +124,6 @@
                             }
 
 
-
-
                             <li class="dropdown messages-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-envelope-o"></i>
@@ -212,11 +211,11 @@
         <!-- =============================================== -->
         @if (Request.IsAuthenticated)
         {
-            { Html.RenderAction("PageGroup", "Widget", new { @alias = "authorize", @view = "partial/mainmenu" });}
+            { Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "partial/mainmenu" });}
         }
         else
         {
-             { Html.RenderAction("PageGroup", "Widget", new { @alias = "anonymous", @view = "partial/mainmenu" });}
+            { Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "anonymous", @view = "partial/mainmenu" });}
         }
         
         

@@ -1,4 +1,6 @@
-﻿@model LkModule.Areas.Admin.Models.SubscrViewModel
+﻿@using LkModule.Areas.Admin.Models
+
+@model SubscrViewModel
 
 @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
 {
@@ -90,7 +92,7 @@
             @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
             @if (Model.Item != null)
             {
-                @Html.ActionLink("Выставленные счета", "Index", "Charges", new { subscr = Model.Item.Id }, new { @class = "button icon-money", @title = "Выставленные счета" })
+                @Html.ActionLink("Выставленные счета", "Index", "Accruals", new { subscr = Model.Item.Id }, new { @class = "button icon-money", @title = "Выставленные счета" })
                 @Html.ActionLink("Приборы учёта", "Index", "MeterDevices", new { subscr = Model.Item.Id }, new { @class = "button icon-gauge-1", @title = "Приборы учёта" })
                 @Html.ActionLink("Поступившие платежи", "Index", "Payments", new { subscr = Model.Item.Id }, new { @class = "button icon-rouble", @title = "Поступившие платежи" })
                 <br /><br />

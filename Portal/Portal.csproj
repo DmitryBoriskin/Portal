@@ -968,6 +968,7 @@
     <Content Include="Views\Shared\Partial\mainmenu.cshtml" />
     <Content Include="Views\Info\Index.cshtml" />
     <Content Include="Views\Shared\Partial\header.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -6,7 +6,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Прибор учёта
     /// </summary>
-    public class MeterDeviceModel
+    public class PuModel
     {
         /// <summary>
         /// Идентификатор

@@ -3,10 +3,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using PgDbase;
 using PgDbase.entity;
-using PgDbase.Repository.cms;
+using PgDbase.Repository.front;
 using Portal;
 using Portal.Code;
-using Portal.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,8 +16,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using PgDbase.Repository;
+using Portal.Models;
 
-namespace PgDbase.Repository.front
+namespace Portal.Controllers
 {
     public class CoreController : Controller
     {
@@ -79,6 +79,11 @@ namespace PgDbase.Repository.front
         /// </summary>
         public string PageName;
 
+        /// <summary>
+        /// Текущий пользователь
+        /// </summary>
+        public ApplicationUser CurrentUser;
+
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -94,8 +99,8 @@ namespace PgDbase.Repository.front
             if (User.Identity.IsAuthenticated)
             {
                 var _userId = User.Identity.GetUserId();
-                var currentUser = UserManager.FindById(_userId);
-                userId = currentUser.UserId;
+                CurrentUser = UserManager.FindById(_userId);
+                userId = CurrentUser.UserId;
             }
 
             _Repository = new FrontRepository("dbConnection", SiteId, RequestUserInfo.IP, userId);

@@ -723,11 +723,11 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="subscr"></param>
         /// <returns></returns>
-        public Paged<ChargeModel> GetCharges(Guid subscr, LkFilter filter)
+        public Paged<AccrualModel> GetAccruals(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<ChargeModel> result = new Paged<ChargeModel>();
+                Paged<AccrualModel> result = new Paged<AccrualModel>();
                 var query = db.lk_charges
                     .Where(w => w.f_subscr == subscr);
 
@@ -742,7 +742,7 @@ namespace PgDbase.Repository.cms
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new ChargeModel
+                    .Select(s => new AccrualModel
                     {
                         Id = s.id,
                         Date = s.d_date,
@@ -750,7 +750,7 @@ namespace PgDbase.Repository.cms
                         Payed = s.b_payed
                     }).ToArray();
 
-                return new Paged<ChargeModel>
+                return new Paged<AccrualModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -768,13 +768,13 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ChargeModel GetCharge(Guid id)
+        public AccrualModel GetAccrual(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 return db.lk_charges
                     .Where(w => w.id == id)
-                    .Select(s => new ChargeModel
+                    .Select(s => new AccrualModel
                     {
                         Id = s.id,
                         Date = s.d_date,
@@ -789,7 +789,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Guid GetSubscrByCharge(Guid id)
+        public Guid GetSubscrByAccrual(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
@@ -810,11 +810,11 @@ namespace PgDbase.Repository.cms
         /// <param name="subscr"></param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<MeterDeviceModel> GetMeterDevices(Guid subscr, FilterModel filter)
+        public Paged<PuModel> GetSubscrDevices(Guid subscr, FilterModel filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<MeterDeviceModel> result = new Paged<MeterDeviceModel>();
+                Paged<PuModel> result = new Paged<PuModel>();
                 var query = db.lk_meter_devices
                     .Where(w => w.f_subscr == subscr);
 
@@ -827,7 +827,7 @@ namespace PgDbase.Repository.cms
                 int itemsCount = query.Count();
 
                 var list = query
-                    .Select(s => new MeterDeviceModel
+                    .Select(s => new PuModel
                     {
                         Id = s.id,
                         Number = s.c_number,
@@ -853,7 +853,7 @@ namespace PgDbase.Repository.cms
 
                     }).ToArray();
 
-                return new Paged<MeterDeviceModel>
+                return new Paged<PuModel>
                 {
                     Items = list,
                     Pager = new PagerModel

@@ -11,14 +11,14 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Portal.Controllers
-{    
+{
     public class LayoutController : CoreController
     {
-        protected LayoutModel _layoutmodel;
-        protected ApplicationUser _user;
+        protected LayoutModel _layoutData;
         protected List<Breadcrumbs> _breadcrumb;
         protected string _path = "/";
         protected string _alias = "";
+        protected string _page = "";
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -45,17 +45,15 @@ namespace Portal.Controllers
             }
             #endregion
 
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            _user = manager.FindById(User.Identity.GetUserId());
-            
+
             //хлебные крошки
             _breadcrumb = _Repository.GetBreadCrumbCollection(_alias, _path);
-            ViewBag.Title = _breadcrumb.Last().Title;
+            _page = _breadcrumb.Last().Title;
 
             //наполнение шаблона
-            if (_user!=null)
-            _layoutmodel = _Repository.GetLayoutInfo(Guid.Parse(User.Identity.GetUserId()));
+            if (CurrentUser != null)
+                _layoutData = _Repository.GetLayoutInfo(Guid.Parse(User.Identity.GetUserId()));
 
-        }      
+        }
     }
 }

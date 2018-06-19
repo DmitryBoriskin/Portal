@@ -24,7 +24,7 @@ namespace Portal.Controllers
 
         public ActionResult SelectSubscr(Guid SubscrId)
         {
-            _Repository.SelectSubscr(SubscrId, Guid.Parse(User.Identity.GetUserId()));
+            _Repository.SetUserSubscrDefault(SubscrId, Guid.Parse(User.Identity.GetUserId()));
             return Json("success");
         }
     }

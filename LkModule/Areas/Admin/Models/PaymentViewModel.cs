@@ -8,7 +8,7 @@ namespace LkModule.Areas.Admin.Models
     /// <summary>
     /// Модель представления платежей
     /// </summary>
-    public class PaymentsViewModel : CoreViewModel
+    public class PaymentViewModel : CoreViewModel
     {
         /// <summary>
         /// Список 

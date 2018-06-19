@@ -9,14 +9,24 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public class LayoutViewModel
+    public class LayoutFrontModel
     {
         public LayoutModel LayoutInfo { get; set; }
-        public ApplicationUser User { get; set; }
 
         /// <summary>
         /// Хлебные крошки
         /// </summary>
         public List<Breadcrumbs> Breadcrumbs { get; set; }
+
+        /// <summary>
+        /// Название страницы
+        /// </summary>
+        public string PageName { get; set; }
+
+        /// <summary>
+        /// Текущий пользователь
+        /// </summary>
+        public ApplicationUser User { get; set; }
+
     }
 }
