@@ -9,6 +9,6 @@ namespace Portal.Models
     public class PageFrontModel:LayoutViewModel
     {
         public PageModel Page { get; set; }
-        public PageModel[] PageGroup { get; set; }
+        public List<PageModel> PageGroup { get; set; }
     }
 }

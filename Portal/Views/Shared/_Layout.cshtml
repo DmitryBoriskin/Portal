@@ -12,21 +12,14 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     @*<link href="~/Content/fonts/Roboto/roboto.css" rel="stylesheet" />*@
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!--icheck-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">    
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">    
     <link href="~/Content/plugins/icheck/skins/all.css" rel="stylesheet" />
-    @*<link href="~/Content/plugins/icheck/skins/square/orange.css" rel="stylesheet" />*@
+    
     <link href="~/Content/plugins/mobileGallery/swipebox.css" rel="stylesheet" />    
-    <!-- Theme style -->
+    
     <link href="~/Content/template/css/AdminLTE.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
-
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
-    @*<link href="~/Content/template/css/_all-skins.css" rel="stylesheet" />*@
-
     <link href="~/Content/template/css/skin.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,35 +28,24 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<!-- ADD THE CLASS layout-boxed TO GET A BOXED LAYOUT -->
 <body class="hold-transition skin-black layout-boxed sidebar-mini">
-    <!-- Site wrapper -->
     <div class="wrapper">
         <header class="main-header">
-            <!-- Logo -->
             <a href="/" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">
                     <img src="~/Content/template/img/logo-mini.png" alt="Alternate Text" />
                 </span>
-                <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg">
                     <img src="~/Content/template/img/logo.png" alt="Лого" />
                 </span>
-            </a>
-
+            </a>            
             
-            
-            <nav class="navbar navbar-static-top" role="navigation">
-                <!-- Sidebar toggle button-->
+            <nav class="navbar navbar-static-top" role="navigation">                
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-
-                       
-                        
                         @if (Request.IsAuthenticated)
                         {
                             if (Model.LayoutInfo.DefaultSubscr != null)
@@ -78,7 +60,6 @@
                                         <li class="footer"><a href="#">История платежей</a></li>
                                     </ul>
                                 </li>
-
                                 <li class="dropdown notifications-menu subscr-list-menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.LayoutInfo.DefaultSubscr.Subscr</span>
@@ -89,7 +70,6 @@
                                         <ul class="dropdown-menu">
                                             <li class="header">Подключенные лицевые счета</li>
                                             <li>
-                                                <!-- inner menu: contains the actual data -->
                                                 <ul class="menu">
                                                     @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
                                                     {
@@ -261,10 +241,12 @@
     <!-- FastClick -->
     <script src="~/Content/plugins/fastclick/fastclick.min.js"></script>
     <script src="~/Content/plugins/mobileGallery/js/jquery.swipebox.js"></script>
+    <script src="~/Content/plugins/maskedinput/jquery.maskedinput.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/Content/template/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->    
     <script src="~/Content/template/js/demo.js"></script>
     <script src="~/Scripts/main.js"></script>
+    @RenderSection("scripts", false)
 </body>
 </html>

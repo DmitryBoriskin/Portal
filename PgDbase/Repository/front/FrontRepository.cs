@@ -91,7 +91,8 @@ namespace PgDbase.Repository.front
                                                         Subscr = s.s.c_subscr,
                                                         Name = s.s.c_surname,
                                                         Default = s.u.b_default,
-                                                        Id = s.s.id
+                                                        Id = s.s.id,
+                                                        Address=s.s.c_address
                                                     }).ToArray();
                     //выбранный ЛС(по умолчанию)
                     model.DefaultSubscr = ls_q.Where(w => w.u.b_default == true)
@@ -99,7 +100,8 @@ namespace PgDbase.Repository.front
                                               {
                                                   Address = s.s.c_address,
                                                   Subscr = s.s.c_subscr,
-                                                  Name = s.s.c_surname
+                                                  Name = s.s.c_surname,
+                                                  Id=s.s.id
                                               }).Single();
                 }                
                                                                     
@@ -141,6 +143,7 @@ namespace PgDbase.Repository.front
                 return data;
             }
         }
+        
         /// <summary>
         /// Информация о ЛС по умолчанию
         /// </summary>
@@ -267,7 +270,7 @@ namespace PgDbase.Repository.front
         /// <param name="path"></param>
         /// <param name="alias"></param>
         /// <returns></returns>
-        public PageModel[] GetPageChild(string path, string alias)
+        public List<PageModel> GetPageChild(string path, string alias)
         {
             using (var db = new CMSdb(_context))
             {
@@ -286,7 +289,7 @@ namespace PgDbase.Repository.front
                                 Url = s.c_url,
                                 Alias = s.c_alias,
                                 Path = s.c_path
-                            }).ToArray();
+                            }).ToList();
                 }
                 return null;
             }
@@ -322,7 +325,7 @@ namespace PgDbase.Repository.front
         /// </summary>
         /// <param name="Alias"></param>
         /// <returns></returns>
-        public PageModel[] GetPageGroup(string Alias)
+        public List<PageModel> GetPageGroup(string Alias)
         {
             using (var db = new CMSdb(_context))
             {
@@ -338,7 +341,7 @@ namespace PgDbase.Repository.front
                                 Url = (String.IsNullOrEmpty(s.o.c_url)) ? "/page" + s.o.c_path + s.o.c_alias : s.o.c_url,
                                 FaIcon = s.o.c_fa_icon,
                                 Childrens = GetChildMenu(s.o.gid)
-                            }).ToArray();
+                            }).ToList();
                 }
                 return null;
             }
@@ -456,6 +459,47 @@ namespace PgDbase.Repository.front
                 return null;
             }
         }
+        #endregion
+
+
+
+        #region settings
+
+        /// <summary>
+        /// Информация о пользователе
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public UserModel GetUser(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_AspNetUsers
+                    .Where(s => s.UserId == id);
+
+                var data = query.Select(s => new UserModel
+                {
+                    Id = s.UserId,
+                    SiteId = s.SiteId,
+                    Surname = s.AspNetUserProfilesUserId.Surname,
+                    Name = s.AspNetUserProfilesUserId.Name,
+                    Patronimyc = s.AspNetUserProfilesUserId.Patronymic,
+                    Disabled = s.AspNetUserProfilesUserId.Disabled,
+                    BirthDate = s.AspNetUserProfilesUserId.BirthDate,
+                    RegDate = s.AspNetUserProfilesUserId.RegDate,
+                    Email = s.Email,
+                    EmailConfirmed = s.EmailConfirmed,
+                    Phone = s.PhoneNumber,
+                    PhoneConfirmed = s.PhoneNumberConfirmed
+                    //Roles = null
+                    //Sites = null
+                });
+
+                return data.SingleOrDefault();
+            }
+        }
+
+
         #endregion
 
 
