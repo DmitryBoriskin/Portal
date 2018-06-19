@@ -1,17 +1,20 @@
-﻿using LkModule.Areas.Lk.Models;
+﻿using LkModule.Areas.Admin.Models;
+using LkModule.Areas.Lk.Models;
 using PgDbase.entity;
 using Portal.Controllers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace LkModule.Areas.Lk.Controllers
 {
-    [Authorize]
-    public class AccrualsController : LayoutController
+    public class PuController : LayoutController
     {
         FilterModel filter;
-        AccrualFrontModel model;
+        PuFrontModel model;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -21,7 +24,7 @@ namespace LkModule.Areas.Lk.Controllers
             //if (!_Repository.ModuleAllowed(ControllerName))
             //    Response.Redirect("/Page/ModuleDenied");
 
-            model = new AccrualFrontModel()
+            model = new PuFrontModel()
             {
                 LayoutInfo = _layoutData,
                 Breadcrumbs = _breadcrumb,
@@ -30,22 +33,17 @@ namespace LkModule.Areas.Lk.Controllers
             };
         }
 
-        // GET: Admin/Payments
+        // GET: Admin/MeterDevices
         public ActionResult Index()
         {
             filter = GetFilter();
 
             var userId = CurrentUser.UserId;
-
-            var mFilter = FilterModel.Extend<LkFilter>(filter);
-            mFilter.Status = ViewBag.Status = Request.Params["status"];
-            mFilter.Type = ViewBag.Type = Request.Params["type"];
-
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
             if (userSubscr != null)
             {
-                model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
+                model.List = _Repository.GetSubscrDevices(userSubscr.Id, filter);
             }
 
             return View(model);
@@ -53,13 +51,12 @@ namespace LkModule.Areas.Lk.Controllers
 
         //[HttpPost]
         //[MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        //public ActionResult Search(string size, string page, string status, string type)
+        //public ActionResult Search(string size, string page, bool enabled)
         //{
         //    string query = HttpUtility.UrlDecode(Request.Url.Query);
         //    query = AddFilterParam(query, "page", String.Empty);
         //    query = AddFilterParam(query, "size", size);
-        //    query = AddFilterParam(query, "status", status);
-        //    query = AddFilterParam(query, "type", type);
+        //    query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
 
         //    return Redirect(StartUrl + query);
         //}
@@ -69,6 +66,24 @@ namespace LkModule.Areas.Lk.Controllers
         //public ActionResult ClearFiltr(Guid subscr)
         //{
         //    return Redirect($"{StartUrl}?subscr={subscr}");
+        //}
+
+        //[HttpPost]
+        //public ActionResult GetInfo(Guid device)
+        //{
+        //    var meters = _cmsRepository.GetMeters(device);
+
+        //    var json = new JavaScriptSerializer().Serialize(meters);
+        //    return Json(json);
+        //}
+
+        //[HttpPost]
+        //public ActionResult GetTariffes(Guid device)
+        //{
+        //    var tariffes = _cmsRepository.GetTariffes(device);
+
+        //    var json = new JavaScriptSerializer().Serialize(tariffes);
+        //    return Json(json);
         //}
 
         //[HttpPost]
