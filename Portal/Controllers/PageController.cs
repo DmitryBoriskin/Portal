@@ -19,6 +19,7 @@ namespace Portal.Controllers
             model = new PageFrontModel()
             {
                 LayoutInfo = _layoutData,
+                Page = _page,
                 User = CurrentUser,
                 Breadcrumbs = _breadcrumb
             };

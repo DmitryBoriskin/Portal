@@ -48,8 +48,8 @@ namespace Portal.Controllers
 
             //хлебные крошки
             _breadcrumb = _Repository.GetBreadCrumbCollection(_alias, _path);
-            ViewBag.Title = _breadcrumb.Last().Title;
-            ViewBag.ThisUrl= _breadcrumb.Last().Url;
+            _page = ViewBag.ThisUrl = _breadcrumb.Last().Title;
+            ViewBag.ThisUrl = _breadcrumb.Last().Url;
 
             //наполнение шаблона
             if (CurrentUser != null)

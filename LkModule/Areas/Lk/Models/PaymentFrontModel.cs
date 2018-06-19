@@ -1,5 +1,5 @@
 ﻿using PgDbase.entity;
-using Portal.Models;
+using Portal.;
 
 
 namespace LkModule.Areas.Lk.Models
