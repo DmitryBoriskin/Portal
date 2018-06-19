@@ -1,4 +1,6 @@
-﻿@model LkModule.Areas.Admin.Models.ChargesViewModel
+﻿@using LkModule.Areas.Admin.Models
+
+@model AccrualViewModel
 
 @if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
@@ -18,7 +20,7 @@
             <tr>
                 <td>@item.Date.ToString("dd.MM.yyyy")</td>
                 <td>
-                    <a href="/admin/charges/item/@item.Id">
+                    <a href="/admin/accruals/item/@item.Id">
                         Счёт за @item.Date.ToString("dd.MM.yyyy")
                     </a>
                 </td>

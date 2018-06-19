@@ -203,8 +203,8 @@
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Subscrs\*" "$(SolutionDir)Portal\Areas\Admin\Views\Subscrs\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Departments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Departments\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\SubscrsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\SubscrsWidget\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Charges\*" "$(SolutionDir)Portal\Areas\Admin\Views\Charges\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\MeterDevices\*" "$(SolutionDir)Portal\Areas\Admin\Views\MeterDevices\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Accruals\*" "$(SolutionDir)Portal\Areas\Admin\Views\Accruals\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Pu\*" "$(SolutionDir)Portal\Areas\Admin\Views\Pu\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Payments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Payments\"
 
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Payments\*" "$(SolutionDir)Portal\Views\Payments\"
