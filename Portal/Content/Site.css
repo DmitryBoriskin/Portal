@@ -139,7 +139,8 @@ margin-left:4px;
 {
     color:#ffa000;
     border:2px solid #ffa000;
-outline:none;
+    outline:none;
+    background-color: #fff!important;
 }
 .subscr-list-menu .fa-file-text {
     color: #0b4587;
@@ -163,11 +164,11 @@ font-size:1.1em;
 .balance__green i, .balance__green span {
     color: #00a61c;
 }
-/*.balance-menu-pay {
-    color: #ff7900!important;
-text-decoration:underline!important;
+
+
+.todo-list > li.activ {
+    background-color: #ffe3b4;
 }
-.balance-menu-pay:hover{
-    text-decoration:none;
-    background-color:#fff!important;
-}*/
+.todo-list > li.activ .btn_orange,.todo-list > li.activ .btn_orange:hover{
+    background-color: #ffe3b4!important;
+}

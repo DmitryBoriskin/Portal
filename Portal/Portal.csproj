@@ -497,6 +497,7 @@
     <Content Include="Content\plugins\jquery\jquery.mask.min.js" />
     <Content Include="Content\plugins\jquery\jquery.maskedinput.js" />
     <Content Include="Content\plugins\jquery\jquery.ui.js" />
+    <Content Include="Content\plugins\maskedinput\jquery.maskedinput.min.js" />
     <Content Include="Content\plugins\mCustomScrollbar\jquery.mCustomScrollbar.css" />
     <Content Include="Content\plugins\mCustomScrollbar\jquery.mCustomScrollbar.js" />
     <Content Include="Content\plugins\mobileGallery\img\icons.png" />
@@ -741,6 +742,7 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -750,6 +752,7 @@
     <Compile Include="Models\MainFrontViewModel.cs" />
     <Compile Include="Models\NewsFrontModel.cs" />
     <Compile Include="Models\InfoFrontModel.cs" />
+    <Compile Include="Models\SettingsFrontModel.cs" />
     <Compile Include="Models\PageFrontModel.cs" />
     <Compile Include="Models\VacancyWidgetModel.cs" />
     <Compile Include="Models\WidgetCoreModel.cs" />
@@ -962,12 +965,15 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Shared\Partial\_pager.cshtml" />
     <Content Include="Views\News\NewsItem.cshtml" />
-    <Content Include="Views\Shared\_Layout - Copy.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Shared\Partial\testmenu.cshtml" />
     <Content Include="Views\Shared\Partial\mainmenu.cshtml" />
     <Content Include="Views\Info\Index.cshtml" />
     <Content Include="Views\Shared\Partial\header.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Widget\GetChangePassword.cshtml" />
+    <Content Include="Views\Widget\GetChangeUserInfo.cshtml" />
+    <Content Include="Views\Widget\GetManageSubscriptions.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

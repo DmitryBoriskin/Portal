@@ -1,6 +1,20 @@
 ﻿$(document).ready(function () {
 
-    //$(".swipebox").swipebox();
+    //вид меню (схлопнутый/раскрытый)
+    $('.sidebar-toggle').click(function () {
+        if ($('body').hasClass('sidebar-collapse')) {
+            $.cookie('statemenu', 'mini');
+        }
+        else {
+            $.cookie('statemenu', 'big');
+        }
+    });
+    var statemenu = $.cookie('statemenu');    
+    if (!(statemenu == undefined || statemenu == '')) {
+        if (statemenu == 'mini') {
+            $('body').addClass('sidebar-collapse')
+        }
+    }
 
     if ($('.gallery').length > 0) {
 
@@ -57,6 +71,11 @@
         location.reload();
     });
 
+ 
+
+
+    //Маска мобильного телефона
+    $(".masked-mobile-phone").mask("+7 (999) 999-99-99");
 });
 
 

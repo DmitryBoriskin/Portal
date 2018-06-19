@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PgDbase.entity
 {
@@ -83,5 +84,37 @@ namespace PgDbase.entity
         /// </summary>
         public RoleModel[] Roles { get; set; }
 
+    }
+
+
+
+    public class UserModelUpdate
+    {
+        /// <summary>
+        /// Фамилия
+        /// </summary>
+        [Required]
+        public string Surname { get; set; }
+
+        /// <summary>
+        /// Имя
+        /// </summary>
+        [Required]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Отчество
+        /// </summary>
+        [Required]
+        public string Patronimyc { get; set; }
+        /// <summary>
+        /// Email
+        /// </summary>
+        [EmailAddress]
+        public string Email { get; set; }
+        /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
     }
 }

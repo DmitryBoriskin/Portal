@@ -341,6 +341,7 @@ namespace Portal.Controllers
         {
             AddPhoneSuccess,
             ChangePasswordSuccess,
+            ChangeUserInfo,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
