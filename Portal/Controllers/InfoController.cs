@@ -17,7 +17,8 @@ namespace Portal.Controllers
             model = new InfoFrontModel()
             {
                 LayoutInfo = _layoutmodel,
-                User = _user
+                User = _user,
+                Breadcrumbs= _breadcrumb
             };
         }
         // GET: Info

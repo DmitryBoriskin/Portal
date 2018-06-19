@@ -18,7 +18,8 @@ namespace Portal.Controllers
             base.OnActionExecuting(filterContext);
             model = new PageFrontModel() {
                 LayoutInfo = _layoutmodel,
-                User = _user
+                User = _user,
+                Breadcrumbs = _breadcrumb
             };       
         }
 

@@ -107,6 +107,40 @@ namespace PgDbase.Repository.front
             }
             return model;
         }
+
+        public List<Breadcrumbs> GetBreadCrumbCollection(string alias, string path)
+        {
+            List<Breadcrumbs> data = new List<Breadcrumbs>();
+            using (var db = new CMSdb(_context))
+            {
+                var q = db.core_pages.Where(w => w.c_url == path + alias && w.f_site==_siteId);
+                if (!q.Any())
+                    q= db.core_pages.Where(w => w.c_path == path && w.c_alias == alias && w.f_site == _siteId);
+
+                while (q.Any())
+                    {
+                        var d = q.Single();
+
+                        var bread = new Breadcrumbs
+                        {
+                            Title = d.c_name,
+                            Url = (d.c_url != null) ? d.c_url : d.c_path + d.c_alias
+                        };
+                        data.Add(bread);
+                        q = db.core_pages.Where(w => w.gid == d.pgid);
+                    }
+                
+                
+                
+                data.Add(new Breadcrumbs
+                {
+                    Title = "Главная",
+                    Url = "/"
+                });
+                data.Reverse();
+                return data;
+            }
+        }
         /// <summary>
         /// Информация о ЛС по умолчанию
         /// </summary>

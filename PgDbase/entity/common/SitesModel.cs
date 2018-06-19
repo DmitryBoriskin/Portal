@@ -211,4 +211,21 @@ namespace PgDbase.entity
 
     }
 
+
+
+    /// <summary>
+    /// Хлебные крошки
+    /// </summary>
+    public class Breadcrumbs
+    {
+        /// <summary>
+        /// Ссылка
+        /// </summary>
+        public string Url { get; set; }
+
+        /// <summary>
+        /// Название
+        /// </summary>
+        public string Title { get; set; }
+    }
 }

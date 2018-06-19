@@ -1,11 +1,8 @@
 ﻿@model PageFrontModel
-@{
-    ViewBag.Title = "Index";
-}
 
-<h2>@Model.Page.Name</h2>
+@Html.Partial("Partial/header")
+<div class="content">
+    @Html.Raw(Model.Page.Text)
+</div>
 
-
-<p>Дочерние элементы</p>
-@{ Html.RenderAction("Child", "Page");}
 
