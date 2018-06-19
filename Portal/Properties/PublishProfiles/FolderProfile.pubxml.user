@@ -418,10 +418,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2018 13:43:30</publishTime>
     </File>
     <File Include="bin/Portal.dll">
-      <publishTime>06/19/2018 17:49:00</publishTime>
+      <publishTime>06/19/2018 17:54:55</publishTime>
     </File>
     <File Include="bin/Portal.pdb">
-      <publishTime>06/19/2018 17:49:00</publishTime>
+      <publishTime>06/19/2018 17:54:55</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -2179,7 +2179,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/01/2018 09:44:19</publishTime>
     </File>
     <File Include="Views/Info/Index.cshtml">
-      <publishTime>06/19/2018 11:09:32</publishTime>
+      <publishTime>06/19/2018 17:53:31</publishTime>
     </File>
     <File Include="Views/Main/Index.cshtml">
       <publishTime>06/19/2018 17:06:41</publishTime>
@@ -2197,7 +2197,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/13/2018 08:11:42</publishTime>
     </File>
     <File Include="Views/Page/Index.cshtml">
-      <publishTime>06/19/2018 11:09:32</publishTime>
+      <publishTime>06/19/2018 17:51:53</publishTime>
     </File>
     <File Include="Views/Settings/Index.cshtml">
       <publishTime>06/19/2018 17:42:56</publishTime>

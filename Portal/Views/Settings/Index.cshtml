@@ -2,10 +2,11 @@
 @Html.Partial("Partial/header")
 
 <div class="content">
-    <div class="row">        
+    <h1>@Model.PageName</h1>
+    <div class="row">
         @{Html.RenderAction("GetChangeUserInfo", "Widget");}
-        @{Html.RenderAction("GetChangePassword", "Widget");}        
-    </div>    
+        @{Html.RenderAction("GetChangePassword", "Widget");}
+    </div>
     <div class="row">
         <div class="col-md-7">
             <div class="box box-solid">
@@ -30,10 +31,10 @@
                                                     <p class="text-muted small">@item.Address</p>
                                                 </div>
                                                 @*<div class="col-sm-4">
-                                                    <button class="btn btn_orange deactivate_ls" data-id="@item.Id">Отключить</button>
-                                                </div>*@
+                                                        <button class="btn btn_orange deactivate_ls" data-id="@item.Id">Отключить</button>
+                                                    </div>*@
                                             </div>
-                                            
+
                                         </li>
                                     }
                                 </ul>
@@ -42,7 +43,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 
