@@ -418,10 +418,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2018 13:43:30</publishTime>
     </File>
     <File Include="bin/Portal.dll">
-      <publishTime>06/19/2018 17:12:29</publishTime>
+      <publishTime>06/19/2018 17:49:00</publishTime>
     </File>
     <File Include="bin/Portal.pdb">
-      <publishTime>06/19/2018 17:12:29</publishTime>
+      <publishTime>06/19/2018 17:49:00</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -2044,13 +2044,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/26/2018 08:50:34</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>06/19/2018 16:40:56</publishTime>
+      <publishTime>06/19/2018 17:42:56</publishTime>
     </File>
     <File Include="Content/template/css/AdminLTE.css">
-      <publishTime>06/18/2018 13:31:30</publishTime>
+      <publishTime>06/19/2018 17:42:56</publishTime>
     </File>
     <File Include="Content/template/css/skin.css">
-      <publishTime>06/18/2018 13:31:30</publishTime>
+      <publishTime>06/19/2018 17:42:56</publishTime>
     </File>
     <File Include="Content/template/css/_all-skins.css">
       <publishTime>06/14/2018 17:20:56</publishTime>
@@ -2080,7 +2080,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/14/2018 17:20:56</publishTime>
     </File>
     <File Include="Content/template/img/logo.png">
-      <publishTime>06/15/2018 12:25:51</publishTime>
+      <publishTime>06/19/2018 17:42:56</publishTime>
     </File>
     <File Include="Content/template/js/app.min.js">
       <publishTime>06/14/2018 17:20:56</publishTime>
@@ -2200,7 +2200,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/19/2018 11:09:32</publishTime>
     </File>
     <File Include="Views/Settings/Index.cshtml">
-      <publishTime>06/19/2018 17:06:41</publishTime>
+      <publishTime>06/19/2018 17:42:56</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>06/01/2018 09:44:19</publishTime>
@@ -2227,7 +2227,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/14/2018 10:03:41</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>06/19/2018 17:06:41</publishTime>
+      <publishTime>06/19/2018 17:42:56</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>06/05/2018 17:21:30</publishTime>

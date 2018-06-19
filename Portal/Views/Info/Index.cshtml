@@ -10,6 +10,7 @@
 
 
 <div class="content">
+    <h1>@Model.PageName</h1>
     <section class="invoice">
         <div class="row">
             <div class="col-xs-12">
@@ -39,20 +40,20 @@
                 <b>Почтовый адрес: </b>@Model.DefaultSubscrInfo.PostAddress
                 <br />
                 @if (Model.DefaultSubscrInfo.Begin != null)
-                {                    
-                    <b>Действителен с: </b> <span>@Model.DefaultSubscrInfo.Begin</span>     
+                {
+                    <b>Действителен с: </b> <span>@Model.DefaultSubscrInfo.Begin</span>
                     <br />
                 }
-                
+
                 <b>Действителен по: </b>@Model.DefaultSubscrInfo.End
                 <br />
                 <br />
-                
+
             </div>
             <div class="col-md-6 invoice-col">
                 <b>Банк</b>
                 <br /><br />
-                
+
 
                 <b>Наименование: </b>@Model.DefaultSubscrInfo.Bank.Name
                 <br />

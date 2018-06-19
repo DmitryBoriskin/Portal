@@ -21,6 +21,7 @@ namespace Portal.Controllers
             model = new NewsFrontModel()
             {
                 LayoutInfo = _layoutData,
+                PageName = _pageName,
                 User = CurrentUser
             };
         }
