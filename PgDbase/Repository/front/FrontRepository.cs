@@ -126,7 +126,7 @@ namespace PgDbase.Repository.front
                         var bread = new Breadcrumbs
                         {
                             Title = d.c_name,
-                            Url = (d.c_url != null) ? d.c_url : d.c_path + d.c_alias
+                            Url = (d.c_url != null) ? d.c_url :"/page"+ d.c_path + d.c_alias
                         };
                         data.Add(bread);
                         q = db.core_pages.Where(w => w.gid == d.pgid);

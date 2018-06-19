@@ -7,7 +7,8 @@
             {
                 foreach (var item in Model)
                 {
-                    <li class="treeview">
+                    string _class1 = (item.Url == ViewBag.ThisUrl) ? "treeview active" : "treeview";
+                    <li class="@_class1">
                         <a href="@item.Url">
                             <i class="fa @item.FaIcon"></i><span>@item.Name</span>
                             @if (item.Childrens != null)
@@ -20,7 +21,8 @@
                             <ul class="treeview-menu">
                                 @foreach (var child in item.Childrens)
                                 {
-                                    <li class="">
+                                    string _class2 = (child.Url == ViewBag.ThisUrl) ? "class=active" : "";
+                                    <li @_class2>
                                         <a href="@child.Url">
                                             <i class="fa fa-circle-o"></i>
                                             @child.Name

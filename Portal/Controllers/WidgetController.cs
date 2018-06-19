@@ -15,10 +15,12 @@ namespace Portal.Controllers
 {
     public class WidgetController : CoreController
     {
-        public ActionResult PageGroup(string alias, string view)
+        public ActionResult PageGroup(string alias, string view, string url)
         {
 
             List<PageModel> model = _Repository.GetPageGroup(alias);
+            ViewBag.ThisUrl = url;
+            //model.Where(w => w.Url == url).Set(w => w.Active, true).Update();
 
 
             if (String.IsNullOrEmpty(view))

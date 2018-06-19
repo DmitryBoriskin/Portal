@@ -81,6 +81,10 @@ namespace PgDbase.entity
         /// Удаляемость
         /// </summary>
         public bool IsDeleteble { get; set; }
+        /// <summary>
+        /// Текущее значение
+        /// </summary>
+        public bool Active { get; set; }
 
         /// <summary>
         /// Дочерние эл-ты
