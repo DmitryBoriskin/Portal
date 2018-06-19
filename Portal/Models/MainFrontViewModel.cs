@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Portal.Models
 {
-    public class MainFrontViewModel:LayoutViewModel
+    public class MainFrontViewModel:LayoutFrontModel
     {
 
     }

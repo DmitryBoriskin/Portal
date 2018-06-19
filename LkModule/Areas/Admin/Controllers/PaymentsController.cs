@@ -13,7 +13,7 @@ namespace LkModule.Areas.Admin.Controllers
     public class PaymentsController : BeCoreController
     {
         FilterModel filter;
-        PaymentsViewModel model;
+        PaymentViewModel model;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -23,7 +23,7 @@ namespace LkModule.Areas.Admin.Controllers
             if (!_cmsRepository.ModuleAllowed(ControllerName))
                 Response.Redirect("/Admin/");
 
-            model = new PaymentsViewModel()
+            model = new PaymentViewModel()
             {
                 SiteId = SiteId,
                 PageName = "Поступившие платежи",

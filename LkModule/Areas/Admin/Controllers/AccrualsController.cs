@@ -1,20 +1,18 @@
 ﻿using LkModule.Areas.Admin.Models;
 using PgDbase.entity;
-using Portal.Areas.Admin;
 using Portal.Areas.Admin.Controllers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace LkModule.Areas.Admin.Controllers
 {
-    public class MeterDevicesController : BeCoreController
+
+    public class AccrualsController : BeCoreController
     {
         FilterModel filter;
-        MeterDeviceViewModel model;
+        AccrualViewModel model;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -24,10 +22,10 @@ namespace LkModule.Areas.Admin.Controllers
             if (!_cmsRepository.ModuleAllowed(ControllerName))
                 Response.Redirect("/Admin/");
 
-            model = new MeterDeviceViewModel()
+            model = new AccrualViewModel()
             {
                 SiteId = SiteId,
-                PageName = "Приборы учёта",
+                PageName = "Выставленные счета",
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
@@ -37,7 +35,6 @@ namespace LkModule.Areas.Admin.Controllers
             };
         }
 
-        // GET: Admin/MeterDevices
         public ActionResult Index(Guid? subscr)
         {
             if (subscr == null)
@@ -45,18 +42,26 @@ namespace LkModule.Areas.Admin.Controllers
                 return Redirect("/admin/subscrs");
             }
             filter = GetFilter();
-            model.List = _cmsRepository.GetMeterDevices((Guid)subscr, filter);
+            var mFilter = FilterModel.Extend<LkFilter>(filter);
+            bool payed = false;
+            if (!String.IsNullOrEmpty(Request.QueryString["payed"]))
+            {
+                bool.TryParse(Request.QueryString["payed"], out payed);
+                mFilter.Payed = payed;
+            }
+            model.List = _cmsRepository.GetAccruals((Guid)subscr, mFilter);
+
             return View(model);
         }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string size, string page, bool enabled)
+        public ActionResult Search(string size, string page, bool payed)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "page", String.Empty);
             query = AddFilterParam(query, "size", size);
-            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+            query = AddFilterParam(query, "payed", payed.ToString().ToLower());
 
             return Redirect(StartUrl + query);
         }
@@ -69,30 +74,32 @@ namespace LkModule.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetInfo(Guid device)
-        {
-            var meters = _cmsRepository.GetMeters(device);
-
-            var json = new JavaScriptSerializer().Serialize(meters);
-            return Json(json);
-        }
-
-        [HttpPost]
-        public ActionResult GetTariffes(Guid device)
-        {
-            var tariffes = _cmsRepository.GetTariffes(device);
-
-            var json = new JavaScriptSerializer().Serialize(tariffes);
-            return Json(json);
-        }
-
-        [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
         public ActionResult Back()
         {
             string par = Request.UrlReferrer.Query;
             string subscr = par.Replace("?subscr=", "");
             string url = $"/admin/subscrs/item/{subscr}";
+            return Redirect(url);
+        }
+
+
+        public ActionResult Item(Guid id)
+        {
+            model.Item = _cmsRepository.GetAccrual(id);
+            return View("Item", model);
+        }
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
+        public ActionResult Cancel(Guid id)
+        {
+            var subscr = _cmsRepository.GetSubscrByAccrual(id);
+            string url = "/admin/charges/?subscr=";
+            if (subscr != null && subscr != Guid.Empty)
+            {
+                url += subscr;
+            }
             return Redirect(url);
         }
     }

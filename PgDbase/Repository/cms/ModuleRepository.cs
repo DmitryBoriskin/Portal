@@ -270,6 +270,27 @@ namespace PgDbase.Repository.cms
         #region Модуль и его компоненты
 
         /// <summary>
+        /// Проверка прикреплен ли данный модуль к сайту
+        /// </summary>
+        /// <param name="module"></param>
+        /// <returns></returns>
+        public bool ModuleAllowed(string controllerName)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_site_controllers
+                    .Where(t => t.fksitecontrollerscontrollers.c_controller_name.ToLower() == controllerName.ToLower())
+                    .Where(t => t.f_site == _siteId);
+
+                if (data.Any())
+                    return true;
+
+                return false;
+            }
+        }
+
+
+        /// <summary>
         /// Проверка: существует ли модуль или компонент с id
         /// </summary>
         /// <param name="id"></param>
@@ -985,28 +1006,6 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
-
-        /// <summary>
-        /// Проверка есть ли на сайте данный модуль
-        /// </summary>
-        /// <param name="module"></param>
-        /// <returns></returns>
-        public bool ModuleAllowed(string controllerName)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var data = db.core_site_controllers
-                    .Where(t => t.fksitecontrollerscontrollers.c_controller_name.ToLower() == controllerName.ToLower())
-                    .Where(t => t.f_site == _siteId);
-
-                if (data.Any())
-                    return true;
-
-                return false;
-            }
-        }
-
-
         #endregion
     }
 }

@@ -13,21 +13,27 @@ namespace Portal.Controllers
     {
         private NewsFrontModel model;
         private FilterModel filter;
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            model = new NewsFrontModel() {
-                LayoutInfo = _layoutmodel,
-                User = _user
+
+            model = new NewsFrontModel()
+            {
+                LayoutInfo = _layoutData,
+                User = CurrentUser
             };
         }
+
         // GET: News
         public ActionResult Index()
         {
-            filter = GetFilter();            
+            filter = GetFilter();
             model.List = _Repository.GetNewsList(filter);
             return View(model);
         }
+
+
         public ActionResult NewsItem(string path)
         {
             var n = path.IndexOf("-");

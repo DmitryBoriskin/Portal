@@ -974,6 +974,7 @@
     <Content Include="Views\Widget\GetChangePassword.cshtml" />
     <Content Include="Views\Widget\GetChangeUserInfo.cshtml" />
     <Content Include="Views\Widget\GetManageSubscriptions.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -37,6 +37,13 @@ namespace Portal
             );
 
             routes.MapRoute(
+                name: "PageGroup",
+                url: "Widget/PageGroup",
+                defaults: new { controller = "Widget", action = "PageGroup", path = UrlParameter.Optional },
+                namespaces: new[] { "Portal.Controllers" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Main", action = "Index", id = UrlParameter.Optional },

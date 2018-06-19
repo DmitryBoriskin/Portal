@@ -43,7 +43,6 @@ namespace PgDbase.Repository.front
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
 
-
         public FrontRepository(string connectionString, Guid siteId, string ip, Guid userId)
         {
             _context = connectionString;
@@ -53,6 +52,28 @@ namespace PgDbase.Repository.front
 
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
         }
+
+
+        /// <summary>
+        /// Проверка прикреплен ли данный модуль к сайту
+        /// </summary>
+        /// <param name="module"></param>
+        /// <returns></returns>
+        public bool ModuleAllowed(string controllerName)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.core_site_controllers
+                    .Where(t => t.fksitecontrollerscontrollers.c_controller_name.ToLower() == controllerName.ToLower())
+                    .Where(t => t.f_site == _siteId);
+
+                if (data.Any())
+                    return true;
+
+                return false;
+            }
+        }
+
 
         public LayoutModel GetLayoutInfo(Guid UserId)
         {
@@ -78,6 +99,8 @@ namespace PgDbase.Repository.front
                 //}
                 #endregion
 
+
+#warning !!!!Это функционал модуля LkModule  - данный функционал должен реализовываться как виджет
                 #region  лицевые счета                
                 var ls_q = db.lk_user_subscrs.Where(w => w.f_user == UserId)
                              .Join(db.lk_subscrs, u => u.f_subscr, s => s.id, (u, s) => new { u, s });
@@ -103,25 +126,31 @@ namespace PgDbase.Repository.front
                                                   Name = s.s.c_surname,
                                                   Id=s.s.id
                                               }).Single();
-                }                
-                                                                    
+                }
                 #endregion
             }
             return model;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public List<Breadcrumbs> GetBreadCrumbCollection(string alias, string path)
         {
             List<Breadcrumbs> data = new List<Breadcrumbs>();
             using (var db = new CMSdb(_context))
             {
-                var q = db.core_pages.Where(w => w.c_url == path + alias && w.f_site==_siteId);
+                var q = db.core_pages.Where(w => w.c_url == path + alias && w.f_site == _siteId);
                 if (!q.Any())
-                    q= db.core_pages.Where(w => w.c_path == path && w.c_alias == alias && w.f_site == _siteId);
+                    q = db.core_pages.Where(w => w.c_path == path && w.c_alias == alias && w.f_site == _siteId);
 
                 while (q.Any())
-                    {
-                        var d = q.Single();
+                {
+                    var d = q.Single();
 
                         var bread = new Breadcrumbs
                         {
@@ -143,55 +172,12 @@ namespace PgDbase.Repository.front
                 return data;
             }
         }
-        
+
         /// <summary>
-        /// Информация о ЛС по умолчанию
+        /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="parentId"></param>
         /// <returns></returns>
-        public SubscrModel GetInfoSubscrDefault(Guid UserId)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                var query = db.lk_user_subscrs.Where(w => w.f_user == UserId && w.b_default==true)
-                             .Join(db.lk_subscrs, u => u.f_subscr, s => s.id, (u, s) => s );
-                if (query.Any())
-                {
-                    return query.Select(s => new SubscrModel {
-                        Address=s.c_address,
-                        Bank=new BankModel
-                        {
-                            Bik=s.c_bank_bik,
-                            Dep=s.c_bank_dep,
-                            Inn=s.c_bank_inn,
-                            Kpp=s.c_bank_kpp,
-                            Ks=s.c_bank_ks,
-                            Name=s.c_bank_name,
-                            Rs=s.c_bank_ks
-                        },
-
-                        Begin=s.d_begin,
-                        End = s.d_end,
-
-                        Contract =s.c_contract,
-                        ContractDate= s.d_contract_date,
-
-                        Ee =s.b_ee,
-
-                        Email =s.c_email,
-                        Surname=s.c_surname,
-                        Name=s.c_name,
-                        Patronymic=s.c_patronymic,
-                        Subscr=s.c_subscr,
-                        OrgName=s.c_org,
-                        PostAddress=s.c_post_address,
-                        Phone=s.c_phone,
-                        Department=s.f_department
-                    }).Single();
-                }
-                return null;
-            }
-        }
         public PageModel[] GetChildMenu(Guid parentId)
         {
             using (var db = new CMSdb(_context))
@@ -208,31 +194,7 @@ namespace PgDbase.Repository.front
                             }).ToArray();
                 }
                 return null;
-            }                      
-        }
-
-        /// <summary>
-        /// выбираем лицевой счет
-        /// </summary>
-        /// <param name="IdSubscr">ид лицевого счета</param>
-        /// <param name="IdUser">ид  пользователя</param>
-        /// <returns></returns>
-        public bool SelectSubscr(Guid IdSubscr, Guid IdUser)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                using (var tr = db.BeginTransaction())
-                {
-                    //находим все подключенные лицевые счета пользователя
-                    var ls_connect_user = db.lk_user_subscrs.Where(w => w.f_user == IdUser);
-                    //убираем признак выбранности у выбранного ЛС
-                    ls_connect_user.Where(w => w.b_default == true).Set(s => s.b_default, false).Update();
-                    // ставим признак выбранности на другой ЛС
-                    ls_connect_user.Where(w => w.f_subscr == IdSubscr).Set(s => s.b_default, true).Update();
-                    tr.Commit();                    
-                }
             }
-            return true;
         }
 
 
@@ -336,7 +298,7 @@ namespace PgDbase.Repository.front
                 {
                     return q.OrderBy(o => o.e.n_sort)
                             .Select(s => new PageModel
-                            {                                
+                            {
                                 Name = s.o.c_name,
                                 Url = (String.IsNullOrEmpty(s.o.c_url)) ? "/page" + s.o.c_path + s.o.c_alias : s.o.c_url,
                                 FaIcon = s.o.c_fa_icon,
@@ -350,7 +312,6 @@ namespace PgDbase.Repository.front
         #endregion
 
 
-
         #region News
         /// <summary>
         /// список новостей
@@ -362,7 +323,7 @@ namespace PgDbase.Repository.front
             Paged<NewsModel> result = new Paged<NewsModel>();
             using (var db = new CMSdb(_context))
             {
-                var query = db.core_materials.Where(w => w.f_site == _siteId && w.b_disabled==false);
+                var query = db.core_materials.Where(w => w.f_site == _siteId && w.b_disabled == false);
 
                 if (!string.IsNullOrEmpty(filter.Category))
                 {
@@ -400,7 +361,7 @@ namespace PgDbase.Repository.front
                               {
                                   //Id = s.id,
                                   //Guid = s.gid,
-                                  LinkNews=(s.c_alias != null)?"/news/"+s.id+"-"+s.c_alias: "/news/" + s.id,
+                                  LinkNews = (s.c_alias != null) ? "/news/" + s.id + "-" + s.c_alias : "/news/" + s.id,
                                   Title = s.c_title,
                                   Date = s.d_date,
                                   Photo = s.c_photo,
@@ -435,14 +396,15 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                var data = db.core_materials.Where(w => w.id == id && w.f_site==_siteId && w.b_disabled==false);
+                var data = db.core_materials.Where(w => w.id == id && w.f_site == _siteId && w.b_disabled == false);
                 if (data.Any())
                 {
-                    return data.Select(s=> new NewsModel {
-                                    Title=s.c_title,
-                                    Text=s.c_text,
-                                    Date=s.d_date,
-                                    Category = s.fkcategorieslinks
+                    return data.Select(s => new NewsModel
+                    {
+                        Title = s.c_title,
+                        Text = s.c_text,
+                        Date = s.d_date,
+                        Category = s.fkcategorieslinks
                                                                 .Join(
                                                                         db.core_material_categories,
                                                                         e => e.f_materials_category,
@@ -454,7 +416,7 @@ namespace PgDbase.Repository.front
                                                                             Name = sc.c_name
                                                                         }).ToArray()
 
-                                }).Single();
+                    }).Single();
                 }
                 return null;
             }
@@ -503,7 +465,6 @@ namespace PgDbase.Repository.front
         #endregion
 
 
-
         /// <summary>
         /// фотогаллерея
         /// </summary>
@@ -520,7 +481,6 @@ namespace PgDbase.Repository.front
                     return null;
             }
         }
-
 
     }
 }
