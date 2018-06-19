@@ -191,11 +191,11 @@
         <!-- =============================================== -->
         @if (Request.IsAuthenticated)
         {
-            { Html.RenderAction("PageGroup", "Widget", new { @alias = "authorize", @view = "partial/mainmenu",@url= ViewBag.ThisUrl });}
+            { Html.RenderAction("PageGroup", "Widget", new {@area = "", @alias = "authorize", @view = "partial/mainmenu",@url= ViewBag.ThisUrl });}
         }
         else
         {
-            { Html.RenderAction("PageGroup", "Widget", new { @alias = "anonymous", @view = "partial/mainmenu", @url = ViewBag.ThisUrl });}
+            { Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "anonymous", @view = "partial/mainmenu", @url = ViewBag.ThisUrl });}
         }
         
         
