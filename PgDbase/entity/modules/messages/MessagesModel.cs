@@ -8,11 +8,22 @@ namespace PgDbase.entity
 {
     public class MessagesModel
     {
-        public Guid id { get; set; }        
+        public Guid Id { get; set; }        
         public Guid User { get; set; }
-        public Guid Parent { get; set; }
+        public Guid ParentId { get; set; }
+        /// <summary>
+        /// тема сообщения
+        /// </summary>
         public string Theme { get; set; }
         public string Text { get; set; }
         public DateTime Date { get; set; }
+        /// <summary>
+        /// признак прочитанности сообщения
+        /// </summary>
+        public bool View { get; set; }
+        /// <summary>
+        /// история сообщений
+        /// </summary>
+        public MessagesModel MessageHistory{ get; set; }
     }
 }
