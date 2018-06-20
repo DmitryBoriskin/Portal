@@ -10,13 +10,13 @@
     //вид меню (схлопнутый/раскрытый)
     $('.sidebar-toggle').click(function () {
         if ($('body').hasClass('sidebar-collapse')) {
-            $.cookie('statemenu', 'mini');
+            $.cookie('statemenu', 'mini', { path: '/' });
         }
         else {
-            $.cookie('statemenu', 'big');
+            $.cookie('statemenu', 'big', { path: '/' });
         }
     });
-    var statemenu = $.cookie('statemenu');    
+    var statemenu = $.cookie('statemenu', { path: '/' });    
     if (!(statemenu == undefined || statemenu == '')) {
         if (statemenu == 'mini') {
             $('body').addClass('sidebar-collapse')

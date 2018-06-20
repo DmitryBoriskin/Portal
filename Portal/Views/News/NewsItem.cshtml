@@ -1,8 +1,35 @@
 ﻿@model NewsFrontModel
 
+@Html.Partial("Partial/header")
+
 <div class="content">
     <h1>@Model.PageName</h1>
-    <h3>@Model.Item.Title</h3>
-    <a href="/news"><span aria-hidden="true">&laquo;</span> Назад</a>
-    @Html.Raw(Model.Item.Text)
+    <div class="invoice">
+        <h3>@Model.Item.Title</h3>
+        <span class="small">@Model.Item.Date.ToString("D")</span>
+        <br />
+        <br />
+        <div class="row">
+            @if (Model.Item.Photo != null)
+            {
+            <div class="col-sm-9">@Html.Raw(Model.Item.Text)</div>
+            <div class="col-sm-3">
+                <a href="@Model.Item.Photo" class="news_img_lk"><img src="@Model.Item.Photo" alt="" class="news_img" /></a>
+            </div>
+            }
+            else
+            {
+            <div class="col-xs-12">
+                @Html.Raw(Model.Item.Text)
+            </div>
+            }
+        </div>
+
+
+        <a href="/news"><span aria-hidden="true">&laquo;</span> В список</a>
+    </div>
 </div>
+
+
+
+

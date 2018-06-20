@@ -404,6 +404,7 @@ namespace PgDbase.Repository.front
                         Title = s.c_title,
                         Text = s.c_text,
                         Date = s.d_date,
+                        Photo=s.c_photo,
                         Category = s.fkcategorieslinks
                                                                 .Join(
                                                                         db.core_material_categories,

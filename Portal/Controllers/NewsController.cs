@@ -2,6 +2,7 @@
 using PgDbase.Repository.front;
 using Portal.Models;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,13 +23,14 @@ namespace Portal.Controllers
             {
                 LayoutInfo = _layoutData,
                 PageName = _pageName,
-                User = CurrentUser
+                User = CurrentUser,
+                Breadcrumbs = _breadcrumb
             };
         }
 
         // GET: News
         public ActionResult Index()
-        {
+        {            
             filter = GetFilter();
             model.List = _Repository.GetNewsList(filter);
             return View(model);
@@ -37,6 +39,7 @@ namespace Portal.Controllers
 
         public ActionResult NewsItem(string path)
         {
+            ViewBag.Title=model.PageName = "Новости";
             var n = path.IndexOf("-");
             if (n > 0)
             {
@@ -47,6 +50,13 @@ namespace Portal.Controllers
                 model.Item = _Repository.GetNewsItem(number);
                 if (model.Item != null)
                 {
+                    if (model.Item.Photo != null)
+                    {
+                        var f = new FileInfo(Server.MapPath(model.Item.Photo));
+                        model.Item.Photo = (f.Exists) ? model.Item.Photo : null;
+                    }
+                    
+                    model.Breadcrumbs = _Repository.GetBreadCrumbCollection("news", "/");
                     return View(model);
                 }
             }
