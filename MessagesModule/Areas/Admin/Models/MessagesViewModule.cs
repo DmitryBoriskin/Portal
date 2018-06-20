@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MessagesModule.Areas.Admin.Models
 {
-    public class MessagesViewModel: CoreViewModel
+    public class MessagesViewModel : CoreViewModel
     {
         public MessagesModel Item { get; set; }
         public Paged<MessagesModel> List { get; set; }
