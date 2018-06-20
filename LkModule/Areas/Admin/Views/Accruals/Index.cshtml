@@ -24,7 +24,7 @@
                         Счёт за @item.Date.ToString("dd.MM.yyyy")
                     </a>
                 </td>
-                <td>@item.Debt.ToString("0.##")</td>
+                <td>@(item.Amount.HasValue? item.Amount.Value.ToString("N2"):"")</td>
             </tr>
             }
         </table>

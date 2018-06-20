@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 
 namespace LkModule.Areas.Admin.Controllers
 {
-    public class PuController : BeCoreController
+    public class PUController : BeCoreController
     {
         FilterModel filter;
         PuViewModel model;

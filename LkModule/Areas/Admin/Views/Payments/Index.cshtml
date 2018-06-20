@@ -1,6 +1,6 @@
 ﻿@using LkModule.Areas.Admin.Models
 
-@model PaymentsViewModel
+@model PaymentViewModel
 
 @if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
@@ -19,9 +19,9 @@
                 {
                     <tr>
                         <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                        <td>@item.Amount.ToString("0.##")</td>
-                        <td>@item.Type.Title</td>
-                        <td>@item.Status.Title</td>
+                        <td>@(item.Amount.HasValue? item.Amount.Value.ToString("N2"):"")</td>
+                        <td>@item.Type</td>
+                        <td>@item.Status</td>
                     </tr>
                 }
             </table>

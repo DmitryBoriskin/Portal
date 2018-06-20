@@ -97,7 +97,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccrualsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\PuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PUController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscrsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscrsWidgetController.cs" />
@@ -132,8 +132,8 @@
     <Content Include="Areas\Admin\Views\SubscrsWidget\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Accruals\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Accruals\Part\Filter.cshtml" />
-    <Content Include="Areas\Admin\Views\Pu\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Pu\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\PU\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\PU\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Payments\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Payments\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Accruals\Item.cshtml" />
@@ -142,7 +142,7 @@
     <Content Include="Areas\Lk\Views\Payments\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\Accruals\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\Accruals\Index.cshtml" />
-    <Content Include="Areas\Lk\Views\Pu\Index.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Index.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfoWidget\Info.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">

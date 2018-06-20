@@ -19,7 +19,7 @@
                         <div class="list-item @disabled">
                             <div class="li-desc"><span>Счетчик:</span> @item.Name</div>
                             <div class="li-desc"><span>Номер:</span> @item.Number</div>
-                            <div class="li-desc"><span>Дата установки:</span> @item.InstallDate.ToString("dd.MM.yyyy")</div>
+                            <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue? item.InstallDate.Value.ToString("dd.MM.yyyy"):"")</div>
                             <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
                             <div class="li-desc"><span>Дата проверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
                             @if (item.DeviceInfo != null)

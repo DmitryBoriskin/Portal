@@ -17,7 +17,7 @@ namespace PgDbase.Repository.cms
             {
                 var query = db.msg_messages.Where(w => w.f_parent == null && w.f_site==_siteId);
 
-                query = query.OrderByDescending(o => o.b_date);
+                query = query.OrderByDescending(o => o.d_date);
 
                 var list = query
                 .Skip(filter.Size * (filter.Page - 1))

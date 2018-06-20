@@ -1,4 +1,5 @@
-﻿@model LkModule.Areas.Admin.Models.PaymentsViewModel
+﻿@using LkModule.Areas.Admin.Models
+@model  PaymentViewModel
 
 @using (Html.BeginForm())
 {
@@ -7,12 +8,12 @@
             <label class="label_filtr">Статус:</label>
             <select class="select2" name="status">
                 <option value="">не выбрано</option>
-                @foreach (var item in Model.Statuses)
-                {
-                    Guid status = ViewBag.Status != null ? Guid.Parse(ViewBag.Status) : Guid.Empty;
-                    string selected = (item.Id == status) ? "selected" : "";
-                    <option value="@item.Id" @selected>@item.Title</option>
-                }
+                @*@foreach (var item in Model.Statuses)
+                    {
+                        Guid status = ViewBag.Status != null ? Guid.Parse(ViewBag.Status) : Guid.Empty;
+                        string selected = (item.Id == status) ? "selected" : "";
+                        <option value="@item.Id" @selected>@item.Title</option>
+                    }*@
             </select>
         </div>
     </div>
@@ -21,12 +22,12 @@
             <label class="label_filtr">Тип:</label>
             <select class="select2" name="type">
                 <option value="">не выбрано</option>
-                @foreach (var item in Model.Types)
+                @*@foreach (var item in Model.Types)
                 {
                     Guid type = ViewBag.Type != null ? Guid.Parse(ViewBag.Type) : Guid.Empty;
                     string selected = (item.Id == type) ? "selected" : "";
                     <option value="@item.Id" @selected>@item.Title</option>
-                }
+                }*@
             </select>
         </div>
     </div>
