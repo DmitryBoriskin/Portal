@@ -16,7 +16,7 @@
             $.cookie('statemenu', 'big', { path: '/' });
         }
     });
-    var statemenu = $.cookie('statemenu');    
+    var statemenu = $.cookie('statemenu', { path: '/' });    
     if (!(statemenu == undefined || statemenu == '')) {
         if (statemenu == 'mini') {
             $('body').addClass('sidebar-collapse')
