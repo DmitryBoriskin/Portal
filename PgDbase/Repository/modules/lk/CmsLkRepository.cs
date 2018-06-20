@@ -891,7 +891,7 @@ namespace PgDbase.Repository.cms
                         DrawlType = new GroupsModel
                         {
                             Id = s.f_drawl_type,
-                            Title = s.fkmeterdrawltypes.c_title
+                            //Title = s.fkmeterdrawltypes.c_title
                         }
                     }).ToArray();
             }
