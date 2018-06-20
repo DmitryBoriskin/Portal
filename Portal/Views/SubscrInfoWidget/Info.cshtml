@@ -11,7 +11,7 @@
         if (item.Default.HasValue && item.Default.Value)
         {
             <span>
-                @(item.Debt.HasValue ? item.Debt.Value.ToString("0.##") : "")&nbsp;<i class="fa fa-rub"></i>
+                @(item.Debt.HasValue ? (item.Debt.Value*(-1)).ToString("0.##") : "")&nbsp;<i class="fa fa-rub"></i>
             </span>
         }
     }

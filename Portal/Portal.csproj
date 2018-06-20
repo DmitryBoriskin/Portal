@@ -341,6 +341,7 @@
     <Content Include="Content\fonts\Ubuntu\ubuntu_700italic.svg" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_italic.svg" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.svg" />
+    <Content Include="Content\img\favicon.ico" />
     <Content Include="Content\img\modules\aboutNews.png" />
     <Content Include="Content\img\modules\aboutProduct.png" />
     <Content Include="Content\img\modules\gallery.png" />
