@@ -26,7 +26,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
-                        <div class="li-desc"><span>Дата установки:</span> @item.InstallDate.ToString("dd.MM.yyyy")</div>
+                        <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue? item.InstallDate.Value.ToString("dd.MM.yyyy"): "")</div>
                         <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
                         <div class="li-desc"><span>Дата проверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
                         @if (item.DeviceInfo != null)

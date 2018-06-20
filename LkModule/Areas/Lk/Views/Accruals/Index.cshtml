@@ -40,12 +40,12 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>@item.Debt.ToString("0.##")</td>
-                                    <td>@item.Debt.ToString("0.##")</td>
+                                    <td>@(item.Amount.HasValue? item.Amount.Value.ToString("N2"): "")</td>
+                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
+                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
                                 </tr>
                             </tbody>
                         </table>

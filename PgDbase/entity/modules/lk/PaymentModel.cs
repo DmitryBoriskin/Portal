@@ -16,7 +16,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Сумма
         /// </summary>
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
         /// Дата
@@ -26,11 +26,16 @@ namespace PgDbase.entity
         /// <summary>
         /// Статус платежа
         /// </summary>
-        public GroupsModel Status { get; set; }
+        public string Status { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsPeni { get; set; }
 
         /// <summary>
         /// Тип платежа
         /// </summary>
-        public GroupsModel Type { get; set; }
+        public string Type { get; set; }
     }
 }

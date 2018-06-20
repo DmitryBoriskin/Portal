@@ -20,7 +20,7 @@
                 <tr>
                     <td>@item.Date.ToString("dd.MM.yyyy")</td>
                     <td>
-                        @item.Amount.ToString("0.##")
+                        @(item.Amount.HasValue? item.Amount.Value.ToString("N2"): "")
                     </td>
                     <td></td>
                 </tr>

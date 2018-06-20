@@ -77,14 +77,14 @@ namespace LkModule.Areas.Admin.Controllers
             return Json(json);
         }
 
-        [HttpPost]
-        public ActionResult GetTariffes(Guid device)
-        {
-            var tariffes = _cmsRepository.GetTariffes(device);
+        //[HttpPost]
+        //public ActionResult GetTariffes(Guid device)
+        //{
+        //    var tariffes = new TariffModel(); //_cmsRepository.GetTariffes(device);
 
-            var json = new JavaScriptSerializer().Serialize(tariffes);
-            return Json(json);
-        }
+        //    var json = new JavaScriptSerializer().Serialize(tariffes);
+        //    return Json(json);
+        //}
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
