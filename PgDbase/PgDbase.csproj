@@ -80,6 +80,7 @@
     <Compile Include="Entity\modules\lk\PaymentModel.cs" />
     <Compile Include="Entity\modules\lk\SubscrModel.cs" />
     <Compile Include="Entity\modules\lk\TariffModel.cs" />
+    <Compile Include="Entity\modules\messages\MessagesModel.cs" />
     <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
     <Compile Include="Entity\services\Filters\LkFilter.cs" />
     <Compile Include="Entity\services\Filters\UserFilter.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />
     <Compile Include="Repository\modules\lk\FrontLkRepository.cs" />
     <Compile Include="Repository\modules\lk\CmsLkRepository.cs" />
+    <Compile Include="Repository\modules\messages\CmsMessagesRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
