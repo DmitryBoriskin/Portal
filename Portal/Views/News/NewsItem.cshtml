@@ -1,6 +1,8 @@
 ﻿@model NewsFrontModel
 
-<h2>Новости</h2>
-<h3>@Model.Item.Title</h3>
-<a href="/news"><span aria-hidden="true">&laquo;</span> Назад</a>
-@Html.Raw(Model.Item.Text)
+<div class="content">
+    <h1>@Model.PageName</h1>
+    <h3>@Model.Item.Title</h3>
+    <a href="/news"><span aria-hidden="true">&laquo;</span> Назад</a>
+    @Html.Raw(Model.Item.Text)
+</div>

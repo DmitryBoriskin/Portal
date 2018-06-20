@@ -1,32 +1,30 @@
 ﻿@model NewsFrontModel
-@{
-    ViewBag.Title = "Новости";
-}
-<h2>Новости</h2>
+
 @if (Model.List != null)
 {
-    <div class="news">
-        @foreach (var item in Model.List.Items)
-        {
-            <div class="news_item">
-                <hr />
-                @if (item.Photo != null)
-                {
-                    <a href="@item.LinkNews">
-                        <img src="@item.Photo" alt="Alternate Text" width="200px" />
-                    </a>
-                }                
-                <div class="news_info" style="display:inline-block;">
-                    <div class="news_date">@item.Date.ToString("d")</div>
-                    <a class="news_title" href="@item.LinkNews">@item.Title</a>
-                </div>                                
+<div class="content">
+    <h1>@Model.PageName</h1>
+    @foreach (var item in Model.List.Items)
+    {
+        <div class="news_item">
+            <hr />
+            @if (item.Photo != null)
+            {
+                <a href="@item.LinkNews">
+                    <img src="@item.Photo" alt="Alternate Text" width="200px" />
+                </a>
+            }
+            <div class="news_info" style="display:inline-block;">
+                <div class="news_date">@item.Date.ToString("d")</div>
+                <a class="news_title" href="@item.LinkNews">@item.Title</a>
             </div>
-        }
-        @if (Model.List != null && Model.List.Pager != null)
-        {
+        </div>
+    }
+    @if (Model.List != null && Model.List.Pager != null)
+    {
         @Html.Partial("Partial/_pager", Model.List.Pager)
-        }
-    </div>    
+    }
+</div>    
 }
 else
 {
