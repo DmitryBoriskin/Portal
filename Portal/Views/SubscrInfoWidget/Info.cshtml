@@ -1,0 +1,20 @@
+﻿@using PgDbase.entity
+
+@model  List<SubscrShortModel>
+@{ Layout = null; }
+
+@if (Model != null && Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        string disabled = (item.Disabled.HasValue && !item.Disabled.Value)? "disabled" : "";
+        if (item.Default.HasValue && item.Default.Value)
+        {
+            <span>
+                @(item.Debt.HasValue ? item.Debt.Value.ToString("0.##") : "")&nbsp;<i class="fa fa-rub"></i>
+            </span>
+        }
+    }
+}
+
+

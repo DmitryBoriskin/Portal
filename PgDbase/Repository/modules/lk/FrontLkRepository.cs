@@ -40,7 +40,7 @@ namespace PgDbase.Repository.front
                 {
                     var text = filter.SearchText.ToLower();
                     query = query.Where(w => (w.c_surname + " " + w.c_name + " " + w.c_patronymic).ToLower().Contains(text)
-                                                     
+
                                                       || w.c_org.ToLower().Contains(text)
                                                       || w.c_subscr.Contains(text));
                 }
@@ -198,6 +198,32 @@ namespace PgDbase.Repository.front
             }
         }
 
+        /// <summary>
+        /// Информация о ЛС по умолчанию
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<SubscrShortModel> GetSubscrInfoForTopPannel(Guid userId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_cv_subscr_saldo
+                        .Where(s => s.userid == userId && s.siteid == _siteId);
+
+                return query.Select(s => new SubscrShortModel
+                {
+                    Id = s.userid,
+                    SubscrUid = s.subscruid,
+                    SubscrId = s.subscrid,
+                    Name = s.subscrname,
+                    Default = s.subscrdefault,
+                    Debt = s.subscrdebit,
+                    Disabled = s.subscrdisabled
+
+                }).ToList();
+            }
+        }
+
 
 
         /// <summary>
@@ -217,7 +243,7 @@ namespace PgDbase.Repository.front
                                         .Where(w => w.f_user == userId);
 
 
-                    if(userSubscrs.Any())
+                    if (userSubscrs.Any())
                     {
                         //убираем признак выбранности у выбранного ЛС
                         userSubscrs.Where(w => w.b_default == true)
@@ -930,7 +956,7 @@ namespace PgDbase.Repository.front
                         InstallDate = s.d_install,
                         CheckDate = s.d_check,
                         Disabled = s.b_disabled,
-                        DeviceInfo = (s.f_device_type!= null)?
+                        DeviceInfo = (s.f_device_type != null) ?
                                 new DeviceModel()
                                 {
                                     Name = s.fkmeterdevicedevicetypes.c_name,

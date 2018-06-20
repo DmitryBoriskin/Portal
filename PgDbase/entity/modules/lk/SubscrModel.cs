@@ -3,6 +3,47 @@
 namespace PgDbase.entity
 {
     /// <summary>
+    /// Лицевой счет
+    /// </summary>
+    public class SubscrShortModel
+    {
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
+        public Guid? Id { get; set; }
+
+        /// <summary>
+        /// Номер GUID
+        /// </summary>
+        public Guid? SubscrUid { get; set; }
+
+        /// <summary>
+        /// Номер ID
+        /// </summary>
+        public string SubscrId { get; set; }
+
+        /// <summary>
+        /// Название лиц счета
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Запрещённость
+        /// </summary>
+        public bool? Disabled { get; set; }
+
+        /// <summary>
+        /// По умолчанию
+        /// </summary>
+        public bool? Default { get; set; }
+
+        /// <summary>
+        /// Действителен с
+        /// </summary>
+        public Decimal? Debt { get; set; }
+    }
+
+    /// <summary>
     /// Личевой счёт
     /// </summary>
     public class SubscrModel

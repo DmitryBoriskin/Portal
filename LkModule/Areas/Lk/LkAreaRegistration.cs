@@ -33,11 +33,17 @@ namespace LkModule.Areas.Lk
                 new[] { "LkModule.Areas.Lk.Controllers" }
                 );
             context.MapRoute(
-            "Pu_FE",
-            "Lk/Pu/{action}/{id}",
-            new { controller = "Pu", action = "Index", id = UrlParameter.Optional },
-            new[] { "LkModule.Areas.Lk.Controllers" }
-            );
+                "Pu_FE",
+                "Lk/Pu/{action}/{id}",
+                new { controller = "Pu", action = "Index", id = UrlParameter.Optional },
+                new[] { "LkModule.Areas.Lk.Controllers" }
+                );
+            context.MapRoute(
+              "SubscrInfoWidget_FE",
+              "Lk/SubscrInfoWidget/{action}/{id}",
+              new { controller = "SubscrInfoWidget", action = "Info", id = UrlParameter.Optional },
+              new[] { "LkModule.Areas.Lk.Controllers" }
+              );
         }
     }
 }
