@@ -176,3 +176,30 @@ font-size:1.1em;
 .user-menu-bl {
     box-shadow: 0.5px 0.8px 1px #000;
 }
+
+.news_item {
+    clear: both;
+    display: inline-block;
+    width: 100%;
+}
+
+.news_item_img_lk{
+display:block;
+float:left;
+}
+.news_item_img {
+    max-width: 230px;
+}
+.news_item_img_lk+.news_item_info {
+    padding-left: 250px;
+}
+.news_item_date {
+    font-size: 0.8em;
+    font-weight: bold;
+}
+.news_img{
+    max-width:100%;
+}
+.news_img_lk {
+    max-width: 100%;
+}
