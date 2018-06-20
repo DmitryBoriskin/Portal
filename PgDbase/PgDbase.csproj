@@ -80,6 +80,7 @@
     <Compile Include="Entity\modules\lk\PaymentModel.cs" />
     <Compile Include="Entity\modules\lk\SubscrModel.cs" />
     <Compile Include="Entity\modules\lk\TariffModel.cs" />
+    <Compile Include="Entity\modules\messages\MessagesModel.cs" />
     <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
     <Compile Include="Entity\services\Filters\LkFilter.cs" />
     <Compile Include="Entity\services\Filters\UserFilter.cs" />
