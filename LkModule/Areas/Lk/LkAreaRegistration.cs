@@ -20,16 +20,22 @@ namespace LkModule.Areas.Lk
             //    new { action = "Index", id = UrlParameter.Optional }
             //);
 
-        context.MapRoute(
-            "Accruals_FE",
-            "Lk/Accruals/{action}/{id}",
-            new { controller = "Accruals", action = "Index", id = UrlParameter.Optional },
-            new[] { "LkModule.Areas.Lk.Controllers" }
-        );
-        context.MapRoute(
-            "Payments_FE",
-            "Lk/Payments/{action}/{id}",
-            new { controller = "Payments", action = "Index", id = UrlParameter.Optional },
+            context.MapRoute(
+                "Accruals_FE",
+                "Lk/Accruals/{action}/{id}",
+                new { controller = "Accruals", action = "Index", id = UrlParameter.Optional },
+                new[] { "LkModule.Areas.Lk.Controllers" }
+            );
+            context.MapRoute(
+                "Payments_FE",
+                "Lk/Payments/{action}/{id}",
+                new { controller = "Payments", action = "Index", id = UrlParameter.Optional },
+                new[] { "LkModule.Areas.Lk.Controllers" }
+                );
+            context.MapRoute(
+            "Pu_FE",
+            "Lk/Pu/{action}/{id}",
+            new { controller = "Pu", action = "Index", id = UrlParameter.Optional },
             new[] { "LkModule.Areas.Lk.Controllers" }
             );
         }
