@@ -1,0 +1,25 @@
+﻿@model NewsFrontModel
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+    <div class="invoice">
+        <h3>@Model.Item.Title</h3>
+        <span class="small">@Model.Item.Date.ToString("D")</span>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-xs-12">
+                @Html.Raw(Model.Item.Text)
+            </div>
+        </div>
+
+
+        <a href="/rights"><span aria-hidden="true">&laquo;</span> В список</a>
+    </div>
+</div>
+
+
+
+
+

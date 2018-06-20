@@ -740,6 +740,7 @@
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\RightController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -975,6 +976,8 @@
     <Content Include="Views\Widget\GetChangeUserInfo.cshtml" />
     <Content Include="Views\Widget\GetManageSubscriptions.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Rights\Index.cshtml" />
+    <Content Include="Views\Rights\NewsItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

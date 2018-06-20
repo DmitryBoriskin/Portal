@@ -182,6 +182,9 @@ font-size:1.1em;
     display: inline-block;
     width: 100%;
 }
+.news_item:first-child hr{
+display:none;
+}
 
 .news_item_img_lk{
 display:block;

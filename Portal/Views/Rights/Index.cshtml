@@ -1,0 +1,31 @@
+﻿@model NewsFrontModel
+
+@Html.Partial("Partial/header")
+<div class="content">
+    <div class="invoice">
+        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count()>0)
+        {
+            <div class="news">
+                @foreach (var item in Model.List.Items)
+                {
+                    <div class="news_item">
+                        <hr />                        
+                        <div class="news_item_info">
+                            <div class="news_item_date">@item.Date.ToString("d")</div>
+                            <a class="news_item_title" href="@item.LinkNews">@item.Title</a>
+                        </div>
+                    </div>
+                }
+                @if (Model.List != null && Model.List.Pager != null)
+                {
+                    @Html.Partial("Partial/_pager", Model.List.Pager)
+                }
+            </div>
+        }
+        else
+        {
+            <p>Список пуст.</p>
+        }
+    </div>
+</div>
+

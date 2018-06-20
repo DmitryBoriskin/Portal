@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Portal.Controllers
 {
-    public class NewsController : LayoutController
+    public class RightsController : LayoutController
     {
         private NewsFrontModel model;
         private FilterModel filter;
@@ -32,25 +32,15 @@ namespace Portal.Controllers
         public ActionResult Index()
         {            
             filter = GetFilter();
-            filter.Category = "news";
+            filter.Category = "right";
             model.List = _Repository.GetNewsList(filter);
-            if(model.List!=null)
-                if(model.List.Items!=null)
-                    foreach (var item in model.List.Items)
-                    {
-                        if (item.Photo != null)
-                        {
-                            var f = new FileInfo(Server.MapPath(item.Photo));
-                            item.Photo = (f.Exists) ? item.Photo : null;
-                        }                        
-                    }
             return View(model);
         }
 
 
         public ActionResult NewsItem(string path)
         {
-            ViewBag.Title=model.PageName = "Новости";
+            ViewBag.Title=model.PageName = "Ваши права";
             var n = path.IndexOf("-");
             if (n > 0)
             {
@@ -67,7 +57,7 @@ namespace Portal.Controllers
                         model.Item.Photo = (f.Exists) ? model.Item.Photo : null;
                     }
                     
-                    model.Breadcrumbs = _Repository.GetBreadCrumbCollection("news", "/");
+                    model.Breadcrumbs = _Repository.GetBreadCrumbCollection("rights", "/");
                     return View(model);
                 }
             }

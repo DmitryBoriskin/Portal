@@ -10,7 +10,7 @@
                 @Html.TextBoxFor(m => m.Item.Photo, new { type = "file", data_posted_name = "upload", data_url = @ViewBag.Photo, title = "Картинка для предпросмотра", data_help = "Размер фотографии должен быть не менне 400 точек по ширине и пропорции картинки - 4х3", accept = ".jpg,.jpeg,.png,.gif" })
             </div>
         </div>
-        <div class="group-block" title="Текст">
+        <div class="group-block open" title="Текст">
             @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "300", data_dir = ViewBag.DataPath })
         </div>
 
