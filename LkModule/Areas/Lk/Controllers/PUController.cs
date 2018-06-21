@@ -68,14 +68,14 @@ namespace LkModule.Areas.Lk.Controllers
         //    return Redirect($"{StartUrl}?subscr={subscr}");
         //}
 
-        //[HttpPost]
-        //public ActionResult GetInfo(Guid device)
-        //{
-        //    var meters = _cmsRepository.GetMeters(device);
+        [HttpPost]
+        public ActionResult GetPuMeters(Guid device)
+        {
+            var meters = _Repository.GetMeters(device);
 
-        //    var json = new JavaScriptSerializer().Serialize(meters);
-        //    return Json(json);
-        //}
+            var json = new JavaScriptSerializer().Serialize(meters);
+            return Json(json);
+        }
 
         //[HttpPost]
         //public ActionResult GetTariffes(Guid device)

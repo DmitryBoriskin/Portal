@@ -78,89 +78,91 @@ else
 }
 
 <script>
-    $(".meter-info").on("click", function () {
-        $(this).toggleClass("open-info");
+    $(document).ready(function (e) {
 
-        if ($(this).hasClass("open-info")) {
-            $(this).text("Скрыть(показания)");
-        }
-        else {
-            $(this).text("Подробнее(показания)");
-        }
-        var device = $(this).data("device");
+        $(".meter-info").on("click", function () {
+            $(this).toggleClass("open-info");
 
-        $.ajax({
-            type: "POST",
-            async: false,
-            url: "/Admin/Pu/GetPuMeters",
-            data: ({ device: device }),
-            success: function (data) {
-                var obj = JSON.parse(data);
+            if ($(this).hasClass("open-info")) {
+                $(this).text("Скрыть(показания)");
+            }
+            else {
+                $(this).text("Подробнее(показания)");
+            }
+            var device = $(this).data("device");
 
-                if (obj.length > 0) {
-                    var result = '<h4>Переданные показания</h4><table class="table">';
-                    result += "<thead><tr><th>Дата</th><th>Показание</th><th>Const</th><th>Потребление</th><th>Период</th><th>Тип</th><th>Предыдущее показание</th></tr></thead>";
-                    result += "<tbody>";
-                    for (var i = 0; i < obj.length; i++) {
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "/Admin/Pu/GetPuMeters",
+                data: ({ device: device }),
+                success: function (data) {
+                    var obj = JSON.parse(data);
 
-                        result += "<tr><td>" + dateFormat(obj[i].Date) + "</td><td>" + NotNullString(obj[i].Value) + "</td><td>" + NotNullString(obj[i].Const) + "</td><td>" + NotNullString(obj[i].Quantity)
-                            + "</td><td>" + obj[i].Year + "/" + obj[i].Month + "</td><td>" + NotNullString(obj[i].DeliveryMethod) + "</td><td>"
-                            + dateFormat(obj[i].DatePrev) + " (" + NotNullString(obj[i].Days) + " дней назад)</td></tr>";
-                    }
-                    result += "</tbody>";
-                    result += "</table>";
-                    //var dev = $("#" + device + "").find(".group-block_info");
-                    var dev = $("#meter_" + device + "");
-                    dev.empty();
-                    dev.append(result);
-                }
-            },
-            error: function (data) { }
-        });
-    });
+                    if (obj.length > 0) {
+                        var result = '<h4>Переданные показания</h4><table class="table">';
+                        result += "<thead><tr><th>Дата</th><th>Показание</th><th>Const</th><th>Потребление</th><th>Период</th><th>Тип</th><th>Предыдущее показание</th></tr></thead>";
+                        result += "<tbody>";
+                        for (var i = 0; i < obj.length; i++) {
 
-
-    $(".tariff-info").on("click", function () {
-        $(this).toggleClass("open-info");
-
-        if ($(this).hasClass("open-info")) {
-            $(this).text("Скрыть(тарифы)");
-        }
-        else {
-            $(this).text("Подробнее(тарифы)");
-        }
-        var device = $(this).data("device");
-
-        $.ajax({
-            type: "POST",
-            async: false,
-            url: "/Admin/MeterDevices/GetTariffes",
-            data: ({ device: device }),
-            success: function (data) {
-                var obj = JSON.parse(data);
-                //console.log(obj);
-                if (obj.length > 0) {
-                    var result = '<h4>Тарифы</h4><table class="table">';
-                    result += "<thead><tr><th>Дата начала</th><th>Дата окончания</th><th>Учёт</th><th>Величина тарифа</th></tr></thead>";
-                    result += "<tbody>";
-                    for (var i = 0; i < obj.length; i++) {
-                        var vals = '';
-                        for (var j = 0; j < obj[i].Values.length; j++) {
-                            vals += obj[i].Values[j].Title + ": " + obj[i].Values[j].Price + " р<br />";
+                            result += "<tr><td>" + dateFormat(obj[i].Date) + "</td><td>" + NotNullString(obj[i].Value) + "</td><td>" + NotNullString(obj[i].Const) + "</td><td>" + NotNullString(obj[i].Quantity)
+                                + "</td><td>" + obj[i].Year + "/" + obj[i].Month + "</td><td>" + NotNullString(obj[i].DeliveryMethod) + "</td><td>"
+                                + dateFormat(obj[i].DatePrev) + " (" + NotNullString(obj[i].Days) + " дней назад)</td></tr>";
                         }
-                        result += "<tr><td>" + dateFormat(obj[i].Begin) + "</td><td>" + dateFormat(obj[i].End) + "</td><td>" + obj[i].Title + "</td><td>" + vals + "</td></tr>";
+                        result += "</tbody>";
+                        result += "</table>";
+                        //var dev = $("#" + device + "").find(".group-block_info");
+                        var dev = $("#meter_" + device + "");
+                        dev.empty();
+                        dev.append(result);
                     }
-                    result += "</tbody>";
-                    result += "</table>";
-                    var dev = $("#tariff_" + device + "");
-                    dev.empty();
-                    dev.append(result);
-                }
-            },
-            error: function (data) { }
+                },
+                error: function (data) { }
+            });
+        });
+
+
+        $(".tariff-info").on("click", function () {
+            $(this).toggleClass("open-info");
+
+            if ($(this).hasClass("open-info")) {
+                $(this).text("Скрыть(тарифы)");
+            }
+            else {
+                $(this).text("Подробнее(тарифы)");
+            }
+            var device = $(this).data("device");
+
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "/Admin/MeterDevices/GetTariffes",
+                data: ({ device: device }),
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    //console.log(obj);
+                    if (obj.length > 0) {
+                        var result = '<h4>Тарифы</h4><table class="table">';
+                        result += "<thead><tr><th>Дата начала</th><th>Дата окончания</th><th>Учёт</th><th>Величина тарифа</th></tr></thead>";
+                        result += "<tbody>";
+                        for (var i = 0; i < obj.length; i++) {
+                            var vals = '';
+                            for (var j = 0; j < obj[i].Values.length; j++) {
+                                vals += obj[i].Values[j].Title + ": " + obj[i].Values[j].Price + " р<br />";
+                            }
+                            result += "<tr><td>" + dateFormat(obj[i].Begin) + "</td><td>" + dateFormat(obj[i].End) + "</td><td>" + obj[i].Title + "</td><td>" + vals + "</td></tr>";
+                        }
+                        result += "</tbody>";
+                        result += "</table>";
+                        var dev = $("#tariff_" + device + "");
+                        dev.empty();
+                        dev.append(result);
+                    }
+                },
+                error: function (data) { }
+            });
         });
     });
-
 
     function dateFormat(date) {
         if (date && date != null) {
@@ -176,19 +178,19 @@ else
             return day + '.' + month + '.' + year; //' + hour + ':' + minutes + ':' + seconds;
         }
         return '';
-    }
+    };
 
     function addZeros(d) {
         if (d < 10) {
             d = '0' + d;
         }
         return d;
-    }
+    };
 
     function NotNullString(str) {
         if (str != null)
             return str;
         else
             return '-';
-    }
+    };
 </script>

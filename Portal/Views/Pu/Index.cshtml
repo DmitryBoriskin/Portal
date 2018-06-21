@@ -11,6 +11,7 @@
         foreach (var item in Model.List.Items)
         {
             string disabled = item.Disabled ? "disabled" : "";
+            string meterTitle = "meter_" + item.Id;
 
             <div class="box invoice topIndent-20">
                 <div class="box-header with-border">
@@ -35,9 +36,15 @@
                             <div class="li-desc"><span>Разрядность:</span> @item.DeviceInfo.Modification</div>
                             <div class="li-desc"><span>Производитель:</span> @item.DeviceInfo.Manufactirer</div>
                             <div class="li-desc"><span>Вид:</span> @item.DeviceInfo.EnergyCategory &nbsp; <span>Класс:</span> @item.DeviceInfo.PrecissionClass &nbsp; <span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
-                            <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory &nbsp; <span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет") &nbsp; <span>Тариф:</span> @item.DeviceInfo.Tariff</div>
+                            <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory &nbsp; <span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет")</div>
                             <div class="li-desc"><span>Тариф:</span> @item.DeviceInfo.Tariff</div>
                         }
+
+                        <div class="text-right topIndent-20">
+                            <a href="#@meterTitle" class="meter-info" data-device="@item.Id" data-toggle="collapse">Показать показания</a>
+                        </div>
+                        <div id="@meterTitle" class="collapse">
+                        </div>
 
                     </div>
                 </div>
@@ -49,3 +56,123 @@
         <div class="topIndent-20">Нет данных</div>
     }
 </div>
+
+<script>
+    $(document).ready(function (e) {
+
+        $(".meter-info").on("click", function () {
+            $(this).toggleClass("open-info");
+
+            if ($(this).hasClass("open-info")) {
+                $(this).text("Скрыть показания");
+            }
+            else {
+                $(this).text("Показать показания");
+            }
+            var device = $(this).data("device");
+
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "/Lk/Pu/GetPuMeters",
+                data: ({ device: device }),
+                success: function (data) {
+                    var obj = JSON.parse(data);
+
+                    if (obj.length > 0) {
+                        var result = '<h4>Переданные показания</h4><table class="table">';
+                        result += "<thead><tr><th>Дата</th><th>Показание</th><th>Const</th><th>Потребление</th><th>Период</th><th>Тип</th><th>Предыдущее показание</th></tr></thead>";
+                        result += "<tbody>";
+                        for (var i = 0; i < obj.length; i++) {
+
+                            result += "<tr><td>" + dateFormat(obj[i].Date) + "</td><td>" + NotNullString(obj[i].Value) + "</td><td>" + NotNullString(obj[i].Const) + "</td><td>" + NotNullString(obj[i].Quantity)
+                                + "</td><td>" + obj[i].Year + "/" + obj[i].Month + "</td><td>" + NotNullString(obj[i].DeliveryMethod) + "</td><td>"
+                                + dateFormat(obj[i].DatePrev) + " (" + NotNullString(obj[i].Days) + " дней назад)</td></tr>";
+                        }
+                        result += "</tbody>";
+                        result += "</table>";
+                        //var dev = $("#" + device + "").find(".group-block_info");
+                        var dev = $("#meter_" + device + "");
+                        dev.empty();
+                        dev.append(result);
+                    }
+                },
+                error: function (data) { }
+            });
+        });
+    });
+  
+
+
+    //$(".tariff-info").on("click", function () {
+    //    $(this).toggleClass("open-info");
+
+    //    if ($(this).hasClass("open-info")) {
+    //        $(this).text("Скрыть(тарифы)");
+    //    }
+    //    else {
+    //        $(this).text("Подробнее(тарифы)");
+    //    }
+    //    var device = $(this).data("device");
+
+    //    $.ajax({
+    //        type: "POST",
+    //        async: false,
+    //        url: "/Admin/MeterDevices/GetTariffes",
+    //        data: ({ device: device }),
+    //        success: function (data) {
+    //            var obj = JSON.parse(data);
+    //            //console.log(obj);
+    //            if (obj.length > 0) {
+    //                var result = '<h4>Тарифы</h4><table class="table">';
+    //                result += "<thead><tr><th>Дата начала</th><th>Дата окончания</th><th>Учёт</th><th>Величина тарифа</th></tr></thead>";
+    //                result += "<tbody>";
+    //                for (var i = 0; i < obj.length; i++) {
+    //                    var vals = '';
+    //                    for (var j = 0; j < obj[i].Values.length; j++) {
+    //                        vals += obj[i].Values[j].Title + ": " + obj[i].Values[j].Price + " р<br />";
+    //                    }
+    //                    result += "<tr><td>" + dateFormat(obj[i].Begin) + "</td><td>" + dateFormat(obj[i].End) + "</td><td>" + obj[i].Title + "</td><td>" + vals + "</td></tr>";
+    //                }
+    //                result += "</tbody>";
+    //                result += "</table>";
+    //                var dev = $("#tariff_" + device + "");
+    //                dev.empty();
+    //                dev.append(result);
+    //            }
+    //        },
+    //        error: function (data) { }
+    //    });
+    //});
+
+
+    function dateFormat(date) {
+        if (date && date != null) {
+            date = date.replace('/Date(', '').replace(')/', '');
+            var d = new Date(parseInt(date));
+            //var hour = addZeros(d.getHours());
+            //var minutes = addZeros(d.getMinutes());
+            //var seconds = addZeros(d.getSeconds());
+            var day = addZeros(d.getDate());
+            var month = addZeros(d.getMonth());
+            var year = d.getFullYear();
+
+            return day + '.' + month + '.' + year; //' + hour + ':' + minutes + ':' + seconds;
+        }
+        return '';
+    };
+
+    function addZeros(d) {
+        if (d < 10) {
+            d = '0' + d;
+        }
+        return d;
+    };
+
+    function NotNullString(str) {
+        if (str != null)
+            return str;
+        else
+            return '-';
+    };
+</script>
