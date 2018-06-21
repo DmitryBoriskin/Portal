@@ -40,7 +40,7 @@ namespace PgDbase.Repository.cms
                 {
                     var text = filter.SearchText.ToLower();
                     query = query.Where(w => (w.c_surname + " " + w.c_name + " " + w.c_patronymic).ToLower().Contains(text)
-                                                     
+
                                                       || w.c_org.ToLower().Contains(text)
                                                       || w.c_subscr.Contains(text));
                 }
@@ -179,7 +179,7 @@ namespace PgDbase.Repository.cms
                             c_link = item.Link
                         };
 
-                        
+
                         if (item.Ee)
                         {
                             subscr.c_org = item.OrgName;
@@ -836,7 +836,7 @@ namespace PgDbase.Repository.cms
                         InstallDate = s.d_install,
                         CheckDate = s.d_check,
                         Disabled = s.b_disabled,
-                        DeviceInfo = (s.f_device_type!= null)?
+                        DeviceInfo = (s.f_device_type != null) ?
                                 new DeviceModel()
                                 {
                                     Name = s.fksubscrdevicedevicetypes.c_name,
@@ -886,13 +886,16 @@ namespace PgDbase.Repository.cms
                     .Select(s => new MeterModel
                     {
                         Id = s.id,
-                        Send = s.d_send,
-                        Output = s.n_output,
-                        DrawlType = new GroupsModel
-                        {
-                            Id = s.f_drawl_type,
-                            //Title = s.fkmeterdrawltypes.c_title
-                        }
+                        Date = s.d_date,
+                        DatePrev = s.d_date_prev,
+                        Value = s.n_value,
+                        Const = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Year = s.n_year,
+                        Month = s.n_month,
+                        Days = s.n_days,
+                        DeliveryMethod = s.c_delivery_method,
+
                     }).ToArray();
             }
         }
@@ -966,14 +969,14 @@ namespace PgDbase.Repository.cms
                     .OrderBy(o => o.c_status)
                     .Select(s => new GroupsModel
                     {
-                       Title = s.c_status
+                        Title = s.c_status
                     })
                     .Distinct()
                     .ToArray();
             }
         }
 
-        
+
         #endregion
 
         #region Тарифы

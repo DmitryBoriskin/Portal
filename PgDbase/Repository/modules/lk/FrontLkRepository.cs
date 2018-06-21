@@ -1015,7 +1015,7 @@ namespace PgDbase.Repository.front
                         Month = s.n_month,
                         Days = s.n_days,
                         DeliveryMethod = s.c_delivery_method,
-                        
+
                     }).ToArray();
             }
         }
