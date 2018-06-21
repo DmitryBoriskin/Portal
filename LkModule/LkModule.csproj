@@ -49,6 +49,10 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -107,12 +111,14 @@
     <Compile Include="Areas\Admin\Models\PaymentViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubscrViewModel.cs" />
     <Compile Include="Areas\Lk\Controllers\AccrualsController.cs" />
+    <Compile Include="Areas\Lk\Controllers\SubscrInfoController.cs" />
     <Compile Include="Areas\Lk\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Lk\Controllers\MetersController.cs" />
     <Compile Include="Areas\Lk\Controllers\SubscrInfoWidgetController.cs" />
     <Compile Include="Areas\Lk\Controllers\PUController.cs" />
     <Compile Include="Areas\Lk\LkAreaRegistration.cs" />
     <Compile Include="Areas\Lk\Models\AccrualFrontModel.cs" />
+    <Compile Include="Areas\Lk\Models\SubscrFrontModel.cs" />
     <Compile Include="Areas\Lk\Models\PuFrontModel.cs" />
     <Compile Include="Areas\Lk\Models\PaymentFrontModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -147,6 +153,8 @@
     <Content Include="Areas\Lk\Views\SubscrInfoWidget\Info.cshtml" />
     <Content Include="Areas\Lk\Views\Meters\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\Meters\Index.cshtml" />
+    <Content Include="Areas\Lk\Views\Accruals\Payed.cshtml" />
+    <Content Include="Areas\Lk\Views\SubscrInfo\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -217,6 +225,7 @@
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Meters\*" "$(SolutionDir)Portal\Views\Meters\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Payments\*" "$(SolutionDir)Portal\Views\Payments\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Pu\*" "$(SolutionDir)Portal\Views\Pu\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\SubscrInfo\*" "$(SolutionDir)Portal\Views\SubscrInfo\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\SubscrInfoWidget\*" "$(SolutionDir)Portal\Views\SubscrInfoWidget\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

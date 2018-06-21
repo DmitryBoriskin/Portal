@@ -1,11 +1,9 @@
 ﻿@using LkModule.Areas.Lk.Models
-
 @model PuFrontModel
 
 @Html.Partial("Partial/header")
 
 <div class="content">
-    <h1>@Model.PageName</h1><br />
     @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
     {
         foreach (var item in Model.List.Items)
@@ -53,7 +51,9 @@
     }
     else
     {
-        <div class="topIndent-20">Нет данных</div>
+            <div class="box invoice topIndent-20">
+                <div class="noItems">Нет данных</div>
+            </div>
     }
 </div>
 

@@ -2,8 +2,13 @@
 using PgDbase.entity;
 using Portal.Controllers;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace LkModule.Areas.Lk.Controllers
 {
@@ -30,7 +35,7 @@ namespace LkModule.Areas.Lk.Controllers
             };
         }
 
-        // GET: Admin/Payments
+        //Неоплаченные платежи
         public ActionResult Index()
         {
             filter = GetFilter();
@@ -38,9 +43,28 @@ namespace LkModule.Areas.Lk.Controllers
             var userId = CurrentUser.UserId;
 
             var mFilter = FilterModel.Extend<LkFilter>(filter);
-            mFilter.Status = ViewBag.Status = Request.Params["status"];
-            mFilter.Type = ViewBag.Type = Request.Params["type"];
+            mFilter.Payed = false;
 
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            if (userSubscr != null)
+            {
+                model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
+            }
+
+            return View(model);
+        }
+
+        //Оплаченные платежи
+        public ActionResult Payed()
+        {
+            filter = GetFilter();
+
+            var userId = CurrentUser.UserId;
+
+            var mFilter = FilterModel.Extend<LkFilter>(filter);
+            mFilter.Payed = true;
+           
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
             if (userSubscr != null)

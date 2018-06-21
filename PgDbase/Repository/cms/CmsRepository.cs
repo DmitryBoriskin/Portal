@@ -1,9 +1,9 @@
 ﻿using LinqToDB;
+using Newtonsoft.Json;
 using PgDbase.entity;
 using PgDbase.models;
 using System;
 using System.Linq;
-using System.Web.Script.Serialization;
 
 namespace PgDbase.Repository.cms
 {
@@ -71,7 +71,7 @@ namespace PgDbase.Repository.cms
                     f_user = _currentUserId,
                     c_ip = _ip,
                     f_action = log.Action.ToString(),
-                    c_json = obj != null ? new JavaScriptSerializer().Serialize(obj) : null
+                    c_json = (obj != null)? JsonConvert.SerializeObject(obj) : null
                 });
             }
         }

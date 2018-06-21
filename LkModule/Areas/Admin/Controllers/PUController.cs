@@ -1,13 +1,12 @@
 ﻿using LkModule.Areas.Admin.Models;
+using Newtonsoft.Json;
 using PgDbase.entity;
-using Portal.Areas.Admin;
 using Portal.Areas.Admin.Controllers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
+
 
 namespace LkModule.Areas.Admin.Controllers
 {
@@ -73,7 +72,7 @@ namespace LkModule.Areas.Admin.Controllers
         {
             var meters = _cmsRepository.GetMeters(device);
 
-            var json = new JavaScriptSerializer().Serialize(meters);
+            var json = JsonConvert.SerializeObject(meters);
             return Json(json);
         }
 
@@ -82,7 +81,7 @@ namespace LkModule.Areas.Admin.Controllers
         //{
         //    var tariffes = new TariffModel(); //_cmsRepository.GetTariffes(device);
 
-        //    var json = new JavaScriptSerializer().Serialize(tariffes);
+        //    var json = JsonConvert.SerializeObject(tariffes);
         //    return Json(json);
         //}
 

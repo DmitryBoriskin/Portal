@@ -1,16 +1,19 @@
-﻿using LkModule.Areas.Admin.Models;
-using LkModule.Areas.Lk.Models;
+﻿using LkModule.Areas.Lk.Models;
+using Newtonsoft.Json;
 using PgDbase.entity;
 using Portal.Controllers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
+
 
 namespace LkModule.Areas.Lk.Controllers
 {
+    [Authorize]
     public class PuController : LayoutController
     {
         FilterModel filter;
@@ -73,7 +76,7 @@ namespace LkModule.Areas.Lk.Controllers
         {
             var meters = _Repository.GetMeters(device);
 
-            var json = new JavaScriptSerializer().Serialize(meters);
+            var json = JsonConvert.SerializeObject(meters);
             return Json(json);
         }
 
@@ -82,7 +85,7 @@ namespace LkModule.Areas.Lk.Controllers
         //{
         //    var tariffes = _cmsRepository.GetTariffes(device);
 
-        //    var json = new JavaScriptSerializer().Serialize(tariffes);
+        //    var json = JsonConvert.SerializeObject(tariffes);
         //    return Json(json);
         //}
 

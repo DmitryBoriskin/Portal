@@ -12,9 +12,9 @@ namespace PgDbase.Repository.front
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<EventsModel> GetEvents(FilterModel filter)
+        public Paged<EventModel> GetEvents(FilterModel filter)
         {
-            Paged<EventsModel> result = new Paged<EventsModel>();
+            Paged<EventModel> result = new Paged<EventModel>();
             using (var db = new CMSdb(_context))
             {
                 var query = db.event_events.Where(w => !w.b_disabled);
@@ -38,7 +38,7 @@ namespace PgDbase.Repository.front
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new EventsModel
+                    .Select(s => new EventModel
                     {
                         Id=s.id,
                         Title = s.c_title,
@@ -46,7 +46,7 @@ namespace PgDbase.Repository.front
                         Text = s.c_text
                     }).ToArray();
 
-                return new Paged<EventsModel>
+                return new Paged<EventModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -60,7 +60,7 @@ namespace PgDbase.Repository.front
         }
 
 
-        public EventsModel GetEventItem(int id)
+        public EventModel GetEventItem(int id)
         {
             using (var db = new CMSdb(_context))
             {
@@ -83,7 +83,7 @@ namespace PgDbase.Repository.front
 
                 //        }).SingleOrDefault();
                 return db.event_events.Where(w => w.id == id)
-                          .Select(s => new EventsModel {
+                          .Select(s => new EventModel {
                               Alias=s.c_alias,
                               Title=s.c_title,
                               Text=s.c_text,

@@ -39,6 +39,12 @@ namespace LkModule.Areas.Lk
                 new[] { "LkModule.Areas.Lk.Controllers" }
                 );
             context.MapRoute(
+             "SubscrInfo_FE",
+             "Lk/SubscrInfo/{action}/{id}",
+             new { controller = "SubscrInfo", action = "Index", id = UrlParameter.Optional },
+             new[] { "LkModule.Areas.Lk.Controllers" }
+             );
+            context.MapRoute(
               "SubscrInfoWidget_FE",
               "Lk/SubscrInfoWidget/{action}/{id}",
               new { controller = "SubscrInfoWidget", action = "Info", id = UrlParameter.Optional },

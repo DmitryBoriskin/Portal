@@ -1,20 +1,24 @@
-﻿using Microsoft.AspNet.Identity;
-using Portal.Models;
+﻿using LkModule.Areas.Lk.Models;
+using Portal.Controllers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Portal.Controllers
+namespace LkModule.Areas.Lk.Controllers
 {
-    public class InfoController : LayoutController
+    [Authorize]
+    public class SubscrInfoController : LayoutController
     {
-        private InfoFrontModel model;
+        private SubscrFrontModel model;
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            model = new InfoFrontModel()
+            model = new SubscrFrontModel()
             {
                 LayoutInfo = _layoutData,
                 PageName = _pageName,
@@ -22,15 +26,14 @@ namespace Portal.Controllers
                 Breadcrumbs = _breadcrumb
             };
         }
-        // GET: Info
+
+
         public ActionResult Index()
         {
-            if (model.LayoutInfo.DefaultSubscr != null)
-            {
-             //   model.DefaultSubscrInfo = _Repository.GetUserSubscrDefault(Guid.Parse(User.Identity.GetUserId()));
-                return View(model);
-            }
-            else return Redirect("/settings");
+            var userId = CurrentUser.UserId;
+
+            model.Item = _Repository.GetUserSubscrDefault(userId);
+            return View(model);
         }
     }
 }
