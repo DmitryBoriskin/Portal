@@ -26,7 +26,7 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
-                        <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue? item.InstallDate.Value.ToString("dd.MM.yyyy"): "")</div>
+                        <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue ? item.InstallDate.Value.ToString("dd.MM.yyyy") : "")</div>
                         <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
                         <div class="li-desc"><span>Дата проверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
                         @if (item.DeviceInfo != null)
@@ -34,11 +34,8 @@
                             <div class="li-desc"><span>Марка:</span> @item.DeviceInfo.Name</div>
                             <div class="li-desc"><span>Разрядность:</span> @item.DeviceInfo.Modification</div>
                             <div class="li-desc"><span>Производитель:</span> @item.DeviceInfo.Manufactirer</div>
-                            <div class="li-desc"><span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
-                            <div class="li-desc"><span>Класс:</span> @item.DeviceInfo.PrecissionClass</div>
-                            <div class="li-desc"><span>Вид:</span> @item.DeviceInfo.EnergyCategory</div>
-                            <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory</div>
-                            <div class="li-desc"><span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет")</div>
+                            <div class="li-desc"><span>Вид:</span> @item.DeviceInfo.EnergyCategory &nbsp; <span>Класс:</span> @item.DeviceInfo.PrecissionClass &nbsp; <span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
+                            <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory &nbsp; <span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет") &nbsp; <span>Тариф:</span> @item.DeviceInfo.Tariff</div>
                             <div class="li-desc"><span>Тариф:</span> @item.DeviceInfo.Tariff</div>
                         }
 

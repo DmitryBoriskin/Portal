@@ -17,15 +17,15 @@
             </tr>
             @foreach (var item in Model.List.Items)
             {
-            <tr>
-                <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                <td>
-                    <a href="/admin/accruals/item/@item.Id">
-                        Счёт за @item.Date.ToString("dd.MM.yyyy")
-                    </a>
-                </td>
-                <td>@(item.Amount.HasValue? item.Amount.Value.ToString("N2"):"")</td>
-            </tr>
+                <tr>
+                    <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                    <td>
+                        <a href="/admin/accruals/item/@item.Id">
+                            Счёт за @item.Date.ToString("dd.MM.yyyy")
+                        </a>
+                    </td>
+                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
+                </tr>
             }
         </table>
 
@@ -36,7 +36,7 @@
     }
     else
     {
-        <div class="alert alert-info">Не найдено ни одной записи.</div>
+        <div class="noItems">Нет данных</div>
     }
 </div>
 

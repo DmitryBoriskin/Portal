@@ -69,7 +69,7 @@ namespace LkModule.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetInfo(Guid device)
+        public ActionResult GetPuMeters(Guid device)
         {
             var meters = _cmsRepository.GetMeters(device);
 

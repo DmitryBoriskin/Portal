@@ -1409,3 +1409,8 @@ button.rss_delete {border:none; background:none;}
     min-height:220px;
 }
 
+.noItems{
+    font-size:13px;
+    font-style:italic;
+}
+
