@@ -886,16 +886,13 @@ namespace PgDbase.Repository.cms
                     .Select(s => new MeterModel
                     {
                         Id = s.id,
-                        Date = s.d_date,
-                        DatePrev = s.d_date_prev,
-                        Value = s.n_value,
-                        Const = s.n_cons,
-                        Quantity = s.n_quantity,
-                        Year = s.n_year,
-                        Month = s.n_month,
-                        Days = s.n_days,
-                        DeliveryMethod = s.c_delivery_method,
-
+                        Send = s.d_send,
+                        Output = s.n_output,
+                        DrawlType = new GroupsModel
+                        {
+                            Id = s.f_drawl_type,
+                            //Title = s.fkmeterdrawltypes.c_title
+                        }
                     }).ToArray();
             }
         }

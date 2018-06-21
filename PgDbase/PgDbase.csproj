@@ -104,6 +104,8 @@
     <Compile Include="Repository\front\FrontRepository.cs" />
     <Compile Include="Repository\modules\events\CmsEventsRepository.cs" />
     <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />
+    <Compile Include="Repository\modules\lk\CmsLkRepository.cs" />
+    <Compile Include="Repository\modules\lk\FrontLkRepository.cs" />
     <Compile Include="Repository\modules\messages\CmsMessagesRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
@@ -150,8 +152,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repository\modules\lk\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
