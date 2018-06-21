@@ -1,2 +1,38 @@
-﻿<h2>Index</h2>
+﻿@using MessagesModule.Areas.Admin.Models
+@model MessagesViewModel
 
+@if (User.Identity.HasClaim(Model.ControllerName, "edit"))
+{
+    <div class="content">
+        <h1>@Model.PageName</h1>
+        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+        {
+            foreach (var item in Model.List.Items)
+            {
+                string _class = (item.View) ? "mail_new" : "";
+                <a class="mail @_class" href="/admin/messages/item/@item.Id">
+                    <div class="col-sm-9">
+                        <div class="mail_title">@item.Theme</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="mail_date">@item.Date.ToString("d")</div>
+                    </div>
+                </a>
+            }
+        }
+    </div>
+
+    <div class="dop_info-block">
+        <div class="dop-caption">Фильтр</div>
+        @Html.Partial("Part/Filter")
+    </div>
+    <div class="buttons">
+        @if (User.Identity.HasClaim(Model.ControllerName, "create"))
+        {
+            using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+            {
+                <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+            }
+        }
+    </div>
+}

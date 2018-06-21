@@ -1409,3 +1409,53 @@ button.rss_delete {border:none; background:none;}
     min-height:220px;
 }
 
+.mail {
+    overflow: hidden;
+    padding: 10px 10px 20px 40px;
+    border-bottom: solid 1px #e6edf2;
+    position: relative;
+display:block;
+}
+.mail.mail_new {
+    background: #f5f8fa;
+}
+.mail:before {
+    content: '\e826';
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-family: 'fontello';
+    font-size: 16px;
+    color: #b8c2cc;
+}
+.mail.mail_new:before{
+    content: '\e827';
+}
+.msg_form {
+    background: #f5f8fa;
+padding:20px 30px;
+}
+.msg_form .button{float:none;margin-left:0;}
+.msg_form textarea{
+resize:vertical;
+}
+.msg_item {
+    border-bottom: solid 1px #dfe4ec;
+    padding: 10px 0;
+}
+.msg_date {
+    float: left;
+    width: 90px;
+    padding: 0 8px;
+    font-size: 0.9em;
+}
+.msg_info{
+padding-left:100px;
+}
+.msg_user_group  span{
+    font: 11px Verdana;
+    font-weight: normal;
+    margin: 7px 0 3px;
+    color: #999999;
+}

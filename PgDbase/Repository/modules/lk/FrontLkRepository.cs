@@ -1001,7 +1001,7 @@ namespace PgDbase.Repository.front
             {
                 return db.lk_meters
                     .Where(w => w.f_meter_device == device)
-                    .OrderBy(o => o.d_send)
+                    //.OrderBy(o => o.d_send)
                     .Take(20)
                     .Select(s => new MeterModel
                     {

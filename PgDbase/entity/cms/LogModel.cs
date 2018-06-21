@@ -186,7 +186,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Подразделения
         /// </summary>
-        Departments
+        Departments,
+        /// <summary>
+        /// Сообщения
+        /// </summary>
+        Messages
     }
 
     /// <summary>

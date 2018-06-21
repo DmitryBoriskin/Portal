@@ -27,7 +27,7 @@ namespace Portal.Controllers
         {
             if (model.LayoutInfo.DefaultSubscr != null)
             {
-                model.DefaultSubscrInfo = _Repository.GetUserSubscrDefault(Guid.Parse(User.Identity.GetUserId()));
+             //   model.DefaultSubscrInfo = _Repository.GetUserSubscrDefault(Guid.Parse(User.Identity.GetUserId()));
                 return View(model);
             }
             else return Redirect("/settings");

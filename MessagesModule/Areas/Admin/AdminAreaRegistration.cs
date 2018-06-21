@@ -12,13 +12,22 @@ namespace MessagesModule.Areas.Admin
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
+            //context.MapRoute(
+            //    "Admin_default",
+            //    "Admin/{controller}/{action}/{id}",
+            //    new { action = "Index", id = UrlParameter.Optional }
+            //);
+
             context.MapRoute(
-                "Admin_default",
-                "Admin/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
-            );
+                  "Msg_BE",
+                  "Admin/Messages/{action}/{id}",
+                  new { controller = "Messages", action = "Index", id = UrlParameter.Optional },
+                  new[] { "MessagesModule.Areas.Admin.Controllers" }
+               );
+
+
         }
     }
 }

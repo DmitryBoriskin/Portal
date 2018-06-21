@@ -61,21 +61,22 @@
 
 
     //выбор лс
-    $('.select_ls').click(function () {
+    $('.select_ls').click(function (e) {
+        e.preventDefault();
         var idsubscr = $(this).attr('data-id');
 
         $.ajax({
             url: "Widget/SelectSubscr",
             type: 'POST',
             data: { SubscrId: idsubscr },
-            //success: function (data) {
-            //    alert('1_' + data);
-            //},
+            success: function (data) {
+                location.reload();
+            },
             //error: function (data) {
             //    alert('2_' + data);
             //},
         });
-        location.reload();
+        
     });
 
  
