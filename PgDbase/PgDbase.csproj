@@ -80,6 +80,7 @@
     <Compile Include="Entity\modules\lk\PaymentModel.cs" />
     <Compile Include="Entity\modules\lk\SubscrModel.cs" />
     <Compile Include="Entity\modules\lk\TariffModel.cs" />
+    <Compile Include="Entity\modules\messages\MessagesFilter.cs" />
     <Compile Include="Entity\modules\messages\MessagesModel.cs" />
     <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
     <Compile Include="Entity\services\Filters\LkFilter.cs" />
@@ -103,16 +104,16 @@
     <Compile Include="Repository\front\FrontRepository.cs" />
     <Compile Include="Repository\modules\events\CmsEventsRepository.cs" />
     <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />
-    <Compile Include="Repository\modules\lk\FrontLkRepository.cs" />
     <Compile Include="Repository\modules\lk\CmsLkRepository.cs" />
+    <Compile Include="Repository\modules\lk\FrontLkRepository.cs" />
     <Compile Include="Repository\modules\messages\CmsMessagesRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Template\DbModel.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>DbModel.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
   </ItemGroup>
   <ItemGroup>

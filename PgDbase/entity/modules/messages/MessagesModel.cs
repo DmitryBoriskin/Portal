@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace PgDbase.entity
         /// тема сообщения
         /// </summary>
         public string Theme { get; set; }
+        [Required]
         public string Text { get; set; }
         public DateTime Date { get; set; }
         /// <summary>
@@ -22,8 +24,15 @@ namespace PgDbase.entity
         /// </summary>
         public bool View { get; set; }
         /// <summary>
-        /// история сообщений
+        /// Признак того что сообщение написано из админки
         /// </summary>
-        public MessagesModel MessageHistory{ get; set; }
+        public bool Admin { get; set; }
+        /// <summary>
+        /// Автор сообщений
+        /// </summary>
+        public UserModel MsgUser { get; set; }
+        
+
+
     }
 }

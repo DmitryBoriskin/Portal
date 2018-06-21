@@ -11,5 +11,9 @@ namespace MessagesModule.Areas.Admin.Models
     {
         public MessagesModel Item { get; set; }
         public Paged<MessagesModel> List { get; set; }
+        /// <summary>
+        /// история сообщений
+        /// </summary>
+        public List<MessagesModel> MessageHistory { get; set; }
     }
 }
