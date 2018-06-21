@@ -44,9 +44,9 @@ namespace LkModule.Areas.Admin
               new[] { "LkModule.Areas.Admin.Controllers" }
            );
             context.MapRoute(
-              "MeterDevices_BE",
-              "Admin/MeterDevices/{action}/{id}",
-              new { controller = "MeterDevices", action = "Index", id = UrlParameter.Optional },
+              "PU_BE",
+              "Admin/PU/{action}/{id}",
+              new { controller = "PU", action = "Index", id = UrlParameter.Optional },
               new[] { "LkModule.Areas.Admin.Controllers" }
            );
             context.MapRoute(

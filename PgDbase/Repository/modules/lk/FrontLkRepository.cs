@@ -848,7 +848,7 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 Paged<AccrualModel> result = new Paged<AccrualModel>();
-                var query = db.lk_charges
+                var query = db.lk_accruals
                     .Where(w => w.f_subscr == subscr);
 
                 if (filter.Payed.HasValue)
@@ -866,7 +866,7 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.id,
                         Date = s.d_date,
-                        Debt = (decimal)s.n_debt,
+                        Amount = s.n_amount,
                         Payed = s.b_payed
                     }).ToArray();
 
@@ -892,13 +892,13 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                return db.lk_charges
+                return db.lk_accruals
                     .Where(w => w.id == id)
                     .Select(s => new AccrualModel
                     {
                         Id = s.id,
                         Date = s.d_date,
-                        Debt = (decimal)s.n_debt,
+                        Amount = s.n_amount,
                         Payed = s.b_payed
                     }).SingleOrDefault();
             }
@@ -913,7 +913,7 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                return db.lk_charges
+                return db.lk_accruals
                     .Where(w => w.id == id)
                     .Select(s => s.f_subscr)
                     .SingleOrDefault();
@@ -935,7 +935,7 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 Paged<PuModel> result = new Paged<PuModel>();
-                var query = db.lk_meter_devices
+                var query = db.lk_subscr_devices
                     .Where(w => w.f_subscr == subscr);
 
                 if (filter.Disabled.HasValue)
@@ -959,15 +959,15 @@ namespace PgDbase.Repository.front
                         DeviceInfo = (s.f_device_type != null) ?
                                 new DeviceModel()
                                 {
-                                    Name = s.fkmeterdevicedevicetypes.c_name,
-                                    Tariff = s.fkmeterdevicedevicetypes.n_tariff,
-                                    Modification = s.fkmeterdevicedevicetypes.c_modification,
-                                    Manufactirer = s.fkmeterdevicedevicetypes.c_manufacturer,
-                                    Phase3 = s.fkmeterdevicedevicetypes.b_phase3,
-                                    DeviceCategory = s.fkmeterdevicedevicetypes.c_device_category,
-                                    EnergyCategory = s.fkmeterdevicedevicetypes.c_energy_category,
-                                    PrecissionClass = s.fkmeterdevicedevicetypes.c_precission_class,
-                                    VoltageNominal = s.fkmeterdevicedevicetypes.c_voltage_nominal
+                                    Name = s.fksubscrdevicedevicetypes.c_name,
+                                    Tariff = s.fksubscrdevicedevicetypes.n_tariff,
+                                    Modification = s.fksubscrdevicedevicetypes.c_modification,
+                                    Manufactirer = s.fksubscrdevicedevicetypes.c_manufacturer,
+                                    Phase3 = s.fksubscrdevicedevicetypes.b_phase3,
+                                    DeviceCategory = s.fksubscrdevicedevicetypes.c_device_category,
+                                    EnergyCategory = s.fksubscrdevicedevicetypes.c_energy_category,
+                                    PrecissionClass = s.fksubscrdevicedevicetypes.c_precission_class,
+                                    VoltageNominal = s.fksubscrdevicedevicetypes.c_voltage_nominal
                                 }
                                 : null
 
@@ -1001,18 +1001,21 @@ namespace PgDbase.Repository.front
             {
                 return db.lk_meters
                     .Where(w => w.f_meter_device == device)
-                    //.OrderBy(o => o.d_send)
-                    .Take(20)
+                    .OrderByDescending(o => o.d_date)
+                    .Take(100)
                     .Select(s => new MeterModel
                     {
                         Id = s.id,
-                        Send = s.d_send,
-                        Output = s.n_output,
-                        DrawlType = new GroupsModel
-                        {
-                            Id = s.f_drawl_type,
-                            //Title = s.fkmeterdrawltypes.c_title
-                        }
+                        Date = s.d_date,
+                        DatePrev = s.d_date_prev,
+                        Value = s.n_value,
+                        Const = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Year = s.n_year,
+                        Month = s.n_month,
+                        Days = s.n_days,
+                        DeliveryMethod = s.c_delivery_method,
+                        
                     }).ToArray();
             }
         }
@@ -1035,16 +1038,16 @@ namespace PgDbase.Repository.front
                 var query = db.lk_payments
                     .Where(w => w.f_subscr == subscr);
 
-                if (!String.IsNullOrWhiteSpace(filter.Status))
-                {
-                    Guid status = Guid.Parse(filter.Status);
-                    query = query.Where(w => w.f_status == status);
-                }
-                if (!String.IsNullOrWhiteSpace(filter.Type))
-                {
-                    Guid type = Guid.Parse(filter.Type);
-                    query = query.Where(w => w.f_type == type);
-                }
+                //if (!String.IsNullOrWhiteSpace(filter.Status))
+                //{
+                //    Guid status = Guid.Parse(filter.Status);
+                //    query = query.Where(w => w.f_status == status);
+                //}
+                //if (!String.IsNullOrWhiteSpace(filter.Type))
+                //{
+                //    Guid type = Guid.Parse(filter.Type);
+                //    query = query.Where(w => w.f_type == type);
+                //}
 
                 query = query.OrderByDescending(o => o.d_date);
                 int itemsCount = query.Count();
@@ -1055,18 +1058,11 @@ namespace PgDbase.Repository.front
                     .Select(s => new PaymentModel
                     {
                         Date = s.d_date,
-                        Amount = (decimal)s.n_amount,
-                        Status = new GroupsModel
-                        {
-                            Id = s.fkpaymentstatuses.id,
-                            Title = s.fkpaymentstatuses.c_title
-                        },
-                        Type = new GroupsModel
-                        {
-                            Id = s.fkpaymenttypes.id,
-                            Title = s.fkpaymenttypes.c_title
-                        }
-                    }).ToArray();
+                        Amount = s.n_amount,
+                        Status = s.c_status,
+                        IsPeni = s.b_peni
+                    })
+                    .ToArray();
 
                 return new Paged<PaymentModel>
                 {
@@ -1081,75 +1077,7 @@ namespace PgDbase.Repository.front
             }
         }
 
-        /// <summary>
-        /// Возвращает список статусов по платежам
-        /// </summary>
-        /// <returns></returns>
-        public GroupsModel[] GetPaymentStatuses()
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.lk_payment_statuses
-                    .OrderBy(o => o.c_title)
-                    .Select(s => new GroupsModel
-                    {
-                        Id = s.id,
-                        Title = s.c_title
-                    }).ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Возвращает список типов платежей
-        /// </summary>
-        /// <returns></returns>
-        public GroupsModel[] GetPaymentTypes()
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.lk_payment_types
-                    .OrderBy(o => o.c_title)
-                    .Select(s => new GroupsModel
-                    {
-                        Id = s.id,
-                        Title = s.c_title
-                    }).ToArray();
-            }
-        }
-
         #endregion
 
-        #region Тарифы
-
-        /// <summary>
-        /// Возвращает список тарифов ПУ
-        /// </summary>
-        /// <param name="device"></param>
-        /// <returns></returns>
-        public TariffModel[] GetTariffes(Guid device)
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.lk_tariffes
-                    .Where(w => w.fkmeterdevices.Any(a => a.f_device == device))
-                    .Select(s => new TariffModel
-                    {
-                        Id = s.id,
-                        Title = s.c_title,
-                        Begin = s.d_begin,
-                        End = s.d_end,
-                        Disabled = s.b_disabled,
-                        Values = s.fktariffvaluess
-                            .Select(t => new TariffValueModel
-                            {
-                                Id = t.id,
-                                Title = t.c_title,
-                                Price = t.n_price
-                            }).ToArray()
-                    }).ToArray();
-            }
-        }
-
-        #endregion
     }
 }

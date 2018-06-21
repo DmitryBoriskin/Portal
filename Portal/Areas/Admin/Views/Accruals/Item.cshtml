@@ -20,7 +20,7 @@
                 <tbody>
                     <tr>
                         <td>@Model.Item.Date.ToString("dd.MM.yyyy")</td>
-                        <td>@Model.Item.Debt.ToString("0.##")</td>
+                        <td>@(Model.Item.Amount.HasValue ? Model.Item.Amount.Value.ToString("N2") : "")</td>
                         <td>@payed</td>
                     </tr>
                 </tbody>

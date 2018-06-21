@@ -20,7 +20,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Сумма
         /// </summary>
-        public decimal Debt { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
         /// Оплаченность

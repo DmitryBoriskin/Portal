@@ -26,7 +26,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Дата установки
         /// </summary>
-        public DateTime InstallDate { get; set; }
+        public DateTime? InstallDate { get; set; }
 
         /// <summary>
         /// Место установки

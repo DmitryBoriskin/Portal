@@ -34,7 +34,7 @@ namespace LkModule.Areas.Admin.Controllers
                 MenuCMS = MenuCmsCore,
                 MenuModules = MenuModulCore,
                 Statuses = _cmsRepository.GetPaymentStatuses(),
-                Types = _cmsRepository.GetPaymentTypes()
+                //Types = _cmsRepository.GetPaymentTypes()
             };
         }
 
