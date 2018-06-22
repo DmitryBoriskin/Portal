@@ -109,6 +109,7 @@
     <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />
     <Compile Include="Repository\modules\lk\CmsLkRepository.cs" />
     <Compile Include="Repository\modules\lk\FrontLkRepository.cs" />
+    <Compile Include="Repository\modules\messages\FrontMessagesRepository.cs" />
     <Compile Include="Repository\modules\messages\CmsMessagesRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />

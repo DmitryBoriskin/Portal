@@ -9,9 +9,12 @@ namespace PgDbase.entity
 {
     public class MessagesModel
     {
-        public Guid Id { get; set; }        
+        public Guid Id { get; set; }  
+        //идентифкатор пользователя которое отправило сообщение
         public Guid User { get; set; }
-        public Guid ParentId { get; set; }
+        [Display(Name="Адресат")]
+        public Guid? UserDestination { get; set; }
+        public Guid? ParentId { get; set; }
         /// <summary>
         /// тема сообщения
         /// </summary>
@@ -31,8 +34,17 @@ namespace PgDbase.entity
         /// Автор сообщений
         /// </summary>
         public UserModel MsgUser { get; set; }
-        
+    }
 
 
+    public class MessagesTheme: MessagesModel
+    {
+        public int AllCount { get; set; }
+        public int NewMsgCount { get; set; }
+        /// <summary>
+        /// Участники сообщений
+        /// </summary>
+        public string MemberMsg { get; set; }
+        public MessagesModel[] MessageList { get; set; }
     }
 }

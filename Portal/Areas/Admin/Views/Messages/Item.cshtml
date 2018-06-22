@@ -19,13 +19,18 @@
 
             }
             <div class="msg_form">
-                @if (Model.Item == null)                
+                @if (Model.Item == null)
                 {
-                    @Html.TextBoxFor(m=>m.Item.Theme,new {@class= "uc_input",@title="Тема" })
+                    <div class="form-group">
+                        <label>Кому:</label>
+                        @Html.DropDownListFor(m => m.Item.UserDestination, Model.UserList,new { @class = "select2" })
+                    </div>
+                    @Html.TextBoxFor(m=>m.Item.Theme,new {@class= "uc_input",@title="Тема" })                    
+                    <br/>
                 }
 
-                <div class="form-group">                    
-                    @Html.TextAreaFor(m => m.Item.Text,new { @class = "form-control",@placeholder="Текст..." })
+                <div class="form-group">
+                    @Html.TextAreaFor(m => m.Item.Text,new { @class = "form-control",@placeholder="Текст...",@rows="5" })
                 </div>
                 
 
@@ -37,8 +42,6 @@
             
             <div class="row">
                 <div class="msg-list">
-
-
                     @if (Model.MessageHistory != null && Model.MessageHistory.Count > 0)
                     {
                         foreach (var msg in Model.MessageHistory)
@@ -52,8 +55,12 @@
                             {
                                 UserName = @msg.MsgUser.Surname + " " + msg.MsgUser.Name;
                             }
-
-                            <div class="msg_item">
+                            string _class = "";
+                            if (!msg.Admin)
+                            {
+                                _class = "msg_user";
+                            }
+                            <div class="msg_item @_class">
                                 <div class="msg_date">
                                 @msg.Date.ToString("d")
                                     <div class="msg_time">@msg.Date.ToString("T")</div>
@@ -89,13 +96,9 @@
         
         
     </div>
-    <div class="dop_info-block">
-        <div class="dop-caption icon-layers">Доп. параметры</div>
-        @*@Html.TextBoxFor(m => m.Item.Date, new { data_type = "datetime", title = "Дата начала", value = ViewBag.Date })*@
-        @*<div class="form-group">
-            <label></label>
-        </div>*@
-    </div>
+    @*<div class="dop_info-block">
+        <div class="dop-caption icon-layers">Доп. параметры</div>   
+    </div>*@
     <div class="buttons">        
         @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
         {
@@ -104,3 +107,7 @@
         <button type="submit" name="action" value="cancel-btn" data-action="cancel" class="button icon-cancel">Закрыть</button>
     </div>
 }
+
+@section scripts{
+ 
+    }

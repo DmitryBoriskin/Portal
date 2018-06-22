@@ -103,15 +103,15 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Messages\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Admin\Views\Messages\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Messages\part\Filter.cshtml" />
+    <Content Include="Areas\Messages\Views\web.config" />
+    <Content Include="Areas\Messages\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Messages\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Messages\Views\Messages\Index.cshtml" />
+    <Content Include="Areas\Messages\Views\Messages\Item.cshtml" />
+    <Content Include="Areas\Messages\Views\MsgWidget\Index.cshtml" />
     <None Include="packages.config" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -129,12 +129,15 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\MessagesController.cs" />
     <Compile Include="Areas\Admin\Models\MessagesViewModule.cs" />
+    <Compile Include="Areas\Messages\Controllers\MessagesController.cs" />
+    <Compile Include="Areas\Messages\Controllers\MsgWidgetController.cs" />
+    <Compile Include="Areas\Messages\Models\MsgWidgetFrontModel.cs" />
+    <Compile Include="Areas\Messages\Models\MessagesFrontModel.cs" />
+    <Compile Include="Areas\Messages\MessagesAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -142,8 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
@@ -190,6 +191,9 @@
   <PropertyGroup>
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Messages\*" "$(SolutionDir)Portal\Areas\Admin\Views\Messages\"
+
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\Messages\*" "$(SolutionDir)Portal\Views\Messages\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\MsgWidget\*" "$(SolutionDir)Portal\Views\MsgWidget\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,13 +9,17 @@
         {
             foreach (var item in Model.List.Items)
             {
-                string _class = (item.View) ? "mail_new" : "";
+                string _class = (item.NewMsgCount>0) ? "mail_new" : "";
                 <a class="mail @_class" href="/admin/messages/item/@item.Id">
                     <div class="col-sm-9">
+                        <div class="mail_count">
+                            <span class="badge badge-light">@item.AllCount/@item.NewMsgCount</span>
+                            @*<span>@item.AllCount</span>/<span>@item.NewMsgCount</span>*@
+                        </div>
                         <div class="mail_title">@item.Theme</div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="mail_date">@item.Date.ToString("d")</div>
+                        <div class="mail_date">@item.Date.ToString("G")</div>
                     </div>
                 </a>
             }

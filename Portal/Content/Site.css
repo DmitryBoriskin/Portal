@@ -1,4 +1,6 @@
-﻿.menu {
+﻿/*STYLE FRONT*/
+
+.menu {
     
     display: inline-block;
 }
@@ -207,4 +209,26 @@ float:left;
 }
 .news_img_lk {
     max-width: 100%;
+}
+
+.mess_theme{
+    
+}
+.mess_theme span {
+    padding-left: 10px;
+    color: #0d4f9c;
+}
+
+.mess-list .username {
+margin-left:0;
+}
+.mess-list .user-block .description{
+margin-left:0;
+}
+.post {
+    padding:20px!important;
+margin-bottom:0;
+}
+.post.post_admin {
+    background-color: #ecf0f5;
 }
