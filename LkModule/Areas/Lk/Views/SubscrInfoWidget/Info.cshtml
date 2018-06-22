@@ -5,8 +5,13 @@
 
 @if (Model.Item != null)
 {
+    var balance = "balance__green";
+    if(Model.Item.Debt.Value > 0)
+    {
+        balance = "balance__red";
+    }
     <li class="dropdown balance-menu">
-        <a href="#" class="dropdown-toggle balance balance__green" data-toggle="dropdown">
+        <a href="#" class="dropdown-toggle balance @balance" data-toggle="dropdown">
             <span>
                 @(Model.Item.Debt.HasValue ? (Model.Item.Debt.Value * (-1)).ToString("N2") : "")&nbsp;<i class="fa fa-rub"></i>
             </span>

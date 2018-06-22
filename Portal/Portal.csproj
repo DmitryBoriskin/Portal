@@ -365,6 +365,7 @@
     <Content Include="Content\plugins\bootstrap\js\bootstrap-toggle.js" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.js" />
     <Content Include="Content\plugins\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\plugins\charts\loader.js" />
     <Content Include="Content\plugins\datatables\dataTables.bootstrap.min.css" />
     <Content Include="Content\plugins\datatables\dataTables.bootstrap.min.js" />
     <Content Include="Content\plugins\datatables\datatables.css" />

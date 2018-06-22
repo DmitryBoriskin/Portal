@@ -164,7 +164,9 @@ font-size:1.1em;
 .balance__green i, .balance__green span {
     color: #00a61c;
 }
-
+.balance__red i, .balance__red span {
+    color: red;
+}
 
 .todo-list > li.activ {
     background-color: #ffe3b4;
