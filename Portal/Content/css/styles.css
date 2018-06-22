@@ -1411,7 +1411,7 @@ button.rss_delete {border:none; background:none;}
 
 .mail {
     overflow: hidden;
-    padding: 10px 10px 20px 40px;
+    padding: 14px 10px 20px 40px;
     border-bottom: solid 1px #e6edf2;
     position: relative;
 display:block;
@@ -1440,9 +1440,16 @@ padding:20px 30px;
 .msg_form textarea{
 resize:vertical;
 }
+.msg-list {
+    margin: 20px 5px 0;
+}
 .msg_item {
     border-bottom: solid 1px #dfe4ec;
     padding: 10px 0;
+    border-left:3px solid #fff;
+}
+.msg_item.msg_user{
+    border-left: 3px solid #176599;
 }
 .msg_date {
     float: left;
@@ -1459,3 +1466,14 @@ padding-left:100px;
     margin: 7px 0 3px;
     color: #999999;
 }
+.mail_title{
+padding-left:40px;
+}
+.mail_count{
+    position:absolute;
+}
+.mail_count span{
+    font-weight:normal;
+font-size:11px;
+}
+

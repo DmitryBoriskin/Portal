@@ -47,11 +47,18 @@ namespace MessagesModule.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.MessageHistory = _cmsRepository.GetMessagesThemeItem(id);
+
+            List<UserModel> SlectList = new List<UserModel>();
+            SlectList.Add(new UserModel { });
+            SlectList.AddRange(_cmsRepository.GetUserList());
+                
+            model.UserList=SlectList.Select(s => new SelectListItem { Text = s.Surname + " " + s.Name + " " + s.Patronimyc,Value=s.Id.ToString()});
+
             if (model.MessageHistory != null && model.MessageHistory.Count() > 0)
             {
                 model.Item = new MessagesModel
                 {
-                    Theme = model.MessageHistory.First().Theme
+                    Theme = model.MessageHistory.Last().Theme
                 };                    
             }
             return View(model);
