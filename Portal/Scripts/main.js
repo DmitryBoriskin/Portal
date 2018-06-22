@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
 
-
     if ($('.treeview-menu li.active').length > 0) {
         var parenttree = $('.treeview-menu li.active').closest('.treeview-menu');
         parenttree.addClass('menu-open');
@@ -58,28 +57,6 @@
             increaseArea: '20%' // optional
         });
     }
-
-
-    //выбор лс
-    $('.select_ls').click(function (e) {
-        e.preventDefault();
-        var idsubscr = $(this).attr('data-id');
-
-        $.ajax({
-            url: "Widget/SelectSubscr",
-            type: 'POST',
-            data: { SubscrId: idsubscr },
-            success: function (data) {
-                location.reload();
-            },
-            //error: function (data) {
-            //    alert('2_' + data);
-            //},
-        });
-        
-    });
-
- 
 
 
     //Маска мобильного телефона

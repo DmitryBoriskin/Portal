@@ -22,6 +22,11 @@
     <link href="~/Content/template/css/AdminLTE.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/template/css/skin.css" rel="stylesheet" />
+
+    <!-- jQuery 2.1.4 -->
+    <script src="~/Content/plugins/jquery/jquery.js"></script>
+    <script src="~/Content/plugins/jquery/jquery.cookie.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -47,62 +52,10 @@
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+
                         @if (User.Identity.IsAuthenticated)
                         {
-                            if (Model.LayoutInfo.DefaultSubscr != null)
-                            {
-                                <li class="dropdown balance-menu">
-                                    <a href="#" class="dropdown-toggle balance balance__green" data-toggle="dropdown">
-                                         @{Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });}
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="header">Баланс на @DateTime.Now.ToString("dd.MM.yyyy")</li>
-                                        @*<li> <a class="balance-menu-pay" href="#">Оплатить</a></li>*@
-                                        <li class="footer"><a href="/lk/payments">История платежей</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown notifications-menu subscr-list-menu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.LayoutInfo.DefaultSubscr.Subscr</span>
-                                        @*<span class="label label-primary">@Model.LayoutInfo.ConnectionSubscrList.Length</span>*@
-                                    </a>
-                                    @if (Model.LayoutInfo.ConnectionSubscrList != null)
-                                    {
-                                        <ul class="dropdown-menu">
-                                            <li class="header">Подключенные лицевые счета</li>
-                                            <li>
-                                                <ul class="menu">
-                                                    @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
-                                                    {
-                                                        string _class = "";
-                                                        if (item.Default)
-                                                        {
-                                                            _class = " fa-star";
-                                                        }
-                                                        else
-                                                        {
-                                                            _class = " fa-star-o";
-                                                        }
-                                                        <li>
-                                                            <a href="#" data-id="@item.Id" class="select_ls">
-                                                                <i class="fa @_class text-orange"></i> @item.Subscr - @item.Name
-                                                            </a>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                            </li>
-                                        </ul>
-
-                                    }
-                                </li>
-                            }
-                            else
-                            {
-                                <li>
-                                    <a href="/settings" class="text-orange">Подключить лицевой счет</a>
-                                </li>
-                            }
-
+                            Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
 
                             <li class="dropdown messages-menu">
                                 <a href="/page/message" class="dropdown-toggle" data-toggle="dropdown">
@@ -150,16 +103,16 @@
                                     </li>
                                     <!-- Menu Body -->
                                     @*<li class="user-body">
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Followers</a>
-                                            </div>
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Sales</a>
-                                            </div>
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Friends</a>
-                                            </div>
-                                        </li>*@
+                        <div class="col-xs-4 text-center">
+                            <a href="#">Followers</a>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <a href="#">Sales</a>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <a href="#">Friends</a>
+                        </div>
+                    </li>*@
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
                                         <div class="pull-left">
@@ -180,7 +133,7 @@
                         else
                         {
                             <li class="tasks-menu">
-                                <a href="/account/Login">Войти</a>
+                                <a href="/account/Login">Вход</a>
                             </li>
 
                         }
@@ -229,9 +182,7 @@
              immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
     </div><!-- ./wrapper -->
-    <!-- jQuery 2.1.4 -->
-    <script src="~/Content/plugins/jquery/jquery.js"></script>
-    <script src="~/Content/plugins/jquery/jquery.cookie.js"></script>
+
     <!-- Bootstrap 3.3.5 -->
     <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
     <!-- SlimScroll -->

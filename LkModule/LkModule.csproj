@@ -155,6 +155,7 @@
     <Content Include="Areas\Lk\Views\Meters\Index.cshtml" />
     <Content Include="Areas\Lk\Views\Accruals\Payed.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfo\Index.cshtml" />
+    <Content Include="Areas\Lk\Views\SubscrInfoWidget\Index.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

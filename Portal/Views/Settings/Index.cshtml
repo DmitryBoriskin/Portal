@@ -9,64 +9,7 @@
     </div>
     <div class="row">
         <div class="col-md-7">
-            <div class="box box-solid">
-                <div class="box-header with-border">
-                    <h4 class="box-title">Лицевые счета</h4>
-                    <div class="row">
-                        <div class="box-body">
-                            @if (Model.LayoutInfo.ConnectionSubscrList != null)
-                            {
-                                <ul class="todo-list">
-                                    @foreach (var item in Model.LayoutInfo.ConnectionSubscrList)
-                                    {
-                                        string _class = "";
-                                        if (item.Id == Model.LayoutInfo.DefaultSubscr.Id)
-                                        {
-                                            _class = "class=activ";
-                                        }
-                                        <li @_class>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <strong><i class="fa fa-file-text-o margin-r-5"></i> № @item.Subscr - @item.Name</strong>
-                                                    <p class="text-muted small">@item.Address</p>
-                                                </div>
-                                                @*<div class="col-sm-4">
-                                                        <button class="btn btn_orange deactivate_ls" data-id="@item.Id">Отключить</button>
-                                                    </div>*@
-                                            </div>
-
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @{Html.RenderAction("Index", "SubscrInfoWidget", new { @area = "Lk" }); }
         </div>
     </div>
 </div>
-
-
-@section scripts {
-
-    <script>
-        $('.deactivate_ls').click(function (e) {
-            e.preventDefault();
-            var idsubscr = $(this).attr('data-id');
-
-            //$.ajax({
-            //    url: "Widget/SelectSubscr",
-            //    type: 'POST',
-            //    data: { SubscrId: idsubscr },
-            //    success: function (data) {
-            //        alert('1_' + data);
-            //    },
-            //    error: function (data) {
-            //        alert('2_' + data);
-            //    },
-            //});
-            location.reload();
-        })
-    </script>
-}

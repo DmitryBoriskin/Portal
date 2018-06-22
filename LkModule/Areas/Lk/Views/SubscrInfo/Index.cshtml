@@ -33,7 +33,7 @@
                         <div class="li-desc"><span>Телефон:</span> @Model.Item.Phone</div>
                         <div class="li-desc"><span>Почтовый адрес:</span> @Model.Item.PostAddress</div>
                         <div class="li-desc"><span>Договор действителен с:</span> @(Model.Item.Begin.HasValue ? Model.Item.Begin.Value.ToString("dd.MM.yyyy") : "")</div>
-                        <div class="li-desc"><span>Договор действителен по:</span> @(Model.Item.Begin.HasValue ? Model.Item.End.Value.ToString("dd.MM.yyyy") : "")</div>
+                        <div class="li-desc"><span>Договор действителен по:</span> @(Model.Item.End.HasValue ? Model.Item.End.Value.ToString("dd.MM.yyyy") : "")</div>
                         <br />
                         <div class="li-desc"><span>Банк:</span> </div>
                         <div class="li-desc"><span>Наименование:</span> @Model.Item.Bank.Name</div>

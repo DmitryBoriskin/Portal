@@ -1,4 +1,5 @@
-﻿using PgDbase.entity;
+﻿using LkModule.Areas.Lk.Models;
+using PgDbase.entity;
 using Portal.Controllers;
 using System;
 using System.Collections;
@@ -13,20 +14,51 @@ namespace LkModule.Areas.Lk.Controllers
     [Authorize]
     public class SubscrInfoWidgetController : CoreController
     {
-       
-        public ActionResult Info()
+
+        public ActionResult Index()
         {
-            var model = new List<SubscrShortModel>();
+            var model = new SubscrWidgetFrontModel();
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
             if (userSubscr != null)
             {
-                model = _Repository.GetSubscrInfoForTopPannel(userId);
+                model.List = _Repository.GetSubscrInfoForTopPannel(userId);
+                model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
+
             }
 
             return View(model);
+        }
+
+        public ActionResult Info()
+        {
+            var model = new SubscrWidgetFrontModel();
+
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            if (userSubscr != null)
+            {
+                model.List = _Repository.GetSubscrInfoForTopPannel(userId);
+                model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true): null;
+
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult SetUserSubscrDefault(Guid subscrId)
+        {
+            var userId = CurrentUser.UserId;
+
+            var res = _Repository.SetUserSubscrDefault(subscrId, userId);
+            if (res)
+                return Json("success");
+
+            return Json("An Error Has Occourred");
         }
 
     }

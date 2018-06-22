@@ -1,20 +1,95 @@
-﻿@using PgDbase.entity
-@model  List<SubscrShortModel>
+﻿@using LkModule.Areas.Lk.Models
+@model  SubscrWidgetFrontModel
 
 @{ Layout = null; }
 
-@if (Model != null && Model.Count() > 0)
+@if (Model.Item != null)
 {
-    foreach (var item in Model)
-    {
-        string disabled = (item.Disabled.HasValue && !item.Disabled.Value)? "disabled" : "";
-        if (item.Default.HasValue && item.Default.Value)
-        {
+    <li class="dropdown balance-menu">
+        <a href="#" class="dropdown-toggle balance balance__green" data-toggle="dropdown">
             <span>
-                @(item.Debt.HasValue ? (item.Debt.Value*(-1)).ToString("N2") : "")&nbsp;<i class="fa fa-rub"></i>
+                @(Model.Item.Debt.HasValue ? (Model.Item.Debt.Value * (-1)).ToString("N2") : "")&nbsp;<i class="fa fa-rub"></i>
             </span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">Баланс на @DateTime.Now.ToString("dd.MM.yyyy")</li>
+            @*<li> <a class="balance-menu-pay" href="#">Оплатить</a></li>*@
+            <li class="footer"><a href="/lk/payments">История платежей</a></li>
+        </ul>
+    </li>
+    <li class="dropdown notifications-menu subscr-list-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.Item.SubscrId</span>
+        </a>
+        @if (Model.List != null && Model.List.Count() > 0)
+        {
+            <ul class="dropdown-menu">
+                <li class="header">Подключенные лицевые счета</li>
+                <li>
+                    <ul class="menu">
+                        @foreach (var item in Model.List)
+                        {
+                            string _class = "";
+                            if (item.Default.HasValue && item.Default.Value)
+                            {
+                                _class = " fa-star";
+                            }
+                            else
+                            {
+                                _class = " fa-star-o";
+                            }
+                            <li>
+                                <a href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id" class="setSubscDefault-link">
+                                    <i class="fa @_class text-orange"></i> @item.SubscrId - @item.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            </ul>
         }
-    }
+    </li>
 }
+else
+{
+    <li>
+        <a href="/settings" class="text-orange">Подключить лицевой счет</a>
+    </li>
+}
+
+    <script>
+        $(document).ready(function (e) {
+            //Переключение лс
+            $('.setSubscDefault-link').click(function (e) {
+                e.preventDefault();
+
+                var _subscrId = $(this).data('subscrId');
+                var _action = $(this).attr("href");
+
+                try {
+                    $.ajax({
+                        method: "POST",
+                        url: _action,
+                        async: true,
+                        data: { subscrId: _subscrId },
+                    })
+                        .done(function (response) {
+                            location.reload();
+                        })
+                        .fail(function (jqXHR, status) {
+                            console.log("Ошибка" + " " + status + " " + jqXHR);
+                        })
+                        .always(function (response) {
+                           
+                        });
+                }
+                catch (ex) {
+                    console.log(ex);
+                };
+
+            });
+
+        });
+    </script>
 
 

@@ -7,7 +7,7 @@
     @Html.Partial("Part/Filter")
 
 
-    @if (Model.List.Items != null && Model.List.Items.Count() > 0)
+    @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
     {
         foreach (var item in Model.List.Items)
         {

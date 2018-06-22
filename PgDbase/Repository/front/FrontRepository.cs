@@ -75,64 +75,6 @@ namespace PgDbase.Repository.front
         }
 
 
-        public LayoutModel GetLayoutInfo(Guid UserId)
-        {
-            LayoutModel model = new LayoutModel();
-            using (var db = new CMSdb(_context))
-            {
-                #region главное меню
-                //var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == "main")
-                //          .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
-                //          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o })
-                //          .Where(w=>w.o.b_disabled==false);
-
-                //if (q.Any())
-                //{
-                //    model.MainMenu= q.OrderBy(o => o.e.n_sort)
-                //            .Select(s => new PageModel
-                //            {
-                //                Name = s.o.c_name,                                
-                //                Url = (String.IsNullOrEmpty(s.o.c_url))? "/page"+s.o.c_path+ s.o.c_alias: s.o.c_url,
-                //                FaIcon=s.o.c_fa_icon,
-                //                Childrens= GetChildMenu(s.o.gid)
-                //            }).ToArray();
-                //}
-                #endregion
-
-
-#warning !!!!Это функционал модуля LkModule  - данный функционал должен реализовываться как виджет
-                #region  лицевые счета                
-                var ls_q = db.lk_user_subscrs.Where(w => w.f_user == UserId)
-                             .Join(db.lk_subscrs, u => u.f_subscr, s => s.id, (u, s) => new { u, s });
-                if (ls_q.Any())
-                {
-                    //подключенные ЛС
-                    model.ConnectionSubscrList = ls_q
-                                                    .OrderByDescending(o => o.u.d_attached)
-                                                    .Select(s => new SubscrModel()
-                                                    {
-                                                        Subscr = s.s.c_subscr,
-                                                        Name = s.s.c_surname,
-                                                        Default = s.u.b_default,
-                                                        Id = s.s.id,
-                                                        Address=s.s.c_address
-                                                    }).ToArray();
-                    //выбранный ЛС(по умолчанию)
-                    model.DefaultSubscr = ls_q.Where(w => w.u.b_default == true)
-                                              .Select(s => new SubscrModel
-                                              {
-                                                  Address = s.s.c_address,
-                                                  Subscr = s.s.c_subscr,
-                                                  Name = s.s.c_surname,
-                                                  Id=s.s.id
-                                              }).Single();
-                }
-                #endregion
-            }
-            return model;
-        }
-
-
         /// <summary>
         /// 
         /// </summary>

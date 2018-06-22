@@ -13,11 +13,6 @@ namespace PgDbase.entity
         public Guid? Id { get; set; }
 
         /// <summary>
-        /// Номер GUID
-        /// </summary>
-        public Guid? SubscrUid { get; set; }
-
-        /// <summary>
         /// Номер ID
         /// </summary>
         public string SubscrId { get; set; }
