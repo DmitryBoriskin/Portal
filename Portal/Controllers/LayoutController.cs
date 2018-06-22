@@ -50,11 +50,6 @@ namespace Portal.Controllers
             _breadcrumb = _Repository.GetBreadCrumbCollection(_alias, _path);
             _pageName = ViewBag.Title = _breadcrumb.Last().Title;
             ViewBag.ThisUrl = _breadcrumb.Last().Url;
-
-            //наполнение шаблона
-            if (CurrentUser != null)
-                _layoutData = _Repository.GetLayoutInfo(Guid.Parse(User.Identity.GetUserId()));
-
         }
     }
 }

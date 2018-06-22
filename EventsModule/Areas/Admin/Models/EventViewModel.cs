@@ -5,7 +5,7 @@ namespace EventsModule.Areas.Admin.Models
 {
     public class EventViewModel: CoreViewModel
     {
-        public Paged<EventsModel> List { get; set; }
-        public EventsModel Item { get; set; }
+        public Paged<EventModel> List { get; set; }
+        public EventModel Item { get; set; }
     }
 }

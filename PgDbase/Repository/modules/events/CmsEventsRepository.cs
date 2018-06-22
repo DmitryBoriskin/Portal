@@ -17,7 +17,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<EventsModel> GetEventsList(EventFilterModel filter)
+        public Paged<EventModel> GetEventsList(EventFilterModel filter)
         {
             Paged<NewsModel> result = new Paged<NewsModel>();
             using (var db = new CMSdb(_context))
@@ -57,7 +57,7 @@ namespace PgDbase.Repository.cms
                 int itemsCount = query.Count();
                 var list = query.Skip(filter.Size * (filter.Page - 1))
                                 .Take(filter.Size)
-                                .Select(s => new EventsModel {
+                                .Select(s => new EventModel {
                                     Id = s.id,
                                     Guid = s.gid,
                                     Title = s.c_title,
@@ -68,7 +68,7 @@ namespace PgDbase.Repository.cms
                                     Photo = s.c_photo,
                                     ViewCount = s.c_view_count
                                 });
-                return new Paged<EventsModel>()
+                return new Paged<EventModel>()
                 {
                     Items = list.ToArray(),
                     Pager = new PagerModel()
@@ -85,14 +85,14 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public EventsModel GetEventItem(Guid id)
+        public EventModel GetEventItem(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 var data = db.event_events.Where(w => w.gid == id);
                 if (data.Any())
                 {
-                    var d= data.Select(s => new EventsModel {
+                    var d= data.Select(s => new EventModel {
                         Alias=s.c_alias,
                         Annual=s.b_annual,
                         Date=s.d_date,
@@ -145,7 +145,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="insert"></param>
         /// <returns></returns>
-        public bool InsertEvent(EventsModel insert)
+        public bool InsertEvent(EventModel insert)
         {
             using (var db = new CMSdb(_context))
             {
@@ -188,7 +188,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="update"></param>
         /// <returns></returns>
-        public bool UpdateEvent(EventsModel update)
+        public bool UpdateEvent(EventModel update)
         {
             using (var db = new CMSdb(_context))
             {
@@ -262,14 +262,14 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public EventsModel[] GetAttachEventsForNews(Guid id)
+        public EventModel[] GetAttachEventsForNews(Guid id)
         {
            using (var db = new CMSdb(_context))
            {
                var q = db.event_events_material_link.Where(w => w.f_news == id);
                if (q.Any())
                {
-                   return q.Select(s => new EventsModel() {
+                   return q.Select(s => new EventModel() {
                        Guid=s.f_events,
                        AttachEventNewsId=s.id,
                        Title =s.fkeventsmaterials.c_title                        
@@ -282,7 +282,7 @@ namespace PgDbase.Repository.cms
         /// список событий которые можно подключить к новости
         /// </summary>
         /// <returns></returns>
-        public EventsModel[] GetLastEvents(Guid NewsId)
+        public EventModel[] GetLastEvents(Guid NewsId)
         {
             using (var db = new CMSdb(_context))
             {   
@@ -303,7 +303,7 @@ namespace PgDbase.Repository.cms
                 var EventsDropdownList = list.Join(db.event_events, m => m, n => n.gid, (m, n) => n).OrderByDescending(o=>o.d_date).Take(500);
                 if (EventsDropdownList.Any())
                 {
-                    return EventsDropdownList.Select(s => new EventsModel() {
+                    return EventsDropdownList.Select(s => new EventModel() {
                         Title=s.c_title,
                         Guid=s.gid
                     }).ToArray();

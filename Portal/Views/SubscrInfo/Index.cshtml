@@ -1,0 +1,56 @@
+﻿@using LkModule.Areas.Lk.Models
+@model SubscrFrontModel
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+    <div class="box invoice topIndent-20">
+        @if (Model.Item != null)
+        {
+                <div class="box-header with-border">
+                    <h3 class="box-title">Лицевой счет:
+                    @if (Model.Item.Ee)
+                        {
+                           @Model.Item.OrgName
+                        }
+                        else
+                        {
+                           @Model.Item.Surname @Model.Item.Name @Model.Item.Patronymic
+                        }
+                    </h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <div class="li-desc"><span>E-mail:</span> @Model.Item.Email</div>
+                        <div class="li-desc"><span>Телефон:</span> @Model.Item.Phone</div>
+                        <div class="li-desc"><span>Почтовый адрес:</span> @Model.Item.PostAddress</div>
+                        <div class="li-desc"><span>Договор действителен с:</span> @(Model.Item.Begin.HasValue ? Model.Item.Begin.Value.ToString("dd.MM.yyyy") : "")</div>
+                        <div class="li-desc"><span>Договор действителен по:</span> @(Model.Item.End.HasValue ? Model.Item.End.Value.ToString("dd.MM.yyyy") : "")</div>
+                        <br />
+                        <div class="li-desc"><span>Банк:</span> </div>
+                        <div class="li-desc"><span>Наименование:</span> @Model.Item.Bank.Name</div>
+                        <div class="li-desc"><span>Код подраздления:</span> @Model.Item.Bank.Dep</div>
+                        <div class="li-desc"><span>БИК:</span> @Model.Item.Bank.Bik</div>
+                        <div class="li-desc"><span>ИНН:</span> @Model.Item.Bank.Inn </div>
+                        <div class="li-desc"><span>КПП:</span> @Model.Item.Bank.Kpp</div>
+                        <div class="li-desc"><span>Кор счет:</span> @Model.Item.Bank.Ks</div>
+                        <div class="li-desc"><span>Расчетный счет:</span> @Model.Item.Bank.Rs</div>
+                    </div>
+                </div>
+        }
+        else
+        {
+            <div class="noItems">Нет данных</div>
+        }
+    </div>
+</div>
+
+

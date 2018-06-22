@@ -31,15 +31,7 @@ namespace Portal.Controllers
         } 
 
 
-        public ActionResult SelectSubscr(Guid SubscrId)
-        {
-            _Repository.SetUserSubscrDefault(SubscrId, Guid.Parse(User.Identity.GetUserId()));
-            return Json("success");
-        }
-
-
-        #region Изьменение данных пользователя
-
+       #region Изменение данных пользователя
         [ChildActionOnly]
         public PartialViewResult GetChangeUserInfo()
         {
@@ -54,6 +46,7 @@ namespace Portal.Controllers
             };
             return PartialView("GetChangeUserInfo", model);
         }
+
         [HttpPost]
         public async Task<ActionResult> ChangeUserInfo(UserModelUpdate model)
         {

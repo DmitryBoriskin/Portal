@@ -1,15 +1,13 @@
 ﻿@using LkModule.Areas.Lk.Models
-
 @model AccrualFrontModel
 
 @Html.Partial("Partial/header")
 
 <div class="content">
-    <h1>@Model.PageName</h1>
-
     @Html.Partial("Part/Filter")
 
-    @if (Model.List.Items != null && Model.List.Items.Count() > 0)
+
+    @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
     {
         foreach (var item in Model.List.Items)
         {
@@ -40,7 +38,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>@(item.Amount.HasValue? item.Amount.Value.ToString("N2"): "")</td>
+                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
                                     <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
                                     <td></td>
                                     <td></td>
@@ -62,13 +60,13 @@
 
         }
 
-        if (Model.List != null && Model.List.Pager != null)
-        {
-            @Html.Partial("Partial/_pager", Model.List.Pager)
-        }
+        @Html.Partial("Partial/_pager", Model.List.Pager)
+
     }
     else
     {
-        <div class="topIndent-20">Нет данных</div>
+        <div class="box invoice topIndent-20">
+            <div class="noItems">Нет данных</div>
+        </div>
     }
 </div>

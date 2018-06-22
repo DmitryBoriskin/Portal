@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PgDbase.entity
 {
-    public class EventsModel
+    public class EventModel
     {
         /// <summary>
         /// Идентификатор в виде порядкого номера

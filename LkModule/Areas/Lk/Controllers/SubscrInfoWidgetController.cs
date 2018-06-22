@@ -1,80 +1,65 @@
-﻿using LkModule.Areas.Admin.Models;
-using LkModule.Areas.Lk.Models;
+﻿using LkModule.Areas.Lk.Models;
 using PgDbase.entity;
 using Portal.Controllers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace LkModule.Areas.Lk.Controllers
 {
     [Authorize]
     public class SubscrInfoWidgetController : CoreController
     {
-       
-        public ActionResult Info()
+
+        public ActionResult Index()
         {
-            var model = new List<SubscrShortModel>();
+            var model = new SubscrWidgetFrontModel();
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
             if (userSubscr != null)
             {
-                model = _Repository.GetSubscrInfoForTopPannel(userId);
+                model.List = _Repository.GetSubscrInfoForTopPannel(userId);
+                model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
+
             }
 
             return View(model);
         }
 
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        //public ActionResult Search(string size, string page, bool enabled)
-        //{
-        //    string query = HttpUtility.UrlDecode(Request.Url.Query);
-        //    query = AddFilterParam(query, "page", String.Empty);
-        //    query = AddFilterParam(query, "size", size);
-        //    query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+        public ActionResult Info()
+        {
+            var model = new SubscrWidgetFrontModel();
 
-        //    return Redirect(StartUrl + query);
-        //}
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
-        //public ActionResult ClearFiltr(Guid subscr)
-        //{
-        //    return Redirect($"{StartUrl}?subscr={subscr}");
-        //}
+            if (userSubscr != null)
+            {
+                model.List = _Repository.GetSubscrInfoForTopPannel(userId);
+                model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true): null;
 
-        //[HttpPost]
-        //public ActionResult GetInfo(Guid device)
-        //{
-        //    var meters = _cmsRepository.GetMeters(device);
+            }
 
-        //    var json = new JavaScriptSerializer().Serialize(meters);
-        //    return Json(json);
-        //}
+            return View(model);
+        }
 
-        //[HttpPost]
-        //public ActionResult GetTariffes(Guid device)
-        //{
-        //    var tariffes = _cmsRepository.GetTariffes(device);
+        [HttpPost]
+        public ActionResult SetUserSubscrDefault(Guid subscrId)
+        {
+            var userId = CurrentUser.UserId;
 
-        //    var json = new JavaScriptSerializer().Serialize(tariffes);
-        //    return Json(json);
-        //}
+            var res = _Repository.SetUserSubscrDefault(subscrId, userId);
+            if (res)
+                return Json("success");
 
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
-        //public ActionResult Back()
-        //{
-        //    string par = Request.UrlReferrer.Query;
-        //    string subscr = par.Replace("?subscr=", "");
-        //    string url = $"/admin/subscrs/item/{subscr}";
-        //    return Redirect(url);
-        //}
+            return Json("An Error Has Occourred");
+        }
+
     }
 }

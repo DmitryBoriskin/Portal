@@ -400,17 +400,21 @@ namespace PgDbase.Repository.cms
                     var query = db.lk_user_subscrs
                         .Where(w => w.f_user == user);
 
-                    bool result = query
-                        .Set(s => s.b_default, false)
-                        .Update() > 0;
+                    if (query.Any())
+                    {
+                        var result = query
+                           .Set(s => s.b_default, false)
+                           .Update();
 
-                    result = query
-                        .Where(w => w.f_subscr == subscr)
-                        .Set(s => s.b_default, true)
-                        .Update() > 0;
+                        var res = query
+                            .Where(w => w.f_subscr == subscr)
+                            .Set(s => s.b_default, true)
+                            .Update();
 
-                    tr.Commit();
-                    return result;
+                        tr.Commit();
+                        return true;
+                    }
+                    return false;
                 }
             }
         }

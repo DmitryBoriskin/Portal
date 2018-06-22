@@ -1,0 +1,164 @@
+﻿@using System.Globalization
+@using LkModule.Areas.Lk.Models
+@model StatisticsFrontModel
+
+@Html.Partial("Partial/header")
+
+@{
+    ViewBag.Title = "ЛК ЧЭСК - Статистика";
+
+    string consumptionJson = Model.ConsumptionByDateJson;
+    string accrulasJson = Model.AccrualsByDateJson;
+    string paymentsJson = Model.PaymentsByDateJson;
+
+    //if (Model.ChargesList != null)
+    //{
+
+    //    var usCulture = CultureInfo.GetCultureInfo("en-US");
+    //    var ruCulture = CultureInfo.GetCultureInfo("ru-RU");
+
+    //    var minPeriod = Model.ChargesList.Min(p => p.Period);
+    //    var maxPeriod = Model.ChargesList.Max(p => p.Period);
+    //    var periodString = ruCulture.DateTimeFormat.MonthNames[minPeriod % 100 - 1].ToLower();
+    //    if (minPeriod != maxPeriod)
+    //    {
+    //        if (minPeriod / 100 != maxPeriod / 100)
+    //        {
+    //            periodString += " " + (minPeriod / 100).ToString();
+    //        }
+    //        periodString += " - " + ruCulture.DateTimeFormat.MonthNames[maxPeriod % 100 - 1].ToLower();
+    //    }
+    //    periodString += " " + (maxPeriod / 100).ToString();
+
+    //    var counterTypes = Model.ChargesList.Select(p => p.detail.Type).Distinct();
+    //    var existsSingle = counterTypes.Any(p => p == TariffType.Single);
+    //    var existsDouble = counterTypes.Any(p => p == TariffType.Double);
+    //    var existsTriple = counterTypes.Any(p => p == TariffType.Triple);
+
+    //    var consumptionHeaders = "'Месяцы'";
+    //    var consumptionData = Model.ChargesList.OrderBy(d => d.Period).ToDictionary(p => p.Period, p => String.Format("'{0}`{1}'", ruCulture.DateTimeFormat.MonthNames[p.Period % 100 - 1].ToLower(), ((p.Period / 100) % 100)));
+    //    if (existsSingle)
+    //    {
+    //        consumptionHeaders += ",'сутки'";
+    //        foreach (var p in Model.ChargesList)
+    //        {
+    //            consumptionData[p.Period] += String.Format(",{0}", p.detail.Type == TariffType.Single ? p.detail.ValueT1 : 0);
+    //        }
+    //    }
+    //    if (existsDouble)
+    //    {
+    //        consumptionHeaders += ",'день'";
+    //        foreach (var p in Model.ChargesList)
+    //        {
+    //            consumptionData[p.Period] += String.Format(",{0}", p.detail.Type == TariffType.Double ? p.detail.ValueT1 : 0);
+    //        }
+    //    }
+    //    if (existsTriple)
+    //    {
+    //        consumptionHeaders += ",'пик','полупик'";
+    //        foreach (var p in Model.ChargesList)
+    //        {
+    //            consumptionData[p.Period] += String.Format(",{0},{1}", p.detail.Type == TariffType.Triple ? p.detail.ValueT1 : 0, p.detail.Type == TariffType.Triple ? p.detail.ValueT2 : 0);
+    //        }
+    //    }
+    //    if (existsDouble || existsTriple)
+    //    {
+    //        consumptionHeaders += ",'ночь'";
+    //        foreach (var p in Model.ChargesList)
+    //        {
+    //            consumptionData[p.Period] += String.Format(",{0}", p.detail.Type == TariffType.Single ? 0 : (p.detail.Type == TariffType.Double ? p.detail.ValueT2 : p.detail.ValueT3));
+    //        }
+    //    }
+
+    //    consumptionJson = String.Format("[[{0}],{1}]", consumptionHeaders, String.Join(",", consumptionData.Select(p => String.Format("[{0}]", p.Value))));
+    //    costJson = String.Format("[['Месяцы','рубли'],{0}]", String.Join(",", Model.ChargesList.OrderBy(o => o.Period).Select(p => String.Format("['{0}`{1}',{2}]", ruCulture.DateTimeFormat.MonthNames[p.Period % 100 - 1].ToLower(), ((p.Period / 100) % 100), (p.detail.AmountT1 + p.detail.AmountT2 + p.detail.AmountT3).ToString(usCulture)))));
+    //}
+}
+
+<div class="content">
+
+    @Html.Partial("Part/Filter")
+
+    @if (Model != null)
+    {
+    <div class="box invoice topIndent-20">
+        <div id="chartConsumption" class="chart-block"></div>
+        <div id="chartAccruals" class="chart-block"></div>
+        <div id="chartPayments" class="chart-block"></div>
+    </div>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="/Content/plugins/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('43', { packages: ['bar', 'corechart'] });
+            google.charts.setOnLoadCallback(drawCharts);
+            //google.load("visualization", "1.4", { packages: ['bar'] });
+            //google.setOnLoadCallback(drawCharts);
+
+            function drawCharts() {
+                //var dataConsumption = google.visualization.arrayToDataTable(eval("@Html.Raw(consumptionJson)"));
+                var dataAccruals = google.visualization.arrayToDataTable(eval("@Html.Raw(accrulasJson)"));
+                var dataPayments = google.visualization.arrayToDataTable(eval("@Html.Raw(paymentsJson)"));
+
+                var optionsConsumption = {
+                    isStacked: false,
+                    hAxis:{
+                        logScale : true
+                    },
+                    chart: {
+                        title: 'Потребление за @ViewBag.StartPeriodTitle–@ViewBag.EndPeriodTitle',
+                        subtitle: 'кВт*ч',
+                    },
+                    //bars: 'vertical',
+                    vAxis: { format: 'decimal' },
+                    height: 400,
+                    //width: 760,
+                    colors: ['#ffa000', '#a3b5d9', '#476db3', '#ff7900', '#0039a6'],
+                    legend: { position: 'top', textStyle: { color: 'blue', fontSize: 16 } }
+                    //bar: { groupWidth: 50 }
+                };
+
+                var optionsAccruals = {
+                    isStacked: false,
+                    chart: {
+                        title: 'Начисления за @ViewBag.StartPeriodTitle–@ViewBag.EndPeriodTitle',
+                        subtitle: 'руб.',
+                    },
+                    //bars: 'vertical',
+                    vAxis: { format: 'decimal' },
+                    height: 400,
+                    //width: 760,
+                    colors: ['#ffa000']
+                };
+
+                var optionsPayments = {
+                    isStacked: false,
+                    chart: {
+                        title: 'Расходы за @ViewBag.StartPeriodTitle–@ViewBag.EndPeriodTitle',
+                        subtitle: 'руб.',
+                    },
+                    //bars: 'vertical',
+                    vAxis: { format: 'decimal' },
+                    height: 400,
+                    //width: 760,
+                    colors: ['#ffa000']
+                };
+
+                //var chartConsumtion = new google.charts.Bar(document.getElementById('chartConsumption'));
+                var chartAccruals = new google.charts.Bar(document.getElementById('chartAccruals'));
+                var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));
+
+                //chartConsumtion.draw(dataConsumption, optionsConsumption);
+                chartAccruals.draw(dataAccruals, optionsAccruals);
+                chartPayments.draw(dataPayments, optionsPayments);
+            }
+        </script>
+    }
+    else
+    {
+        <div class="box invoice topIndent-20">
+            <div class="noItems">Нет данных</div>
+        </div>
+    }
+</div>
+
+

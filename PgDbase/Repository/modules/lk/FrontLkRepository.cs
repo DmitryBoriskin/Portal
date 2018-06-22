@@ -212,8 +212,7 @@ namespace PgDbase.Repository.front
 
                 return query.Select(s => new SubscrShortModel
                 {
-                    Id = s.userid,
-                    SubscrUid = s.subscruid,
+                    Id = s.subscruid,
                     SubscrId = s.subscrid,
                     Name = s.subscrname,
                     Default = s.subscrdefault,
@@ -227,41 +226,37 @@ namespace PgDbase.Repository.front
 
 
         /// <summary>
-        /// выбираем лицевой счет
+        /// Смена лицевого счета
         /// </summary>
-        /// <param name="subscrId">ид лицевого счета</param>
-        /// <param name="userId">ид  пользователя</param>
+        /// <param name="subscrId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         public bool SetUserSubscrDefault(Guid subscrId, Guid userId)
         {
             using (var db = new CMSdb(_context))
             {
-                using (var tr = db.BeginTransaction())
+                using (var tran = db.BeginTransaction())
                 {
-                    //находим все подключенные лицевые счета пользователя
-                    var userSubscrs = db.lk_user_subscrs
-                                        .Where(w => w.f_user == userId);
+                    var query = db.lk_user_subscrs
+                         .Where(w => w.f_user == userId);
 
-
-                    if (userSubscrs.Any())
+                    if (query.Any())
                     {
-                        //убираем признак выбранности у выбранного ЛС
-                        userSubscrs.Where(w => w.b_default == true)
-                            .Set(s => s.b_default, false)
-                            .Update();
+                        var result = query
+                           .Set(s => s.b_default, false)
+                           .Update();
 
-
-                        // ставим признак выбранности на другой ЛС
-                        userSubscrs.Where(w => w.f_subscr == subscrId)
+                        var res = query
+                            .Where(w => w.f_subscr == subscrId)
                             .Set(s => s.b_default, true)
                             .Update();
 
-                        tr.Commit();
+                        tran.Commit();
                         return true;
                     }
+                    return false;
                 }
             }
-            return false;
         }
 
 
