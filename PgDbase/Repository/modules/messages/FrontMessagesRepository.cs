@@ -148,13 +148,13 @@ namespace PgDbase.Repository.front
                     var q = query.Select(s => new MessagesTheme
                     {
                         Id = s.id,
-                        Theme = s.c_theme,
+                        Theme = s.c_theme.Substring(0, 24) + "...",
                         User = s.f_user,                        
                         Admin = s.b_admin,
                         View = (!s.b_admin) ? s.b_views : true,
                         Date = (from d in db.msg_messages where d.f_parent == s.id || d.id == s.id orderby d.d_date select d.d_date).FirstOrDefault(),                        
                         NewMsgCount = (from a in db.msg_messages where (a.f_parent == s.id || a.id == s.id) && (a.b_views == false && a.b_admin == true) select a.id).Count(),
-                        Text=(from t in db.msg_messages where (t.f_parent == s.id || t.id == s.id) && (t.b_views == false && t.b_admin == true) select t.c_text).FirstOrDefault().Substring(0,20)+"..."
+                        Text=(from t in db.msg_messages where (t.f_parent == s.id || t.id == s.id) && (t.b_views == false && t.b_admin == true) select t.c_text).FirstOrDefault().Substring(0,24)+"..."
 
                     });
                     q = q.Where(w => w.NewMsgCount > 0);

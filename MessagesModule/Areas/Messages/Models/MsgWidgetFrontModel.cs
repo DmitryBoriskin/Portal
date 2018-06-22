@@ -9,7 +9,7 @@ namespace MessagesModule.Areas.Messages.Models
         //новые сообщения
         public List<MessagesTheme> MsgList { get; set; }
         //количество новых сообщений
-        public string NewMsgCountText { get; set; }
-        public int NewMsgCount { get; set; }
+        public string NewMsgCountText { get; set; } = "У Вас нет новых сообщений";
+        public int NewMsgCount { get; set; } = 0;
     }
 }
