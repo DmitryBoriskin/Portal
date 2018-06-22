@@ -110,6 +110,7 @@
     <Content Include="Areas\Messages\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Messages\Views\Messages\Index.cshtml" />
     <Content Include="Areas\Messages\Views\Messages\Item.cshtml" />
+    <Content Include="Areas\Messages\Views\MsgWidget\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -133,7 +134,8 @@
     <Compile Include="Areas\Admin\Controllers\MessagesController.cs" />
     <Compile Include="Areas\Admin\Models\MessagesViewModule.cs" />
     <Compile Include="Areas\Messages\Controllers\MessagesController.cs" />
-    <Compile Include="Areas\Messages\Controllers\MsgController.cs" />
+    <Compile Include="Areas\Messages\Controllers\MsgWidgetController.cs" />
+    <Compile Include="Areas\Messages\Models\MsgWidgetFrontModel.cs" />
     <Compile Include="Areas\Messages\Models\MessagesFrontModel.cs" />
     <Compile Include="Areas\Messages\MessagesAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
@@ -143,7 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Messages\Views\Msg\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PgDbase\PgDbase.csproj">
@@ -192,6 +193,7 @@
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Messages\*" "$(SolutionDir)Portal\Areas\Admin\Views\Messages\"
 
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\Messages\*" "$(SolutionDir)Portal\Views\Messages\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\MsgWidget\*" "$(SolutionDir)Portal\Views\MsgWidget\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -24,8 +24,8 @@ namespace MessagesModule.Areas.Messages
 
             context.MapRoute(
                  "Messages_widget_FE",
-                 "Messages/Msg/{action}/{id}",
-                 new { controller = "Msg", action = "Index", id = UrlParameter.Optional },
+                 "MsgWidget/{action}/{id}",
+                 new { controller = "MsgWidget", action = "Index", id = UrlParameter.Optional },
                  new[] { "MessagesModule.Areas.Messages.Controllers" }
              );
 
