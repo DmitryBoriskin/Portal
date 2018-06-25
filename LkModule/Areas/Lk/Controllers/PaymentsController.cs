@@ -52,37 +52,14 @@ namespace LkModule.Areas.Lk.Controllers
                 model.List = _Repository.GetPayments(userSubscr.Id, mFilter);
             }
 
+            if (mFilter.Date.HasValue)
+                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (mFilter.DateEnd.HasValue)
+                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
+
             return View(model);
         }
 
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        //public ActionResult Search(string size, string page, string status, string type)
-        //{
-        //    string query = HttpUtility.UrlDecode(Request.Url.Query);
-        //    query = AddFilterParam(query, "page", String.Empty);
-        //    query = AddFilterParam(query, "size", size);
-        //    query = AddFilterParam(query, "status", status);
-        //    query = AddFilterParam(query, "type", type);
-
-        //    return Redirect(StartUrl + query);
-        //}
-
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
-        //public ActionResult ClearFiltr(Guid subscr)
-        //{
-        //    return Redirect($"{StartUrl}?subscr={subscr}");
-        //}
-
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
-        //public ActionResult Back()
-        //{
-        //    string par = Request.UrlReferrer.Query;
-        //    string subscr = par.Replace("?subscr=", "");
-        //    string url = $"/admin/subscrs/item/{subscr}";
-        //    return Redirect(url);
-        //}
     }
 }

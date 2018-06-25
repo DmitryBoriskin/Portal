@@ -43,25 +43,38 @@ namespace LkModule.Areas.Admin.Controllers
             }
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
-            bool payed = false;
+           
             if (!String.IsNullOrEmpty(Request.QueryString["payed"]))
             {
-                bool.TryParse(Request.QueryString["payed"], out payed);
-                mFilter.Payed = payed;
+                var res = bool.TryParse(Request.QueryString["payed"], out bool payed);
+                if (res)
+                    mFilter.Payed = payed;
             }
             model.List = _cmsRepository.GetAccruals((Guid)subscr, mFilter);
+
+            if (mFilter.Date.HasValue)
+                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (mFilter.DateEnd.HasValue)
+                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
+
+            if (mFilter.Payed.HasValue)
+                ViewBag.payed = mFilter.Payed.Value.ToString();
 
             return View(model);
         }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string size, string page, bool payed)
+        public ActionResult Search(string size, string page, bool? payed, string datestart, string dateend)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "page", String.Empty);
             query = AddFilterParam(query, "size", size);
             query = AddFilterParam(query, "payed", payed.ToString().ToLower());
+
+            query = AddFilterParam(query, "datestart", datestart);
+            query = AddFilterParam(query, "dateend", dateend);
 
             return Redirect(StartUrl + query);
         }

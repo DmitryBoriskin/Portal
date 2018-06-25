@@ -1,15 +1,26 @@
 ﻿@{
-    var checkboxValue = false;
-    if (!string.IsNullOrEmpty(Request.QueryString["payed"]))
-    {
-        bool.TryParse(Request.QueryString["payed"], out checkboxValue);
-    }
+    string beginDate = ViewBag.beginDate;
+    string endDate = ViewBag.endDate;
+
+    bool payed = false;
+    bool.TryParse(ViewBag.payed, out payed);
 }
 @using (Html.BeginForm())
 {
     <div class="row">
-        <div class="col-md-12">
-            @Html.CheckBox("payed", !checkboxValue, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Неоплаченные", data_off = "Оплаченные", data_width = "248" })
+        <div class="col-xs-6">@Html.TextBox("datestart", beginDate, new { @class = "uc_input", @data_type = "date", @title = "Дата с", @placeholder = "дд.мм.гггг" })</div>
+        <div class="col-xs-6">@Html.TextBox("dateend", endDate, new { @class = "uc_input", @data_type = "date", @title = "по", @placeholder = "дд.мм.гггг" })</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="label_filtr">Статус оплаты:</label>
+                <select class="select2" name="payed">
+                    <option value="">не выбрано</option>
+                    <option value="true" @(payed ? "selected" : "")>Оплачено</option>
+                    <option value="false" @(payed ? "" : "selected")>Не оплачено</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="row">

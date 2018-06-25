@@ -39,13 +39,15 @@ namespace LkModule.Areas.Lk.Controllers
         public ActionResult Index()
         {
             filter = GetFilter();
+            var aFilter = FilterModel.Extend<LkFilter>(filter);
+            var pFilter = FilterModel.Extend<LkFilter>(filter);
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
             if (userSubscr != null)
             {
-                var aFilter = FilterModel.Extend<LkFilter>(filter);
+               
                 var accruals = _Repository.GetAccruals(userSubscr.Id, aFilter);
                 if (accruals.Items != null)
                 {
@@ -57,7 +59,7 @@ namespace LkModule.Areas.Lk.Controllers
 
                 // model.AccrualsByDateJson = "[['Месяцы','рубли'],['декабрь',8651486.31],['январь',13223292.59],['февраль',11916139.67],['март',1501363.17],['апрель',10639269.23],['май',11251567.51],['июнь',0.00]]";
 
-                var pFilter = FilterModel.Extend<LkFilter>(filter);
+              
                 var payments = _Repository.GetPayments(userSubscr.Id, pFilter);
                 if (payments.Items != null)
                 {
@@ -76,6 +78,12 @@ namespace LkModule.Areas.Lk.Controllers
                 //model.PaymentsByDateJson = "[['Месяцы','рубли'],['декабрь',8651486.31],['январь',13223292.59],['февраль',11916139.67],['март',1501363.17],['апрель',10639269.23],['май',11251567.51],['июнь',0.00]]";
                 //model.ConsumptionByDateJson = "[['Месяцы','Потребление'],['декабрь',8651486.31],['январь',13223292.59],['февраль',11916139.67],['март',1501363.17],['апрель',10639269.23],['май',11251567.51],['июнь',0.00]]";
             }
+
+            if (pFilter.Date.HasValue)
+                ViewBag.beginDate = pFilter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (pFilter.DateEnd.HasValue)
+                ViewBag.endDate = pFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
             ViewBag.StartPeriodTitle = "Январь 2016";
             ViewBag.EndPeriodTitle = "Май 2018";

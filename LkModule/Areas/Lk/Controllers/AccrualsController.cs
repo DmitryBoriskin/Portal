@@ -38,19 +38,23 @@ namespace LkModule.Areas.Lk.Controllers
         //Неоплаченные платежи
         public ActionResult Index()
         {
+
             filter = GetFilter();
-
-            var userId = CurrentUser.UserId;
-
             var mFilter = FilterModel.Extend<LkFilter>(filter);
             mFilter.Payed = false;
 
+            var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
-
             if (userSubscr != null)
             {
                 model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
             }
+
+            if (mFilter.Date.HasValue)
+                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (mFilter.DateEnd.HasValue)
+                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
             return View(model);
         }
@@ -71,6 +75,12 @@ namespace LkModule.Areas.Lk.Controllers
             {
                 model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
             }
+
+            if (mFilter.Date.HasValue)
+                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (mFilter.DateEnd.HasValue)
+                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
             return View(model);
         }
