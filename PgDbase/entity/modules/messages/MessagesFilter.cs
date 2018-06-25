@@ -9,6 +9,6 @@ namespace PgDbase.Entity.modules.messages
 {
     public class MessagesFilter: FilterModel
     {
-        public bool ViewMessages { get; set; }
+        public bool? ViewMessages { get; set; }
     }
 }

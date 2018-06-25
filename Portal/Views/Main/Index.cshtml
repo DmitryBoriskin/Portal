@@ -90,23 +90,12 @@
                 </div>
             </div>
         </div>
+        
+        
         <div class="col-md-4">
-            <div class="block block__white">
-                <div class="block_headr">Последние сообщения</div>
-                <div class="ramka">
-                    <div class="list">
-                        <div class="list_item">
-                            <div class="list_date">24.03.18</div>
-                            <a href="#">Добрый день! По Вашему обращению через ЛКК...</a>
-                        </div>
-                        <div class="list_item">
-                            <div class="list_date">12.11.17</div>
-                            <a href="#">Уважаемый абонент! Правительство решило......</a>
-                        </div>
-                    </div>
-                    <a class="link  link__orange" href="/page/message"><i>История сообщений</i></a>
-                </div>
-            </div>
+
+            @{Html.RenderAction("LastMessages", "MsgWidget", new { @area = "Messages" });}
+          
 
 
             <div class="block block__white">

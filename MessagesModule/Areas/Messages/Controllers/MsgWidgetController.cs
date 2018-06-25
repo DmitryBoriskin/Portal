@@ -43,5 +43,13 @@ namespace MessagesModule.Areas.Messages.Controllers
 
             return PartialView(model);
         }
+
+
+        public ActionResult LastMessages()
+        {
+            MsgWidgetFrontModel model = new MsgWidgetFrontModel();
+            model.MsgList = _Repository.GetLastInboxMessage();
+            return PartialView(model);
+        }
     }
 }

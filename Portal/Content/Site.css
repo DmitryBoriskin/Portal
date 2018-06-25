@@ -80,6 +80,21 @@ margin-bottom:16px;
 .list_item{
 margin-bottom:10px;
 }
+.list_item.new a{
+    font-weight:bold;
+    position:relative;
+}
+    .list_item.new a:before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        background-color: #0b4587;
+        display: inline-block;
+        position: absolute;
+        top: 7px;
+        left: -9px;
+    }
 .list_item a {
     color: #262626;
 }
@@ -91,8 +106,9 @@ margin-bottom:10px;
 .ramka {
     border: 1px solid #e6e6e6;
     border-radius: 5px;
-    padding:12px 20px 30px;
-    margin:10px 0 10px;
+    padding: 12px 20px 30px;
+    margin: 10px 0 10px;
+    padding: 12px 20px 30px 30px;
 }
 
 .link{

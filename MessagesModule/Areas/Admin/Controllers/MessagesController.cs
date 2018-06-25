@@ -41,7 +41,11 @@ namespace MessagesModule.Areas.Admin.Controllers
         {
             filter = GetFilter();
             var mfilter = FilterModel.Extend<MessagesFilter>(filter);
-            model.List = _cmsRepository.GetMessages(filter);
+            if (Request.QueryString["viewmsg"] != null)
+            {
+                mfilter.ViewMessages = Convert.ToBoolean(Request.QueryString["viewmsg"]);
+            }            
+            model.List = _cmsRepository.GetMessages(mfilter);
             return View(model);
         }
         public ActionResult Item(Guid id)
@@ -93,7 +97,16 @@ namespace MessagesModule.Areas.Admin.Controllers
 
             return Redirect(StartUrl + query);
         }
-
+        /// <summary>
+        /// Очищаем фильтр
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
+        public ActionResult ClearFiltr()
+        {
+            return Redirect(StartUrl);
+        }
 
         [HttpPost]        
         [MultiButton(MatchFormKey = "action", MatchFormValue = "save-btn")]
