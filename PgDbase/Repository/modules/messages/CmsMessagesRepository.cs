@@ -1,11 +1,10 @@
 ﻿using LinqToDB;
 using PgDbase.entity;
+using PgDbase.Entity.modules.messages;
 using PgDbase.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PgDbase.Repository.cms
 {
@@ -16,7 +15,7 @@ namespace PgDbase.Repository.cms
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<MessagesTheme> GetMessages(FilterModel filter)
+        public Paged<MessagesTheme> GetMessages(MessagesFilter filter)
         {
             Paged<MessagesTheme> result = new Paged<MessagesTheme>();
             using (var db = new CMSdb(_context))
@@ -27,14 +26,39 @@ namespace PgDbase.Repository.cms
                                 {
                                     Id = s.id,
                                     Theme = s.c_theme,
-                                    View = (s.b_admin) ? s.b_views : true,
-                                    Date = (from d in db.msg_messages where d.f_parent == s.id || d.id==s.id orderby d.d_date select d.d_date).FirstOrDefault(),
+                                    //View = (s.b_admin) ? s.b_views : true,
+                                    Date = (from d in db.msg_messages where d.f_parent == s.id || d.id==s.id orderby d.d_date descending select d.d_date).FirstOrDefault(),
                                     AllCount=(from a in db.msg_messages where a.f_parent == s.id || a.id == s.id select a.id).Count(),
                                     NewMsgCount= (from a in db.msg_messages where (a.f_parent == s.id || a.id == s.id) && (a.b_views == false && a.b_admin==false) select a.id).Count(),
                 });
 
-                q=q.OrderByDescending(d => d.Date);
+                
 
+
+                if (filter.ViewMessages != null && filter.ViewMessages==true)
+                    q = q.Where(w => w.NewMsgCount>0);
+
+                if (filter.Date.HasValue)
+                    q = q.Where(s => s.Date > filter.Date.Value);
+                if (filter.DateEnd.HasValue)
+                    q = q.Where(s => s.Date < filter.DateEnd.Value.AddDays(1));
+
+
+                if (!String.IsNullOrWhiteSpace(filter.SearchText))
+                {
+                    string[] search = filter.SearchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (search != null && search.Count() > 0)
+                    {
+                        foreach (string p in filter.SearchText.Split(' '))
+                        {
+                            if (!String.IsNullOrWhiteSpace(p))
+                            {
+                                q= q.Where(w => w.Theme.Contains(p));
+                            }
+                        }
+                    }
+                }
+                q = q.OrderByDescending(d => d.Date);
                 var list = q.Skip(filter.Size * (filter.Page - 1))
                             .Take(filter.Size)
                             .ToArray();

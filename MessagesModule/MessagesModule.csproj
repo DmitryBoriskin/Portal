@@ -110,6 +110,7 @@
     <Content Include="Areas\Messages\Views\Messages\Index.cshtml" />
     <Content Include="Areas\Messages\Views\Messages\Item.cshtml" />
     <Content Include="Areas\Messages\Views\MsgWidget\Index.cshtml" />
+    <Content Include="Areas\Messages\Views\MsgWidget\LastMessages.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />

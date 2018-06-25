@@ -12,4 +12,5 @@ namespace MessagesModule.Areas.Messages.Models
         public string NewMsgCountText { get; set; } = "У Вас нет новых сообщений";
         public int NewMsgCount { get; set; } = 0;
     }
+    
 }
