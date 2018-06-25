@@ -49,19 +49,33 @@ namespace LkModule.Areas.Admin.Controllers
             var mFilter = FilterModel.Extend<LkFilter>(filter);
             mFilter.Status = ViewBag.Status = Request.Params["status"];
             mFilter.Type = ViewBag.Type = Request.Params["type"];
+
+
             model.List = _cmsRepository.GetPayments((Guid)subscr, mFilter);
+
+
+            if (mFilter.Date.HasValue)
+                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (mFilter.DateEnd.HasValue)
+                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
+
+
             return View(model);
         }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string size, string page, string status, string type)
+        public ActionResult Search(string size, string page, string status, string type, string datestart, string dateend)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "page", String.Empty);
             query = AddFilterParam(query, "size", size);
             query = AddFilterParam(query, "status", status);
             query = AddFilterParam(query, "type", type);
+
+            query = AddFilterParam(query, "datestart", datestart);
+            query = AddFilterParam(query, "dateend", dateend);
 
             return Redirect(StartUrl + query);
         }

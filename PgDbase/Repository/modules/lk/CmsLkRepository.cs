@@ -740,6 +740,15 @@ namespace PgDbase.Repository.cms
                     query = query.Where(w => w.b_payed == filter.Payed.Value);
                 }
 
+                if (filter.Date.HasValue)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date.Value);
+                }
+                if (filter.DateEnd.HasValue)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
+                }
+
                 query = query.OrderByDescending(o => o.d_date);
                 int itemsCount = query.Count();
 
@@ -932,6 +941,15 @@ namespace PgDbase.Repository.cms
                 //    Guid type = Guid.Parse(filter.Type);
                 //    query = query.Where(w => w.f_type == type);
                 //}
+
+                if (filter.Date.HasValue)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date.Value);
+                }
+                if (filter.DateEnd.HasValue)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
+                }
 
                 query = query.OrderByDescending(o => o.d_date);
                 int itemsCount = query.Count();

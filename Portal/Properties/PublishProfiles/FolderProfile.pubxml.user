@@ -148,7 +148,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/12/2018 15:35:35</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Shared/_Layout.cshtml">
-      <publishTime>06/14/2018 17:20:56</publishTime>
+      <publishTime>06/22/2018 17:35:38</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Shared/_login.cshtml">
       <publishTime>04/28/2018 12:45:01</publishTime>
@@ -400,13 +400,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/13/2012 12:19:34</publishTime>
     </File>
     <File Include="bin/PgDbase.dll">
-      <publishTime>06/22/2018 12:55:20</publishTime>
+      <publishTime>06/22/2018 17:43:51</publishTime>
     </File>
     <File Include="bin/PgDbase.dll.config">
       <publishTime>06/01/2018 14:27:33</publishTime>
     </File>
     <File Include="bin/PgDbase.pdb">
-      <publishTime>06/22/2018 12:55:20</publishTime>
+      <publishTime>06/22/2018 17:43:51</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -418,10 +418,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2018 13:43:30</publishTime>
     </File>
     <File Include="bin/Portal.dll">
-      <publishTime>06/22/2018 12:55:23</publishTime>
+      <publishTime>06/22/2018 17:43:54</publishTime>
     </File>
     <File Include="bin/Portal.pdb">
-      <publishTime>06/22/2018 12:55:23</publishTime>
+      <publishTime>06/22/2018 17:43:54</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -709,7 +709,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/26/2018 08:50:34</publishTime>
     </File>
     <File Include="Content/css/styles.css">
-      <publishTime>06/21/2018 12:06:17</publishTime>
+      <publishTime>06/22/2018 17:35:38</publishTime>
     </File>
     <File Include="Content/css/styles_login.css">
       <publishTime>04/26/2018 08:50:34</publishTime>
@@ -1181,6 +1181,177 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Content/plugins/datatables/i18n/ru.json">
       <publishTime>04/26/2018 08:50:34</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/bootstrap-datepicker.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/datepicker3.css">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ar.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.az.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.bg.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ca.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.cs.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.cy.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.da.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.de.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.el.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.es.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.et.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.fa.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.fi.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.fr.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.gl.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.he.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.hr.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.hu.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.id.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.is.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.it.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ja.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ka.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.kk.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.kr.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.lt.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.lv.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.mk.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ms.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.nb.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.nl-BE.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.nl.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.no.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.pl.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.pt-BR.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.pt.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ro.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.rs-latin.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.rs.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ru.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.sk.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.sl.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.sq.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.sv.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.sw.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.th.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.tr.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.ua.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.vi.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/datepicker/locales/bootstrap-datepicker.zh-TW.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/daterangepicker/daterangepicker.css">
+      <publishTime>05/23/2018 23:24:01</publishTime>
+    </File>
+    <File Include="Content/plugins/daterangepicker/daterangepicker.js">
+      <publishTime>05/23/2018 23:24:01</publishTime>
+    </File>
+    <File Include="Content/plugins/daterangepicker/moment.js">
+      <publishTime>04/25/2016 20:49:54</publishTime>
+    </File>
+    <File Include="Content/plugins/daterangepicker/moment.min.js">
+      <publishTime>05/23/2018 23:24:01</publishTime>
     </File>
     <File Include="Content/plugins/Disly/DislyControls.css">
       <publishTime>05/04/2018 23:25:15</publishTime>
@@ -2050,10 +2221,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/26/2018 08:50:34</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>06/20/2018 12:28:39</publishTime>
+      <publishTime>06/22/2018 17:35:38</publishTime>
     </File>
     <File Include="Content/template/css/AdminLTE.css">
-      <publishTime>06/19/2018 17:42:56</publishTime>
+      <publishTime>06/22/2018 17:35:38</publishTime>
     </File>
     <File Include="Content/template/css/skin.css">
       <publishTime>06/19/2018 17:42:56</publishTime>
@@ -2188,7 +2359,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/20/2018 10:01:07</publishTime>
     </File>
     <File Include="Views/Main/Index.cshtml">
-      <publishTime>06/20/2018 22:05:54</publishTime>
+      <publishTime>06/22/2018 13:00:47</publishTime>
     </File>
     <File Include="Views/Modules/Default.cshtml">
       <publishTime>06/01/2018 09:38:54</publishTime>
@@ -2239,7 +2410,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/14/2018 10:03:41</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>06/22/2018 08:51:43</publishTime>
+      <publishTime>06/22/2018 17:35:38</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>06/05/2018 17:21:30</publishTime>

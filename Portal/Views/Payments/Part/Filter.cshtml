@@ -2,6 +2,17 @@
 <script src="~/Content/plugins/daterangepicker/moment.min.js"></script>
 <script src="~/Content/plugins/daterangepicker/daterangepicker.js"></script>
 
+@{
+    var dateRange = "";
+    if (!string.IsNullOrEmpty(ViewBag.beginDate))
+    {
+        dateRange = ViewBag.beginDate;
+    }
+    if (!string.IsNullOrEmpty(ViewBag.endDate))
+    {
+        dateRange = dateRange + " - " + ViewBag.endDate;
+    }
+}
 <div class="filterByDateBlock">
     <form role="form">
         <div class="row">
@@ -12,9 +23,9 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control pull-right" id="filterDateRange-input">
-                        <input type="hidden" name="filterBeginDate" id="filterBeginDate-input">
-                        <input type="hidden" name="filterEndDate" id="filterEndDate-input">
+                        <input type="text" class="form-control pull-right" id="filterDateRange-input" value="@dateRange">
+                        <input type="hidden" name="datestart" id="filterBeginDate-input" value="@ViewBag.beginDate">
+                        <input type="hidden" name="dateend" id="filterEndDate-input" value="@ViewBag.endDate">
                     </div>
                 </div>
             </div>
@@ -66,15 +77,13 @@
         "opens": "left"
     }, function (start, end, label) {
         $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
-        $("#filterBeginDate-input").val(end.format('DD.MM.YYYY'))
+        $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))
         console.log('range: ' + label);
     });
-    //$('#filterDateRange-input').daterangepicker();
+
     $('#filterDateRange-input').on('apply.daterangepicker', function (ev, picker) {
-        console.log(picker.startDate.format('DD.MM.YYYY'));
-        console.log(picker.endDate.format('DD.MM.YYYY'));
+        $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
+        $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))
     });
 
 </script>
-
-

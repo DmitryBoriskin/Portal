@@ -228,16 +228,16 @@ namespace Portal.Controllers
                 DateTime datestart = DateTime.MinValue;
                 var res = DateTime.TryParse(Request.QueryString["datestart"], out datestart);
 
-                if (datestart != DateTime.MinValue)
+                if (res)
                     filter.Date = datestart;
             }
 
             if (!String.IsNullOrEmpty(Request.QueryString["dateend"]))
             {
                 DateTime dateend = DateTime.MinValue;
-                DateTime.TryParse(Request.QueryString["dateend"], out dateend);
+                var res = DateTime.TryParse(Request.QueryString["dateend"], out dateend);
 
-                if (dateend != DateTime.MinValue)
+                if (res)
                     filter.DateEnd = dateend;
             }
 

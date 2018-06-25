@@ -47,6 +47,12 @@ namespace LkModule.Areas.Lk.Controllers
                 model.List = _Repository.GetSubscrDevices(userSubscr.Id, filter);
             }
 
+            if (filter.Date.HasValue)
+                ViewBag.beginDate = filter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (filter.DateEnd.HasValue)
+                ViewBag.endDate = filter.DateEnd.Value.ToString("dd.MM.yyyy");
+
             return View(model);
         }
     }
