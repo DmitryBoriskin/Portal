@@ -11,11 +11,17 @@
     {
         foreach (var item in Model.List.Items)
         {
+            decimal amountWithOutTax = (item.Amount.HasValue) ? item.Amount.Value : 0.00m;
+            if (item.Tax.HasValue)
+            {
+                amountWithOutTax = amountWithOutTax - item.Tax.Value;
+            }
             <div class="box invoice topIndent-20">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Счет-фактура №  от @item.Date.ToString("dd.MM.yyyy")</h3>
-
+                    <h3 class="box-title"><b>@item.DocType № @item.Number</b> <small>от @item.Date.ToString("dd.MM.yyyy")</small></h3>
+                    <div><b>Задолженность:</b> @item.DebtType</div>
                     <div class="box-tools pull-right">
+                        <span><b>Период оплаты</b> @item.Period</span>
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
                             <i class="fa fa-minus"></i>
                         </button>
@@ -28,45 +34,53 @@
                         <table class="table no-margin">
                             <thead>
                                 <tr>
-                                    <th>Начислено (без НДС)</th>
-                                    <th>Начислено (с НДС)</th>
-                                    <th>Начисленные пени</th>
-                                    <th>Проценты за пользование чужими денежными средствами</th>
-                                    <th>Оплаченная сумма</th>
-                                    <th>Неоплаченная сумма</th>
+                                    <th>Количество<br /><small>(объем)</small></th>
+                                    <th>Тарифицируемое<br />потребление</th>
+                                    <th>Начислено<br /><small>(без НДС)</small></th>
+                                    <th>НДС</th>
+                                    <th>Начислено<br /><small>(с НДС)</small></th>
+                                    <th>Статус</th>
+                                    <th>Платеж</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td>@item.Cons</td>
+                                    <td>
+                                        @item.Quantity
+                                        @if (item.Quantity2.HasValue && item.Quantity2 > 0m)
+                                        {<br />@item.Quantity2}
+                                    </td>
+                                    <td>@amountWithOutTax.ToString("N2")</td>
+                                    <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                     <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
+                                    <td>@item.Status</td>
+                                    <td>
+                                        @if (item.PaymentId.HasValue)
+                                        {<a href="/lk/payments/#payment_@item.PaymentId">#@item.PaymentId</a>}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- /.box-body -->
-                <div class="box-footer clearfix">
-                    @*<a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Свернуть</a>*@
-                    <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">Свернуть</a>
-                </div>
-                <!-- /.box-footer -->
+                <!-- /.table-responsive -->
             </div>
-
-        }
-
-        @Html.Partial("Partial/_pager", Model.List.Pager)
-
-    }
-    else
-    {
-        <div class="box invoice topIndent-20">
-            <div class="noItems">Нет данных</div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <div class="pull-right"><small>@item.Date.ToString("dd.MM.yyyy")</small></div>
+            </div>
+            <!-- /.box-footer -->
         </div>
+
     }
+
+    @Html.Partial("Partial/_pager", Model.List.Pager)
+
+}
+else
+{
+    <div class="box invoice topIndent-20">
+        <div class="noItems">Нет данных</div>
+    </div>
+}
 </div>

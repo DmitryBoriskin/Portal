@@ -52,6 +52,8 @@ namespace LkModule.Areas.Lk.Controllers
                 if (accruals.Items != null)
                 {
                     var data = accruals.Items.Reverse();
+                    filter.Date = data.First().Date;
+                    filter.DateEnd = DateTime.Now;
                     model.AccrualsByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToShortDateString(), s.Amount.Value.ToString("0.00").Replace(",",".")))) + "]";
                 }
                 //model.Payments = _Repository.GetPayments(userSubscr.Id, filter);
@@ -79,14 +81,12 @@ namespace LkModule.Areas.Lk.Controllers
                 //model.ConsumptionByDateJson = "[['Месяцы','Потребление'],['декабрь',8651486.31],['январь',13223292.59],['февраль',11916139.67],['март',1501363.17],['апрель',10639269.23],['май',11251567.51],['июнь',0.00]]";
             }
 
-            if (pFilter.Date.HasValue)
-                ViewBag.beginDate = pFilter.Date.Value.ToString("dd.MM.yyyy");
+            if (filter.Date.HasValue)
+                ViewBag.beginDate = filter.Date.Value.ToString("dd.MM.yyyy");
 
-            if (pFilter.DateEnd.HasValue)
-                ViewBag.endDate = pFilter.DateEnd.Value.ToString("dd.MM.yyyy");
-
-            ViewBag.StartPeriodTitle = "Январь 2016";
-            ViewBag.EndPeriodTitle = "Май 2018";
+            if (filter.DateEnd.HasValue)
+                ViewBag.endDate = filter.DateEnd.Value.ToString("dd.MM.yyyy");
+           
 
             return View(model);
         }

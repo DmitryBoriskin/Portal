@@ -105,7 +105,7 @@
                         logScale : true
                     },
                     chart: {
-                        title: 'Потребление за @ViewBag.StartPeriodTitle–@ViewBag.EndPeriodTitle',
+                        title: 'Потребление за @ViewBag.beginDate–@ViewBag.endDate',
                         subtitle: 'кВт*ч',
                     },
                     //bars: 'vertical',
@@ -120,7 +120,7 @@
                 var optionsAccruals = {
                     isStacked: false,
                     chart: {
-                        title: 'Начисления за @ViewBag.StartPeriodTitle–@ViewBag.EndPeriodTitle',
+                        title: 'Начисления за @ViewBag.beginDate–@ViewBag.endDate',
                         subtitle: 'руб.',
                     },
                     //bars: 'vertical',
@@ -133,7 +133,7 @@
                 var optionsPayments = {
                     isStacked: false,
                     chart: {
-                        title: 'Расходы за @ViewBag.StartPeriodTitle–@ViewBag.EndPeriodTitle',
+                        title: 'Расходы за @ViewBag.beginDate–@ViewBag.endDate',
                         subtitle: 'руб.',
                     },
                     //bars: 'vertical',
