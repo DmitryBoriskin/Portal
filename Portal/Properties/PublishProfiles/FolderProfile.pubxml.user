@@ -400,13 +400,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/13/2012 12:19:34</publishTime>
     </File>
     <File Include="bin/PgDbase.dll">
-      <publishTime>06/22/2018 17:43:51</publishTime>
+      <publishTime>06/25/2018 11:22:07</publishTime>
     </File>
     <File Include="bin/PgDbase.dll.config">
       <publishTime>06/01/2018 14:27:33</publishTime>
     </File>
     <File Include="bin/PgDbase.pdb">
-      <publishTime>06/22/2018 17:43:51</publishTime>
+      <publishTime>06/25/2018 11:22:07</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -418,10 +418,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2018 13:43:30</publishTime>
     </File>
     <File Include="bin/Portal.dll">
-      <publishTime>06/22/2018 17:43:54</publishTime>
+      <publishTime>06/25/2018 11:22:11</publishTime>
     </File>
     <File Include="bin/Portal.pdb">
-      <publishTime>06/22/2018 17:43:54</publishTime>
+      <publishTime>06/25/2018 11:22:11</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -2221,7 +2221,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/26/2018 08:50:34</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>06/22/2018 17:35:38</publishTime>
+      <publishTime>06/25/2018 11:20:54</publishTime>
     </File>
     <File Include="Content/template/css/AdminLTE.css">
       <publishTime>06/22/2018 17:35:38</publishTime>
@@ -2359,7 +2359,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/20/2018 10:01:07</publishTime>
     </File>
     <File Include="Views/Main/Index.cshtml">
-      <publishTime>06/22/2018 13:00:47</publishTime>
+      <publishTime>06/25/2018 11:20:54</publishTime>
     </File>
     <File Include="Views/Modules/Default.cshtml">
       <publishTime>06/01/2018 09:38:54</publishTime>

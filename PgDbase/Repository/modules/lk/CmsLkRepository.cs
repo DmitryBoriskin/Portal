@@ -737,7 +737,7 @@ namespace PgDbase.Repository.cms
 
                 if (filter.Payed.HasValue)
                 {
-                    query = query.Where(w => w.b_payed == filter.Payed.Value);
+                    query = query.Where(w => w.b_closed == filter.Payed.Value);
                 }
 
                 if (filter.Date.HasValue)
@@ -757,11 +757,23 @@ namespace PgDbase.Repository.cms
                     .Take(filter.Size)
                     .Select(s => new AccrualModel
                     {
+
                         Id = s.id,
                         Date = s.d_date,
+                        Period = s.n_period,
+                        Payed = s.b_closed,
+                        Status = s.c_status,
+                        Number = s.c_number,
                         Amount = s.n_amount,
-                        Payed = s.b_payed
-                    }).ToArray();
+                        Tax = s.n_tax,
+                        Cons = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Quantity2 = s.n_quantity2,
+                        DebtType = s.c_debt,
+                        DocType = s.c_doctype,
+                        PaymentId = s.n_payment
+                    })
+                    .ToArray();
 
                 return new Paged<AccrualModel>
                 {
@@ -789,11 +801,23 @@ namespace PgDbase.Repository.cms
                     .Where(w => w.id == id)
                     .Select(s => new AccrualModel
                     {
+
                         Id = s.id,
                         Date = s.d_date,
+                        Period = s.n_period,
+                        Payed = s.b_closed,
+                        Status = s.c_status,
+                        Number = s.c_number,
                         Amount = s.n_amount,
-                        Payed = s.b_payed
-                    }).SingleOrDefault();
+                        Tax = s.n_tax,
+                        Cons = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Quantity2 = s.n_quantity2,
+                        DebtType = s.c_debt,
+                        DocType = s.c_doctype,
+                        PaymentId = s.n_payment
+                    })
+                    .SingleOrDefault();
             }
         }
 

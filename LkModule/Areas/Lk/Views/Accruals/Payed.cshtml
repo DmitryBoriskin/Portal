@@ -13,7 +13,7 @@
         {
             <div class="box invoice topIndent-20">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Счет-фактура №  от @item.Date.ToString("dd.MM.yyyy")</h3>
+                    <h3 class="box-title">Счет-фактура № <b>@item.Number</b> от @item.Date.ToString("dd.MM.yyyy")</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -28,22 +28,30 @@
                         <table class="table no-margin">
                             <thead>
                                 <tr>
+                                    <th>Задолженность</th>
+                                    <th>Тип документа</th>
+                                    <th>Период</th>
+                                    <th>Количество (объем)</th>
+                                    <th>Тарифицируемое потребление</th>
                                     <th>Начислено (без НДС)</th>
+                                    <th>НДС</th>
                                     <th>Начислено (с НДС)</th>
-                                    <th>Начисленные пени</th>
-                                    <th>Проценты за пользование чужими денежными средствами</th>
-                                    <th>Оплаченная сумма</th>
-                                    <th>Неоплаченная сумма</th>
+                                    <th>Статус</th>
+                                    <th>Оплата</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td>@item.DebtType</td>
+                                    <td>@item.DocType</td>
+                                    <td>@item.Period</td>
+                                    <td>@item.Cons</td>
+                                    <td>@item.Quantity<br />@item.Quantity2</td>
+                                    <td>@(item.Amount.HasValue ? (item.Amount.Value - item.Tax.Value).ToString("N2") : "")</td>
+                                    <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                     <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
+                                    <td>@item.Status</td>
+                                    <td>@item.PaymentId</td>
                                 </tr>
                             </tbody>
                         </table>
