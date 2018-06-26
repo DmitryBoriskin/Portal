@@ -9,19 +9,65 @@
         @Html.TextAreaFor(m => m.Item.Text, new { @type = "editor", @height = "200",@class = "uc_input", @title = "Текст" })
         
 
+        @if (Model.Item != null)
+        {
+            <div class="row topIndent-20">
+                <div class="col-md-12">
+                    <div class="group-block open" title="Модули">
+                        <div class="answer_list " >
+
+                            <table class="table table-striped">
+                                <tbody data-service="/admin/services/ChangePosition/?section=vote">
+                                    @if (Model.Item.List != null)
+                                    {
+                                        foreach (var item in Model.Item.List)
+                                        {
+                                            <tr>
+                                                <td>@item.Variant</td>                                                
+                                                <td class="text-right">                                                    
+                                                    <a class="delete-module-btn delete-item-link" data-link-id="33de69c7-81fc-40a9-a865-199342609408" data-url="/admin/sites/deleteSiteModule" data-init="false"></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>                            
+                        </div>                       
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                @Html.TextBoxFor(w=>w.Answer.Variant,new {@class="us_input",@title="Вариант ответа" })
+                            </div>
+                            <div class="col-md-4">
+                                <button style="margin-top: 25px;" class="button icon-create green pull-right" type="submit" name="action" value="add-new-answer">Добавить</button>                                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <br />
+            <div class="alert alert-info">
+                Возможность добавить варианты ответа будет доступна после сохранения элемента.
+            </div>
+        }
+
+
     </div>
     <div class="dop_info-block">
         <div class="dop-caption icon-layers">Доп. параметры</div>
         @Html.TextBoxFor(m => m.Item.DateStart, new { required = "", data_type = "datetime", title = "Дата публикации", value = ViewBag.Date })
         
-        @Html.TextBoxFor(m => m.Item.DateEnd, new { required = "", data_type = "datetime", title = "Завршение голосования", value = ViewBag.Date })
+        @Html.TextBoxFor(m => m.Item.DateEnd, new { data_type = "datetime", title = "Завршение голосования", value = ViewBag.Date })
 
 
         @Html.CheckBoxFor(m => m.Item.Important, new { type = "checkbox", title = "Главное голсование", data_toggle = "toggle", data_on = "Да", data_onstyle = "success", data_off = "Нет", data_offstyle = "danger", data_width = "248" })
         @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
 
-
-        @Html.CheckBoxFor(m => m.Item.Important, new { type = "checkbox", title = "Главная новость", data_toggle = "toggle", data_on = "Да", data_onstyle = "success", data_off = "Нет", data_offstyle = "danger", data_width = "248" })
+        
         @if (Model.Item != null)
         {
             @Html.ActionLink("Журнал изменений", "Log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })

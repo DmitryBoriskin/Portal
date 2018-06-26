@@ -82,6 +82,13 @@ namespace VoteModule.Areas.Admin.Controllers
             model.ErrorInfo = message;
             return View("item", model);
         }
+        [HttpPost]
+        [ValidateInput(false)]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "add-new-answer")]        
+        public ActionResult AddNewAnswer(VoteViewModel backModel)
+        {
+            return View("item", model);
+        }
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "insert-btn")]

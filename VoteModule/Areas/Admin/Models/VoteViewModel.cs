@@ -12,5 +12,6 @@ namespace VoteModule.Areas.Admin.Models
     {
         public Paged<VoteModel> List { get; set; }
         public VoteModel Item { get; set; }
+        public AnswerModel Answer { get; set; }
     }
 }

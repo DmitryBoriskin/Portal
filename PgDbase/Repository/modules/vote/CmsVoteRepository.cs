@@ -133,19 +133,19 @@ namespace PgDbase.Repository.cms
             }
         }
 
-        public bool UpdateVote(VoteModel news)
+        public bool UpdateVote(VoteModel vote)
         {
             using (var db = new CMSdb(_context))
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var q = db.vote_vote.Where(w => w.id == news.Id && w.f_site == _siteId);
+                    var q = db.vote_vote.Where(w => w.id == vote.Id && w.f_site == _siteId);
                     if (q.Any())
                     {
                         InsertLog(new LogModel
                         {
-                            PageId = news.Id,
-                            PageName = news.Title,
+                            PageId = vote.Id,
+                            PageName = vote.Title,
                             Section = LogModule.Vote,
                             Action = LogAction.update
                         });
@@ -153,12 +153,12 @@ namespace PgDbase.Repository.cms
                         var thisnews = q.Single();
 
 
-                        bool result = q.Set(s => s.c_title, news.Title)
-                                       .Set(s => s.c_text, news.Text)                                       
-                                       .Set(s => s.d_date_start, news.DateStart)
-                                       .Set(s => s.d_date_end, news.DateEnd)
-                                       .Set(s => s.b_disabled, news.Disabled)
-                                       .Set(s => s.b_important, news.Important)
+                        bool result = q.Set(s => s.c_title, vote.Title)
+                                       .Set(s => s.c_text, vote.Text)                                       
+                                       .Set(s => s.d_date_start, vote.DateStart)
+                                       .Set(s => s.d_date_end, vote.DateEnd)
+                                       .Set(s => s.b_disabled, vote.Disabled)
+                                       .Set(s => s.b_important, vote.Important)
                                        .Update() > 0;
                         
                         tr.Commit();
@@ -171,7 +171,33 @@ namespace PgDbase.Repository.cms
             }
         }
 
+        public bool AddAnswer(AnswerModel answer)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    int sort = 0;
+                    var q = db.vote_answers.Where(w => w.f_vote == answer.ParentId).Select(s => s.n_sort);
+                    if (q.Any())
+                    {
+                        sort=q.Max();
+                    }
+                    sort++;
 
+                    db.vote_answers.Insert(() => new vote_answers
+                    {
+                        c_variant = answer.Variant,
+                        f_vote =answer.ParentId,
+                        n_sort=sort
+                    });
+                    tr.Commit();
+                }
+                
+
+                return true;
+            }
+        }
 
     }
 }

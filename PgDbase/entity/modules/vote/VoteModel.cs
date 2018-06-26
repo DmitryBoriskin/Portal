@@ -25,6 +25,7 @@ namespace PgDbase.Entity.modules.vote
     public class AnswerModel
     {
         public Guid Id { get; set; }
+        public Guid ParentId { get; set; }
         public string Variant { get; set; }
         public int  Parent { get; set; }
     }
