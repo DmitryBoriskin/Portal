@@ -73,7 +73,7 @@ namespace PgDbase.Repository.front
             {
                 using (var tr = db.BeginTransaction())
                 {
-                    var query = db.msg_messages.Where(w => w.f_site == _siteId && w.id == id && w.f_parent == null);
+                    var query = db.msg_messages.Where(w => w.f_site == _siteId && w.id == id && w.f_parent == null && (w.f_user==_currentUserId && w.f_user_destination==_currentUserId));
 
                     if (query.Any())
                     {
@@ -175,7 +175,7 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.msg_messages.Where(w => w.f_parent == null && w.f_site == _siteId);
+                var query = db.msg_messages.Where(w => w.f_parent == null && w.f_site == _siteId && (w.f_user_destination==_currentUserId || w.f_user==_currentUserId));
                 int itemsCount = query.Count();
                 var q = query.Select(s => new MessagesTheme
                 {
