@@ -190,7 +190,11 @@ namespace PgDbase.entity
         /// <summary>
         /// Сообщения
         /// </summary>
-        Messages
+        Messages,
+        /// <summary>
+        /// Голосование
+        /// </summary>
+        Vote,
     }
 
     /// <summary>

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LkModule", "LkModule\LkModu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagesModule", "MessagesModule\MessagesModule.csproj", "{975FE858-0320-4130-9D7F-A6B3D0F9898F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteModule", "VoteModule\VoteModule.csproj", "{2F669627-9ACD-4F00-91AD-0A984FD3E864}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{975FE858-0320-4130-9D7F-A6B3D0F9898F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{975FE858-0320-4130-9D7F-A6B3D0F9898F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{975FE858-0320-4130-9D7F-A6B3D0F9898F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F669627-9ACD-4F00-91AD-0A984FD3E864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F669627-9ACD-4F00-91AD-0A984FD3E864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F669627-9ACD-4F00-91AD-0A984FD3E864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F669627-9ACD-4F00-91AD-0A984FD3E864}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{AF8D93C7-31B8-4C5F-B052-5A797D3D9D43} = {5C26047E-DE6F-4A61-B42A-17C1C6965E96}
 		{40832950-38AC-477F-87DD-87AA57D4E563} = {5C26047E-DE6F-4A61-B42A-17C1C6965E96}
 		{975FE858-0320-4130-9D7F-A6B3D0F9898F} = {5C26047E-DE6F-4A61-B42A-17C1C6965E96}
+		{2F669627-9ACD-4F00-91AD-0A984FD3E864} = {5C26047E-DE6F-4A61-B42A-17C1C6965E96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F809BFB2-BBA3-454E-BB23-45059D7842BB}

@@ -86,6 +86,7 @@
     <Compile Include="Entity\modules\messages\MessagesFilter.cs" />
     <Compile Include="Entity\modules\messages\MessagesModel.cs" />
     <Compile Include="Entity\modules\vacancy\VacancyModel.cs" />
+    <Compile Include="Entity\modules\vote\VoteModel.cs" />
     <Compile Include="Entity\services\Filters\LkFilter.cs" />
     <Compile Include="Entity\services\Filters\UserFilter.cs" />
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Repository\modules\messages\CmsMessagesRepository.cs" />
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
+    <Compile Include="Repository\modules\vote\CmsVoteRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Template\DbModel.generated.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
