@@ -6,25 +6,51 @@
 {
     if (User.Identity.HasClaim(Model.ControllerName, "view"))
     {
-        string payed = Model.Item.Payed ? "оплачено" : "неоплачено";
+        decimal amountWithOutTax = (Model.Item.Amount.HasValue) ? Model.Item.Amount.Value : 0.00m;
+        if (Model.Item.Tax.HasValue)
+        {
+            amountWithOutTax = amountWithOutTax - Model.Item.Tax.Value;
+        }
         <div class="content">
             <h1>@Model.PageName</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Дата</th>
-                        <th>Сумма</th>
-                        <th>Оплачено?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model.Item.Date.ToString("dd.MM.yyyy")</td>
-                        <td>@(Model.Item.Amount.HasValue ? Model.Item.Amount.Value.ToString("N2") : "")</td>
-                        <td>@payed</td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <div class="group-block open" title="@Model.Item.DocType № @Model.Item.Number от @Model.Item.Date.ToString(" dd.MM.yyyy")">
+                <div class="li-desc"><span>Дата:</span>  @Model.Item.Date.ToString(" dd.MM.yyyy")</div>
+                <div class="li-desc"><span>Задолженность:</span> @Model.Item.DebtType</div>
+                <div class="li-desc"><span>Период:</span> @Model.Item.Period</div>
+
+                <table class="table table-striped table-condensed topIndent-20">
+                    <thead>
+                        <tr>
+                            <th>Количество<br /><small>(объем)</small></th>
+                            <th>Тарифицируемое<br />потребление</th>
+                            <th>Начислено<br /><small>(без НДС)</small></th>
+                            <th>НДС</th>
+                            <th>Начислено<br /><small>(с НДС)</small></th>
+                            <th>Статус</th>
+                            <th>Платеж</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.Item.Cons</td>
+                            <td>
+                                @Model.Item.Quantity
+                                @if (Model.Item.Quantity2.HasValue && Model.Item.Quantity2 > 0m)
+                                {<br />@Model.Item.Quantity2}
+                            </td>
+                            <td>@amountWithOutTax.ToString("N2")</td>
+                            <td>@(Model.Item.Tax.HasValue ? Model.Item.Tax.Value.ToString("N2") : "")</td>
+                            <td>@(Model.Item.Amount.HasValue ? Model.Item.Amount.Value.ToString("N2") : "")</td>
+                            <td>@Model.Item.Status</td>
+                            <td>
+                                @if (Model.Item.PaymentId.HasValue)
+                                {<a href="/lk/payments/#payment_@Model.Item.PaymentId">#@Model.Item.PaymentId</a>}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="dop_info-block"></div>

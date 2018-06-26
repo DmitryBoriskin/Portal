@@ -11,21 +11,25 @@
         <table class="table table-striped table-condensed">
             <tr>
                 <th>Дата</th>
-                <th>Счет</th>
-                <th>Сумма</th>
-
+                <th>Докумет №</th>
+                <th>Задолженность</th>
+                <th>Сумма с НДС</th>
+                <th>Статус</th>
             </tr>
             @foreach (var item in Model.List.Items)
             {
-                <tr>
-                    <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                    <td>
-                        <a href="/admin/accruals/item/@item.Id">
-                            Счёт за @item.Date.ToString("dd.MM.yyyy")
-                        </a>
-                    </td>
-                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                </tr>
+            <tr>
+                <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                <td>
+                    <a href="/admin/accruals/item/@item.Id">
+                        @item.DocType @if (!string.IsNullOrEmpty(item.Number))
+                        {<span>№ @item.Number</span>}
+                    </a>
+                </td>
+                <td>@item.DebtType</td>
+                <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
+                <td>@(item.Payed ? "Оплачено" : "Не оплачено")</td>
+            </tr>
             }
         </table>
 
