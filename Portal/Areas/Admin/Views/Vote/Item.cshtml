@@ -13,19 +13,19 @@
         {
             <div class="row topIndent-20">
                 <div class="col-md-12">
-                    <div class="group-block open" title="Модули">
+                    <div class="group-block open" title="Варианты ответа">
                         <div class="answer_list " >
 
                             <table class="table table-striped">
-                                <tbody data-service="/admin/services/ChangePosition/?section=vote">
+                                <tbody data-service="/admin/services/ChangePosition/?section=vote" class="sortable">
                                     @if (Model.Item.List != null)
                                     {
                                         foreach (var item in Model.Item.List)
                                         {
-                                            <tr>
+                                            <tr data-id="@item.Id">
                                                 <td>@item.Variant</td>                                                
                                                 <td class="text-right">                                                    
-                                                    <a class="delete-module-btn delete-item-link" data-link-id="33de69c7-81fc-40a9-a865-199342609408" data-url="/admin/sites/deleteSiteModule" data-init="false"></a>
+                                                    <a class="delete-answer-btn delete-item-link" data-link-id="@item.Id" data-url="/admin/vote/DeleteAnswer" data-init="false"></a>
                                                 </td>
                                             </tr>
                                         }
@@ -35,7 +35,7 @@
                         </div>                       
                         
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-8">                                
                                 @Html.TextBoxFor(w=>w.Answer.Variant,new {@class="us_input",@title="Вариант ответа" })
                             </div>
                             <div class="col-md-4">

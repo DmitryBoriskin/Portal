@@ -370,6 +370,42 @@ $(document).ready(function () {
         }
     });
 
+    //удаляем вариант ответа
+    $('.delete-answer-btn').on("click", function (e) {
+        e.preventDefault();
+        var _linkId = $(this).data("linkId");
+        var _action = $(this).data("url");
+        var _container = $(this).closest("tr");
+
+
+        try {
+            $.ajax({
+                method: "POST",
+                url: _action,
+                async: false,
+                data: { linkId: _linkId },
+            })
+                .done(function (response) {
+                    if (response === "Success") {
+                        _container.remove();
+                    }
+                    else {
+                        alert("Произошла ошибка!");
+                    }
+                })
+                .fail(function (jqXHR, status) {
+                    console.log("Ошибка" + " " + status + " " + jqXHR);
+                })
+                .always(function (response) {
+                    location.reload();
+                });
+        }
+        catch (ex) {
+            console.log(ex);
+        }
+
+    });
+
 
     //Удаляет связь сайт-модуль
     $(".delete-module-btn").on("click", function (e) {

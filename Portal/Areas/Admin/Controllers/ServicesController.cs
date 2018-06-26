@@ -201,6 +201,11 @@ namespace Portal.Areas.Admin.Controllers
                 case "cmsmenu":
                     result = _cmsRepository.ChangePositionMenu(id, position);                    
                     break;
+                case "vote":
+                    result = _cmsRepository.ChangePositionAnswer(id, position);
+                    break;
+
+
                 case "pages":
                     if (String.IsNullOrEmpty(menusort))
                     {
