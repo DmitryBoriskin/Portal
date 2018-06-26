@@ -170,6 +170,36 @@ namespace PgDbase.Repository.cms
                 }
             }
         }
+        
+        public bool DeleteVote(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.vote_vote.Where(w => w.id == id && w.f_site == _siteId);
+                    if (query.Any())
+                    {
+                        InsertLog(new LogModel
+                        {
+                            PageId = query.Single().id,
+                            PageName = query.Single().c_title,
+                            Section = LogModule.Vote,
+                            Action = LogAction.delete
+                        });
+
+                        query.Delete();
+
+                        tr.Commit();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
 
         public bool AddAnswer(AnswerModel answer)
         {
@@ -198,6 +228,29 @@ namespace PgDbase.Repository.cms
                 return true;
             }
         }
+
+        public bool DeleteAnswer(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query = db.vote_answers.Where(w => w.id == id);
+                    if (query.Any())
+                    {
+                        var data = query.Single();
+                        db.vote_answers
+                          .Where(w => w.f_vote == data.f_vote)
+                          .Set(s => s.n_sort, s => s.n_sort - 1)
+                          .Update();
+
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+
 
     }
 }
