@@ -417,6 +417,7 @@ namespace PgDbase.Repository.cms
                    .Select(s => new ModuleModel()
                    {
                        Id = s.id,
+                       InAdmin = s.b_be,
                        ParentId = s.f_parent,
                        Name = s.c_name,
                        ControllerName = s.c_controller_name,

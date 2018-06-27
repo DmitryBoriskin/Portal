@@ -113,43 +113,38 @@
                     <label>Контроллер для:</label>
                     <select name="Item.InAdmin" class="form-control" required>
                         <option value="true" @((Model.Item.InAdmin.HasValue && Model.Item.InAdmin.Value)? "selected":"")>Админ панель</option>
-                        <option value="false" @((Model.Item.InAdmin.HasValue && Model.Item.InAdmin.Value)? "":"selected")>Внешняя часть</option>
+                        <option value="false" @((Model.Item.InAdmin.HasValue && !Model.Item.InAdmin.Value)? "selected": "")>Внешняя часть</option>
                     </select>
                 </div>
-                
+                if (!Model.Item.InAdmin.HasValue)
+                {
+                    <br />
+                    <div class="text-danger"><label>*после сохранения укажите шаблон по умолчанию для компонента</label></div>
+                }
+
+                if (Model.Item.InAdmin.HasValue && !Model.Item.InAdmin.Value)
+                {
                 <div class="form-group">
                     <label>Шаблон</label>
                     <select name="Item.View" class="form-control" required>
                         <option value="" selected disabled></option>
                         @if (Model.Templates != null && Model.Templates.Count() > 0)
+                    {
+                        foreach (var template in Model.Templates)
                         {
-                            foreach (var template in Model.Templates)
-                            {
-                                var selected = (Model.Item.View == template.Id) ? true : false;
+                            var selected = (Model.Item.View == template.Id) ? true : false;
                                 <option value="@template.Id" @(selected ? "selected" : "")>@template.Title</option>
                             }
-                        }
+                    }
                     </select>
-                    <label>*будет применяться по умолчанию для данного модуля</label>
+                    <label>*шаблон (frontEnd) по умолчанию , для конкретного сайта шаблон выбирается в разделе "Модули сайта"</label>
                 </div>
+                }
+                else
+                {
+                    <input type="hidden" name="Item.View" value="@Guid.Empty" />
+                }
             }
-            @*@Html.TextBoxFor(m => m.Item.Date, new { required = "", data_type = "datetime", title = "Дата публикации", value = ViewBag.Date })*@
-
-            @*@Html.DropDownListFor(m => m.Item.GroupsId, (MultiSelectList)ViewBag.GroupsValues, new { @title = "Группа", @class = "selectpicker", @multiple = "multiple" })*@
-            @*<div class="form-group">
-                    <label for="itemGroups-select">Категория новости:</label>
-                    <select name="Item.GroupsId" id="itemGroups-select" class="form-control select2" multiple>
-                        @if (Model.Item != null && ViewBag.AllGroups != null)
-                            {
-                                foreach (var group in ViewBag.AllGroups)
-                                {
-                                <option value="@group.Id" @(Model.Item != null && Model.Item.Groups != null && Model.Item.Groups.Any(s => s.Id == group.Id) ? "selected" : null)>@group.Title</option>
-                            }
-                        }
-                    </select>
-                </div>*@
-
-            @*@Html.CheckBoxFor(m => m.Item.Important, new { type = "checkbox", title = "Главная новость", data_toggle = "toggle", data_on = "Да", data_onstyle = "success", data_off = "Нет", data_offstyle = "danger", data_width = "248" })*@
 
             <div class="topIndent-20">
                 @*@Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })*@
