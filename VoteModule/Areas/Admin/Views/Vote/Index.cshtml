@@ -13,7 +13,10 @@
                     <div class="li-desc">
                         <a title="@Item.Title" class="li-caption" href="/admin/vote/item/@Item.Id">@Item.Title</a><br>
                         <span>Дата публикации: </span>@Convert.ToDateTime(Item.DateStart).ToString("dd.MM.yyyy")<br />
-                        <span>Конец публикации: </span>@Convert.ToDateTime(Item.DateStart).ToString("dd.MM.yyyy")<br />
+                        @if (Item.DateEnd != null)
+                        {
+                            <span>Конец публикации: </span>@Convert.ToDateTime(Item.DateEnd).ToString("dd.MM.yyyy")<br />
+                        }                        
                     </div>
                 </div>
             }

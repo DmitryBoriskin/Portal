@@ -103,6 +103,28 @@ namespace VoteModule.Areas.Admin.Controllers
             }
             return View("item", model);
         }
+
+
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "delete-btn")]
+        public ActionResult Delete(Guid id)
+        {
+            _cmsRepository.DeleteVote(id);
+            ErrorMessage message = new ErrorMessage
+            {
+                Title = "Информация",
+                Info = "Запись удалена",
+                Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "ок", Action = "false" }
+                }
+            };
+            model.ErrorInfo = message;
+            return RedirectToAction("index");
+        }
+
+
+
         [HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "add-new-answer")]        
@@ -127,10 +149,12 @@ namespace VoteModule.Areas.Admin.Controllers
 
         [HttpPost]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        public ActionResult Search(string searchtext, bool viewmsg, string size, DateTime? datestart, DateTime? dateend)
+        public ActionResult Search(string searchtext, bool enabled, string size, DateTime? datestart, DateTime? dateend)
         {
             string query = HttpUtility.UrlDecode(Request.Url.Query);
             query = AddFilterParam(query, "searchtext", searchtext);
+            query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
+
             if (datestart.HasValue)
                 query = AddFilterParam(query, "datestart", datestart.Value.ToString("dd.MM.yyyy").ToLower());
 

@@ -107,6 +107,11 @@
     <Content Include="Areas\Admin\Views\Vote\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Vote\Item.cshtml" />
     <Content Include="Areas\Admin\Views\Vote\Part\Filter.cshtml" />
+    <Content Include="Areas\Vote\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Vote\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Vote\Views\Vote\Index.cshtml" />
+    <Content Include="Areas\Vote\Views\Vote\Item.cshtml" />
+    <Content Include="Areas\Vote\Views\VoteWidget\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -120,7 +125,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -128,7 +132,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\VoteController.cs" />
+    <Compile Include="Areas\Vote\Controllers\VoteWidgetController.cs" />
     <Compile Include="Areas\Admin\Models\VoteViewModel.cs" />
+    <Compile Include="Areas\Vote\Controllers\VoteController.cs" />
+    <Compile Include="Areas\Vote\Models\VoteFrontModel.cs" />
+    <Compile Include="Areas\Vote\Models\VoteWidgetFrontModel.cs" />
     <Compile Include="Areas\Vote\VoteAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -137,9 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Vote\Controllers\" />
-    <Folder Include="Areas\Vote\Models\" />
-    <Folder Include="Areas\Vote\Views\Shared\" />
+    <Folder Include="Areas\Admin\Views\VoteWidget\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -188,7 +194,9 @@
   <PropertyGroup>
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Vote\*" "$(SolutionDir)Portal\Areas\Admin\Views\Vote\"
-</PostBuildEvent>
+
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Vote\Views\Vote\*" "$(SolutionDir)Portal\Views\Vote\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Vote\Views\VoteWidget\*" "$(SolutionDir)Portal\Views\VoteWidget\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

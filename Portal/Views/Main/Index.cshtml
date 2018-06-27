@@ -75,20 +75,12 @@
                 </div>
             </a>
 
-            <div class="block block__white block__opacity">
-                <div class="block_headr">Опрос качества</div>
-                <div>Довольны ли Вы качеством услуг АО&nbsp;«ЭСК&nbsp;РусГидро»?</div>
-                <div>
-                    <form action="/" method="post">
-                        <div class="block_btnarea">
-                            <div class="row">
-                                <div class="col-md-6"><button class="btn btn_orange">Да</button></div>
-                                <div class="col-md-6"><button class="btn btn_orange">Нет</button></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+
+            @{Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" }); }
+
+            
+
+
         </div>
         
         

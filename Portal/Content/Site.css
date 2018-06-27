@@ -152,7 +152,6 @@ margin-left:4px;
 .btn_orange:hover,
 .btn_orange:focus,
 .btn_orange:active,
-.btn_orange:visited,
 .btn_orange:active:focus
 {
     color:#ffa000;
@@ -247,4 +246,11 @@ margin-bottom:0;
 }
 .post.post_admin {
     background-color: #ecf0f5;
+}
+.vote_stat i{
+font-size:.9em;
+}
+
+.vote_single_text {
+margin-bottom:30px;
 }
