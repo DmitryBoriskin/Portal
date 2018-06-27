@@ -241,14 +241,56 @@ namespace PgDbase.Repository.cms
                         var data = query.Single();
                         db.vote_answers
                           .Where(w => w.f_vote == data.f_vote)
+                          .Where(w=>w.n_sort>data.n_sort)
                           .Set(s => s.n_sort, s => s.n_sort - 1)
                           .Update();
 
+                        query.Delete();
+                        tr.Commit();
                         return true;
                     }
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// изьменение порядка вариантов ответов
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="new_num"></param>
+        /// <returns></returns>
+        public bool ChangePositionAnswer(Guid id, int new_num)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                using (var tr = db.BeginTransaction())
+                {
+                    var query_answer = db.vote_answers.Where(w => w.id == id);
+
+                    Guid Parent = query_answer.Single().f_vote;
+                    int actual_num = query_answer.Single().n_sort;
+
+                    if (new_num != actual_num)
+                    {
+                        if (new_num > actual_num)
+                        {
+                            db.vote_answers.Where(w => w.f_vote == Parent && w.n_sort > actual_num && w.n_sort <= new_num)
+                              .Set(p => p.n_sort, p => p.n_sort - 1)
+                              .Update();
+                        }
+                        else
+                        {
+                            var q = db.vote_answers.Where(w => w.f_vote == Parent && w.n_sort < actual_num && w.n_sort >= new_num);
+                              q.Set(p => p.n_sort, p => p.n_sort + 1)
+                              .Update();
+                        }
+                        db.vote_answers.Where(w => w.id == id).Set(s => s.n_sort, new_num).Update();
+                    }
+                tr.Commit();
+            }
+        }
+            return true;
         }
 
 

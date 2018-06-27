@@ -27,6 +27,6 @@ namespace PgDbase.Entity.modules.vote
         public Guid Id { get; set; }
         public Guid ParentId { get; set; }
         public string Variant { get; set; }
-        public int  Parent { get; set; }
+        public int  Sort { get; set; }
     }
 }

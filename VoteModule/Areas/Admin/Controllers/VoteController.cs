@@ -1,4 +1,5 @@
 ﻿using PgDbase.entity;
+using PgDbase.Entity.modules.vote;
 using Portal.Areas.Admin.Controllers;
 using Portal.Areas.Admin.Models;
 using System;
@@ -46,6 +47,13 @@ namespace VoteModule.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetVoteItem(id);
+            if (model.Item != null)
+            {
+                model.Answer = new AnswerModel
+                {
+                    ParentId = model.Item.Id
+                };                    
+            }            
             return View(model);
         }
         [HttpPost]
@@ -70,6 +78,11 @@ namespace VoteModule.Areas.Admin.Controllers
                     _cmsRepository.InsertVote(backModel.Item);
                     message.Info = "Запись добавлена";
                 }
+                message.Buttons = new ErrorMessageBtnModel[]
+                {
+                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
+                    new ErrorMessageBtnModel { Url = StartUrl + "item/"+id, Text = "ок", Action = "false" }
+                };
             }
             else
             {
@@ -80,14 +93,27 @@ namespace VoteModule.Areas.Admin.Controllers
                 };
             }
             model.ErrorInfo = message;
+            model.Item = _cmsRepository.GetVoteItem(id);
+            if (model.Item != null)
+            {
+                model.Answer = new AnswerModel
+                {
+                    ParentId = model.Item.Id
+                };
+            }
             return View("item", model);
         }
         [HttpPost]
         [ValidateInput(false)]
         [MultiButton(MatchFormKey = "action", MatchFormValue = "add-new-answer")]        
-        public ActionResult AddNewAnswer(VoteViewModel backModel)
+        public ActionResult AddNewAnswer(Guid id, VoteViewModel backModel)
         {
-            return View("item", model);
+            backModel.Answer.ParentId = id;
+            _cmsRepository.AddAnswer(backModel.Answer);
+            model.Item = _cmsRepository.GetVoteItem(id);
+            model.Answer = new AnswerModel();
+            return Redirect(StartUrl + "item/" + id);
+            //return View("item", model);
         }
 
         [HttpPost]
@@ -133,5 +159,15 @@ namespace VoteModule.Areas.Admin.Controllers
             return Redirect(StartUrl + Request.Url.Query);
         }
 
+        
+        [HttpPost]
+        public ActionResult DeleteAnswer(Guid linkId)
+        {
+            var res = _cmsRepository.DeleteAnswer(linkId);
+            if (res)
+                return Json("Success");
+
+            return Json("An Error Has Occourred");
+        }
     }
 }
