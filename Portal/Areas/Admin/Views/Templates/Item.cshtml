@@ -8,16 +8,17 @@
     @*if (Model.UserResolution.Write)*@
 if (true)
 {
-    <div class="content">
-        <div class="row">
-            <div class="col-md-8"></div>
-            <div class="col-md-3"></div>
-        </div>
-        <h1>@Model.PageName</h1>
-        @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @Title = "Название шаблона", @placeholder = "Шаблон2 для модуля1", MaxLength = "256" })
-        @Html.TextBoxFor(m => m.Item.Image, new { type = "file", data_posted_name = "upload", data_url = fileUrl, title = "Картинка для предпросмотра", data_help = "Размер фотографии должен быть не менне 400 точек по ширине и пропорции картинки - 4х3", accept = ".jpg,.jpeg,.png,.gif" })
-        @Html.TextBoxFor(m => Model.Item.ViewPath, new { @required = "", @Title = "Путь к шаблону", @placeholder = "~/Views/Modules/SomeModule/SomeTemplate.cshtml", MaxLength = "512" })
+<div class="content">
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-3"></div>
     </div>
+    <h1>@Model.PageName</h1>
+    @Html.TextBoxFor(m => Model.Item.Title, new { @required = "", @Title = "Название шаблона", @placeholder = "Шаблон2 для модуля1", MaxLength = "256" })
+    @Html.TextBoxFor(m => m.Item.Image, new { type = "file", data_posted_name = "upload", data_url = fileUrl, title = "Картинка для предпросмотра", data_help = "Размер фотографии должен быть не менне 400 точек по ширине и пропорции картинки - 4х3", accept = ".jpg,.jpeg,.png,.gif" })
+    @Html.TextAreaFor(m => Model.Item.Desc, new { @class = "uc_input", @type = "text", @title = "Описание, возможности", @rows = "5" })
+    @Html.TextBoxFor(m => Model.Item.ViewPath, new { @required = "", @Title = "Путь к шаблону", @placeholder = "~/Views/Modules/SomeModule/SomeTemplate.cshtml", MaxLength = "512" })
+</div>
     <div class="dop_info-block">
         <div class="dop-caption">Настройки</div>
         @if (Model.Item != null && Model.Item.Id != Guid.Empty)

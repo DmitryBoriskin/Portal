@@ -1,0 +1,37 @@
+﻿@using LkModule.Areas.Lk.Models
+@model PaymentFrontModel
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+
+    @Html.Partial("Part/Filter")
+    <div class="invoice">
+        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+        {
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <th>Дата</th>
+                    <th>Сумма</th>
+                    <th>Статус</th>
+                </tr>
+                @foreach (var item in Model.List.Items)
+                {
+                    <tr>
+                        <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            @(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            </table>
+
+            @Html.Partial("Partial/_pager", Model.List.Pager)
+        }
+        else
+        {
+            <div class="noItems">Нет данных</div>
+        }
+    </div>
+</div>

@@ -18,6 +18,11 @@ namespace PgDbase.entity
         public string Title { get; set; }
 
         /// <summary>
+        /// Описание шаблона
+        /// </summary>
+        public string Desc { get; set; }
+
+        /// <summary>
         /// Для какого контроллера предназначен шаблон
         /// </summary>
         public ModuleModel Controller { get; set; }

@@ -92,6 +92,7 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         Title = s.c_name,
+                        Desc = s.c_desc,
                         Controller = new ModuleModel()
                         {
                             Id = s.f_controller,
@@ -119,7 +120,7 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Возвращает постраничный список шаблонов для контроллеров
+        /// Информация о шаблоне
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -135,6 +136,7 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         Title = s.c_name,
+                        Desc = s.c_desc,
                         Controller = new ModuleModel()
                         {
                             Id = s.f_controller,
@@ -167,6 +169,7 @@ namespace PgDbase.Repository.cms
                     {
                         id = template.Id,
                         c_name = template.Title,
+                        c_desc = template.Desc,
                         c_path = template.ViewPath,
                         c_img = template.Image,
                         f_controller = Guid.Empty
@@ -206,6 +209,7 @@ namespace PgDbase.Repository.cms
                     {
                         var cdTemplate = data.SingleOrDefault();
                         cdTemplate.c_name = template.Title;
+                        cdTemplate.c_desc = template.Desc;
                         cdTemplate.c_path = template.ViewPath;
                         cdTemplate.c_img = template.Image;
                         cdTemplate.f_controller = (template.Controller != null) ? template.Controller.Id : Guid.Empty;
@@ -516,10 +520,6 @@ namespace PgDbase.Repository.cms
                         cdModule.f_parent = module.ParentId;
                         cdModule.c_action_name = module.ActionName;
                         cdModule.c_default_view = module.View;
-
-                        //Не разрешаем вводить имя контроллера, отличное от родительского
-                        cdModule.c_controller_name = parentModule.c_controller_name;
-
 
                         //Устанавливаем выбранному шаблону тип
                         #region

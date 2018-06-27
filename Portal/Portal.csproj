@@ -1044,6 +1044,7 @@
   <ItemGroup>
     <Folder Include="bin\" />
     <Folder Include="Views\Layout\" />
+    <Folder Include="Views\Modules\" />
     <Folder Include="Views\PageWidget\" />
   </ItemGroup>
   <ItemGroup>

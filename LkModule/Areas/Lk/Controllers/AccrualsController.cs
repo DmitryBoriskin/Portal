@@ -38,6 +38,10 @@ namespace LkModule.Areas.Lk.Controllers
         //Неоплаченные платежи
         public ActionResult Index()
         {
+            //Шаблон
+            var view = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(view))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
@@ -56,21 +60,23 @@ namespace LkModule.Areas.Lk.Controllers
             if (mFilter.DateEnd.HasValue)
                 ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
-            return View(model);
+            return View(view, model);
         }
 
         //Оплаченные платежи
         public ActionResult Payed()
         {
+            //Шаблон
+            var view = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(view))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
             filter = GetFilter();
-
-            var userId = CurrentUser.UserId;
-
             var mFilter = FilterModel.Extend<LkFilter>(filter);
             mFilter.Payed = true;
-           
-            var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
             if (userSubscr != null)
             {
                 model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
@@ -82,7 +88,7 @@ namespace LkModule.Areas.Lk.Controllers
             if (mFilter.DateEnd.HasValue)
                 ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
-            return View(model);
+            return View(view, model);
         }
 
         //[HttpPost]

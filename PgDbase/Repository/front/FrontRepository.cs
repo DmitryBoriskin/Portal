@@ -74,6 +74,28 @@ namespace PgDbase.Repository.front
             }
         }
 
+        /// <summary>
+        /// Информация о шаблоне
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public string GetModuleView(string controller, string action)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_controllers
+                    .Where(t => t.c_controller_name.ToLower() == controller.ToLower() && t.c_action_name.ToLower() == action.ToLower())
+                    .Where(t=> t.b_be == false);
+
+                var data = query
+                    .Select(t => t.fkcontrollerview.c_path);
+
+                if(data.Any())
+                    return data.Single();
+
+                return "";
+            }
+        }
 
         /// <summary>
         /// 
