@@ -18,6 +18,11 @@ namespace PgDbase.entity
         public Guid? ParentId { get; set; }
 
         /// <summary>
+        /// Флаг только для дочерних элементов модуля, показывает относится контроллер к админке или внешней части
+        /// </summary>
+        public bool? InAdmin { get; set; }
+
+        /// <summary>
         /// Имя модуля
         /// </summary>
         public string Name { get; set; }

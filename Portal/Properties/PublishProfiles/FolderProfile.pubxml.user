@@ -400,13 +400,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/13/2012 12:19:34</publishTime>
     </File>
     <File Include="bin/PgDbase.dll">
-      <publishTime>06/25/2018 11:22:07</publishTime>
+      <publishTime>06/26/2018 10:21:12</publishTime>
     </File>
     <File Include="bin/PgDbase.dll.config">
       <publishTime>06/01/2018 14:27:33</publishTime>
     </File>
     <File Include="bin/PgDbase.pdb">
-      <publishTime>06/25/2018 11:22:07</publishTime>
+      <publishTime>06/26/2018 10:21:12</publishTime>
     </File>
     <File Include="bin/pl/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
@@ -418,10 +418,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/15/2018 13:43:30</publishTime>
     </File>
     <File Include="bin/Portal.dll">
-      <publishTime>06/25/2018 11:22:11</publishTime>
+      <publishTime>06/26/2018 10:21:16</publishTime>
     </File>
     <File Include="bin/Portal.pdb">
-      <publishTime>06/25/2018 11:22:11</publishTime>
+      <publishTime>06/26/2018 10:21:16</publishTime>
     </File>
     <File Include="bin/pt-BR/Microsoft.VisualStudio.Threading.resources.dll">
       <publishTime>02/15/2018 13:55:30</publishTime>
