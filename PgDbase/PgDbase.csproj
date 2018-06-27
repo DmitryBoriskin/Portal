@@ -115,6 +115,7 @@
     <Compile Include="Repository\modules\vacancy\CmsVacancyRepository.cs" />
     <Compile Include="Repository\modules\vacancy\FrontVacancyRepository.cs" />
     <Compile Include="Repository\modules\vote\CmsVoteRepository.cs" />
+    <Compile Include="Repository\modules\vote\FrontVoteRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Template\DbModel.generated.cs">
       <DependentUpon>DbModel.tt</DependentUpon>

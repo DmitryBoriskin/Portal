@@ -14,11 +14,22 @@ namespace VoteModule.Areas.Vote
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
+
             context.MapRoute(
-                "Vote_default",
-                "Vote/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
-            );
+                 "Vote_FE",
+                 "Vote/{action}/{id}",
+                 new { controller = "Vote", action = "Index", id = UrlParameter.Optional },
+                 new[] { "VoteModule.Areas.Vote.Controllers" }
+             );
+
+            context.MapRoute(
+                 "Vote_widget_FE",
+                 "VoteWidget/{action}/{id}",
+                 new { controller = "VoteWidget", action = "Index", id = UrlParameter.Optional },
+                 new[] { "VoteModule.Areas.Vote.Controllers" }
+             );
+
+
         }
     }
 }

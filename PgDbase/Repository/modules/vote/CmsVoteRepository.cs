@@ -46,7 +46,8 @@ namespace PgDbase.Repository.cms
                                       Id = s.id,
                                       Title = s.c_title,
                                       DateStart = s.d_date_start,
-                                      DateEnd = s.d_date_end
+                                      DateEnd = s.d_date_end,
+                                      Disabled=s.b_disabled
                                   });
                     return new Paged<VoteModel>()
                     {
@@ -159,6 +160,7 @@ namespace PgDbase.Repository.cms
                                        .Set(s => s.d_date_end, vote.DateEnd)
                                        .Set(s => s.b_disabled, vote.Disabled)
                                        .Set(s => s.b_important, vote.Important)
+                                       .Set(s => s.b_type_multi, vote.TypeMulti)
                                        .Update() > 0;
                         
                         tr.Commit();
@@ -186,7 +188,7 @@ namespace PgDbase.Repository.cms
                             PageName = query.Single().c_title,
                             Section = LogModule.Vote,
                             Action = LogAction.delete
-                        });
+                        },query.Single());
 
                         query.Delete();
 
@@ -282,16 +284,18 @@ namespace PgDbase.Repository.cms
                         else
                         {
                             var q = db.vote_answers.Where(w => w.f_vote == Parent && w.n_sort < actual_num && w.n_sort >= new_num);
-                              q.Set(p => p.n_sort, p => p.n_sort + 1)
-                              .Update();
+                            q.Set(p => p.n_sort, p => p.n_sort + 1)
+                            .Update();
                         }
                         db.vote_answers.Where(w => w.id == id).Set(s => s.n_sort, new_num).Update();
                     }
-                tr.Commit();
+                    tr.Commit();
+                }
             }
-        }
             return true;
         }
+
+        
 
 
     }
