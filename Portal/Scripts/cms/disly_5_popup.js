@@ -55,14 +55,14 @@
                 async: false,
                 data: { userId: _userId, role: _role, siteId:_siteId },
             })
-                .done(function (response) {
-                })
-                .fail(function (jqXHR, status) {
-                    console.log("Ошибка" + " " + status + " " + jqXHR);
-                })
-                .always(function (response) {
-                    window.parent.location.reload();
-                });
+            .done(function (response) {
+            })
+            .fail(function (jqXHR, status) {
+                console.log("Ошибка" + " " + status + " " + jqXHR);
+            })
+            .always(function (response) {
+                window.parent.location.reload();
+            });
         }
         catch (ex) {
             console.log(ex);

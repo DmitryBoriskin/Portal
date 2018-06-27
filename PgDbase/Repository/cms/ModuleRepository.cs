@@ -335,6 +335,7 @@ namespace PgDbase.Repository.cms
                                         {
                                             Id = m.id,
                                             Name = m.c_name,
+                                            InAdmin = m.b_be,
                                             ControllerName = m.c_controller_name,
                                             ActionName = m.c_action_name,
                                             ParentId = m.f_parent,
@@ -379,6 +380,7 @@ namespace PgDbase.Repository.cms
                                         .Select(m => new ModuleModel()
                                         {
                                             Id = m.id,
+                                            InAdmin = m.b_be,
                                             Name = m.c_name,
                                             ControllerName = m.c_controller_name,
                                             ActionName = m.c_action_name,
@@ -415,6 +417,7 @@ namespace PgDbase.Repository.cms
                    .Select(s => new ModuleModel()
                    {
                        Id = s.id,
+                       InAdmin = s.b_be,
                        ParentId = s.f_parent,
                        Name = s.c_name,
                        ControllerName = s.c_controller_name,
@@ -426,6 +429,7 @@ namespace PgDbase.Repository.cms
                                         .Select(m => new ModuleModel()
                                         {
                                             Id = m.id,
+                                            InAdmin = m.b_be,
                                             Name = m.c_name,
                                             ControllerName = m.c_controller_name,
                                             ActionName = m.c_action_name,
@@ -464,6 +468,7 @@ namespace PgDbase.Repository.cms
                                         .Select(m => new ModuleModel()
                                         {
                                             Id = m.id,
+                                            InAdmin = m.b_be,
                                             Name = m.c_name,
                                             ControllerName = m.c_controller_name,
                                             ActionName = m.c_action_name,
@@ -491,8 +496,9 @@ namespace PgDbase.Repository.cms
                     {
                         id = module.Id,
                         c_name = module.Name,
-                        c_controller_name = module.ControllerName
-                    };
+                        c_controller_name = module.ControllerName,
+                        c_desc = module.Desc
+                };
 
                     //Если это компонент модуля
                     if (module.ParentId.HasValue)
@@ -506,10 +512,10 @@ namespace PgDbase.Repository.cms
 
                         var parentModule = parentModuleData.Single();
 
+                        cdModule.b_be = module.InAdmin;
                         cdModule.f_parent = module.ParentId;
                         cdModule.c_action_name = module.ActionName;
                         cdModule.c_default_view = module.View;
-                        cdModule.c_desc = module.Desc;
 
                         //Не разрешаем вводить имя контроллера, отличное от родительского
                         cdModule.c_controller_name = parentModule.c_controller_name;
@@ -591,6 +597,7 @@ namespace PgDbase.Repository.cms
 
                         cdController.c_name = module.Name;
                         cdController.c_controller_name = module.ControllerName;
+                        cdController.c_desc = module.Desc;
 
                         if (module.ParentId.HasValue)
                         {
@@ -598,11 +605,10 @@ namespace PgDbase.Repository.cms
                             //cdController.f_parent;
                             //cdController.c_controller_name;
 
+                            cdController.b_be = module.InAdmin;
                             cdController.c_name = module.Name;
                             cdController.c_action_name = module.ActionName;
                             cdController.c_default_view = module.View;
-                            cdController.c_desc = module.Desc;
-
 
                             //Устанавливаем выбранному шаблону тип модуля
                             #region

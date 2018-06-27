@@ -2,140 +2,170 @@
 @{
     var isModulePart = (Model.Item != null && Model.Item.ParentId.HasValue) ? true : false;
 }
+
 @using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post))
 {
-    @*if (Model.UserResolution.Write)*@
-if (true)
-{
-    <div class="content">
-        <h1>@Model.PageName</h1>
-        <div class="row">
-            <div class="col-md-12">
-                @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @title = "Название Модуля", @placeholder = "Название", MaxLength = "512" })
-                
-                @if (isModulePart)
-                {
-                    @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер", @placeholder = "SomeController", MaxLength = "512", @readonly="readonly" })
+    if (User.Identity.HasClaim(Model.ControllerName, "view"))
+    {
+        var title = (isModulePart) ? "Название (alias) компонента модуля" : "Название (alias) модуля";
 
-                    @Html.HiddenFor(m => Model.Item.ParentId)
-                    @Html.TextBoxFor(m => Model.Item.ActionName, new { @required = "", @title = "Название метода", @placeholder = "SomeAction", MaxLength = "512" })
-                    @Html.TextAreaFor(m => Model.Item.Desc, new { @class = "uc_input", @type = "text", @title = "Описание, возможности", @rows = "15" })
-                }
-                else
-                {
-                    @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер", @placeholder = "SomeController", MaxLength = "512" })
-                }
+        <div class="content">
+            <h1>@Model.PageName</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(m => Model.Item.Name, new { @required = "", @title = title, @placeholder = "Название", MaxLength = "512" })
+
+                    @if (isModulePart)
+                    {
+                        @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер (controller)", @placeholder = "SomeController", MaxLength = "512"})
+
+                        @Html.HiddenFor(m => Model.Item.ParentId)
+                        @Html.TextBoxFor(m => Model.Item.ActionName, new { @required = "", @title = "Метод (action)", @placeholder = "SomeAction", MaxLength = "512" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => Model.Item.ControllerName, new { @required = "", @title = "Контроллер", @placeholder = "SomeController", MaxLength = "512" })
+                    }
+                    @Html.TextAreaFor(m => Model.Item.Desc, new { @class = "uc_input", @type = "text", @title = "Описание, возможности", @rows = "8" })
+                </div>
             </div>
-        </div>
 
-        @*Если Модуль*@
-        @if (Model.Item != null && !Model.Item.ParentId.HasValue)
-        {
+            @*Если Модуль*@
+            @if (Model.Item != null && !Model.Item.ParentId.HasValue)
+            {
             <div class="row  topIndent-20">
                 <div class="col-sm-6">
-                    <h4 class="nesting_title">Компоненты</h4>
+                    <h4 class="nesting_title">Компоненты модуля</h4>
                 </div>
-                @*@if (Model.UserResolution.Write)*@
-                @if (true)
+
+                @if (User.Identity.HasClaim(Model.ControllerName, "edit"))
                 {
-                    <div class="col-sm-3">
+                    <div class="col-sm-6 text-right">
                         <div class="bubble_but">
                             <a class="button icon-create green" href="/admin/modules/item/@Guid.NewGuid()/?parent=@Model.Item.Id">Добавить</a>
                         </div>
                     </div>
                 }
-                @if (Model.Item != null && Model.Item.ModuleParts != null && Model.Item.ModuleParts.Count() > 1)
+                @*@if (Model.Item != null && Model.Item.ModuleParts != null && Model.Item.ModuleParts.Count() > 1)
                 {
                     <div class="col-sm-3">
                         <div class="bubble_but">
                             <a class="button icon-sort" data-action="noPreloader-accept" id="sorting_element" title="Добавляет возможность сортировки элементов списка">Сортировать</a>
                         </div>
                     </div>
+                }*@
+            </div>
+
+
+                if (Model.Item != null && Model.Item.ModuleParts != null && Model.Item.ModuleParts.Count() > 0)
+                {
+                    <div class="sort_list topIndent-20">
+                        <table id="sm_list" class="table table-striped table-condensed">
+                            <tbody data-service="">
+                                <tr><th>Контроллеры админ панели</th></tr>
+                                @foreach (var part in Model.Item.ModuleParts)
+                                {
+                                    if (part.InAdmin.HasValue && part.InAdmin.Value)
+                                    {
+                                        <tr class="ui-sortable-handle" data-id="@part.Id">
+                                            <td>
+                                                <span class="icon-puzzle" style="color:#999;"></span>
+                                                <a title="@part.Desc" href="/admin/modules/item/@part.Id">@part.Name</a>
+                                                <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <br /><br />
+                    <div class="sort_list topIndent-20">
+                        <table id="sm_list" class="table table-striped table-condensed">
+                            <tbody data-service="">
+                                <tr><th>Контроллеры  внешней части</th></tr>
+                                @foreach (var part in Model.Item.ModuleParts)
+                                {
+                                    if (part.InAdmin.HasValue && !part.InAdmin.Value)
+                                    {
+                                        <tr class="ui-sortable-handle" data-id="@part.Id">
+                                            <td>
+                                                <span class="icon-puzzle" style="color:#999;"></span>
+                                                <a title="@part.Desc" href="/admin/modules/item/@part.Id">@part.Name</a>
+                                                <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
+
+
+        </div>
+        <div class="dop_info-block">
+            <div class="dop-caption">Настройки</div>
+            @if (isModulePart)
+            {
+                <div class="form-group">
+                    <label>Контроллер для:</label>
+                    <select name="Item.InAdmin" class="form-control" required>
+                        <option value="true" @((Model.Item.InAdmin.HasValue && Model.Item.InAdmin.Value)? "selected":"")>Админ панель</option>
+                        <option value="false" @((Model.Item.InAdmin.HasValue && !Model.Item.InAdmin.Value)? "selected": "")>Внешняя часть</option>
+                    </select>
+                </div>
+                if (!Model.Item.InAdmin.HasValue)
+                {
+                    <br />
+                    <div class="text-danger"><label>*после сохранения укажите шаблон по умолчанию для компонента</label></div>
                 }
 
-            </div>
-            if (Model.Item != null && Model.Item.ModuleParts != null && Model.Item.ModuleParts.Count() > 0)
-            {
-                <div class="sort_list topIndent-20">
-                    <table id="sm_list" class="table table-striped table-condensed">
-                        <tbody data-service="">
-                            @*/Admin/Services/ChangePosition?group=pages*@
-                            @foreach (var part in Model.Item.ModuleParts)
-                            {
-                                <tr class="ui-sortable-handle" data-id="@part.Id">
-                                    <td>
-                                        <span class="icon-puzzle" style="color:#999;"></span>
-                                        <a title="@part.Desc" class="li-caption" href="/admin/modules/item/@part.Id">@part.Name</a>
-                                        <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-        }
-
-
-    </div>
-    <div class="dop_info-block">
-        <div class="dop-caption">Настройки</div>
-        @if (isModulePart)
-        {
-            <div class="form-group">
-                <label>Шаблон</label>
-                <select name="Item.View" class="form-control" required>
-                    <option value="" selected disabled></option>
-                    @if (Model.Templates != null && Model.Templates.Count() > 0)
+                if (Model.Item.InAdmin.HasValue && !Model.Item.InAdmin.Value)
+                {
+                <div class="form-group">
+                    <label>Шаблон</label>
+                    <select name="Item.View" class="form-control" required>
+                        <option value="" selected disabled></option>
+                        @if (Model.Templates != null && Model.Templates.Count() > 0)
                     {
                         foreach (var template in Model.Templates)
                         {
                             var selected = (Model.Item.View == template.Id) ? true : false;
-                            <option value="@template.Id" @(selected ? "selected" : "")>@template.Title</option>
-                        }
+                                <option value="@template.Id" @(selected ? "selected" : "")>@template.Title</option>
+                            }
                     }
-                </select>
-                <label>*будет применяться по умолчанию для данного модуля</label>
+                    </select>
+                    <label>*шаблон (frontEnd) по умолчанию , для конкретного сайта шаблон выбирается в разделе "Модули сайта"</label>
+                </div>
+                }
+                else
+                {
+                    <input type="hidden" name="Item.View" value="@Guid.Empty" />
+                }
+            }
+
+            <div class="topIndent-20">
+                @*@Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })*@
             </div>
-        }
-        @*@Html.TextBoxFor(m => m.Item.Date, new { required = "", data_type = "datetime", title = "Дата публикации", value = ViewBag.Date })*@
-
-        @*@Html.DropDownListFor(m => m.Item.GroupsId, (MultiSelectList)ViewBag.GroupsValues, new { @title = "Группа", @class = "selectpicker", @multiple = "multiple" })*@
-        @*<div class="form-group">
-                <label for="itemGroups-select">Категория новости:</label>
-                <select name="Item.GroupsId" id="itemGroups-select" class="form-control select2" multiple>
-                    @if (Model.Item != null && ViewBag.AllGroups != null)
-                        {
-                            foreach (var group in ViewBag.AllGroups)
-                            {
-                            <option value="@group.Id" @(Model.Item != null && Model.Item.Groups != null && Model.Item.Groups.Any(s => s.Id == group.Id) ? "selected" : null)>@group.Title</option>
-                        }
-                    }
-                </select>
-            </div>*@
-
-        @*@Html.CheckBoxFor(m => m.Item.Important, new { type = "checkbox", title = "Главная новость", data_toggle = "toggle", data_on = "Да", data_onstyle = "success", data_off = "Нет", data_offstyle = "danger", data_width = "248" })*@
-
-        <div class="topIndent-20">
-            @*@Html.ActionLink("Журнал изменений", "log", "services", new { @id = Model.Item.Id }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })*@
         </div>
-    </div>
-}
-else
-{
-    <p>@Settings.NoResolut</p>
-}
-    <div class="buttons">
-        @*@if ((Model.Item != null && Model.UserResolution.Change) || (Model.Item == null && Model.UserResolution.Write))*@
-        @if (true)
-        {
-            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
-        }
-        @*@if (Model.Item != null && Model.UserResolution.Delete)*@
-        @if (true)
-        {
-            <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
-        }
-        <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
-    </div>
+    }
+    else
+    {
+        <p>@Settings.NoResolut</p>
+    }
+        <div class="buttons">
+            @*@if ((Model.Item != null && Model.UserResolution.Change) || (Model.Item == null && Model.UserResolution.Write))*@
+            @if (User.Identity.HasClaim(Model.ControllerName, "edit")|| User.Identity.HasClaim(Model.ControllerName, "create"))
+            {
+                <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+            }
+            @*@if (Model.Item != null && Model.UserResolution.Delete)*@
+            @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
+            {
+                <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
+            }
+            <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
+        </div>
 }
