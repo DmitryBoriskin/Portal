@@ -1,0 +1,16 @@
+﻿@using VoteModule.Areas.Vote.Models
+@model VoteWidgetFrontModel
+@if (Model.Item != null)
+{
+    <div class="block block__white block__opacity">
+        <div class="block_headr">@Model.Item.Title</div>
+        <div>@Model.Item.Text</div>
+        <div>
+            <form action="/" method="post">
+                <div class="block_btnarea">
+                    <a class="btn btn_orange" href="/vote/item/@Model.Item.Id">Проголосовать</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}

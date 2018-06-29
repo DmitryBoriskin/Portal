@@ -195,8 +195,8 @@
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Vote\*" "$(SolutionDir)Portal\Areas\Admin\Views\Vote\"
 
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Vote\Views\Vote\*" "$(SolutionDir)Portal\Views\Vote\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Vote\Views\VoteWidget\*" "$(SolutionDir)Portal\Views\VoteWidget\"</PostBuildEvent>
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Vote\Views\Vote\*" "$(SolutionDir)Portal\Views\Modules\Vote\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Vote\Views\VoteWidget\*" "$(SolutionDir)Portal\Views\Modules\VoteWidget\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -38,7 +38,7 @@ namespace LkModule.Areas.Lk.Controllers
 
             }
 
-            return View(ViewName, model);
+            return PartialView(ViewName, model);
         }
 
         public ActionResult Info()
@@ -64,7 +64,7 @@ namespace LkModule.Areas.Lk.Controllers
 
             }
 
-            return View(ViewName, model);
+            return PartialView(ViewName, model);
         }
 
         [HttpPost]

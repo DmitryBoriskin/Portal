@@ -192,8 +192,8 @@
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Messages\*" "$(SolutionDir)Portal\Areas\Admin\Views\Messages\"
 
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\Messages\*" "$(SolutionDir)Portal\Views\Messages\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\MsgWidget\*" "$(SolutionDir)Portal\Views\MsgWidget\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\Messages\*" "$(SolutionDir)Portal\Views\Modules\Messages\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Messages\Views\MsgWidget\*" "$(SolutionDir)Portal\Views\Modules\MsgWidget\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
