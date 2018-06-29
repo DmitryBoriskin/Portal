@@ -23,8 +23,14 @@ namespace LkModule.Areas.Lk.Controllers
             base.OnActionExecuting(filterContext);
 
             //Есть ли у сайта доступ к модулю
-            //if (!_Repository.ModuleAllowed(ControllerName))
-            //    Response.Redirect("/Page/ModuleDenied");
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Page/ModuleDenied");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
 
             model = new AccrualFrontModel()
             {
@@ -38,11 +44,7 @@ namespace LkModule.Areas.Lk.Controllers
         //Неоплаченные платежи
         public ActionResult Index()
         {
-            //Шаблон
-            var view = _Repository.GetModuleView(ControllerName, ActionName);
-            if (string.IsNullOrEmpty(view))
-                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
-
+           
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
             mFilter.Payed = false;
@@ -60,17 +62,12 @@ namespace LkModule.Areas.Lk.Controllers
             if (mFilter.DateEnd.HasValue)
                 ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
-            return View(view, model);
+            return View(ViewName, model);
         }
 
         //Оплаченные платежи
         public ActionResult Payed()
         {
-            //Шаблон
-            var view = _Repository.GetModuleView(ControllerName, ActionName);
-            if (string.IsNullOrEmpty(view))
-                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
-
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
             mFilter.Payed = true;
@@ -88,7 +85,7 @@ namespace LkModule.Areas.Lk.Controllers
             if (mFilter.DateEnd.HasValue)
                 ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
-            return View(view, model);
+            return View(ViewName, model);
         }
 
         //[HttpPost]

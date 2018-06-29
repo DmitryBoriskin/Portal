@@ -36,8 +36,11 @@ if (true)
                                 {
                                     foreach (var modulePart in module.ModuleParts)
                                     {
-                                        var selected = (Model.Item != null && Model.Item.Controller!= null && Model.Item.Controller.Id == modulePart.Id) ? true : false;
-                                        <option value="@modulePart.Id" @(selected ? "selected" : "")>@modulePart.Name</option>
+                                        if (modulePart.InAdmin.HasValue && !modulePart.InAdmin.Value)
+                                        {
+                                            var selected = (Model.Item != null && Model.Item.Controller != null && Model.Item.Controller.Id == modulePart.Id) ? true : false;
+                                            <option value="@modulePart.Id" @(selected ? "selected" : "")>@modulePart.Name</option>
+                                        }
                                     }
                                 }
                             </optgroup>

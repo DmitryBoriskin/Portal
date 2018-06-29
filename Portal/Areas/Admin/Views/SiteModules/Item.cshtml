@@ -1,123 +1,121 @@
 ﻿@model SitesViewModel
 
+@{
+    string noPhoto = "/Content/img/nophoto.jpg";
+}
+
 @if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
-<div class="content">
-    <h1>
-        @Model.PageName
-        @if (Model.Item != null)
+    <div class="content">
+        <h1>
+            @Model.PageName
+            @if (Model.Item != null)
+            {
+                <span>»</span> <a href="/admin/sites/item/@Model.Item.Id" style="text-decoration:none;">@Model.Item.Title</a>
+            }
+        </h1>
+        @if (Model.Item != null && Model.Item.Modules != null && Model.Item.Modules.Count() > 0)
         {
-            <span>»</span> <a href="/admin/sites/item/@Model.Item.Id" style="text-decoration:none;">@Model.Item.Title</a>
-        }
-    </h1>
-    @if (Model.Item != null && Model.Item.Modules != null && Model.Item.Modules.Count() > 0)
-    {
-        foreach (var item in Model.Item.Modules)
-        {
-            <div class="list-item">
-                <h4 style="margin:2px 0;font-weight:400; font-size:1.3em;">
-                    <span class="icon-puzzle" style="color:#999;"></span>
-                    @item.Name <span class="description">(@(!string.IsNullOrEmpty(item.ActionName) ? @item.ControllerName + "/" + item.ActionName : @item.ControllerName))</span>
-                </h4>
+            foreach (var item in Model.Item.Modules)
+            {
+                <div class="list-item">
+                    <a class="li-caption" style="text-decoration:none;">Модуль: @item.Name</a>
+                    <span class="description">(@(!string.IsNullOrEmpty(item.ActionName) ? @item.ControllerName + "/" + item.ActionName : @item.ControllerName))</span>
+                    <div class="topIndent-20">@item.Desc</div>
 
-                @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
-                {
-                    foreach (var part in item.ModuleParts)
+                    @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
                     {
-                        <div class="list-item-part">
-                            <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Name</a>
-                            <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
-                        </div>
-                    }
-                }
-                else
-                {
-                    var siteModulePart = Model.Item.Modules[0];
-                    <div class="row">
-                        <div class="col-md-3">
-                            @Html.TextBoxFor(m => m.Item.Modules[0].Desc, new { @title = "Количество записей на страницу", @type = "number" })
-                        </div>
-                    </div>
-                    <div class="row topIndent-20">
-                        <div class="col-md-12">
-                            <label class="description">Шаблон:</label>
+                        <br /><br />
+                        <table class="table table-striped table-condensed">
+                            <tr><th>Компоненты модуля</th></tr>
 
-                            <div class="module-templates">
-                                @if (siteModulePart.Templates != null && siteModulePart.Templates.Count() > 0)
+                            @foreach (var part in item.ModuleParts)
+                            {
+                                if (part.InAdmin.HasValue && !part.InAdmin.Value)
                                 {
-                                    foreach (var template in Model.Item.Modules[0].Templates)
-                                    {
-                                        var isDefault = false;
-                                        if (siteModulePart.View == template.Id)
-                                        {
-                                            isDefault = true;
-                                        }
-
-                                        <div class="module-templates-item">
-                                            <img /><br />
-                                            <a class="set-template-default-btn item-default-link @(isDefault ? "active" : "")" data-link-id="@item.Id" data-template-id="@template.Id" data-url="/admin/siteModules/setDefaultTemplate" data-init="false"> @template.Title</a>
-                                        </div>
-                                    }
+                                    <tr>
+                                        <td>
+                                            <a href="/admin/siteModules/item/@part.Id">@part.Name</a>
+                                            <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
+                                        </td>
+                                    </tr>
                                 }
+                            }
+                        </table>
+                    }
+                    else
+                    {
+                        var siteModulePart = Model.Item.Modules[0];
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(m => m.Item.Modules[0].Desc, new { @title = "Количество записей на страницу", @type = "number" })
+                            </div>
+                        </div>
+                        <div class="row topIndent-20">
+                            <div class="col-md-12">
+                                <div class="list-item">
+                                    @if (siteModulePart.Templates != null && siteModulePart.Templates.Count() > 0)
+                                    {
+                                        <table class="table table-striped table-condensed">
+                                            <tr><th colspan="3">Шаблоны</th></tr>
+                                            @foreach (var template in Model.Item.Modules[0].Templates)
+                                            {
+                                                var imageUrl = (!string.IsNullOrEmpty(template.Image) && File.Exists(Server.MapPath(template.Image))) ? template.Image : noPhoto;
+                                                var isDefault = false;
+                                                if (siteModulePart.View == template.Id)
+                                                {
+                                                    isDefault = true;
+                                                }
+
+                                            <tr>
+
+                                                <td>
+                                                    <img src="@imageUrl" class="li-image" />
+                                                </td>
+                                                <td width="5%" class="td-middle">
+                                                    <a class="set-template-default-btn item-default-link @(isDefault ? "active" : "")" data-link-id="@item.Id" data-template-id="@template.Id" data-url="/admin/siteModules/setDefaultTemplate" data-init="false"></a>
+                                                </td>
+                                                <td width="80%" class="td-middle">@template.Title</td>
+                                            </tr>
+                                            }
+                                        </table>
+                                    }
+
+                                </div>
 
                             </div>
-
                         </div>
-                    </div>
-                }
-            </div>
+                    }
+                </div>
+            }
         }
-    }
-    else
-    {
-        <div>Нет записей</div>
-    }
-</div>
-<div class="dop_info-block">
-    <div class="dop-caption">Фильтр</div>
-</div>
-<div class="buttons">
-    @*@if (Model.UserResolution.Write)*@
-    @*@if (true)
+        else
         {
-        using (Html.BeginForm(Model.ActionName, Model.ControllerName))
-        {
-        <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+            <div>Нет записей</div>
         }
+    </div>
+    <div class="dop_info-block">
+        <div class="dop-caption">Фильтр</div>
+    </div>
+    <div class="buttons">
+        @if (User.Identity.HasClaim(Model.ControllerName, "edit") || User.Identity.HasClaim(Model.ControllerName, "create"))
+        {
+            using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+            {
+                <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+            }
 
-        }*@
-</div>
+        }
+        <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
+    </div>
 }
 else
 {
-<div class="content"><p>У вас недостаточно прав.</p></div>
+    <div class="content"><p>У вас недостаточно прав.</p></div>
 }
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".module-templates").mCustomScrollbar({
-            axis: "x",
-            advanced: {
-                autoExpandHorizontalScroll: true //optional (remove or set to false for non-dynamic/static elements)
-            }
-        });
-    });
-</script>
+
 <style>
-    .module-templates {
-        overflow-x: auto;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-flex-direction: row;
-        flex-direction: row;
+    .td-middle{
+        vertical-align:middle !important;
     }
-
-        .module-templates .mCSB_container {
-            display: -webkit-flex;
-            display: flex;
-        }
-
-        .module-templates .module-templates-item {
-            -webkit-flex-shrink: 0;
-            flex-shrink: 0;
-        }
 </style>

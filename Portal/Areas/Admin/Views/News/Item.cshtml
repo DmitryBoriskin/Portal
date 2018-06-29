@@ -20,9 +20,15 @@
         @if (Model.Item != null)
         {
             @*виджет событий*@
-            Html.RenderAction("index", "EventsWidget");
+            try
+            {
+                Html.RenderAction("index", "EventsWidget");
+            }
+            catch(Exception ex)
+            {
+                //Log
+            }
         }
-
 
     </div>
     <div class="dop_info-block">

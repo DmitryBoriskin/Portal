@@ -763,7 +763,7 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// 
+        /// 1
         /// </summary>
         /// <param name="siteId"></param>
         /// <returns></returns>
@@ -792,6 +792,7 @@ namespace PgDbase.Repository.cms
                                         .Select(m => new ModuleModel()
                                         {
                                             Id = m.id,
+                                            InAdmin = m.fksitecontrollerscontrollers.b_be,
                                             Name = m.fksitecontrollerscontrollers.c_name,
                                             ControllerName = m.fksitecontrollerscontrollers.c_controller_name,
                                             ActionName = m.fksitecontrollerscontrollers.c_action_name,
@@ -835,6 +836,7 @@ namespace PgDbase.Repository.cms
                                         {
                                             Id = m.id,
                                             Name = m.fksitecontrollerscontrollers.c_name,
+                                            InAdmin = m.fksitecontrollerscontrollers.b_be,
                                             ControllerName = m.fksitecontrollerscontrollers.c_controller_name,
                                             ActionName = m.fksitecontrollerscontrollers.c_action_name,
                                             ParentId = m.fksitecontrollerscontrollers.id,

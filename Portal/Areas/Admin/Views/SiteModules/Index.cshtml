@@ -1,5 +1,5 @@
 ﻿@model SitesViewModel
-@*@if (Model.UserResolution.Read)*@
+
 @if (User.Identity.HasClaim(Model.ControllerName, "view"))
 {
     <div class="content">
@@ -16,17 +16,8 @@
             foreach (var item in Model.Item.Modules)
             {
                 <div class="list-item">
-                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/siteModules/item/@item.Id">@item.Name</a>
-                    @if (item.ModuleParts != null && item.ModuleParts.Count() > 0)
-                    {
-                        foreach (var part in item.ModuleParts)
-                        {
-                            <div class="list-item-part">
-                                <a title="@part.Desc" class="li-caption" href="/admin/siteModules/item/@part.Id">@part.Name</a>
-                                <span class="description">(@(part.ControllerName)/@(part.ActionName))</span>
-                            </div>
-                        }
-                    }
+                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/siteModules/item/@item.Id">@item.Name</a><br />
+                    <div>@item.Desc</div>
                 </div>
             }
         }
@@ -40,6 +31,7 @@
             }*@
     </div>
     <div class="buttons">
+        <button type="submit" name="action" value="cancel-btn" class="button icon-cancel">Закрыть</button>
     </div>
 }
 else
