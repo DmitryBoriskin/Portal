@@ -14,6 +14,7 @@ namespace VoteModule.Areas.Vote.Controllers
             VoteWidgetFrontModel model = new VoteWidgetFrontModel();
 
             model.Item = _Repository.GetVoteForIndexPage();
+            #region минимизированный текст
             if (model.Item != null)
             {
                 if (model.Item.Text != null)
@@ -21,10 +22,11 @@ namespace VoteModule.Areas.Vote.Controllers
                     model.Item.Text = Regex.Replace(model.Item.Text, "<[^>]+>", string.Empty);
                     if (model.Item.Text.Length > 72)
                     {
-                        model.Item.Text= model.Item.Text.Substring(0, 72) + "...";
-                    }                    
-                }                
+                        model.Item.Text = model.Item.Text.Substring(0, 72) + "...";
+                    }
+                }
             }
+            #endregion
             return PartialView(model);
         }
     }

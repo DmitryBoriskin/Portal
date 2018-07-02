@@ -97,6 +97,10 @@ namespace PgDbase.Repository.front
             }
         }
 
+
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -119,7 +123,13 @@ namespace PgDbase.Repository.front
                         var bread = new Breadcrumbs
                         {
                             Title = d.c_name,
-                            Url = (d.c_url != null) ? d.c_url :"/page"+ d.c_path + d.c_alias
+                            Url = ((!String.IsNullOrEmpty(d.c_url)) ? d.c_url
+                                                             :
+                                                             (d.f_sites_controller == null) ? "/page" + d.c_path + d.c_alias
+                                                                                : (from u in db.core_controllers where u.id == d.f_sites_controller select "/" + u.c_controller_name + ((u.c_action_name.ToLower() == "index") ? "" : "/" + u.c_action_name)).FirstOrDefault()
+
+                                                             ).ToLower(),
+                            //(d.c_url != null) ? d.c_url :"/page"+ d.c_path + d.c_alias
                         };
                         data.Add(bread);
                         q = db.core_pages.Where(w => w.gid == d.pgid);
@@ -136,6 +146,28 @@ namespace PgDbase.Repository.front
                 return data;
             }
         }
+
+
+        public PageModel GetInfoPageModule(string controller, string action)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var d = db.core_controllers.Where(w => w.c_controller_name.ToLower() == controller && w.c_action_name.ToLower() == action)
+                          .Join(db.core_pages.Where(w => w.f_site == _siteId), n => n.id, m => m.f_sites_controller, (n, m) => m);
+                if (d.Any())
+                {
+                    return d.Select(s => new PageModel()
+                    {
+                        Name = s.c_name,
+                        Url = (from u in db.core_controllers where u.id == s.f_sites_controller select "/" + u.c_controller_name + ((u.c_action_name.ToLower() == "index") ? "" : "/" + u.c_action_name)).FirstOrDefault(),
+                        Alias=s.c_alias,
+                        Path=s.c_path
+                    }).First();
+                }
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// 
@@ -258,13 +290,30 @@ namespace PgDbase.Repository.front
                 var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == Alias)
                           .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
                           .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o });
+
+
+
                 if (q.Any())
                 {
+
+                    var data = q.OrderBy(o => o.e.n_sort)
+                              .Select(s => new PageModel { }).ToList();
+
                     return q.OrderBy(o => o.e.n_sort)
                             .Select(s => new PageModel
                             {
                                 Name = s.o.c_name,
-                                Url = (String.IsNullOrEmpty(s.o.c_url)) ? "/page" + s.o.c_path + s.o.c_alias : s.o.c_url,
+                                //Url = (String.IsNullOrEmpty(s.o.c_url)) ? "/page" + s.o.c_path + s.o.c_alias : s.o.c_url,
+                                //url заполняется по следующей логике:
+                                //-если есть значение c_url то оно
+                                //иначе-если элементу неприсвоен контроллер, то возвращает "/page" + s.o.c_path + s.o.c_alias
+                                //       иначе возвращается путь определенный его контроллером
+                                Url = ((!String.IsNullOrEmpty(s.o.c_url)) ? s.o.c_url
+                                                             :
+                                                             (s.o.f_sites_controller == null) ? "/page" + s.o.c_path + s.o.c_alias
+                                                                                : (from u in db.core_controllers where u.id == s.o.f_sites_controller select "/"+u.c_controller_name+((u.c_action_name.ToLower() == "index") ? "": "/" + u.c_action_name)).FirstOrDefault()
+                                                             
+                                                             ).ToLower(),
                                 FaIcon = s.o.c_fa_icon,
                                 Childrens = GetChildMenu(s.o.gid)
                             }).ToList();

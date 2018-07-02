@@ -73,6 +73,11 @@ namespace Portal.Areas.Admin.Controllers
             model.List = _cmsRepository.GetPages(mfilter);
 
             model.Filter = GetFilterTree();
+
+
+            
+
+
             return View(model);
         }
 
@@ -94,7 +99,7 @@ namespace Portal.Areas.Admin.Controllers
             }
             GetBreadCrumbs(id);
 
-            
+            model.Modules=_cmsRepository.GetActionForPage();
 
             return View(model);
         }
@@ -125,6 +130,13 @@ namespace Portal.Areas.Admin.Controllers
 
                 backModel.Item.Path = (parentElement!=null)?$"{parentElement.Path}{parentElement.Alias}/":"/";
                 backModel.Item.Id = id;
+
+                var ControllerId = Request["Item.Controller.Id"];
+                if (!String.IsNullOrEmpty(ControllerId) && Guid.TryParse(ControllerId, out Guid result))
+                {
+                    backModel.Item.ControllerPage = result;                    
+                }
+
                 if (Item_MenuGroups != null)
                 {
                     backModel.Item.MenuGroups = Item_MenuGroups.Select(s => Guid.Parse(s)).ToArray();

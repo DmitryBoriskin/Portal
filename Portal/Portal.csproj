@@ -796,6 +796,7 @@
     <Compile Include="Controllers\AccountHomeController.cs" />
     <Compile Include="Controllers\AccountManageController.cs" />
     <Compile Include="Controllers\CoreController.cs" />
+    <Compile Include="Controllers\DistributorController.cs" />
     <Compile Include="Controllers\LayoutController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\RightController.cs" />
@@ -1043,6 +1044,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="Views\Distributor\" />
     <Folder Include="Views\Layout\" />
     <Folder Include="Views\Modules\" />
     <Folder Include="Views\PageWidget\" />

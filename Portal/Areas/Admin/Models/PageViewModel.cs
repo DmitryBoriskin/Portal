@@ -33,7 +33,13 @@ namespace Portal.Areas.Admin.Models
         /// Группы меню
         /// </summary>
         public GroupsModel[] MenuGroups { get; set; }
-        
-        
+
+
+        /// <summary>
+        /// Доступные экшены
+        /// </summary>
+        public ModuleModel[] Modules { get; set; }
+
+
     }
 }

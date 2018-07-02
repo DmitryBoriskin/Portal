@@ -28,15 +28,16 @@ namespace VoteModule.Areas.Vote.Controllers
                 PageName = _pageName,
                 User = CurrentUser
             };
+
+
+
         }
 
         // GET: Vote/Vote
         public ActionResult Index()
         {
-
             filter = GetFilter();
             model.List = _Repository.GetVoteList(filter);
-
 
             return View(model);
         }
@@ -48,10 +49,10 @@ namespace VoteModule.Areas.Vote.Controllers
         [HttpPost]
         public ActionResult VoteAction(VoteFrontModel backm)
         {
-            var sdf = Request["variant"];
-            if (!String.IsNullOrEmpty(sdf))
+            var variant = Request["variant"];
+            if (!String.IsNullOrEmpty(variant))
             {
-                string[] AnswerArr = sdf.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
+                string[] AnswerArr = variant.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
                 _Repository.ActionVote(backm.Item.Id, AnswerArr);
             }
 

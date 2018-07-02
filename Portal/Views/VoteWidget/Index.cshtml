@@ -5,12 +5,36 @@
     <div class="block block__white block__opacity">
         <div class="block_headr">@Model.Item.Title</div>
         <div>@Model.Item.Text</div>
-        <div>
-            <form action="/" method="post">
-                <div class="block_btnarea">
-                    <a class="btn btn_orange" href="/vote/item/@Model.Item.Id">Проголосовать</a>
-                </div>
-            </form>
-        </div>
+        @if (Model.Item.ShowStat)
+        {
+            <div class="vote__wdg_stat">
+                @foreach (var item in Model.Item.ListStat)
+                {
+                    <div class="vote_stat">
+                        <div class="clearfix">
+                            <span class="pull-left">@item.Variant <i>(@item.CurrentCount из @item.AllCount)</i></span>
+                            <small class="pull-right">@item.Proc%</small>
+                        </div>
+                        <div class="progress xs">
+                            <div class="progress-bar progress-bar-green" style="width: @item.Proc%;"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+        }
+        else
+        {
+            <div>
+                <form action="/" method="post">
+                    <div class="block_btnarea">
+                        <a class="btn btn_orange" href="/vote/item/@Model.Item.Id">Проголосовать</a>
+                    </div>
+                </form>
+            </div>
+        }
+        <a class="link  link__orange" href="/vote"><i>Голосования</i></a>
     </div>
+
+
 }

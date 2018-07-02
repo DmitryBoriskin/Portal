@@ -148,25 +148,56 @@ namespace PgDbase.Repository.front
             }
         }
 
+
+
         public VoteModel GetVoteForIndexPage()
         {
             using (var db = new CMSdb(_context))
             {
+                VoteModel model = new VoteModel();
                 var query = db.vote_vote
                               .Where(w => w.f_site == _siteId && w.b_disabled == false)
-                              .Where(w => w.d_date_start <= DateTime.Now && (w.d_date_end >= DateTime.Now || w.d_date_end ==null))
-                              .OrderByDescending(o => o.d_date_start)
-                              .OrderByDescending(i => i.b_important);
+                              .Where(w => w.d_date_start <= DateTime.Now && (w.d_date_end >= DateTime.Now || w.d_date_end == null));
+
                 if (query.Any())
                 {
-                    return query.Select(s => new VoteModel
+                    query = query.OrderByDescending(o => o.d_date_start).OrderByDescending(i => i.b_important);
+                    var data = query.Join(db.vote_stat_answer.Where(w => w.f_user == _currentUserId), m => m.id, n => n.f_user, (m, n) => m);
+                    if (data.Any())
                     {
-                        Title = s.c_title,
-                        Id = s.id,
-                        Text=s.c_text
-                    }).First();
+                        //данные достаточные для перехода на конкретное голосование
+                        model = query.Select(s => new VoteModel
+                        {
+                            ShowStat = false,
+                            Title = s.c_title,
+                            Id = s.id,
+                            Text = s.c_text
+                        }).First();
+                    }
+                    else
+                    {
+                        //статистика
+                        model = query.Select(s => new VoteModel
+                        {
+                            ShowStat = true,
+                            Title = s.c_title,
+                            Id = s.id,
+                            Text = s.c_text,
+                            ListStat = s.fkids.OrderBy(o => o.n_sort).Select(a => new AnswerAndStat()
+                            {
+                                Id = a.id,
+                                Variant = a.c_variant,
+                                AllCount = s.fkstats.Count(),
+                                CurrentCount = s.fkstats.Where(e => e.f_answer == a.id).Count()
+                            }).ToList(),
+
+                        }).First();
+                    }
+                    return model;
                 }
-                return null;
+                else
+                    return null;            
+
             }
         }
 

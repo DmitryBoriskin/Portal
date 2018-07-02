@@ -72,7 +72,7 @@ namespace PgDbase.Repository.cms
                         Keywords = s.c_keyw,
                         Desc = s.c_desc,
                         FaIcon=s.c_fa_icon,
-                        SiteController = s.f_sites_controller,
+                        ControllerPage = s.f_sites_controller,
                         Childrens = GetPages(new PageFilterModel { Parent = s.gid }),
                         MenuGroups = s.fkpagegrouplinkpages.Select(g => g.f_page_group).ToArray()
                     }).SingleOrDefault();
@@ -136,7 +136,7 @@ namespace PgDbase.Repository.cms
                         c_keyw = page.Keywords,
                         c_desc = page.Desc,
                         c_fa_icon=page.FaIcon,
-                        f_sites_controller = page.SiteController
+                        f_sites_controller = page.ControllerPage
                     }) > 0;
 
                     // группы меню
@@ -199,7 +199,7 @@ namespace PgDbase.Repository.cms
                         .Set(s => s.c_keyw, page.Keywords)
                         .Set(s => s.c_desc, page.Desc)
                         .Set(s => s.c_fa_icon, page.FaIcon)
-                        .Set(s => s.f_sites_controller, page.SiteController)
+                        .Set(s => s.f_sites_controller, page.ControllerPage)
                         .Update() > 0;
 
                     // группы меню
@@ -655,6 +655,91 @@ namespace PgDbase.Repository.cms
 
 
                 return data.FirstOrDefault();
+            }
+        }
+
+
+
+
+    
+        
+
+
+
+        public ModuleModel[] GetActionForPage()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.core_site_controllers.Where(w => w.f_site == _siteId)
+                              .Join(db.core_controllers, n => n.f_controller, m => m.id, (n, m) => m)
+                              .Where(w => w.id != Guid.Empty)
+                              .Where(w => w.f_parent == null);
+
+                
+
+                if (query.Any())
+                {
+                    query = query.OrderBy(o => o.n_sort);
+
+                    //список идентификаторов контроллера которые уже выбраны в карте сатйа(/admin/page), далее мы их исключим из выборки
+                    string[] q1 = db.core_pages
+                               .Where(w => w.f_site == _siteId && w.f_sites_controller != null)
+                               .Select(s => (string)s.f_sites_controller.ToString())
+                               .ToArray();
+
+                    var list=query.Select(s => new ModuleModel()
+                                   {
+                                       Id = s.id,
+                                       Name = s.c_name,
+                                       ControllerName = s.c_controller_name,
+                                       ModuleParts = db.core_controllers
+                                                       .Where(m => m.f_parent == s.id && m.b_be==false)
+                                                       .Where(e=>!q1.Contains(e.id.ToString()))
+                                                       .Select(m => new ModuleModel()
+                                                       {
+                                                           Id = m.id,
+                                                           Name = m.c_name,
+                                                           InAdmin = m.b_be,
+                                                           ControllerName = m.c_controller_name,
+                                                           ActionName = m.c_action_name,
+                                                           ParentId = m.f_parent,
+                                                           Desc = m.c_desc,
+                                                           View = m.c_default_view
+                                                       }).ToArray()
+                                   });
+
+                    return list.ToArray();
+                }
+                else return null;
+
+                //var query = db.core_controllers
+                //     .Where(t => t.id != Guid.Empty)                     
+                //     .Where(t => t.f_parent == null);
+
+                //query = query.OrderBy(t => t.n_sort);
+
+                //var list = query
+                //    .Select(s => new ModuleModel()
+                //    {
+                //        Id = s.id,
+                //        Name = s.c_name,
+                //        ControllerName = s.c_controller_name,
+                //        ModuleParts = db.core_controllers
+                //                        .Where(m => m.f_parent == s.id)
+                //                        .Select(m => new ModuleModel()
+                //                        {
+                //                            Id = m.id,                                            
+                //                            Name = m.c_name,
+                //                            InAdmin = m.b_be,
+                //                            ControllerName = m.c_controller_name,
+                //                            ActionName = m.c_action_name,
+                //                            ParentId = m.f_parent,
+                //                            Desc = m.c_desc,
+                //                            View = m.c_default_view
+                //                        }).ToArray()
+                //    });
+
+                //return list.ToArray();
             }
         }
     }

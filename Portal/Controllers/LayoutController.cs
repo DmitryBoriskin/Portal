@@ -19,32 +19,51 @@ namespace Portal.Controllers
         protected string _path = "/";
         protected string _alias = "";
         protected string _pageName = "";
+        protected string _Controller = "";
+        protected string _Action = "";
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            #region Определяем путь и алиас
-            var url = HttpContext.Request.Url.AbsolutePath.ToLower();
-            //Обрезаем  query string (Все, что после ? )
-            if (url.LastIndexOf("?") > -1)
-                url = url.Substring(0, url.LastIndexOf("?"));
-            Regex rgx = new Regex("^/page/");
-            url = rgx.Replace(url, "/");
+          
 
-            //Сегменты пути 
-            var segments = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (segments != null && segments.Count() > 0)
+
+            _Controller = (String)RouteData.Values["controller"].ToString().ToLower();
+            _Action = RouteData.Values["action"].ToString().ToLower();
+
+            var _PageModel= _Repository.GetInfoPageModule(_Controller, _Action);
+            
+
+            if (_PageModel != null)
             {
-                _alias = segments.Last();
-                if (segments.Count() > 1)
-                {
-                    _path = string.Join("/", segments.Take(segments.Length - 1));
-                    _path = string.Format("/{0}/", _path);
-                }
+                _alias = _PageModel.Alias;
+                _path = _PageModel.Path;
             }
-            #endregion
+            else
+            {
+                #region Определяем путь и алиас
+                var url = HttpContext.Request.Url.AbsolutePath.ToLower();
+                //Обрезаем  query string (Все, что после ? )
+                if (url.LastIndexOf("?") > -1)
+                    url = url.Substring(0, url.LastIndexOf("?"));
+                Regex rgx = new Regex("^/page/");
+                url = rgx.Replace(url, "/");
 
+                //Сегменты пути 
+                var segments = url.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (segments != null && segments.Count() > 0)
+                {
+                    _alias = segments.Last();
+                    if (segments.Count() > 1)
+                    {
+                        _path = string.Join("/", segments.Take(segments.Length - 1));
+                        _path = string.Format("/{0}/", _path);
+                    }
+                }
+                #endregion
+            }
 
             //хлебные крошки
             _breadcrumb = _Repository.GetBreadCrumbCollection(_alias, _path);

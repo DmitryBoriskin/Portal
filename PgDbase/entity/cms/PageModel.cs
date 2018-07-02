@@ -70,7 +70,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Идентификатор контроллера
         /// </summary>
-        public int? SiteController { get; set; }
+        public Guid? ControllerPage { get; set; }
 
         /// <summary>
         /// Кол-во дочерних эл-тов
@@ -100,5 +100,7 @@ namespace PgDbase.entity
         /// Группы меню
         /// </summary>
         public Guid[] MenuGroups { get; set; }
+
+        
     }
 }

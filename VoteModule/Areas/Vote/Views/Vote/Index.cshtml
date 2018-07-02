@@ -12,8 +12,17 @@
                 foreach (var item in Model.List.Items)
                 {
                     <div class="vote_list_item">
-                        <h5><a href="/vote/item/@item.Id">@item.Title</a></h5>                        
+                        <div class="news_item_date">@item.DateStart.ToString("dd.MM.yyyy")
+                        @if (item.DateEnd != null)
+                        {
+                            DateTime d = new DateTime();
+                            d = (DateTime)item.DateEnd;
+                            <span> — @d.ToString("dd.MM.yyyy")</span>
+                        }
+                        </div>
+                        <a href="/vote/item/@item.Id">@item.Title</a>
                     </div>
+                    <hr />  
                 }
                 if (Model.List != null && Model.List.Pager != null)
                 {
