@@ -17,7 +17,7 @@
         <a class="go_back" href="/messages"> ← Назад</a>
         <br />  <br />  
         <div class="well">
-            <h3>Тема: @Model.Theme.Theme</h3>
+            <h3>Тема: @(@Model.Theme != null ? Model.Theme.Theme : "")</h3>
             @using (Html.BeginForm("Send", "Messages"))
             {
                 @Html.HiddenFor(m=>m.Item.Id)

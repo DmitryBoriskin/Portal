@@ -75,6 +75,11 @@ namespace Portal.Controllers
         public string ActionName;
 
         /// <summary>
+        /// Шаблон представления
+        /// </summary>
+        public string ViewName;
+
+        /// <summary>
         /// Название страницы
         /// </summary>
         public string PageName;

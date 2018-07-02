@@ -9,7 +9,14 @@
     </div>
     <div class="row">
         <div class="col-md-7">
-            @{Html.RenderAction("Index", "SubscrInfoWidget", new { @area = "Lk" }); }
+
+            @try{
+                Html.RenderAction("Index", "SubscrInfoWidget", new { @area = "Lk" });
+            }
+            catch (Exception ex)
+            {
+                //Log
+            }
         </div>
     </div>
 </div>

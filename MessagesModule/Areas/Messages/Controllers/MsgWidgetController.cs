@@ -12,6 +12,20 @@ namespace MessagesModule.Areas.Messages.Controllers
     [Authorize]
     public class MsgWidgetController : CoreController
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+
+            //Есть ли у сайта доступ к модулю
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Page/ModuleDenied");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+        }
+
         // GET: MsgWidget/Index
         public ActionResult Index()
         {
@@ -39,17 +53,18 @@ namespace MessagesModule.Areas.Messages.Controllers
                         model.NewMsgCountText += n + " новых сообщений";
                         break;
                 }
-            }            
+            }
 
-            return PartialView(model);
+            return PartialView(ViewName, model);
         }
-
 
         public ActionResult LastMessages()
         {
-            MsgWidgetFrontModel model = new MsgWidgetFrontModel();
-            model.MsgList = _Repository.GetLastInboxMessage();
-            return PartialView(model);
+            var model = new MsgWidgetFrontModel
+            {
+                MsgList = _Repository.GetLastInboxMessage()
+            };
+            return PartialView(ViewName, model);
         }
     }
 }

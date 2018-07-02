@@ -17,6 +17,15 @@ namespace LkModule.Areas.Lk.Controllers
 
         public ActionResult Index()
         {
+            //Есть ли у сайта доступ к модулю
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Page/ModuleDenied");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
             var model = new SubscrWidgetFrontModel();
 
             var userId = CurrentUser.UserId;
@@ -29,11 +38,20 @@ namespace LkModule.Areas.Lk.Controllers
 
             }
 
-            return View(model);
+            return PartialView(ViewName, model);
         }
 
         public ActionResult Info()
         {
+            //Есть ли у сайта доступ к модулю
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Page/ModuleDenied");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
             var model = new SubscrWidgetFrontModel();
 
             var userId = CurrentUser.UserId;
@@ -46,7 +64,7 @@ namespace LkModule.Areas.Lk.Controllers
 
             }
 
-            return View(model);
+            return PartialView(ViewName, model);
         }
 
         [HttpPost]

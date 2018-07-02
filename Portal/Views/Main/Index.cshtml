@@ -75,19 +75,26 @@
                 </div>
             </a>
 
-
-            @{Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" }); }
-
-            
-
-
+            @try
+            {
+                Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" });
+            }
+            catch(Exception ex)
+            {
+                //Log
+            }
         </div>
         
         
         <div class="col-md-4">
-
-            @{Html.RenderAction("LastMessages", "MsgWidget", new { @area = "Messages" });}
-          
+            @try
+            {
+                Html.RenderAction("LastMessages", "MsgWidget", new { @area = "Messages" });
+            }
+            catch (Exception ex)
+            {
+                //Log
+            }
 
 
             <div class="block block__white">

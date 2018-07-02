@@ -22,8 +22,13 @@ namespace LkModule.Areas.Lk.Controllers
             base.OnActionExecuting(filterContext);
 
             //Есть ли у сайта доступ к модулю
-            //if (!_Repository.ModuleAllowed(ControllerName))
-            //    Response.Redirect("/Page/ModuleDenied");
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Page/ModuleDenied");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
             model = new PuFrontModel()
             {
@@ -53,7 +58,7 @@ namespace LkModule.Areas.Lk.Controllers
             if (filter.DateEnd.HasValue)
                 ViewBag.endDate = filter.DateEnd.Value.ToString("dd.MM.yyyy");
 
-            return View(model);
+            return View(ViewName, model);
         }
     }
 }

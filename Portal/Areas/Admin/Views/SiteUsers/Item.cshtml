@@ -36,8 +36,14 @@
                     </div>
                 </div>
             </div>
-
-            @{ Html.RenderAction("Index", "SubscrsWidget");}
+            @try
+            {
+                Html.RenderAction("Index", "SubscrsWidget");
+            }
+            catch(Exception ex)
+            {
+                //Log
+            }
 
         </div>
         <div class="dop_info-block">

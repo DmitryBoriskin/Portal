@@ -24,8 +24,13 @@ namespace LkModule.Areas.Lk.Controllers
             base.OnActionExecuting(filterContext);
 
             //Есть ли у сайта доступ к модулю
-            //if (!_Repository.ModuleAllowed(ControllerName))
-            //    Response.Redirect("/Page/ModuleDenied");
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/Page/ModuleDenied");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
             model = new PuFrontModel()
             {
@@ -49,7 +54,7 @@ namespace LkModule.Areas.Lk.Controllers
                 model.List = _Repository.GetSubscrDevices(userSubscr.Id, filter);
             }
 
-            return View(model);
+            return View(ViewName, model);
         }
 
         //[HttpPost]

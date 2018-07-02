@@ -55,10 +55,23 @@
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                            Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
-                            Html.RenderAction("Index", "MsgWidget", new { @area = "Messages" });
+                            try
+                            {
+                                Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
+                            }
+                            catch(Exception ex)
+                            {
+                                //Log ex
+                            }
+                            try
+                            {
+                                Html.RenderAction("Index", "MsgWidget", new { @area = "Messages" });
+                            }
+                            catch(Exception ex)
+                            {
+                                //LOg ex
+                            }
 
-                            
 
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
