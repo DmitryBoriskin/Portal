@@ -51,7 +51,8 @@ namespace VoteModule.Areas.Vote.Controllers
         public ActionResult Item(Guid id)
         {
             //Шаблон
-            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            //ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            ViewName = "~/Views/Modules/Vote/Item.cshtml";
             if (string.IsNullOrEmpty(ViewName))
                 throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 

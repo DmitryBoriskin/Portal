@@ -75,6 +75,9 @@
                 </div>
             </a>
 
+            @*@{ 
+                Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" });
+            }*@
             @try
             {
                 Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" });

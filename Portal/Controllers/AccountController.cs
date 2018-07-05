@@ -99,7 +99,7 @@ namespace Portal.Controllers
             if (getUser == null)
             {
                 ModelState.AddModelError("", "Неверно указан логин/пароль");
-                return View(model);
+                return View();
             }
             var userName = getUser.UserName;
 
@@ -116,7 +116,7 @@ namespace Portal.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Неверно указан логин/пароль.");
-                    return View(model);
+                    return View();
             }
         }
 
