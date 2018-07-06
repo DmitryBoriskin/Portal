@@ -50,6 +50,12 @@ namespace LkModule.Areas.Lk
               new { controller = "SubscrInfoWidget", action = "Info", id = UrlParameter.Optional },
               new[] { "LkModule.Areas.Lk.Controllers" }
               );
+            context.MapRoute(
+              "StatisticWidget_FE",
+              "Lk/StatisticWidget/{action}/{id}",
+              new { controller = "StatisticWidget", action = "Index", id = UrlParameter.Optional },
+              new[] { "LkModule.Areas.Lk.Controllers" }
+              );
 
             context.MapRoute(
              "Statistics_FE",

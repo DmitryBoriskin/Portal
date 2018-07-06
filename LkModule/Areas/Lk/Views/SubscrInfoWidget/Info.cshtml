@@ -5,7 +5,7 @@
 
 @if (Model.Item != null)
 {
-    var balance = "balance__green";
+    @*var balance = "balance__green";
     if(Model.Item.Debt.Value > 0)
     {
         balance = "balance__red";
@@ -18,13 +18,15 @@
         </a>
         <ul class="dropdown-menu">
             <li class="header">Баланс на @DateTime.Now.ToString("dd.MM.yyyy")</li>
-            @*<li> <a class="balance-menu-pay" href="#">Оплатить</a></li>*@
+         
             <li class="footer"><a href="/lk/payments">История платежей</a></li>
         </ul>
-    </li>
+    </li>*@
+
+
     <li class="dropdown notifications-menu subscr-list-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.Item.SubscrId</span>
+            <i class="fa fa-file-text"></i> <span class="subscr-list-menu-num">№ @Model.Item.SubscrId @Model.Item.Name</span>
         </a>
         @if (Model.List != null && Model.List.Count() > 0)
         {

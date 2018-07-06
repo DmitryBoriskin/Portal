@@ -342,6 +342,8 @@
     <Content Include="Content\fonts\Ubuntu\ubuntu_italic.svg" />
     <Content Include="Content\fonts\Ubuntu\ubuntu_regular.svg" />
     <Content Include="Content\img\favicon.ico" />
+    <Content Include="Content\img\index\interactiv-price.png" />
+    <Content Include="Content\img\index\pdf_icon.png" />
     <Content Include="Content\img\modules\aboutNews.png" />
     <Content Include="Content\img\modules\aboutProduct.png" />
     <Content Include="Content\img\modules\gallery.png" />
@@ -1060,6 +1062,7 @@
     <Content Include="Views\Modules\VoteWidget\Index.cshtml" />
     <Content Include="Views\Modules\Vote\Index.cshtml" />
     <Content Include="Views\Modules\Vote\Item.cshtml" />
+    <Content Include="Views\Modules\StatisticWidget\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

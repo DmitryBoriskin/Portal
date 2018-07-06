@@ -20,6 +20,7 @@ namespace Portal.Controllers
 
             List<PageModel> model = _Repository.GetPageGroup(alias);
             ViewBag.ThisUrl = url;
+
             //model.Where(w => w.Url == url).Set(w => w.Active, true).Update();
 
 

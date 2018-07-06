@@ -55,6 +55,16 @@
 
                         @if (User.Identity.IsAuthenticated)
                         {
+
+                            try
+                            {
+                                Html.RenderAction("Index", "MsgWidget", new { @area = "Messages" });
+                            }
+                            catch (Exception ex)
+                            {
+                                //LOg ex
+                            }
+
                             try
                             {
                                 Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
@@ -63,17 +73,10 @@
                             {
                                 //Log ex
                             }
-                            try
-                            {
-                                Html.RenderAction("Index", "MsgWidget", new { @area = "Messages" });
-                            }
-                            catch(Exception ex)
-                            {
-                                //LOg ex
-                            }
 
 
-                            <li class="dropdown user user-menu">
+
+                            @*<li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     @{
                                         string Bukva = Model.User.UserInfo.Surname.Substring(0, 1);
@@ -82,27 +85,12 @@
                                     <img src="https://filin.mail.ru/letters/default/32x32/@Bukva/02/1.png" class="user-image visible-xs" alt="User Image">
                                     <span class="hidden-xs">@Model.User.UserInfo.Surname @Model.User.UserInfo.Name</span>
                                 </a>
-                                <ul class="dropdown-menu user-menu-bl">
-                                    <!-- User image -->
-                                    <li class="user-header">
-                                        @*<img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">*@
+                                <ul class="dropdown-menu user-menu-bl">                           
+                                    <li class="user-header">                           
                                         <p>
                                             @Model.User.UserInfo.FullName
                                         </p>
-                                    </li>
-                                    <!-- Menu Body -->
-                                    @*<li class="user-body">
-                        <div class="col-xs-4 text-center">
-                            <a href="#">Followers</a>
-                        </div>
-                        <div class="col-xs-4 text-center">
-                            <a href="#">Sales</a>
-                        </div>
-                        <div class="col-xs-4 text-center">
-                            <a href="#">Friends</a>
-                        </div>
-                    </li>*@
-                                    <!-- Menu Footer-->
+                                    </li>                           
                                     <li class="user-footer">
                                         <div class="pull-left">
                                             <a href="/settings" class="btn btn-default btn-flat">Настройки</a>
@@ -113,24 +101,24 @@
                                                 @Html.AntiForgeryToken()
                                                 <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-default btn-flat">Выйти</a>
                                             }
-
                                         </div>
                                     </li>
                                 </ul>
-                            </li>
+                            </li>*@
                         }
                         else
                         {
-                            <li class="tasks-menu">
+                            @*<li class="tasks-menu">
                                 <a href="/account/Login">Вход</a>
-                            </li>
-
+                            </li>*@
                         }
                     </ul>
                 </div>
             </nav>
         </header>
+        
         <!-- =============================================== -->
+
         @if (User.Identity.IsAuthenticated)
         {
             { Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "partial/mainmenu", @url = ViewBag.ThisUrl }); }
@@ -141,13 +129,6 @@
         }
 
 
-
-
-        @*<div class="content-wrapper">
-                <section class="content">
-                    @RenderBody()
-                </section>
-            </div>*@
         <div class="content-wrapper">
             @RenderBody()
         </div>
@@ -159,32 +140,26 @@
             </div>
             <strong>Copyright &copy; @DateTime.Today.Year.</strong>
         </footer>
-        <!-- Control Sidebar -->
+        
         <aside class="control-sidebar control-sidebar-dark">
-            <!-- Create the tabs -->
+        
             <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
                 <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
                 <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
             </ul>
-        </aside><!-- /.control-sidebar -->
-        <!-- Add the sidebar's background. This div must be placed
-             immediately after the control sidebar -->
+        </aside>
+        
         <div class="control-sidebar-bg"></div>
-    </div><!-- ./wrapper -->
+    </div>
 
-    <!-- Bootstrap 3.3.5 -->
-    <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <!-- SlimScroll -->
-    <script src="~/Content/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!--icheck-->
-    <script src="~/Content/plugins/icheck/icheck.min.js"></script>
-    <!-- FastClick -->
+    
+    <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>    
+    <script src="~/Content/plugins/slimScroll/jquery.slimscroll.min.js"></script>    
+    <script src="~/Content/plugins/icheck/icheck.min.js"></script>    
     <script src="~/Content/plugins/fastclick/fastclick.min.js"></script>
     <script src="~/Content/plugins/mobileGallery/js/jquery.swipebox.js"></script>
-    <script src="~/Content/plugins/maskedinput/jquery.maskedinput.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/Content/template/js/app.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
+    <script src="~/Content/plugins/maskedinput/jquery.maskedinput.min.js"></script>    
+    <script src="~/Content/template/js/app.min.js"></script>    
     <script src="~/Content/template/js/demo.js"></script>
     <script src="~/Scripts/main.js"></script>
     @RenderSection("scripts", false)

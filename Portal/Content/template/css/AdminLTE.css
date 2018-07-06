@@ -524,11 +524,13 @@ a:focus {
 .sidebar-menu > li > a {
   padding: 12px 5px 12px 15px;
   display: block;
+  font-size: 16px;
 }
 .sidebar-menu > li > a > .fa,
 .sidebar-menu > li > a > .glyphicon,
 .sidebar-menu > li > a > .ion {
   width: 20px;
+font-size:14px;
 }
 .sidebar-menu > li .label,
 .sidebar-menu > li .badge {

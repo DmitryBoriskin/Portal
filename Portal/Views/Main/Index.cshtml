@@ -3,104 +3,198 @@
 }
 
 <div class="content">
-
-
-
     <div class="row">
-        <div class="col-md-4 ">
-            <a class="block block__white" href="/lk/statistics">
-                <img class="block_img" src="~/Content/template/img/ico/stat.png" alt="" />
-                <div class="block_info">
-                    <div class="block_info_text">статистика потребления</div>
+        <div class="col-md-8">
+        @if (User.Identity.IsAuthenticated)
+        {
+            Html.RenderAction("Index", "StatisticWidget", new { @area = "Lk" });
+        }
+            
+            <div class="row">
+                <div class="col-md-6">
+                    @*<a class="block block__white" href="/lk/statistics">
+                        <img class="block_img" src="~/Content/template/img/ico/stat.png" alt="" />
+                        <div class="block_info">
+                            <div class="block_info_text">статистика потребления</div>
+                        </div>
+                    </a>*@
+                    <a class="block block__white" href="/lk/accruals">
+                        <img class="block_img" src="~/Content/template/img/ico/schet.png" alt="" />
+                        <div class="block_info">
+                            <div class="block_info_text">счёт-фактура за последний месяц</div>
+                        </div>
+                    </a>
+                    <a class="block block__white" href="/rights">
+                        <img class="block_img" src="~/Content/template/img/ico/people.png" alt="" />
+                        <div class="block_info">
+                            <div class="block_info_text">ваши права</div>
+                        </div>
+                    </a>
+
+                    @*<div class="block block__white block__opacity">
+                        <div class="block_headr">Направлять по e-mail</div>
+                        <div class="form-group">
+                            <label class="block_check"><input class="iCheck" type="checkbox"> <span>Ежемесячные счета-фактуры</span></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="block_check"><input class="iCheck" type="checkbox"> <span>Информационно-рекламная рассылка</span></label>
+                        </div>
+
+                        <div class="block_btnarea">
+                            <form action="/" method="post">
+                                <button class="btn btn_orange">Подписаться на рассылку</button>
+                            </form>
+                        </div>
+                    </div>*@
+
+                    @*<a class="block block__white">
+                        <img class="block_img" src="~/Content/template/img/ico/help.png" alt="" />
+                        <div class="block_info">
+                            <div class="block_info_text">руководство пользователя</div>
+                        </div>
+                    </a>
+                    <a class="block block__white" href="/page/branches">
+                        <img class="block_img" src="~/Content/template/img/ico/map.png" alt="" />
+                        <div class="block_info">
+                            <div class="block_info_text">обслуживающий участок</div>
+                        </div>
+                    </a>*@
                 </div>
-            </a>
-            <a class="block block__white" href="/lk/accruals">
-                <img class="block_img" src="~/Content/template/img/ico/schet.png" alt="" />
-                <div class="block_info">
-                    <div class="block_info_text">счёт-фактура за последний месяц</div>
-                </div>
-            </a>
-            <div class="block block__white block__opacity">
-                <div class="block_headr">Направлять по e-mail</div>
-                <div class="form-group">
-                    <label class="block_check"><input class="iCheck" type="checkbox"> <span>Ежемесячные счета-фактуры</span></label>
-                </div>
-                <div class="form-group">
-                    <label class="block_check"><input class="iCheck" type="checkbox"> <span>Информационно-рекламная рассылка</span></label>
-                </div>
+                <div class="col-md-6">
+                  
+
+                    <a class="block block__white" href="/lk/subscrinfo">
+                        <img class="block_img" src="~/Content/template/img/ico/handshake.png" alt="" />
+                        <div class="block_info">
+                            <div class="block_info_text">договор</div>
+                        </div>
+                    </a>
 
 
+                    <a class="block block__white">
+                        <img class="block_img" src="~/Content/template/img/ico/workflow.png" alt="" />
+                        <div class="block_info">
+                            <div class="block_info_text">электронный документооброт</div>
+                        </div>
+                    </a>
 
-                <div class="block_btnarea">
-                    <form action="/" method="post">
-                        <button class="btn btn_orange">Подписаться на рассылку</button>
-                    </form>
+                    @*@{
+            Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" });
+        }*@
+                    @*@try
+                    {
+                        Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" });
+                    }
+                    catch (Exception ex)
+                    {
+                        //Log
+                    }*@
                 </div>
             </div>
 
-            <a class="block block__white">
-                <img class="block_img" src="~/Content/template/img/ico/help.png" alt="" />
-                <div class="block_info">
-                    <div class="block_info_text">руководство пользователя</div>
-                </div>
-            </a>
-            <a class="block block__white" href="/page/branches">
-                <img class="block_img" src="~/Content/template/img/ico/map.png" alt="" />
-                <div class="block_info">
-                    <div class="block_info_text">обслуживающий участок</div>
-                </div>
-            </a>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+
+
+
+        
+        <div class="col-md-4 ">
+           
 
         </div>
         <div class="col-md-4">
-            <a class="block block__white" href="/rights">
-                <img class="block_img" src="~/Content/template/img/ico/people.png" alt="" />
-                <div class="block_info">
-                    <div class="block_info_text">ваши права</div>
-                </div>
-            </a>
-
-            <a class="block block__white" href="/lk/subscrinfo">
-                <img class="block_img" src="~/Content/template/img/ico/handshake.png" alt="" />
-                <div class="block_info">
-                    <div class="block_info_text">договор</div>
-                </div>
-            </a>
-
-
-            <a class="block block__white">
-                <img class="block_img" src="~/Content/template/img/ico/workflow.png" alt="" />
-                <div class="block_info">
-                    <div class="block_info_text">электронный документооброт</div>
-                </div>
-            </a>
-
-            @*@{ 
-                Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" });
-            }*@
-            @try
-            {
-                Html.RenderAction("Index", "VoteWidget", new { @area = "Vote" });
-            }
-            catch(Exception ex)
-            {
-                //Log
-            }
+           
         </div>
         
         
         <div class="col-md-4">
-            @try
+
+
+            <div class="block block__white">
+                <div class="block_headr">
+                    Текущий баланс
+                </div>
+
+                <div class="bloc_bal">
+                    <div class="ramka ramka__dotted text-center">
+                        <div class="bloc_bal_this">Текущий баланс</div>
+                        <div class="bloc_bal_date">на 19.11.2015</div>
+                        <div class="bloc_bal_sum bloc_bal__red">-12&nbsp;580,54&nbsp;<i class="fa fa-rub"></i></div>
+
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="bloc_bal_key">Пени</div>
+                                <div class="bloc_bal_val">-76,31 <i class="fa fa-rub"></i></div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="bloc_bal_key">проценты</div>
+                                <div class="bloc_bal_val"><div class="bloc_bal_val">-118,23 <i class="fa fa-rub"></i></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bloc_bal_botttom">
+                        <div class="row">
+                            <div class="col-xs-6 text-left">
+                                Последний платеж <br />
+                                <span>08.11.2015</span>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <b>1800.00<i class="fa fa-rub"></i></b><br />
+                                <a href="/lk/accruals/payed" class="link  link__orange">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="block block__white">
+                <div class="block_headr">
+                    Дополнительные услуги
+                    <i>У вас нет ни одного заказа</i>
+                </div>
+
+                <div class="block_services">
+                    <div class="block_services_item">
+                        <a class="block block__gray" href="/page/gds/pricelist">
+                            <img src="~/Content/img/index/interactiv-price.png" class="block_img" />
+                            <div class="block_info">
+                                <div class="block_info_text">Интерактивный прайс-лист</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="block_services_item">
+                        <a class="block block__white pdf_price" href="/page/gds/pricelist">
+                            <img src="~/Content/img/index/pdf_icon.png" class="block_img" />
+                            <div class="block_info pdf_wrap">
+                                <span class="link  link__orange">Скачать прайс-лист</span>
+                                <i>file PDF(1,5 Мб)</i>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            
+
+
+                @*@try
             {
                 Html.RenderAction("LastMessages", "MsgWidget", new { @area = "Messages" });
             }
             catch (Exception ex)
             {
                 //Log
-            }
+            }*@
 
 
-            <div class="block block__white">
+
+                @*<div class="block block__white">
                 <div class="block_headr">Дополнительные услуги</div>
                 <a class="link  link__orange" href="/page/gds/pricelist"><i>Посмотреть прайс-лист</i></a>
                 <div class="ramka">
@@ -117,9 +211,9 @@
 
                     <a class="link  link__orange" href="/page/gds/orders"><i>История заявок</i></a>
                 </div>
+            </div>*@
+
+
             </div>
-
-
-        </div>
     </div>
 </div>
