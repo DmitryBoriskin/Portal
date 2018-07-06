@@ -36,14 +36,17 @@
 
             }
             @if (User.Identity.IsAuthenticated)
-            {
-            
-                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
-                {   
-                    @Html.AntiForgeryToken()
-                    <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i><sapn>Выйти</sapn></a>
-                }
-            
+            {     
+                    
+                    <li class="treeview">
+                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i><sapn>Выйти</sapn></a>
+                    </li>
+                    
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
+
             }
             else
             {
@@ -51,6 +54,7 @@
                         <a href="/account/Login"><i class="fa fa-sign-in"></i><span>Вход</span></a>                    
                 </li>
             }
+            
         </ul>
     </section>    
 </aside>

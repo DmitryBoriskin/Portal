@@ -2482,7 +2482,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/22/2018 10:05:59</publishTime>
     </File>
     <File Include="Views/Shared/Partial/mainmenu.cshtml">
-      <publishTime>07/06/2018 11:09:04</publishTime>
+      <publishTime>07/06/2018 11:18:06</publishTime>
     </File>
     <File Include="Views/Shared/Partial/testmenu.cshtml">
       <publishTime>06/14/2018 14:36:32</publishTime>
