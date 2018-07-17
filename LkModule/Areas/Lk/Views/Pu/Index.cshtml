@@ -2,59 +2,107 @@
 @model PuFrontModel
 
 @Html.Partial("Partial/header")
-
 <div class="content">
-    @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
-    {
-        foreach (var item in Model.List.Items)
-        {
-            string disabled = item.Disabled ? "disabled" : "";
-            string meterTitle = "meter_" + item.Id;
+    @Html.Partial("/Views/Modules/Pu/Part/Filter.cshtml")
 
-            <div class="box invoice topIndent-20">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Счетчик: @item.Name (№ @item.Number)</h3>
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Общая информация</a></li>
+            <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">Показания</a></li>
+            <li><a href="#tab_3" data-toggle="tab">Передача показаний</a></li>
+            @*<li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Dropdown <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                    </ul>
+                </li>
+                <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>*@
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+                {
+                    foreach (var item in Model.List.Items)
+                    {
+                        string meterTitle = "meter_" + item.Id;
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <div class="box invoice topIndent-20">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Счетчик: @item.Name (№ @item.Number)</h3>
+
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>*@
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue ? item.InstallDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                                    <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
+                                    <div class="li-desc"><span>Дата проверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                                    @if (item.DeviceInfo != null)
+                                    {
+                                        <div class="li-desc"><span>Марка:</span> @item.DeviceInfo.Name</div>
+                                        <div class="li-desc"><span>Разрядность:</span> @item.DeviceInfo.Modification</div>
+                                        <div class="li-desc"><span>Производитель:</span> @item.DeviceInfo.Manufactirer</div>
+                                        <div class="li-desc"><span>Вид:</span> @item.DeviceInfo.EnergyCategory &nbsp; <span>Класс:</span> @item.DeviceInfo.PrecissionClass &nbsp; <span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
+                                        <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory &nbsp; <span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет")</div>
+                                        <div class="li-desc"><span>Тариф:</span> @item.DeviceInfo.Tariff</div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="box invoice topIndent-20">
+                        <div class="noItems">Нет данных</div>
                     </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="table-responsive">
-                        <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue ? item.InstallDate.Value.ToString("dd.MM.yyyy") : "")</div>
-                        <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
-                        <div class="li-desc"><span>Дата проверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
-                        @if (item.DeviceInfo != null)
-                        {
-                            <div class="li-desc"><span>Марка:</span> @item.DeviceInfo.Name</div>
-                            <div class="li-desc"><span>Разрядность:</span> @item.DeviceInfo.Modification</div>
-                            <div class="li-desc"><span>Производитель:</span> @item.DeviceInfo.Manufactirer</div>
-                            <div class="li-desc"><span>Вид:</span> @item.DeviceInfo.EnergyCategory &nbsp; <span>Класс:</span> @item.DeviceInfo.PrecissionClass &nbsp; <span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
-                            <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory &nbsp; <span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет")</div>
-                            <div class="li-desc"><span>Тариф:</span> @item.DeviceInfo.Tariff</div>
-                        }
+                }
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane device-meters" id="tab_2">
+
+                @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+                {
+                    foreach (var item in Model.List.Items)
+                    {
+                        string meterTitle = "meter_" + item.Id;
 
                         <div class="text-right topIndent-20">
                             <a href="#@meterTitle" class="meter-info" data-device="@item.Id" data-toggle="collapse">Показать показания</a>
                         </div>
-                        <div id="@meterTitle" class="collapse">
+                        <div id="@meterTitle">
                         </div>
 
+                    }
+                }
+                else
+                {
+                    <div class="box invoice topIndent-20">
+                        <div class="noItems">Нет данных</div>
                     </div>
-                </div>
+                }
             </div>
-        }
-    }
-    else
-    {
-            <div class="box invoice topIndent-20">
-                <div class="noItems">Нет данных</div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_3">
+
             </div>
-    }
+            <!-- /.tab-pane -->
+        </div>
+        <!-- /.tab-content -->
+    </div>
 </div>
 
 @section scripts {

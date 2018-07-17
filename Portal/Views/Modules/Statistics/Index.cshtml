@@ -75,20 +75,47 @@
     //}
 }
 
-<div class="content">
 
+<div class="content">
     @Html.Partial("/Views/Modules/Accruals/Part/Filter.cshtml")
 
-    @if (Model != null)
-    {
-    <div class="box invoice topIndent-20">
-        <div id="chartConsumption" class="chart-block"></div>
-        <div id="chartAccruals" class="chart-block"></div>
-        <div id="chartPayments" class="chart-block"></div>
+    <div class="nav-tabs-custom topIndent-20">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Начисления</a></li>
+            <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">Расходы</a></li>
+            <li><a href="#tab_3" data-toggle="tab" aria-expanded="false">Потребление</a></li>
+
+            @*<li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>*@
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <br />
+                <div id="chartAccruals" class="chart-block"></div>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_2">
+                <br />
+                <div id="chartPayments" class="chart-block"></div>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_3">
+                <br />
+                @*<div id="chartConsumption" class="chart-block"></div>*@
+                Нет данных
+            </div>
+            <!-- /.tab-pane -->
+        </div>
+        <!-- /.tab-content -->
     </div>
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script type="text/javascript" src="/Content/plugins/charts/loader.js"></script>
-        <script type="text/javascript">
+</div>
+
+
+
+@if (Model != null)
+{
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="/Content/plugins/charts/loader.js"></script>
+    <script type="text/javascript">
             google.charts.load('43', { packages: ['bar', 'corechart'] });
             google.charts.setOnLoadCallback(drawCharts);
             //google.load("visualization", "1.4", { packages: ['bar'] });
@@ -106,14 +133,14 @@
                     },
                     chart: {
                         title: 'Потребление за @ViewBag.beginDate–@ViewBag.endDate',
-                        subtitle: 'кВт*ч',
+                        //subtitle: 'кВт*ч',
                     },
                     //bars: 'vertical',
                     vAxis: { format: 'decimal' },
                     height: 400,
-                    //width: 760,
+                    width: 760,
                     colors: ['#ffa000', '#a3b5d9', '#476db3', '#ff7900', '#0039a6'],
-                    legend: { position: 'top', textStyle: { color: 'blue', fontSize: 16 } }
+                    legend: { position: 'top', textStyle: { color: 'blue', fontSize: 14 } }
                     //bar: { groupWidth: 50 }
                 };
 
@@ -121,26 +148,28 @@
                     isStacked: false,
                     chart: {
                         title: 'Начисления за @ViewBag.beginDate–@ViewBag.endDate',
-                        subtitle: 'руб.',
+                        //subtitle: 'руб.',
                     },
                     //bars: 'vertical',
                     vAxis: { format: 'decimal' },
                     height: 400,
-                    //width: 760,
-                    colors: ['#ffa000']
+                    width: 760,
+                    colors: ['#ffa000'],
+                    legend: { position: 'top', textStyle: { color: 'blue', fontSize: 14 } }
                 };
 
                 var optionsPayments = {
                     isStacked: false,
                     chart: {
                         title: 'Расходы за @ViewBag.beginDate–@ViewBag.endDate',
-                        subtitle: 'руб.',
+                        //subtitle: 'руб.',
                     },
                     //bars: 'vertical',
                     vAxis: { format: 'decimal' },
                     height: 400,
-                    //width: 760,
-                    colors: ['#ffa000']
+                    width: 760,
+                    colors: ['#ffa000'],
+                    legend: { position: 'top', textStyle: { color: 'blue', fontSize: 14 } }
                 };
 
                 //var chartConsumtion = new google.charts.Bar(document.getElementById('chartConsumption'));
@@ -150,15 +179,13 @@
                 //chartConsumtion.draw(dataConsumption, optionsConsumption);
                 chartAccruals.draw(dataAccruals, optionsAccruals);
                 chartPayments.draw(dataPayments, optionsPayments);
-            }
-        </script>
-    }
-    else
-    {
-        <div class="box invoice topIndent-20">
-            <div class="noItems">Нет данных</div>
-        </div>
-    }
-</div>
+        };
 
-
+        $(document).ready(function (e) {
+            $('.nav-tabs li').on('click', function (e) {
+                google.charts.load('43', { packages: ['bar', 'corechart'] });
+                google.charts.setOnLoadCallback(drawCharts);
+            });
+        });
+    </script>
+}

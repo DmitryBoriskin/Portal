@@ -27,11 +27,6 @@ namespace LkModule.Areas.Lk.Controllers
             if (!_Repository.ModuleAllowed(ControllerName))
                 Response.Redirect("/Page/ModuleDenied");
 
-            //Шаблон
-            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
-            if (string.IsNullOrEmpty(ViewName))
-                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
-
             model = new PuFrontModel()
             {
                 LayoutInfo = _layoutData,
@@ -44,6 +39,11 @@ namespace LkModule.Areas.Lk.Controllers
         // GET: Admin/MeterDevices
         public ActionResult Index()
         {
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
             filter = GetFilter();
 
             var userId = CurrentUser.UserId;

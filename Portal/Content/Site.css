@@ -336,3 +336,10 @@ font-size:18px;
 .pdf_wrap i {
     color: #737780;
 }
+.topIndent-20 {
+    margin-top: 20px;
+}
+.tab-pane{
+    min-height:600px;
+    padding:20px 30px;
+}

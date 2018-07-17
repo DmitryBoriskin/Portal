@@ -163,6 +163,7 @@
     <Content Include="Areas\Lk\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Lk\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Lk\Views\StatisticWidget\Index.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Part\Filter.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
