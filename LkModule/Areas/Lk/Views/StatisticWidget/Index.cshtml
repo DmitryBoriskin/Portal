@@ -3,7 +3,7 @@
 }
 
 <div class="block block__white" style="min-height:438px;">
-    <div class="block_headr">
+    <div class="block_headr" style="font-size:10px;">
 
         <div id="chartAccruals" class="chart-block"></div>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -39,7 +39,7 @@
                 var optionsAccruals = {
                     isStacked: false,
                     chart: {
-                        title: 'Начисления за @ViewBag.beginDate–@ViewBag.endDate',
+                        title: 'Начисления за текущий год',
                         subtitle: 'руб.',
                     },
                     //bars: 'vertical',
@@ -52,7 +52,7 @@
                 var optionsPayments = {
                     isStacked: false,
                     chart: {
-                        title: 'Расходы за @ViewBag.beginDate–@ViewBag.endDate',
+                        title: 'Расходы за текущий год',
                         subtitle: 'руб.',
                     },
                     //bars: 'vertical',

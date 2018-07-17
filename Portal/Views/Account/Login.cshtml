@@ -3,19 +3,19 @@
 @model LoginViewModel
 @{
     ViewBag.Title = "Вход в личный кабинет";
-    //Layout = null;
+    Layout = "~/Views/Shared/_LayoutWelcome.cshtml";
 }
 <div class="content">
     <div class="invoice">
-        <h2>@ViewBag.Title.</h2>
+        <h2>Вход в личный кабинет</h2>
+        <div class="register-link pull-right">@Html.ActionLink("Регистрация", "Register")</div>
         <div class="row">
             <div class="col-md-8">
                 <section id="loginForm">
                     @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
+                    {
                         @Html.AntiForgeryToken()
-                        <h4>Введите свои учетные данные</h4>
-                        <hr />
+                        <div class="authorize-text">Введите свои учетные данные</div>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
                             @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
@@ -34,26 +34,21 @@
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
                                 <div class="checkbox">
-                                    @Html.CheckBoxFor(m => m.RememberMe)
-                                    @Html.LabelFor(m => m.RememberMe)
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class="iCheck"})
+                                    @Html.LabelFor(m => m.RememberMe, new { @class = "control-label" })
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Войти" class="btn btn-default" />
+                                <input type="submit" value="Войти" class="btn btn-default submit-btn" />
                             </div>
                         </div>
-                        <p>
-                            @Html.ActionLink("Регистрация", "Register")
-                        </p>
-                        @* Enable this once you have account confirmation enabled for password reset functionality*@
-                        <p>
-                            @Html.ActionLink("Забыли пароль?", "ForgotPassword")
-                        </p>
                     }
                 </section>
             </div>
+
             @*Внешняя авторизация (через Facebook, Twitter, LinkedIn and Google OAuth2) Не используется *@
             @*<div class="col-md-4">
                 <section id="socialLoginForm">
@@ -61,6 +56,7 @@
                 </section>
             </div>*@
         </div>
+        <div class="fogotPassword-link pull-right">@Html.ActionLink("Забыли пароль?", "ForgotPassword")</div>
 
         @*@section Scripts {
             @Scripts.Render("~/bundles/jqueryval")

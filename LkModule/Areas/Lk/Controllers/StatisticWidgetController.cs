@@ -34,7 +34,7 @@ namespace LkModule.Areas.Lk.Controllers
                     var data = accruals.Items.Reverse();
                     filter.Date = data.First().Date;
                     filter.DateEnd = DateTime.Now;
-                    model.AccrualsByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToShortDateString(), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
+                    model.AccrualsByDateJson = "[['Месяц','руб']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToShortDateString(), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
                 }
             }
 

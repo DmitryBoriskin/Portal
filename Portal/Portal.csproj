@@ -310,6 +310,7 @@
     <Content Include="Content\css\iframe_tinymce.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\styles.css" />
+    <Content Include="Content\template\css\skin_welcome.css" />
     <Content Include="Content\css\styles_login.css" />
     <Content Include="Content\css\styles_popUp.css" />
     <Content Include="Content\favicon.ico" />
@@ -1063,6 +1064,7 @@
     <Content Include="Views\Modules\Vote\Index.cshtml" />
     <Content Include="Views\Modules\Vote\Item.cshtml" />
     <Content Include="Views\Modules\StatisticWidget\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutWelcome.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
