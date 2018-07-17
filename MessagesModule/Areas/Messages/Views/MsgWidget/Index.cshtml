@@ -8,11 +8,11 @@
         @if (Model.NewMsgCount > 0)
         {
             <span class="label label-success">@Model.NewMsgCount</span>
-        }        
+        }
     </a>
     <ul class="dropdown-menu">
         <li class="header">@Model.NewMsgCountText</li>
-        <li>            
+        <li>
             <ul class="menu">
                 @if (Model.MsgList != null)
                 {
@@ -24,11 +24,11 @@
                                     @item.Theme
                                     <small><i class="fa fa-clock-o"></i> @item.Date.ToString("g")</small>
                                 </h4>
-                                <p>@item.Text</p>                                
+                                <p>@item.Text</p>
                             </a>
                         </li>
                     }
-                }                
+                }
             </ul>
         </li>
         <li class="footer"><a href="/messages">История сообщений</a></li>

@@ -1,7 +1,10 @@
 ﻿@model List<PageModel>
-
-<aside class="main-sidebar">    
-    <section class="sidebar">        
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+<aside class="main-sidebar">
+    <section class="sidebar">
         <ul class="sidebar-menu">
             @if (Model != null)
             {
@@ -36,25 +39,27 @@
 
             }
             @if (User.Identity.IsAuthenticated)
-            {     
-                    
-                    <li class="treeview">
-                        <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i><sapn>Выйти</sapn></a>
-                    </li>
-                    
-                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                    {
-                        @Html.AntiForgeryToken()
-                    }
-
+            {
+                <li class="li-divider"></li>
+                <li class="treeview">
+                    <a href="/settings"><i class="fa fa-cog"></i><span>Настройки</span></a>
+                </li>
+                <li class="treeview">
+                    <a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i><span>Выйти</span></a>
+                </li>
             }
             else
             {
                 <li class="treeview">
-                        <a href="/account/Login"><i class="fa fa-sign-in"></i><span>Вход</span></a>                    
+                    <a href="/account/Login"><i class="fa fa-sign-in"></i><span>Вход</span></a>
                 </li>
             }
-            
+
+            <li class="li-divider"></li>
+            <li class="treeview">
+                <a href="#"><i class="fa fa-file-pdf-o"></i><span>Руководство пользователя</span></a>
+            </li>
         </ul>
-    </section>    
+
+    </section>
 </aside>

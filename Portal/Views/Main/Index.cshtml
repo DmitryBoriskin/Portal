@@ -61,8 +61,6 @@
                     </a>*@
                 </div>
                 <div class="col-md-6">
-                  
-
                     <a class="block block__white" href="/lk/subscrinfo">
                         <img class="block_img" src="~/Content/template/img/ico/handshake.png" alt="" />
                         <div class="block_info">
@@ -91,65 +89,45 @@
                     }*@
                 </div>
             </div>
-
         </div>
+
         <div class="col-md-4">
+            <div class="block block__white">
+                <div class="block_headr">
+                    Текущий баланс
+                </div>
 
-        </div>
+                <div class="bloc_bal">
+                    <div class="ramka ramka__dotted text-center">
+                        <div class="bloc_bal_this">Текущий баланс</div>
+                        <div class="bloc_bal_date">на 19.11.2015</div>
+                        <div class="bloc_bal_sum bloc_bal__red">-12&nbsp;580,54&nbsp;<i class="fa fa-rub"></i></div>
 
-
-
-        
-        <div class="col-md-4 ">
-           
-
-        </div>
-        <div class="col-md-4">
-           
-        </div>
-        
-        
-        <div class="col-md-4">
-
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div class="block block__white">
-                    <div class="block_headr">
-                        Текущий баланс
-                    </div>
-
-                    <div class="bloc_bal">
-                        <div class="ramka ramka__dotted text-center">
-                            <div class="bloc_bal_this">Текущий баланс</div>
-                            <div class="bloc_bal_date">на 19.11.2015</div>
-                            <div class="bloc_bal_sum bloc_bal__red">-12&nbsp;580,54&nbsp;<i class="fa fa-rub"></i></div>
-
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="bloc_bal_key">Пени</div>
-                                    <div class="bloc_bal_val">-76,31 <i class="fa fa-rub"></i></div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="bloc_bal_key">проценты</div>
-                                    <div class="bloc_bal_val"><div class="bloc_bal_val">-118,23 <i class="fa fa-rub"></i></div></div>
-                                </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="bloc_bal_key">Пени</div>
+                                <div class="bloc_bal_val">-76,31 <i class="fa fa-rub"></i></div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="bloc_bal_key">проценты</div>
+                                <div class="bloc_bal_val"><div class="bloc_bal_val">-118,23 <i class="fa fa-rub"></i></div></div>
                             </div>
                         </div>
-                        <div class="bloc_bal_botttom">
-                            <div class="row">
-                                <div class="col-xs-6 text-left">
-                                    Последний платеж <br />
-                                    <span>08.11.2015</span>
-                                </div>
-                                <div class="col-xs-6 text-right">
-                                    <b>1800.00<i class="fa fa-rub"></i></b><br />
-                                    <a href="/lk/accruals/payed" class="link  link__orange">Подробнее</a>
-                                </div>
+                    </div>
+                    <div class="bloc_bal_botttom">
+                        <div class="row">
+                            <div class="col-xs-6 text-left">
+                                Последний платеж <br />
+                                <span>08.11.2015</span>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <b>1800.00<i class="fa fa-rub"></i></b><br />
+                                <a href="/lk/accruals/payed" class="link  link__orange">Подробнее</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
 
 
 

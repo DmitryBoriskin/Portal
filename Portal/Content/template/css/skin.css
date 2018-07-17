@@ -4,8 +4,10 @@
  */
 /* skin-black navbar */
 .skin-black .main-header {
-  -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #0b4587;
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+    box-sizing:border-box;
 }
 .skin-black .main-header .navbar-toggle {
   color: #333;
@@ -16,6 +18,8 @@
 }
 .skin-black .main-header > .navbar {
   background-color: #ffffff;
+  min-height:80px;
+  max-height:80px;
 }
 .skin-black .main-header > .navbar .nav > li > a {
   color: #333333;
@@ -153,3 +157,60 @@ border-top: solid 1px #0b4587!important;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 0;
 }
+
+.skin-black .li-divider {
+    background-color: rgba(255,255,255, 0.4);
+    height: 1px;
+    margin: 15px 20px;
+}
+
+.skin-black .orange-link a {
+    color: #ffa308;
+}
+
+.project-title {
+    font-family: 'Roboto';
+    font-size: 15px;
+    font-weight: normal;
+    color:#000000;
+    margin: 15px 0;
+}
+
+.project-support {
+    font-family: 'Roboto';
+    line-height:20px;
+    color: #ff7900;
+    font-weight: bold;
+    margin: 5px 15px 15px 30px;
+}
+
+.subscr-list-menu, .messages-menu {
+    margin-top: 30px;
+}
+
+
+.skin-black .main-footer .address {
+    margin: 0 -15px;
+}
+
+.skin-black .main-footer .phones {
+    margin: 20px -15px;
+}
+.main-footer {
+    overflow: hidden;
+    background-color: #ecf0f5;
+    padding: 0 30px;
+    border-top:none;
+}
+
+.footer-top-line {
+    margin: 0 -10px 15px -10px;
+    border-top: 1px solid #d2d6de;
+}
+
+.content-wrapper {
+    padding-bottom: 90px;
+}
+
+
+

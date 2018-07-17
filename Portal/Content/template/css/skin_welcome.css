@@ -1,0 +1,77 @@
+﻿/* skin-welcome */
+
+/* skin-black */
+
+.skin-black.skin-welcome .wrapper,
+.skin-black.skin-welcome .main-sidebar,
+.skin-black.skin-welcome .left-side {
+    background-color: #ecf0f5;
+}
+
+.skin-welcome .content-wrapper, .right-side, .main-footer{
+    margin-left:0;
+}
+
+.skin-welcome.layout-boxed .wrapper {
+    box-shadow: none !important;
+}
+
+/*.skin-black.skin-welcome .main-header > .logo:hover {
+    background-color: #0d4f9c;
+}*/
+
+.skin-welcome .invoice {
+    margin: 150px auto;
+    width:60%;
+}
+
+.register-link{
+    margin-top:-30px;
+}
+.fogotPassword-link {
+    margin-top: -80px;
+}
+.skin-welcome a {
+    color: #ff7900;
+}
+.authorize-text {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    color: #737780;
+    font-size: 13px;
+    margin: 40px 0 20px 0;
+}
+
+.control-label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    color: #737780;
+    font-size: 13px;
+    font-weight:normal;
+}
+
+.skin-welcome .radio label, .checkbox label {
+    padding-left: 10px;
+}
+
+.skin-welcome .submit-btn {
+    margin-top: 30px;
+    background-color: #ff7900;
+    padding:10px 60px;
+    border-radius:20px;
+    border:none;
+    color:#ffffff;
+    text-transform:uppercase;
+}
+.skin-welcome h2{
+    text-transform:uppercase;
+    font-family:'Roboto';
+    font-weight:bold;
+    font-size:18px;
+}
+
+.skin-black.skin-welcome .main-footer {
+    background-color: #ecf0f5;
+    margin: 0 30px;
+}
+

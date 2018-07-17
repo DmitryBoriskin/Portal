@@ -22,6 +22,7 @@
     <link href="~/Content/template/css/AdminLTE.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/template/css/skin.css" rel="stylesheet" />
+    <link href="~/Content/template/css/skin_welcome.css" rel="stylesheet" />
 
     <!-- jQuery 2.1.4 -->
     <script src="~/Content/plugins/jquery/jquery.js"></script>
@@ -34,7 +35,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition skin-black layout-boxed sidebar-mini">
+<body class="hold-transition skin-black skin-welcome layout-boxed sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
             <a href="/" class="logo">
@@ -47,32 +48,11 @@
             </a>
 
             <nav class="navbar navbar-static-top" role="navigation">
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                @*<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
-                </a>
+                </a>*@
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            try
-                            {
-                                Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
-                            }
-                            catch (Exception ex)
-                            {
-                                //Log ex
-                            }
-                            try
-                            {
-                                Html.RenderAction("Index", "MsgWidget", new { @area = "Messages" });
-                            }
-                            catch (Exception ex)
-                            {
-                                //LOg ex
-                            }
-                        }
-                       
                         <li class="project-support text-right">
                             <span class="project-title">Многоканальный телефон:</span><br />
                             +7 (800) 333 80 00<br />
@@ -83,24 +63,12 @@
             </nav>
         </header>
 
-        <!-- =============================================== -->
-
-        @if (User.Identity.IsAuthenticated)
-        {
-            { Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "partial/mainmenu", @url = ViewBag.ThisUrl }); }
-        }
-        else
-        {
-            { Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "anonymous", @view = "partial/mainmenu", @url = ViewBag.ThisUrl }); }
-        }
-
         <div class="content-wrapper">
             @RenderBody()
         </div>
 
 
         <footer class="main-footer">
-            <div class="footer-top-line"></div>
             <div class="pull-right hidden-xs">
             </div>
             <div class="col-xs-5">
@@ -110,23 +78,25 @@
                 </div>
 
                 <div class="phones">
-                    Тел.: +7 495 983 33 28<br />
-                    Факс: +7 495 984 63 80
+                        Тел.: +7 495 983 33 28<br />
+                        Факс: +7 495 984 63 80
                 </div>
             </div>
             <div class="col-xs-offset-3 col-xs-4">
+                @*<a href="/admin">Вход для сотрудников РусГидро</a>*@
                 <br /><br />
                 <small>В случае обнаружения технических неполадок,<br /> некорректных данных или неудобств — сообщите нам на почту <a href="mailto:help@mail.ru">help@mail.ru</a></small>
             </div>
+            @*<strong>Copyright &copy; @DateTime.Today.Year.</strong>*@
         </footer>
 
-        <aside class="control-sidebar control-sidebar-dark">
+        @*<aside class="control-sidebar control-sidebar-dark">
 
-            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-                <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-            </ul>
-        </aside>
+                <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                    <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+                </ul>
+            </aside>*@
 
         <div class="control-sidebar-bg"></div>
     </div>
