@@ -178,8 +178,12 @@ margin-left:4px;
     color: #0b4587;
 }
 .subscr-list-menu-num{
-font-weight:bold;
 margin-left:4px;
+font-size:20px;
+}
+.subscr-list-menu-num b{
+font-size:22px;
+font-weight:bold;
 }
 
 .balance {
@@ -335,6 +339,29 @@ font-size:18px;
 }
 .pdf_wrap i {
     color: #737780;
+}
+
+
+.navbar-custom-left a {
+    border-right: 0!important;
+}
+.phone{
+    margin-right:15px;
+}
+.phone_title {
+    font-size: 15px;
+    display:inline-block;
+}
+
+.phone_num div {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffa308;
+}
+.phone {
+    min-width: 377px;
+    max-width: 100%;
+    padding: 8px 0 0;
 }
 .topIndent-20 {
     margin-top: 20px;
