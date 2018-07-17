@@ -50,9 +50,9 @@
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
-                <div class="navbar-custom-menu">
+                
+                <div class="navbar-custom-left">
                     <ul class="nav navbar-nav">
-
                         @if (User.Identity.IsAuthenticated)
                         {
                             try
@@ -63,6 +63,15 @@
                             {
                                 //Log ex
                             }
+                        }
+                    </ul>
+                </div>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+
+                        @*@if (User.Identity.IsAuthenticated)
+                        {                            
                             try
                             {
                                 Html.RenderAction("Index", "MsgWidget", new { @area = "Messages" });
@@ -71,12 +80,29 @@
                             {
                                 //LOg ex
                             }
-                        }
-                       
-                        <li class="project-support text-right">
-                            <span class="project-title">Многоканальный телефон:</span><br />
-                            +7 (800) 333 80 00<br />
-                            +7 (495) 225 32 32<br />
+                        }*@
+
+                        <li class="hidden-xs">
+                            <div class="phone">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="phone_title">Многоканальный&nbsp;телефон</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="phone_num">
+                                            <div>+7 (800) 333 80 00</div>
+                                            <div>+7 (495) 225 32 32</div>
+                                        </div>
+                                    </div>
+                                </div>                            
+                            </div>
+                            
+                            
+                            
+                            
+                            <div class="project-phone">
+                                
+                            </div>
                         </li>
                     </ul>
                 </div>
