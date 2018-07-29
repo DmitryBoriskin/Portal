@@ -1,0 +1,27 @@
+﻿@using CartModule.Areas.Cart.Models
+@model ProductFrontModel
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+
+    @if (Model.Item != null)
+    {
+        <div class="box box-solid">
+            <div class="box-header">
+                <h3 class="box-title"><a href="#"><i class="fa fa-tags"></i> @Model.Item.Title</a></h3>
+            </div>
+            <div class="box-body">
+                @*всего: @Model.Item.Products.Pager.TotalCount*@
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="box box-solid">
+            <div class="box-body">
+                <div class="noItems">Корзина пуста</div>
+            </div>
+        </div>
+    }
+</div>

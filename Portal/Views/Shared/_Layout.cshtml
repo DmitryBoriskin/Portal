@@ -50,7 +50,16 @@
                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
-                
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="project-support text-right">
+                            <span class="project-title">Многоканальный телефон:</span><br />
+                            +7 (800) 333 80 00<br />
+                            +7 (495) 225 32 32<br />
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="navbar-custom-left">
                     <ul class="nav navbar-nav">
                         @if (User.Identity.IsAuthenticated)
@@ -67,45 +76,7 @@
                     </ul>
                 </div>
 
-                <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">
 
-                        @*@if (User.Identity.IsAuthenticated)
-                        {                            
-                            try
-                            {
-                                Html.RenderAction("Index", "MsgWidget", new { @area = "Messages" });
-                            }
-                            catch (Exception ex)
-                            {
-                                //LOg ex
-                            }
-                        }*@
-
-                        <li class="hidden-xs">
-                            <div class="phone">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="phone_title">Многоканальный&nbsp;телефон</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="phone_num">
-                                            <div>+7 (800) 333 80 00</div>
-                                            <div>+7 (495) 225 32 32</div>
-                                        </div>
-                                    </div>
-                                </div>                            
-                            </div>
-                            
-                            
-                            
-                            
-                            <div class="project-phone">
-                                
-                            </div>
-                        </li>
-                    </ul>
-                </div>
             </nav>
         </header>
 
@@ -127,9 +98,8 @@
 
         <footer class="main-footer">
             <div class="footer-top-line"></div>
-            <div class="pull-right hidden-xs">
-            </div>
-            <div class="col-xs-5">
+            
+            <div class="col-md-5">
                 <div class="address">
                     &copy; АО «ЭСК Русгидро» 2009-2017<br />
                     117393, Москва, ул. Архитектора Власова, д. 51
@@ -140,9 +110,10 @@
                     Факс: +7 495 984 63 80
                 </div>
             </div>
-            <div class="col-xs-offset-3 col-xs-4">
-                <br /><br />
-                <small>В случае обнаружения технических неполадок,<br /> некорректных данных или неудобств — сообщите нам на почту <a href="mailto:help@mail.ru">help@mail.ru</a></small>
+            <div class="col-md-offset-3 col-md-4">
+                <div class="support-text">
+                    <small>В случае обнаружения технических неполадок,<br /> некорректных данных или неудобств — сообщите нам на почту <a href="mailto:help@mail.ru">help@mail.ru</a></small>
+                </div>
             </div>
         </footer>
 

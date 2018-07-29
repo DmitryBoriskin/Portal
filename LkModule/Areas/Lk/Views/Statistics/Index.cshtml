@@ -113,10 +113,9 @@
 
 @if (Model != null)
 {
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="/Content/plugins/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-            google.charts.load('43', { packages: ['bar', 'corechart'] });
+        google.charts.load('current', { packages: ['bar', 'corechart'], 'language': 'ru' });
             google.charts.setOnLoadCallback(drawCharts);
             //google.load("visualization", "1.4", { packages: ['bar'] });
             //google.setOnLoadCallback(drawCharts);
@@ -183,9 +182,13 @@
 
         $(document).ready(function (e) {
             $('.nav-tabs li').on('click', function (e) {
-                google.charts.load('43', { packages: ['bar', 'corechart'] });
                 google.charts.setOnLoadCallback(drawCharts);
             });
         });
     </script>
+    <style>
+        div.google-visualization-tooltip {
+            font-size:12px;
+        }
+    </style>
 }

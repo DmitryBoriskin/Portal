@@ -1,7 +1,6 @@
 ﻿/*STYLE FRONT*/
 
 .menu {
-    
     display: inline-block;
 }
 .menu_wr {
@@ -123,19 +122,24 @@ margin-bottom:10px;
     border-radius: 5px;
     padding: 12px 20px 30px;
     margin: 10px 0 10px;
-    padding: 12px 20px 30px 30px;
+    padding: 12px 20px 30px 20px;
 }
 
 .link{
-text-decoration:underline;
-font-size:15px;
+    text-decoration:underline;
+    font-size:15px;
 }
-.link__orange,
-.link__orange:hover {
+.link__orange, 
+.link__orange:visited {
     color: #ff7900;
+    font-size: 13px;
+    font-style: italic;
+    font-family: Arial;
+    text-decoration: underline;
 }
-.link__orange:hover{
-text-decoration:none;
+
+.link__orange:hover, .link__orange:active, .link__orange:focus {
+    text-decoration: none;
 }
 
 .block_check{
@@ -179,11 +183,14 @@ margin-left:4px;
 }
 .subscr-list-menu-num{
 margin-left:4px;
-font-size:20px;
+font-size:18px;
+line-height:16px;
+font-family:'Roboto';
 }
+
 .subscr-list-menu-num b{
-font-size:22px;
 font-weight:bold;
+padding-left:4px;
 }
 
 .balance {
@@ -307,6 +314,9 @@ margin-bottom:30px;
 .bloc_bal__red {
     color: #d90000;
 }
+.bloc_bal__green {
+    color: #00a61c;
+}
 .bloc_bal_key {
     color: #737780;
     font-size:11px;
@@ -345,23 +355,22 @@ font-size:18px;
 .navbar-custom-left a {
     border-right: 0!important;
 }
-.phone{
-    margin-right:15px;
+.phone {
+    padding: 8px 0 0;
 }
 .phone_title {
-    font-size: 15px;
-    display:inline-block;
+    font-size: 20px;
+    padding-right:10px;
 }
 
 .phone_num div {
-    font-size: 18px;
+    font-size: 16px;
+    line-height:18px;
     font-weight: bold;
     color: #ffa308;
 }
-.phone {
-    min-width: 377px;
-    max-width: 100%;
-    padding: 8px 0 0;
+.topIndent-5 {
+    margin-top: 5px;
 }
 .topIndent-20 {
     margin-top: 20px;
@@ -369,4 +378,22 @@ font-size:18px;
 .tab-pane{
     min-height:600px;
     padding:20px 30px;
+}
+
+/*Select2 styles */
+.content .select2-container .select2-selection--single {
+    height: 34px;
+   
+}
+.content .select2-container--default .select2-selection--single {
+    border: 1px solid #ddd;
+    border-radius:3px;
+}
+.select2-dropdown {
+    border: 1px solid #ddd !important;
+    border-radius: 3px !important;
+}
+
+.content .select2-container--default .select2-selection--single .select2-selection__arrow b {
+    margin-top: 0px;
 }

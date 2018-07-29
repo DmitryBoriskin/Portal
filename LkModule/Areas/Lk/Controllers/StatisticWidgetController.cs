@@ -16,7 +16,10 @@ namespace LkModule.Areas.Lk.Controllers
         {
             FilterModel filter;
             filter = GetFilter();
-            var aFilter = FilterModel.Extend<LkFilter>(filter);
+            var pFilter = FilterModel.Extend<LkFilter>(filter);
+            pFilter.Date = DateTime.Parse("01-01-" + DateTime.Now.Year);
+            pFilter.DateEnd = DateTime.Now;
+
             StatisticsFrontModel model = new StatisticsFrontModel();
             ViewName = "~/Views/Modules/StatisticWidget/Index.cshtml";
             
@@ -28,13 +31,23 @@ namespace LkModule.Areas.Lk.Controllers
 
             if (userSubscr != null)
             {
-                var accruals = _Repository.GetAccruals(userSubscr.Id, aFilter);
-                if (accruals.Items != null)
+                var payments = _Repository.GetPayments(userSubscr.Id, pFilter);
+                if (payments.Items != null && payments.Items.Count() > 0)
                 {
-                    var data = accruals.Items.Reverse();
+                    var data = payments.Items
+                        .GroupBy(p => p.Period)
+                        .Select(p => new PaymentModel()
+                            {
+                                Date = DateTime.Parse( $"{ p.First().Date.Year }-{p.First().Date.Month}-01"),
+                                //Quantity = p.Count(),
+                                Period = p.First().Period,
+                                Amount = p.Sum(c => c.Amount),
+                            }).ToArray()
+                    .Reverse();
+
                     filter.Date = data.First().Date;
                     filter.DateEnd = DateTime.Now;
-                    model.AccrualsByDateJson = "[['Месяц','руб']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToShortDateString(), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
+                    model.AccrualsByDateJson = "[['Месяц','руб']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToString("MMM"), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
                 }
             }
 

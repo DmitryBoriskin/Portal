@@ -17,7 +17,7 @@ namespace EventsModule.Areas.Events.Controllers
 
             //Есть ли у сайта доступ к модулю
             if (!_Repository.ModuleAllowed(ControllerName))
-                Response.Redirect("/Page/ModuleDenied");
+                Response.Redirect("/page/error/451");
 
             //Шаблон
             ViewName = _Repository.GetModuleView(ControllerName, ActionName);

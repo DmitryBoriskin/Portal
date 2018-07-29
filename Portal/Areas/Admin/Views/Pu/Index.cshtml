@@ -172,7 +172,7 @@ else
             //var minutes = addZeros(d.getMinutes());
             //var seconds = addZeros(d.getSeconds());
             var day = addZeros(d.getDate());
-            var month = addZeros(d.getMonth());
+            var month = addZeros(d.getMonth() + 1);
             var year = d.getFullYear();
 
             return day + '.' + month + '.' + year; //' + hour + ':' + minutes + ':' + seconds;

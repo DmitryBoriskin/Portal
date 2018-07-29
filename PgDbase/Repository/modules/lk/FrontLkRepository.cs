@@ -203,7 +203,7 @@ namespace PgDbase.Repository.front
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public List<SubscrShortModel> GetSubscrInfoForTopPannel(Guid userId)
+        public List<SubscrShortModel> GetSubscrSaldoInfo(Guid userId)
         {
             using (var db = new CMSdb(_context))
             {
@@ -216,8 +216,14 @@ namespace PgDbase.Repository.front
                     SubscrId = s.subscrid,
                     Name = s.subscrname,
                     Default = s.subscrdefault,
-                    Debt = s.subscrdebit,
-                    Disabled = s.subscrdisabled
+                    Disabled = s.subscrdisabled,
+                    Date = s.d_date,
+                    Saldo = s.n_amount,
+                    Peni = s.n_peny,
+                    Percent = s.n_persent,
+                    LastPaymentDate = s.d_lastpayment_date,
+                    LastPaymentAmount = s.n_lastpayment_amount,
+                    LastPaymentLink = s.c_lastpayment_link
 
                 }).ToList();
             }
@@ -851,11 +857,11 @@ namespace PgDbase.Repository.front
                     query = query.Where(w => w.b_closed == filter.Payed.Value);
                 }
 
-                if(filter.Date.HasValue)
+                if (filter.Date.HasValue)
                 {
                     query = query.Where(w => w.d_date >= filter.Date.Value);
                 }
-                if(filter.DateEnd.HasValue)
+                if (filter.DateEnd.HasValue)
                 {
                     query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
                 }
@@ -944,12 +950,14 @@ namespace PgDbase.Repository.front
                     .Select(s => new PuModel
                     {
                         Id = s.id,
+                        IsPu = (s.link != null) ? true : false,
                         Number = s.c_number,
                         Name = s.c_name,
                         InstallPlace = s.c_install_place,
                         InstallDate = s.d_install,
                         CheckDate = s.d_check,
                         Disabled = s.b_disabled,
+                        TariffZoneMode = s.n_tariff_zone_mode,
                         DeviceInfo = (s.f_device_type != null) ?
                                 new DeviceModel()
                                 {
@@ -994,7 +1002,8 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 return db.lk_meters
-                    .Where(w => w.f_meter_device == device)
+                    .Where(w => w.f_device == device)
+                    .Where(w => w.n_status == 0)
                     .OrderByDescending(o => o.d_date)
                     .Take(100)
                     .Select(s => new MeterModel
@@ -1009,6 +1018,10 @@ namespace PgDbase.Repository.front
                         Month = s.n_month,
                         Days = s.n_days,
                         DeliveryMethod = s.c_delivery_method,
+                        EnergyType = s.c_energytype,
+                        EnergyTypeName = s.c_energytype_name,
+                        TimeZone = s.c_timezone,
+
 
                     }).ToArray();
             }
@@ -1061,6 +1074,7 @@ namespace PgDbase.Repository.front
                     .Select(s => new PaymentModel
                     {
                         Date = s.d_date,
+                        Period = s.n_period,
                         Amount = s.n_amount,
                         Status = s.c_status,
                         IsPeni = s.b_peni

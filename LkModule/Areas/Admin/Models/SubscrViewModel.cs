@@ -35,5 +35,10 @@ namespace LkModule.Areas.Admin.Models
         /// Список выбранных ЛС
         /// </summary>
         public SubscrModel[] SelectedSubscrs { get; set; }
+
+        /// <summary>
+        /// Подразделения
+        /// </summary>
+        public IEnumerable<SelectListItem> Managers { get; set; }
     }
 }

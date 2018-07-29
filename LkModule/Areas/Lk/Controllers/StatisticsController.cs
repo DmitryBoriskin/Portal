@@ -24,7 +24,7 @@ namespace LkModule.Areas.Lk.Controllers
 
             //Есть ли у сайта доступ к модулю
             if (!_Repository.ModuleAllowed(ControllerName))
-                Response.Redirect("/Page/ModuleDenied");
+                Response.Redirect("/page/error/451");
 
             //Шаблон
             ViewName = _Repository.GetModuleView(ControllerName, ActionName);
@@ -54,12 +54,22 @@ namespace LkModule.Areas.Lk.Controllers
             {
                
                 var accruals = _Repository.GetAccruals(userSubscr.Id, aFilter);
-                if (accruals.Items != null)
+                if (accruals.Items != null && accruals.Items.Count() > 0)
                 {
-                    var data = accruals.Items.Reverse();
+                    var data = accruals.Items
+                       .GroupBy(p => p.Period)
+                       .Select(p => new PaymentModel()
+                       {
+                           Date = DateTime.Parse($"{ p.First().Date.Year }-{p.First().Date.Month}-01"),
+                            //Quantity = p.Count(),
+                           Period = p.First().Period,
+                           Amount = p.Sum(c => c.Amount),
+                       }).ToArray()
+                   .Reverse();
+
                     filter.Date = data.First().Date;
                     filter.DateEnd = DateTime.Now;
-                    model.AccrualsByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToShortDateString(), s.Amount.Value.ToString("0.00").Replace(",",".")))) + "]";
+                    model.AccrualsByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToString("MM.yyyy"), s.Amount.Value.ToString("0.00").Replace(",",".")))) + "]";
                 }
                 //model.Payments = _Repository.GetPayments(userSubscr.Id, filter);
                 //model.Consumption = _Repository.GetMeters(device)
@@ -68,10 +78,19 @@ namespace LkModule.Areas.Lk.Controllers
 
               
                 var payments = _Repository.GetPayments(userSubscr.Id, pFilter);
-                if (payments.Items != null)
+                if (payments.Items != null && payments.Items.Count() > 0)
                 {
-                    var data = payments.Items.Reverse();
-                    model.PaymentsByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToShortDateString(), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
+                    var data = payments.Items
+                       .GroupBy(p => p.Period)
+                       .Select(p => new PaymentModel()
+                       {
+                           Date = DateTime.Parse($"{ p.First().Date.Year }-{p.First().Date.Month}-01"),
+                           //Quantity = p.Count(),
+                           Period = p.First().Period,
+                           Amount = p.Sum(c => c.Amount),
+                       }).ToArray();
+
+                    model.PaymentsByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToString("MM.yyyy"), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
                 }
 
                 //var cFilter = FilterModel.Extend<LkFilter>(filter);

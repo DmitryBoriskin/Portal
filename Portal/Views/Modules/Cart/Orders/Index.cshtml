@@ -1,0 +1,94 @@
+﻿@using PgDbase.entity
+@using CartModule.Areas.Cart.Models
+
+@model  OrderFrontModel
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+    @Html.Partial("/Views/Modules/Cart/Orders/Part/Filter.cshtml")
+
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title">История заказов</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Номер заказа</th>
+                                <th>Название</th>
+                                <th>Статус</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.List.Items)
+                            {
+                                var labelStatus = "";
+                                var labelText = "";
+                                switch (item.Status)
+                                {
+                                    case (OrderStatus.Pending):
+                                        labelStatus = "label-default";
+                                        labelText = "Ожидается";
+                                        break;
+                                    case (OrderStatus.Processing):
+                                        labelStatus = "label-warning";
+                                        labelText = "Обрабатывается";
+                                        break;
+                                    case (OrderStatus.Shipped):
+                                        labelStatus = "label-success";
+                                        labelText = "Отправлен";
+                                        break;
+                                    case (OrderStatus.Complete):
+                                        labelStatus = "label-success";
+                                        labelText = "Выполнен";
+                                        break;
+                                    case (OrderStatus.Сanceled):
+                                        labelStatus = "label-danger";
+                                        labelText = "Аннулирован";
+                                        break;
+                                    case (OrderStatus.Error):
+                                    default:
+                                        labelStatus = "label-danger";
+                                        labelText = "Ошибка";
+                                        break;
+                                }
+                                <tr>
+                                    <td>
+                                        @item.Date.ToString("dd.MM.yyyy")
+                                    </td>
+                                    <td><a href="/cart/orders/item/@item.Id">@("OR" + item.Number.ToString())</a></td>
+                                    <td>Заказ @("№"+ item.Number.ToString()) от @item.Date.ToShortDateString()</td>
+                                    <td><span class="label @labelStatus">@labelText</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+                @Html.Partial("Partial/_pager", Model.List.Pager)
+            }
+            else
+            {
+                <div class="box box-solid">
+                    <div class="box-body">
+                        <div class="noItems">Нет данных</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+            <a href="/cart/products/" class="btn btn-sm btn-warning btn-flat pull-left topIndent-20">Новый заказ</a>
+        </div>
+        <!-- /.box-footer -->
+    </div>
+
+</div>

@@ -19,7 +19,7 @@ namespace VoteModule.Areas.Vote.Controllers
             base.OnActionExecuting(filterContext);
             //Есть ли у сайта доступ к модулю
             if (!_Repository.ModuleAllowed(ControllerName))
-                Response.Redirect("/Page/ModuleDenied");
+                Response.Redirect("/page/error/451");
 
             model = new VoteFrontModel()
             {

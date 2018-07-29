@@ -163,7 +163,13 @@
     <Content Include="Areas\Lk\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Lk\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Lk\Views\StatisticWidget\Index.cshtml" />
-    <Content Include="Areas\Lk\Views\PU\Part\Filter.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Part\Integral.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Part\Interval.cshtml" />
+    <Content Include="Areas\Lk\Views\SubscrInfoWidget\Balance.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Part\CounterReading.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Part\History.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Part\ReadingsFilter.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Part\HistoryFilter.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

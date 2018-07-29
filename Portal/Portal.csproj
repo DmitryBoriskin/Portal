@@ -310,6 +310,8 @@
     <Content Include="Content\css\iframe_tinymce.css" />
     <Content Include="Content\css\print.css" />
     <Content Include="Content\css\styles.css" />
+    <Content Include="Content\img\modules\cart\default-50x50.gif" />
+    <Content Include="Content\img\modules\lk\hour-meters_sample.png" />
     <Content Include="Content\template\css\skin_welcome.css" />
     <Content Include="Content\css\styles_login.css" />
     <Content Include="Content\css\styles_popUp.css" />
@@ -721,6 +723,7 @@
     <Content Include="Content\template\img\ico\help.png" />
     <Content Include="Content\template\img\ico\map.png" />
     <Content Include="Content\template\img\ico\people.png" />
+    <Content Include="Content\template\img\ico\pu.png" />
     <Content Include="Content\template\img\ico\schet.png" />
     <Content Include="Content\template\img\ico\stat.png" />
     <Content Include="Content\template\img\ico\workflow.png" />

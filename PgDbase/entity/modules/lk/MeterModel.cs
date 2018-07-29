@@ -57,5 +57,26 @@ namespace PgDbase.entity
         /// Тип передачи показания
         /// </summary>
         public string DeliveryMethod { get; set; }
+
+        /// <summary>
+        /// Тарифная зона
+        /// </summary>
+        public string TimeZone { get; set; }
+
+        /// <summary>
+        /// Тип измеряемой энергии
+        /// </summary>
+        public string EnergyType { get; set; }
+
+        /// <summary>
+        /// Тип измеряемой энергии 
+        /// </summary>
+        public string EnergyTypeName { get; set; }
+
+        /// <summary>
+        /// Коэфф. расчета
+        /// </summary>
+        public decimal Multiplier { get; set; }
+
     }
 }

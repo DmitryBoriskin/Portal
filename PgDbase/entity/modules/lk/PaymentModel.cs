@@ -24,6 +24,11 @@ namespace PgDbase.entity
         public DateTime Date { get; set; }
 
         /// <summary>
+        /// Период
+        /// </summary>
+        public int Period { get; set; }
+
+        /// <summary>
         /// Статус платежа
         /// </summary>
         public string Status { get; set; }
@@ -37,5 +42,7 @@ namespace PgDbase.entity
         /// Тип платежа
         /// </summary>
         public string Type { get; set; }
+
+
     }
 }

@@ -39,6 +39,13 @@ namespace LkModule.Areas.Admin.Controllers
                     {
                         Text = s.Title,
                         Value = s.Id.ToString()
+                    }).ToArray(), "Value", "Text"),
+
+                Managers = new SelectList(_cmsRepository.GetManagers()
+                    .Select(s => new SelectListItem
+                    {
+                        Text = s.Title,
+                        Value = s.Id.ToString()
                     }).ToArray(), "Value", "Text")
             };
         }
@@ -55,6 +62,9 @@ namespace LkModule.Areas.Admin.Controllers
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetSubscr(id);
+            if (model.Item != null)
+                model.Item.Configs = _cmsRepository.GetSubscrConfigs(id);
+
             return View("Item", model);
         }
 

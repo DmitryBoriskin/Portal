@@ -14,6 +14,11 @@ namespace PgDbase.entity
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Кроме приборов учета могут быть еще др. учетные показатели 
+        /// </summary>
+        public bool IsPu { get; set; }
+
+        /// <summary>
         /// Номер
         /// </summary>
         public string Number { get; set; }
@@ -43,6 +48,15 @@ namespace PgDbase.entity
         /// </summary>
         public bool Disabled { get; set; }
 
+        /// <summary>
+        /// 1, 2 или 3-х тарифный
+        /// </summary>
+        public int TariffZoneMode { get; set; }
+
+        /// <summary>
+        /// Коэфф. расчета
+        /// </summary>
+        public decimal Multiplier { get; set; }
 
         /// <summary>
         /// Марка

@@ -1,12 +1,22 @@
-﻿@{
-    ViewBag.Title = "Доступ запрещен.";
-    var returnUrl = HttpContext.Current.Request.Url.Authority;
-}
+﻿
+<section class="content-header">
+    <h1>Ошибка</h1>
 
-<h2>@ViewBag.Title.</h2>
-<div>
-    <p>
-        Доступ к данной странице запрещен! У Вас нет или недостаточно прав для просмотра данной страницы.
-    </p>
-    <p>Вернуться <a href="@returnUrl">на главную</a></p>
+        <ol class="breadcrumb">
+            
+        </ol>
+</section>
+
+<div class="content">
+    <div class="box invoice topIndent-20">
+        <div class="box-header with-border">
+            <h3 class="box-title">
+                Доступ к данной странице запрещен!
+            </h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            У Вас нет или недостаточно прав для просмотра данной страницы.
+        </div>
+    </div>
 </div>

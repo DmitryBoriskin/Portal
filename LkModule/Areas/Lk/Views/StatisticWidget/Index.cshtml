@@ -1,59 +1,31 @@
-﻿@{ 
-    string accrulasJson = Model.AccrualsByDateJson;
+﻿<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+@{
+    string paymentsJson = Model.AccrualsByDateJson;
 }
 
 <div class="block block__white" style="min-height:438px;">
-    <div class="block_headr" style="font-size:10px;">
+    <div class="text-right"><a class="link__orange" href="/lk/statistics">Подробнее</a></div>
+    <div id="chartPayments" class="chart-block">
+        <span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />
+        <div class="noItems">Нет данных...</div>
+    </div>
 
-        <div id="chartAccruals" class="chart-block"></div>
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <script type="text/javascript" src="/Content/plugins/charts/loader.js"></script>
+    @if (Model != null && Model.AccrualsByDateJson != null)
+    {
         <script type="text/javascript">
-    google.charts.load('43', { packages: ['bar', 'corechart'] });
-    google.charts.setOnLoadCallback(drawCharts);
+            google.charts.load('current', { packages: ['bar', 'corechart'], 'language': 'ru' });
+            google.charts.setOnLoadCallback(drawCharts);
 
 
-    function drawCharts() {
-                @*var dataConsumption = google.visualization.arrayToDataTable(eval("@Html.Raw(consumptionJson)"));*@
-                var dataAccruals = google.visualization.arrayToDataTable(eval("@Html.Raw(accrulasJson)"));
-                @*var dataPayments = google.visualization.arrayToDataTable(eval("@Html.Raw(paymentsJson)"));*@
-
-                @*var optionsConsumption = {
-                    isStacked: false,
-                    hAxis:{
-                        logScale : true
-                    },
-                    chart: {
-                        title: 'Потребление за @ViewBag.beginDate–@ViewBag.endDate',
-                        subtitle: 'кВт*ч',
-                    },
-                    //bars: 'vertical',
-                    vAxis: { format: 'decimal' },
-                    height: 400,
-                    //width: 760,
-                    colors: ['#ffa000', '#a3b5d9', '#476db3', '#ff7900', '#0039a6'],
-                    legend: { position: 'top', textStyle: { color: 'blue', fontSize: 16 } }
-                    //bar: { groupWidth: 50 }
-                };*@
-
-                var optionsAccruals = {
-                    isStacked: false,
-                    chart: {
-                        title: 'Начисления за текущий год',
-                        subtitle: 'руб.',
-                    },
-                    //bars: 'vertical',
-                    vAxis: { format: 'decimal' },
-                    height: 400,
-                    //width: 760,
-                    colors: ['#ffa000']
-                };
+            function drawCharts() {
+                var dataPayments = google.visualization.arrayToDataTable(eval("@Html.Raw(paymentsJson)"));
 
                 var optionsPayments = {
                     isStacked: false,
                     chart: {
-                        title: 'Расходы за текущий год',
-                        subtitle: 'руб.',
+                        title: 'Статистика потребления за @DateTime.Now.Year',
+                        //subtitle: 'руб.',
                     },
                     //bars: 'vertical',
                     vAxis: { format: 'decimal' },
@@ -62,15 +34,10 @@
                     colors: ['#ffa000']
                 };
 
-                //var chartConsumtion = new google.charts.Bar(document.getElementById('chartConsumption'));
-                var chartAccruals = new google.charts.Bar(document.getElementById('chartAccruals'));
-                //var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));
-
-                //chartConsumtion.draw(dataConsumption, optionsConsumption);
-                chartAccruals.draw(dataAccruals, optionsAccruals);
-                //chartPayments.draw(dataPayments, optionsPayments);
+                var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));
+               chartPayments.draw(dataPayments, optionsPayments);
             }
         </script>
-    </div>
+    }
 </div>
 

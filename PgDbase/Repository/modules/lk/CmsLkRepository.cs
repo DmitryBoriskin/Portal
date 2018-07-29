@@ -100,7 +100,7 @@ namespace PgDbase.Repository.cms
         }
 
         /// <summary>
-        /// Возвращает личный кабинет
+        /// Возвращает лицевой счет
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -139,6 +139,31 @@ namespace PgDbase.Repository.cms
                             Inn = s.c_bank_inn,
                             Ks = s.c_bank_ks,
                             Rs = s.c_bank_rs
+                        }
+                    })
+                    .SingleOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает личный кабинет
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public SubscrConfigs GetSubscrConfigs(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_subscr_configs
+                    .Where(w => w.f_subscr == id)
+                    .Select(s => new SubscrConfigs
+                    {
+                        EDO = s.c_edo_link,
+                        Manager = new SubscrManager()
+                        {
+                            Id = Guid.NewGuid(),
+                            FIO = "",
+                            Phone = ""
                         }
                     })
                     .SingleOrDefault();
@@ -200,9 +225,24 @@ namespace PgDbase.Repository.cms
                             subscr.c_name = item.Name;
                             subscr.c_patronymic = item.Patronymic;
                         }
-
-
                         db.Insert(subscr);
+
+                        if (item.Configs != null)
+                        {
+                            var configs = new lk_subscr_configs()
+                            {
+                                id = Guid.NewGuid(),
+                                f_subscr = item.Id,
+                                c_subscr = item.Subscr,
+                                c_edo_link = item.Configs.EDO
+                            };
+
+                            if (item.Configs.Manager != null)
+                                configs.f_manager = item.Configs.Manager.Id;
+
+                            db.Insert(configs);
+                        }
+
 
                         var log = new LogModel
                         {
@@ -234,15 +274,6 @@ namespace PgDbase.Repository.cms
             {
                 using (var tran = db.BeginTransaction())
                 {
-                    var log = new LogModel
-                    {
-                        PageId = item.Id,
-                        PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
-                        Section = LogModule.Subscrs,
-                        Action = LogAction.update
-                    };
-                    InsertLog(log);
-
                     var dbSubscr = db.lk_subscrs
                         .Where(s => s.id == item.Id);
 
@@ -285,8 +316,51 @@ namespace PgDbase.Repository.cms
                             subscr.c_bank_ks = item.Bank.Ks;
                             subscr.c_bank_rs = item.Bank.Rs;
                         }
-
                         db.Update(subscr);
+
+                        if (item.Configs != null)
+                        {
+                            var configs = new lk_subscr_configs();
+
+                            var configsData = db.lk_subscr_configs
+                                .Where(p => p.f_subscr == item.Id);
+
+                            if (configsData.Any())
+                            {
+                                configs = configsData.Single();
+                                configs.c_edo_link = item.Configs.EDO;
+
+                                if (item.Configs.Manager != null)
+                                    configs.f_manager = item.Configs.Manager.Id;
+
+                                db.Update(configs);
+                            }
+                            else
+                            {
+                                configs = new lk_subscr_configs()
+                                {
+                                    id = Guid.NewGuid(),
+                                    f_subscr = item.Id,
+                                    c_subscr = item.Subscr,
+                                    c_edo_link = item.Configs.EDO
+                                };
+
+                                if (item.Configs.Manager != null)
+                                    configs.f_manager = item.Configs.Manager.Id;
+
+                                db.Insert(configs);
+                            }
+                        }
+
+                        var log = new LogModel
+                        {
+                            PageId = item.Id,
+                            PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
+                            Section = LogModule.Subscrs,
+                            Action = LogAction.update
+                        };
+                        InsertLog(log);
+
                         tran.Commit();
                         return true;
                     }
@@ -494,6 +568,28 @@ namespace PgDbase.Repository.cms
         }
 
         #endregion
+
+        #region Персональный менеджер
+
+        /// <summary>
+        /// Возвращает список подразделений для выпадающего списка
+        /// </summary>
+        /// <returns></returns>
+        public GroupsModel[] GetManagers()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_support_managers
+                    .Where(w => w.f_site == _siteId)
+                    .Select(s => new GroupsModel
+                    {
+                        Id = s.id,
+                        Title = s.c_name
+                    }).ToArray();
+            }
+        }
+        #endregion
+
 
         #region Подразделения
 
@@ -917,7 +1013,7 @@ namespace PgDbase.Repository.cms
             using (var db = new CMSdb(_context))
             {
                 return db.lk_meters
-                    .Where(w => w.f_meter_device == device)
+                    .Where(w => w.f_device == device)
                     .OrderByDescending(o => o.d_date)
                     .Take(100)
                     .Select(s => new MeterModel
@@ -987,8 +1083,8 @@ namespace PgDbase.Repository.cms
                         Amount = s.n_amount,
                         Status = s.c_status,
                         IsPeni = s.b_peni
-                        //Type = 
-                    }).ToArray();
+                            //Type = 
+                        }).ToArray();
 
                 return new Paged<PaymentModel>
                 {

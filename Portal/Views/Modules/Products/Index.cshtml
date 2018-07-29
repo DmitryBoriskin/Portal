@@ -1,0 +1,36 @@
+﻿@using CartModule.Areas.Cart.Models
+@model ProductCategoryFrontModel
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+    @Html.Partial("/Views/Modules/Accruals/Part/Filter.cshtml")
+
+
+    @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+    {
+        <div class="row">
+            @foreach (var item in Model.List.Items)
+            {
+            <div class="col-md-6">
+                <a class="block block__white" href="/lk/subscrinfo">
+                    <img class="block_img" src="@item.Icon" alt="@item.Title">
+                    <div class="block_info">
+                        <div class="block_info_text">@item.Title</div>
+                    </div>
+                </a>
+            </div>
+
+            }
+        </div>
+
+        @Html.Partial("Partial/_pager", Model.List.Pager)
+
+    }
+    else
+    {
+        <div class="box invoice topIndent-20">
+            <div class="noItems">Нет данных</div>
+        </div>
+    }
+</div>

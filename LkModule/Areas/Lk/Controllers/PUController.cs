@@ -25,7 +25,7 @@ namespace LkModule.Areas.Lk.Controllers
 
             //Есть ли у сайта доступ к модулю
             if (!_Repository.ModuleAllowed(ControllerName))
-                Response.Redirect("/Page/ModuleDenied");
+                Response.Redirect("/Page/error/451");
 
             model = new PuFrontModel()
             {
@@ -79,10 +79,13 @@ namespace LkModule.Areas.Lk.Controllers
         [HttpPost]
         public ActionResult GetPuMeters(Guid device)
         {
-            var meters = _Repository.GetMeters(device);
+            ViewName = "/Views/Modules/Pu/Part/CounterReading.cshtml";
+            var model = _Repository.GetMeters(device);
 
-            var json = JsonConvert.SerializeObject(meters);
-            return Json(json);
+            //var json = JsonConvert.SerializeObject(meters);
+            //return Json(json);
+
+            return PartialView(ViewName, model);
         }
 
         //[HttpPost]

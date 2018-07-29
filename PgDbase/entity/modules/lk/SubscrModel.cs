@@ -33,9 +33,39 @@ namespace PgDbase.entity
         public bool? Default { get; set; }
 
         /// <summary>
-        /// Действителен с
+        /// Баланс 
         /// </summary>
-        public Decimal? Debt { get; set; }
+        public Decimal? Saldo { get; set; }
+
+        /// <summary>
+        /// Пени
+        /// </summary>
+        public Decimal? Peni { get; set; }
+
+        /// <summary>
+        /// Проценты
+        /// </summary>
+        public Decimal? Percent { get; set; }
+
+        /// <summary>
+        /// На дату
+        /// </summary>
+        public DateTime? Date { get; set; }
+
+        /// <summary>
+        /// Последний платеж
+        /// </summary>
+        public Decimal? LastPaymentAmount { get; set; }
+
+        /// <summary>
+        /// Последний платеж
+        /// </summary>
+        public DateTime? LastPaymentDate { get; set; }
+
+        /// <summary>
+        /// Id Последний платеж
+        /// </summary>
+        public string LastPaymentLink { get; set; }
     }
 
     /// <summary>
@@ -142,9 +172,16 @@ namespace PgDbase.entity
         /// Банк
         /// </summary>
         public BankModel Bank { get; set; }
+
+        /// <summary>
+        /// Настройки лицевого счета
+        /// </summary>
+        public SubscrConfigs Configs { get; set; }
     }
 
-
+    /// <summary>
+    /// Банковские реквизиты
+    /// </summary>
     public class BankModel
     {
         /// <summary>
@@ -182,5 +219,39 @@ namespace PgDbase.entity
         /// </summary>
         public string Rs { get; set; }
 
+    }
+
+    /// <summary>
+    /// Настройки лицевого счета
+    /// </summary>
+    public class SubscrConfigs
+    {
+        /// <summary>
+        /// Ссылка на электронный документооборот
+        /// </summary>
+        public string EDO {get; set;}
+
+        /// <summary>
+        /// Персональный менеджер
+        /// </summary>
+        public SubscrManager Manager { get; set; }
+    }
+
+    /// <summary>
+    /// Персональный менеджер
+    /// </summary>
+    public class SubscrManager
+    {
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// ФИО
+        /// </summary>
+        public string FIO { get; set; }
+
+        /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
     }
  }

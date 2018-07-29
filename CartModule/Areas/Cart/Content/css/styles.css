@@ -1,0 +1,118 @@
+﻿.product_list .product_item {
+  margin-bottom: 10px;
+}
+.product_list .item_image {
+  max-width: 90%;
+  height: 50px;
+  margin-bottom: 20px;
+}
+.product_list .item_image img {
+  max-width: 100%;
+}
+.product_list .item_title a {
+  font-size: 14px;
+  line-height: 18px;
+  padding-bottom: 10px;
+}
+.product_list .item_category {
+  font-size: 12px;
+}
+.product_list .item_category a:hover {
+  text-decoration: underline;
+}
+.product_list .item_price {
+  font-size: 16px;
+  line-height: 18px;
+  padding: 10px 0;
+}
+.product_list .item_price .price_new {
+  display: block;
+  font-weight: bold;
+  color: #ed1c24;
+}
+.product_list .item_price .price_old {
+  display: block;
+  color: #777;
+  font-size: 13px;
+  text-decoration: line-through;
+  padding-left: 5px;
+}
+.product_list .box-footer label {
+  color: #ff7900;
+  text-transform: uppercase;
+  text-decoration: underline;
+  color: #d88954;
+}
+.product_list .box-footer .icheckbox_square-orange {
+  margin-top: -4px;
+}
+.product_list i.fa-shopping-cart {
+  font-size: 20px;
+}
+@media (min-width: 992px) {
+  .product_list .product_item .box-body {
+    height: 250px;
+  }
+}
+@media (max-width: 991px) {
+  .product_list .item_image {
+    float: left;
+    padding-right: 15px;
+  }
+}
+.product_info .vertical-divider {
+  padding-left: 25px;
+}
+.product_info .item_title {
+  color: #000;
+  font-size: 18px;
+  line-height: 20px;
+  padding-bottom: 10px;
+}
+.product_info .item_category_list {
+  margin-top: 15px;
+}
+.product_info .item_category {
+  font-size: 12px;
+}
+.product_info .item_category a:hover {
+  text-decoration: underline;
+}
+.product_info .item_price {
+  font-size: 16px;
+  line-height: 18px;
+  padding: 10px 0;
+}
+.product_info .item_price .price_new {
+  display: block;
+  font-weight: bold;
+  color: #ed1c24;
+}
+.product_info .item_price .price_old {
+  display: block;
+  color: #777;
+  font-size: 13px;
+  text-decoration: line-through;
+  padding-left: 5px;
+}
+.product_info .item_cart {
+  border-top: 1px dashed #ccc;
+  margin-top: 25px;
+  padding-top: 15px;
+}
+.product_info .item_cart label {
+  color: #ff7900;
+  text-transform: uppercase;
+  text-decoration: underline;
+  color: #d88954;
+}
+.product_info .item_cart .icheckbox_square-orange {
+  margin-top: -4px;
+}
+.product_info i.fa-shopping-cart {
+  font-size: 22px;
+}
+.cart_block .cart-itemDelete-link {
+  padding: 5px;
+  font-size: 16px;
+}
