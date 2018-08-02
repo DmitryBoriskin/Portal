@@ -397,3 +397,11 @@ font-size:18px;
 .content .select2-container--default .select2-selection--single .select2-selection__arrow b {
     margin-top: 0px;
 }
+
+.noItems {
+    padding: 20px;
+    font-style: italic;
+    color: #777;
+    font-family: Arial;
+    font-size: 13px;
+}

@@ -26,23 +26,13 @@ namespace CartModule.Areas.Cart.Controllers
             if (!_Repository.ModuleAllowed(ControllerName))
                 Response.Redirect("/Page/error/451");
 
-            var OrderStatusDic = new Dictionary<OrderStatus, string>()
-            {
-                { OrderStatus.Pending, "Ожидается"},
-                { OrderStatus.Processing, "Обрабатывается"},
-                { OrderStatus.Shipped, "Отправлен"},
-                { OrderStatus.Complete, "Выполнен"},
-                { OrderStatus.Сanceled, "Аннулирован"},
-                { OrderStatus.Error, "Ошибка"},
-            };
-
            model = new OrderFrontModel()
             {
                 LayoutInfo = _layoutData,
                 Breadcrumbs = _breadcrumb,
                 PageName = _pageName,
-                User = CurrentUser
-            };
+                User = CurrentUser,
+           };
         }
 
         //Список сделанных заказов
@@ -83,7 +73,7 @@ namespace CartModule.Areas.Cart.Controllers
             var userId = CurrentUser.UserId;
             model.Item = _Repository.GetOrder(id);
             if (model.Item != null)
-                model.Item.Products = _Repository.GetOrderedItems(id);
+                model.Item.Products = _Repository.GetOrderItems(id);
 
             return View(ViewName, model);
         }

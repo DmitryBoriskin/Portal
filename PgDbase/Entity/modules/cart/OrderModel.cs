@@ -77,30 +77,13 @@ namespace PgDbase.entity
         /// <summary>
         /// Количество позиций в заказе
         /// </summary>
-        public int Total
-        {
-            get
-            {
-                if (Products != null && Products.Count() > 0)
-                    return Products.Count();
-
-                return 0;
-            }
-        }
+        public int Total { get; set; }
 
         /// <summary>
         /// Сумма к оплате
         /// </summary>
-        public decimal TotalSum {
-            get
-            {
-                if (Products != null && Products.Count() > 0)
-                    return Products.Sum(p => p.AmountSum);
-
-                return 0.00m;
-            }
-        }
-
+        public decimal TotalSum { get; set; }
+       
         /// <summary>
         /// Позиции (список заказанных товаров)
         /// </summary>
@@ -108,7 +91,7 @@ namespace PgDbase.entity
 
     }
 
-    public class OrderedItemModel: ProductModel
+    public class OrderedItemModel: CartProductModel
     {
         /// <summary>
         /// Сылка на продукт

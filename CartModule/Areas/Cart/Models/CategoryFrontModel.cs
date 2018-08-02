@@ -12,12 +12,12 @@ namespace CartModule.Areas.Cart.Models
         /// <summary>
         /// Список 
         /// </summary>
-        public Paged<ProductCategoryModel> List { get; set; }
+        public Paged<CartCategoryModel> List { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public ProductCategoryModel Item { get; set; }
+        public CartCategoryModel Item { get; set; }
 
         /// <summary>
         /// Ид товаров в корзине

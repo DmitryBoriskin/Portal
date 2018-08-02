@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Категория продукта - магазин/корзина
     /// </summary>
-    public class ProductCategoryModel
+    public class CartCategoryModel
     {
         /// <summary>
         /// Идентификатор
@@ -33,9 +33,14 @@ namespace PgDbase.entity
         public bool Disabled { get; set; }
 
         /// <summary>
+        /// Количество товаров в категории
+        /// </summary>
+        public int TotalProducts { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
-        public Paged<ProductModel> Products { get; set; }
+        public Paged<CartProductModel> Products { get; set; }
 
     }
 }

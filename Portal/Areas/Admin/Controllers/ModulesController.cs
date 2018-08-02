@@ -105,10 +105,14 @@ namespace Portal.Areas.Admin.Controllers
                     message.Info = "Запись добавлена";
                 }
 
+                var backUrl = $"{StartUrl}{Request.Url.Query}";
+                if (backModel.Item.ParentId.HasValue)
+                    backUrl = $"{StartUrl}item/{backModel.Item.ParentId}{Request.Url.Query}";
+
                 message.Buttons = new ErrorMessageBtnModel[]
                 {
-                    new ErrorMessageBtnModel { Url = StartUrl + Request.Url.Query, Text = "вернуться в список" },
-                    new ErrorMessageBtnModel { Url = $"{StartUrl}/item/{id}", Text = "ок", Action = "false" }
+                    new ErrorMessageBtnModel { Url = backUrl, Text = "вернуться в список" },
+                    new ErrorMessageBtnModel { Url = $"{StartUrl}item/{id}", Text = "ок", Action = "false" }
                 };
             }
             else

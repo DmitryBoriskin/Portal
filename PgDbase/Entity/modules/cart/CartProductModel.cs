@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Продукт/Сервис из магазина/корзины
     /// </summary>
-    public class ProductModel
+    public class CartProductModel
     {
         /// <summary>
         /// Идентификатор
@@ -72,7 +72,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Категории
         /// </summary>
-        public ProductCategoryModel[] Categories { get; set; }
+        public CartCategoryModel[] Categories { get; set; }
 
     }
 

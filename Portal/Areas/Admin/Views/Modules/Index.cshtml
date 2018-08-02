@@ -9,7 +9,7 @@
             foreach (var item in Model.List.Items)
             {
                 <div class="list-item">
-                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/modules/item/@item.Id">@item.Name</a>
+                    <span class="icon-puzzle" style="color:#999;"></span> <a title="" class="li-caption" href="/admin/modules/item/@item.Id@Request.Url.Query">@item.Name</a>
                     <span class="description">(@item.ControllerName)</span>
                 </div>
             }

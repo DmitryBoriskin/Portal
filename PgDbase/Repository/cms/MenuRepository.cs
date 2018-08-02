@@ -77,7 +77,8 @@ namespace PgDbase.Repository.cms
                            .Select(s => new CmsMenuItemModel()
                            {
                                Alias = s.c_controller_name,
-                               Name = s.c_name
+                               Name = s.c_name,
+                               Icon = s.c_class
                            });
                 if (data.Any())
                 {

@@ -16,11 +16,11 @@ namespace PgDbase.Repository.front
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<ProductCategoryModel> GetProductCategories(CartFilter filter)
+        public Paged<CartCategoryModel> GetCartCategories(CartFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                var result = new Paged<ProductCategoryModel>();
+                var result = new Paged<CartCategoryModel>();
                 var query = db.cart_categories
                     .Where(w => !w.b_disabled);
 
@@ -32,7 +32,7 @@ namespace PgDbase.Repository.front
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new ProductCategoryModel
+                    .Select(s => new CartCategoryModel
                     {
                         Id = s.id,
                         Icon = s.c_icon,
@@ -42,7 +42,7 @@ namespace PgDbase.Repository.front
 
                     }).ToArray();
 
-                return new Paged<ProductCategoryModel>
+                return new Paged<CartCategoryModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -56,10 +56,10 @@ namespace PgDbase.Repository.front
         }
 
         /// <summary>
-        /// Возвращает список категорий товаров из магазина
+        /// Возвращает список категорий товаров из магазина в виде массива
         /// </summary>
         /// <returns></returns>
-        public ProductCategoryModel[] GetProductCategoriesList(CartFilter filter)
+        public CartCategoryModel[] GetCartCategoriesList(CartFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -72,7 +72,7 @@ namespace PgDbase.Repository.front
                         .Where(c => c.fkproductss.Any(p => p.f_product == filter.ProductId.Value));
 
                 var data = query
-                  .Select(s => new ProductCategoryModel
+                  .Select(s => new CartCategoryModel
                   {
                       Id = s.id,
                       Icon = s.c_icon,
@@ -85,24 +85,25 @@ namespace PgDbase.Repository.front
         }
 
         /// <summary>
-        /// Возвращает категорий товара из магазина со списком товаров
+        /// Возвращает категорию
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ProductCategoryModel GetProductCategory(Guid id)
+        public CartCategoryModel GetCartCategory(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 var data = db.cart_categories
                     .Where(w => w.id == id)
                     .Where(w => !w.b_disabled)
-                    .Select(s => new ProductCategoryModel
+                    .Select(s => new CartCategoryModel
                     {
                         Id = s.id,
                         Icon = s.c_icon,
                         Title = s.c_name,
                         Desc = s.c_desc,
                         Disabled = s.b_disabled,
+                        TotalProducts = db.cart_products.Where(p => p.fkcategoriess.Any(t => t.f_category == s.id)).Count()
                         //Products заполняем в контроллере
                     })
                     .SingleOrDefault();
@@ -115,11 +116,11 @@ namespace PgDbase.Repository.front
         /// Возвращает список категорий товаров из магазина
         /// </summary>
         /// <returns></returns>
-        public Paged<ProductModel> GetProducts(CartFilter filter)
+        public Paged<CartProductModel> GetProducts(CartFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                var result = new Paged<ProductModel>();
+                var result = new Paged<CartProductModel>();
                 var query = db.cart_products_categories
                     .Where(c => !c.fkproductscategoriesproducts.b_disabled);
 
@@ -140,7 +141,7 @@ namespace PgDbase.Repository.front
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new ProductModel
+                    .Select(s => new CartProductModel
                     {
                         Id = s.f_product,
                         Number = s.fkproductscategoriesproducts.n_product,
@@ -152,12 +153,12 @@ namespace PgDbase.Repository.front
                         PriceInfo = s.fkproductscategoriesproducts.c_price,
                         Disabled = s.fkproductscategoriesproducts.b_disabled,
 
-                        Categories = GetProductCategoriesList(new CartFilter() { ProductId = s.f_product }),
+                        Categories = GetCartCategoriesList(new CartFilter() { ProductId = s.f_product }),
                         //Images = 
 
                     }).ToArray();
 
-                return new Paged<ProductModel>
+                return new Paged<CartProductModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -174,16 +175,16 @@ namespace PgDbase.Repository.front
         /// Возвращает информацию о товаре из магазина
         /// </summary>
         /// <returns></returns>
-        public ProductModel GetProduct(Guid id)
+        public CartProductModel GetProduct(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
-                var result = new Paged<ProductModel>();
+                var result = new Paged<CartProductModel>();
                 var query = db.cart_products
                     .Where(c => c.id == id);
 
                 var data = query
-                    .Select(s => new ProductModel
+                    .Select(s => new CartProductModel
                     {
                         Id = s.id,
                         Number = s.n_product,
@@ -195,7 +196,7 @@ namespace PgDbase.Repository.front
                         PriceInfoPrev = s.c_price_old,
                         Disabled = s.b_disabled,
 
-                        Categories = GetProductCategoriesList(new CartFilter() { ProductId = id }),
+                        Categories = GetCartCategoriesList(new CartFilter() { ProductId = id }),
                         // Images
 
                     }).SingleOrDefault();
@@ -235,6 +236,11 @@ namespace PgDbase.Repository.front
             }
         }
 
+        /// <summary>
+        /// Оформление заказа
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
         public bool SendOrder(OrderModel order)
         {
             using (var db = new CMSdb(_context))
@@ -333,9 +339,9 @@ namespace PgDbase.Repository.front
                     query = query
                         .Where(c => c.d_date < filter.DateEnd.Value.AddDays(1));
 
-                if (filter.Status.HasValue)
+                if (!string.IsNullOrEmpty(filter.Type) && int.TryParse(filter.Type, out int type))
                     query = query
-                        .Where(c => c.f_status == filter.Status.Value);
+                        .Where(c => c.f_status == type);
 
 
                 int itemsCount = query.Count();
@@ -359,6 +365,11 @@ namespace PgDbase.Repository.front
                         DeliveryType = (DeliveryMethod) s.f_delivery,
                         AcquiringType = (AcquiringMethod) s.f_acquiring,
                         Note = s.c_note,
+
+                        Total = db.cart_orders_items.Where(p => p.f_order == s.id).Count(),
+                        TotalSum = db.cart_orders_items.Where(p => p.f_order == s.id).Any()
+                                    ? db.cart_orders_items.Where(p => p.f_order == s.id).Sum(p => p.n_total_sum)
+                                    : 0.00m
                         //Products
 
                     }).ToArray();
@@ -377,7 +388,7 @@ namespace PgDbase.Repository.front
         }
 
         /// <summary>
-        /// Список заказов
+        /// Заказ - информация
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -413,10 +424,10 @@ namespace PgDbase.Repository.front
         }
 
         /// <summary>
-        /// Возвращает список категорий товаров из магазина
+        /// Возвращает список товаров в заказе
         /// </summary>
         /// <returns></returns>
-        public OrderedItemModel[] GetOrderedItems(Guid orderId)
+        public OrderedItemModel[] GetOrderItems(Guid orderId)
         {
             using (var db = new CMSdb(_context))
             {
@@ -441,8 +452,12 @@ namespace PgDbase.Repository.front
         }
 
 
-
-        public Guid[] GetProductsInCart(Guid userId)
+        /// <summary>
+        /// Список Id товаров в корзине
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Guid[] GetCartItemsIdList(Guid userId)
         {
             using (var db = new CMSdb(_context))
             {
@@ -493,7 +508,6 @@ namespace PgDbase.Repository.front
             }
         }
 
-
         /// <summary>
         /// Добавляем товар в корзину
         /// </summary>
@@ -512,6 +526,7 @@ namespace PgDbase.Repository.front
                     var product = new cart_cart_items()
                     {
                         id = Guid.NewGuid(),
+                        f_site = _siteId,
                         f_client = userId,
                         f_product = productId,
                         n_amount = 1,

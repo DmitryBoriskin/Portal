@@ -195,6 +195,14 @@ namespace PgDbase.entity
         /// Голосование
         /// </summary>
         Vote,
+        /// <summary>
+        /// Интернет-магазин
+        /// </summary>
+        Cart,
+        /// <summary>
+        /// Личный кабинет
+        /// </summary>
+        Lk
     }
 
     /// <summary>

@@ -45,7 +45,7 @@ namespace CartModule.Areas.Cart.Controllers
                 User = CurrentUser
             };
 
-            model.List = _Repository.GetProductCategories(cFilter);
+            model.List = _Repository.GetCartCategories(cFilter);
 
             return View(ViewName, model);
         }
@@ -66,7 +66,7 @@ namespace CartModule.Areas.Cart.Controllers
                 User = CurrentUser
             };
 
-            model.Item = _Repository.GetProductCategory(id);
+            model.Item = _Repository.GetCartCategory(id);
             if (model.Item != null)
             {
                 filter = GetFilter();
@@ -76,7 +76,7 @@ namespace CartModule.Areas.Cart.Controllers
                 model.Item.Products = _Repository.GetProducts(cFilter);
 
                 var userId = CurrentUser.UserId;
-                model.InCart = _Repository.GetProductsInCart(userId);
+                model.InCart = _Repository.GetCartItemsIdList(userId);
             }
 
             return View(ViewName, model);
@@ -101,7 +101,7 @@ namespace CartModule.Areas.Cart.Controllers
             var userId = CurrentUser.UserId;
 
             model.Item = _Repository.GetProduct(id);
-            model.InCart = _Repository.GetProductsInCart(userId);
+            model.InCart = _Repository.GetCartItemsIdList(userId);
 
             return View(ViewName, model);
         }

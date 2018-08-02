@@ -1,0 +1,84 @@
+﻿@using PgDbase.entity
+@using CartModule.Areas.Admin.Models
+
+@model CartCategoryViewModel
+
+@{
+    string searchText = "";
+    var disabled = false;
+
+    if (Model.Filter != null)
+    {
+        searchText = Model.Filter.SearchText;
+        disabled = Model.Filter.Disabled.HasValue? Model.Filter.Disabled.Value: false;
+    }
+}
+
+@if (User.Identity.HasClaim(Model.ControllerName, "view"))
+{
+    <div class="content">
+        <h1>@Model.PageName</h1>
+
+        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+        {
+            foreach (var item in Model.List.Items)
+            {
+                string icon = "/Content/Modules/cart/img/default-50x50.gif";
+
+                if (!string.IsNullOrWhiteSpace(icon) && !File.Exists(Server.MapPath(icon)))
+                {
+                    icon = item.Icon;
+                }
+
+                <div class="list-item @(item.Disabled? "disabled" : "")">
+                    <a href="/admin/news/item/@item.Id">
+                        <img src="@icon" alt="@item.Title" class="li-image" />
+                    </a>
+                    <div class="li-desc">
+                        <a title="@item.Title" class="li-caption" href="/admin/cartcategories/item/@item.Id">@item.Title</a><br>
+                        <span>Товаров: </span> @item.TotalProducts<br />
+                    </div>
+                </div>
+            }
+            if (Model.List != null && Model.List.Pager != null)
+            {
+                @Html.Partial("Partial/_pager", Model.List.Pager)
+            }
+        }
+        else
+        {
+            <div class="noItems">Нет данных</div>
+        }
+    </div>
+    <div class="dop_info-block">
+        <div class="dop-caption">Фильтр</div>
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.TextBox("searchtext", searchText, new { @title = "Поиск по ключевым словам", @placeholder = "поиск...", @MaxLength = "512" })
+                    @Html.CheckBox("enabled", !disabled, new { type = "checkbox", title = "Отображать", data_toggle = "toggle", data_on = "Только разрешенные", data_off = "Только запрещенные", data_width = "248" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"><button type="submit" name="action" value="search-btn" class="button btn-primary">Применить</button></div>
+                <div class="col-md-6"><button type="submit" name="action" value="clear-btn" class="button btn-default">Сбросить</button></div>
+            </div>
+        }
+    </div>
+
+    using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+    {
+        <div class="buttons">
+            @if (User.Identity.HasClaim(Model.ControllerName, "create"))
+            {
+                <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+            }
+        </div>
+    }
+}
+else
+{
+    <div class="content"><p>У вас недостаточно прав.</p></div>
+}

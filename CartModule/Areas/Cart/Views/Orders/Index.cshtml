@@ -23,6 +23,7 @@
                                 <th>Дата</th>
                                 <th>Номер заказа</th>
                                 <th>Название</th>
+                                <th>Сумма</th>
                                 <th>Статус</th>
 
                             </tr>
@@ -30,34 +31,27 @@
                         <tbody>
                             @foreach (var item in Model.List.Items)
                             {
-                                var labelStatus = "";
-                                var labelText = "";
+                                var status = "";
                                 switch (item.Status)
                                 {
                                     case (OrderStatus.Pending):
-                                        labelStatus = "label-default";
-                                        labelText = "Ожидается";
+                                        status = "label-default";
                                         break;
                                     case (OrderStatus.Processing):
-                                        labelStatus = "label-warning";
-                                        labelText = "Обрабатывается";
+                                        status = "label-warning";
                                         break;
                                     case (OrderStatus.Shipped):
-                                        labelStatus = "label-success";
-                                        labelText = "Отправлен";
+                                        status = "label-success";
                                         break;
                                     case (OrderStatus.Complete):
-                                        labelStatus = "label-success";
-                                        labelText = "Выполнен";
+                                        status = "label-success";
                                         break;
                                     case (OrderStatus.Сanceled):
-                                        labelStatus = "label-danger";
-                                        labelText = "Аннулирован";
+                                        status = "label-danger";
                                         break;
                                     case (OrderStatus.Error):
                                     default:
-                                        labelStatus = "label-danger";
-                                        labelText = "Ошибка";
+                                        status = "label-danger";
                                         break;
                                 }
                                 <tr>
@@ -66,7 +60,8 @@
                                     </td>
                                     <td><a href="/cart/orders/item/@item.Id">@("OR" + item.Number.ToString())</a></td>
                                     <td>Заказ @("№"+ item.Number.ToString()) от @item.Date.ToShortDateString()</td>
-                                    <td><span class="label @labelStatus">@labelText</span></td>
+                                    <td class="text-nowrap">@item.TotalSum.ToString("N2") <i class="fa fa-rouble"></i></td>
+                                    <td><span class="label @status">@CartDictionary.OrderStatusDic.Where(s => s.Key == item.Status).ToString()).Select(s => s.Value).SingleOrDefault()</span></td>
                                 </tr>
                             }
                         </tbody>
@@ -77,11 +72,7 @@
             }
             else
             {
-                <div class="box box-solid">
-                    <div class="box-body">
-                        <div class="noItems">Нет данных</div>
-                    </div>
-                </div>
+              <div class="noItems">Нет данных</div>
             }
         </div>
         <!-- /.box-body -->

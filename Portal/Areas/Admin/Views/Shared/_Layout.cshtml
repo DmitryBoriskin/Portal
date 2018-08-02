@@ -79,9 +79,10 @@
                     <div class="account-links">
                         @if (Request.IsAuthenticated)
                         {
-                            <form id="logoutForm" action="/Account/LogOff" method="Post" class="navbar-right">
-                                <a class="link-close" href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>
-                            </form>
+                        <form id="logoutForm" action="/Account/LogOff" method="Post" class="navbar-right">
+                            @Html.AntiForgeryToken()
+                            <a class="link-close" href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>
+                        </form>
                         }
                     </div>
                 </div>

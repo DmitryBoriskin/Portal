@@ -1,5 +1,7 @@
 ﻿using PgDbase.entity;
 using Portal.Models;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace CartModule.Areas.Cart.Models
 {
@@ -17,6 +19,6 @@ namespace CartModule.Areas.Cart.Models
         /// 
         /// </summary>
         public OrderModel Item { get; set; }
-    }
 
+    }
 }

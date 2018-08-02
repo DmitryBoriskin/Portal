@@ -1,0 +1,62 @@
+﻿@using PgDbase.entity
+@using CartModule.Areas.Admin.Models
+
+@model CartProductViewModel
+
+@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="content">
+        <h1>@Model.PageName</h1>
+        @Html.TextBoxFor(m => m.Item.Title, new { @class = "uc_input", @required = "", @title = "Название", @placeholder = "Название", @MaxLength = "512" })
+
+        <div class="row">
+            <div class="col-lg-12">
+                @Html.TextBoxFor(m => m.Item.Images[0].Path, new { type = "file", data_posted_name = "upload", data_url = @ViewBag.Photo, title = "Картинка для предпросмотра", data_help = "Фотографии должны быть не менне 400 точек по ширине и пропорции картинки - 4х3", accept = ".jpg,.jpeg,.png,.gif" })
+                @Html.TextBoxFor(m => m.Item.Images[0].Title, new { @class = "uc_input", @title = "", @placeholder = "Описание к изображению" })
+            </div>
+        </div>
+        <div class="group-block open topIndent-20" title="Описание товара или услуги">
+            @Html.TextAreaFor(m => m.Item.Desc, new { @type = "editor", @height = "300", data_dir = ViewBag.DataPath })
+        </div>
+
+    </div>
+    <div class="dop_info-block">
+        <div class="dop-caption icon-layers">Доп. параметры</div>
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.Item.Number, new { @class = "uc_input", @title = "Номер товара/услуги", readOnly = ""})
+            @Html.TextBoxFor(m => m.Item.PriceInfo, new { @class = "uc_input", @title = "Цена (описание)", @placeholder = "100.00 р. за ед." })
+            @Html.TextBoxFor(m => m.Item.Price, new { @class = "uc_input", @required = "", @title = "Цена в руб.", @placeholder = "100.00" })
+            @Html.TextBoxFor(m => m.Item.PriceInfoPrev, new { @class = "uc_input", @title = "Старая цена (описание)", @placeholder = "100.50 р. за ед."})
+            @Html.TextBoxFor(m => m.Item.PricePrev, new { @class = "uc_input", @title = "Старая цена в руб.", @placeholder = "100.50"})
+
+
+            <label for="itemServices-select">Категории:</label>
+            <select name="Item.Services" id="itemServices-select" class="form-control select2" multiple>
+                @foreach (var cat in Model.Categories)
+                {
+                    <option value="@cat.Id" @(Model.Item.Categories != null && Model.Item.Categories.Any(s => s.Id == cat.Id) ? "selected" : null)>@cat.Title</option>
+                }
+            </select>
+        </div>
+        @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
+
+        @if (Model.Item != null)
+        {
+            <div class="topIndent-20">&nbsp;</div>
+            <div class="topIndent-20">
+                @Html.ActionLink("Журнал изменений", "Log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
+            </div>
+        }
+    </div>
+    <div class="buttons">
+        @if (User.Identity.HasClaim(Model.ControllerName, "edit") || User.Identity.HasClaim(Model.ControllerName, "create"))
+        {
+            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+        }
+        @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
+        {
+            <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
+        }
+        <button type="submit" name="action" value="cancel-btn" data-action="cancel" class="button icon-cancel">Закрыть</button>
+    </div>
+}

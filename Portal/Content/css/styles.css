@@ -955,8 +955,16 @@ a.button.icon-cancel{
 .icon-language:before { content: '\e98b'; } /* '' */
 
 
+.icon-comment:before { content: '\e87b'; } /* '' */
+.icon-basket:before { content: '\e8a8'; } /* '' */
+.icon-chart-bar:before { content: '\e945'; } /* '' */
+.icon-ticket:before { content: '\e949'; } /* '' */
+.icon-vcard:before { content: '\ea42'; } /* '' */
+.icon-search-outline:before { content: '\eb20'; } /* '' */
+.icon-newspaper:before { content: '\e99c'; } /* '' */
+
 .icon-menu:before {
-    content:'\ed81';
+    content: '\ed81';
 }
 .icon-archive:before {
     content: '\ea53';

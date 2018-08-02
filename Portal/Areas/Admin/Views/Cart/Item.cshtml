@@ -1,0 +1,133 @@
+﻿@using PgDbase.entity
+@using CartModule.Areas.Admin.Models
+
+@model  OrderViewModel
+@using (Html.BeginForm(Model.ActionName, Model.ControllerName, FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="content">
+        <h1>@Model.PageName</h1>
+        <div class="row">
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Item.UserName, new { @class = "uc_input", @required = "", @title = "Заказчик", @placeholder = "Заказчик", readOnly = "" })
+            </div>
+            <div class="col-md-2"><br /><br />
+                <a href="/admin/siteusers/item/@Model.Item.UserId">пользователь</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                @Html.TextBoxFor(m => m.Item.UserPhone, new { @class = "uc_input", @required = "", @title = "Телефон", @placeholder = "Телефон", readOnly = "" })
+            </div>
+            <div class="col-md-4">
+                @Html.TextBoxFor(m => m.Item.UserEmail, new { @class = "uc_input", @required = "", @title = "E-mail", @placeholder = "E-mail", readOnly = "" })
+            </div>
+            <div class="col-md-12">
+                @Html.TextAreaFor(m => m.Item.UserAddress, new { @class = "uc_input", @required = "", @title = "Адрес", @placeholder = "Адрес", @height = "100", readOnly = "" })
+            </div>
+        </div>
+
+        @if (Model.Item.Products != null && Model.Item.Products.Count() > 0)
+        {
+            <div class="group-block open topIndent-20" title="Список заказанных товаров/услуг">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Наименование</th>
+                            <th>Цена</th>
+                            <th>Количество</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Item.Products)
+                        {
+                            <tr>
+                                <td>@item.Number</td>
+                                <td><a href="/admin/cartproducts/item/@item.Id">@item.Title</a></td>
+                                <td>@item.Price.ToString("N2")</td>
+                                <td>@item.Amount</td>
+                                <td>@item.AmountSum.ToString("N2")</td>
+                            </tr>
+                        }
+                        <tr>
+                            <th colspan="4"><strong>Итого:</strong></th>
+                            <th><strong>@Model.Item.TotalSum</strong></th>
+                        </tr>
+                    </tbody>
+                       
+                </table>
+            </div>
+        }
+
+
+        @if (Model.Item != null)
+        {
+            @*виджет событий*@
+            try
+            {
+                Html.RenderAction("index", "EventsWidget");
+            }
+            catch (Exception ex)
+            {
+                //Log
+            }
+        }
+
+    </div>
+    <div class="dop_info-block">
+        <div class="dop-caption icon-layers">Доп. параметры</div>
+        @Html.TextBoxFor(m => m.Item.Number, new { required = "", @class = "uc_input", @title = "Заказ", readOnly = "" })
+        @Html.TextBoxFor(m => m.Item.Date, new { required = "", @class = "uc_input", title = "Дата заказа", readOnly = "" })
+
+        <div class="form-group">
+            <label for="itemDeliveryType-select">Способ доставки:</label>
+            <select name="Item.DeliveryType" id="itemDeliveryType-select" class="form-control select2">
+                @foreach (var status in CartDictionary.OrderDeliveryDic)
+                {
+                    <option value="@status.Key" @(Model.Item.DeliveryType == status.Key) >@status.Value</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="itemAcquiringType-select">Способ оплаты:</label>
+            <select name="Item.AcquiringType" id="itemAcquiringType-select" class="form-control select2">
+                @foreach (var status in CartDictionary.OrderAcquiringDic)
+                {
+                    <option value="@status.Key" @(Model.Item.AcquiringType == status.Key)>@status.Value</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="itemStatus-select">Статус заказа:</label>
+            <select name="Item.Status" id="itemStatus-select" class="form-control select2">
+                @foreach (var status in CartDictionary.OrderStatusDic)
+                {
+                <option value="@status.Key" @(Model.Item.Status == status.Key)>@status.Value</option>
+                }
+            </select>
+        </div>
+
+
+
+        @if (Model.Item != null)
+        {
+            <div class="topIndent-20">
+                @Html.ActionLink("Журнал изменений", "Log", "services", new { @id = Model.Item.Id, @type = "page" }, new { @id = "LogLists", @class = "button pop-up_frame icon-archive", @data_class = "LogList", @title = "Журнал изменений" })
+            </div>
+        }
+    </div>
+    <div class="buttons">
+        @if (User.Identity.HasClaim(Model.ControllerName, "edit") || User.Identity.HasClaim(Model.ControllerName, "create"))
+        {
+            <button type="submit" name="action" value="save-btn" data-primary="true" class="button icon-create">Сохранить</button>
+        }
+        @if (User.Identity.HasClaim(Model.ControllerName, "delete"))
+        {
+            <button type="submit" name="action" data-action="delete" value="delete-btn" class="button icon-delete">Удалить</button>
+        }
+        <button type="submit" name="action" value="cancel-btn" data-action="cancel" class="button icon-cancel">Закрыть</button>
+    </div>
+}

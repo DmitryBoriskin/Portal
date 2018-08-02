@@ -74,10 +74,10 @@
     <Compile Include="Entity\common\LayoutModel.cs" />
     <Compile Include="Entity\common\PhotoGallery.cs" />
     <Compile Include="Entity\common\SitesModel.cs" />
-    <Compile Include="Entity\modules\cart\ProductFilter.cs" />
+    <Compile Include="Entity\modules\cart\CartFilter.cs" />
     <Compile Include="Entity\modules\cart\OrderModel.cs" />
-    <Compile Include="Entity\modules\cart\ProductModel.cs" />
-    <Compile Include="Entity\modules\cart\ProductCategoryModel.cs" />
+    <Compile Include="Entity\modules\cart\CartProductModel.cs" />
+    <Compile Include="Entity\modules\cart\CartCategoryModel.cs" />
     <Compile Include="Entity\modules\event\EventFilterModel.cs" />
     <Compile Include="Entity\modules\event\EventsModel.cs" />
     <Compile Include="Entity\modules\lk\AccrualModel.cs" />
@@ -110,6 +110,8 @@
     <Compile Include="Entity\services\Paged.cs" />
     <Compile Include="Entity\services\PagerModel.cs" />
     <Compile Include="Repository\front\FrontRepository.cs" />
+    <Compile Include="Entity\modules\cart\CartDictionary.cs" />
+    <Compile Include="Repository\modules\cart\CmsCartRepository.cs" />
     <Compile Include="Repository\modules\cart\FrontCartRepository.cs" />
     <Compile Include="Repository\modules\events\CmsEventsRepository.cs" />
     <Compile Include="Repository\modules\events\FrontEventsRepository.cs" />

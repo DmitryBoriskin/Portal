@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿
+using System.Web.Mvc;
 
 namespace CartModule.Areas.Admin
 {
@@ -19,6 +20,25 @@ namespace CartModule.Areas.Admin
             //    "Admin/{controller}/{action}/{id}",
             //    new { action = "Index", id = UrlParameter.Optional }
             //);
+
+            context.MapRoute(
+             "Cart_BE",
+             "Admin/Cart/{action}/{id}",
+             new { controller = "Cart", action = "Index", id = UrlParameter.Optional },
+             new[] { "CartModule.Areas.Admin.Controllers" }
+          );
+            context.MapRoute(
+            "CartCategories_BE",
+            "Admin/CartCategories/{action}/{id}",
+            new { controller = "CartCategories", action = "Index", id = UrlParameter.Optional },
+            new[] { "CartModule.Areas.Admin.Controllers" }
+         );
+            context.MapRoute(
+            "CartProducts_BE",
+            "Admin/CartProducts/{action}/{id}",
+            new { controller = "CartProducts", action = "Index", id = UrlParameter.Optional },
+            new[] { "CartModule.Areas.Admin.Controllers" }
+         );
         }
     }
 }

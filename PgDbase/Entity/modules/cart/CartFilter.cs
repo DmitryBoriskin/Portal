@@ -32,10 +32,5 @@ namespace PgDbase.entity
         /// </summary>
         public bool? PriceDesc { get; set; }
 
-        /// <summary>
-        /// Статус заказа
-        /// </summary>
-        public int? Status { get; set; }
-
     }
 }

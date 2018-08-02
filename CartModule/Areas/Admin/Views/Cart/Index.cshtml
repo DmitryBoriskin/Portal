@@ -1,0 +1,143 @@
+﻿@using PgDbase.entity
+@using CartModule.Areas.Admin.Models
+
+@model OrderViewModel
+
+@{
+    string searchText = "";
+    int type = 1;
+    DateTime? datestart = null;
+    DateTime? dateend = null;
+
+
+    if (Model.Filter != null)
+    {
+        searchText = Model.Filter.SearchText;
+        datestart = Model.Filter.Date;
+        dateend = Model.Filter.DateEnd;
+        int.TryParse(Model.Filter.Type, out type);
+    }
+}
+
+
+@if (User.Identity.HasClaim(Model.ControllerName, "view"))
+{
+    using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+    {
+        <div class="content">
+            <h1>@Model.PageName</h1>
+            @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+            {
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Дата</th>
+                            <th>Клиент</th>
+                            <th>Сумма</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model.List.Items)
+                    {
+                        var status = "";
+
+                        switch (item.Status)
+                        {
+                            case (OrderStatus.Pending):
+                                status = "default";
+                                break;
+                            case (OrderStatus.Processing):
+                                status = "warning";
+                                break;
+                            case (OrderStatus.Shipped):
+                                status = "success";
+                                break;
+                            case (OrderStatus.Complete):
+                                status = "success";
+                                break;
+                            case (OrderStatus.Сanceled):
+                                status = "danger";
+                                break;
+                            case (OrderStatus.Error):
+                            default:
+                                status = "danger";
+                                break;
+                        }
+
+                        <tr class="@status">
+                            <td><a href="/admin/cart/item/@item.Id">@("OR" + item.Number.ToString())</a></td>
+                            <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                @item.UserName <br />
+                                тел.: @item.UserPhone<br />
+                                e-mail: @item.UserEmail
+                            </td>
+                            <td class="text-nowrap">@item.TotalSum.ToString("N2") <i class="fa fa-rouble"></i></td>
+                            <td>@CartDictionary.OrderStatusDic.Where(s => s.Key == item.Status).Select(s => s.Value).SingleOrDefault()</td>
+                        </tr>
+                    }
+                    <tbody></tbody>
+                </table>
+                if (Model.List != null && Model.List.Pager != null)
+                {
+                    @Html.Partial("Partial/_pager", Model.List.Pager)
+                }
+            }
+            else
+            {
+                <div class="noItems">Нет данных</div>
+            }
+        </div>
+        <div class="dop_info-block">
+            <div class="dop-caption">Фильтр</div>
+            @using (Html.BeginForm())
+            {
+                <div class="row">
+                    <div class="col-md-12">
+
+                        @Html.TextBox("searchtext", searchText, new { @title = "Поиск по ключевым словам", @placeholder = "поиск...", @MaxLength = "512" })
+
+                        <div class="form-group">
+                            <label for="orderStatus">Статус:</label>
+                            <select name="type" class="select2" id="orderStatus">
+                                <option>Все</option>
+                                @foreach (var status in CartDictionary.OrderStatusDic)
+                                {
+                                    <option value="@status.Value" @(type == (int)status.Key ? "selected" : "")>@status.Value</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">@Html.TextBox("datestart", datestart, new { @class = "uc_input", @data_type = "date", @title = "Дата публикации с", @placeholder = "дд.мм.гггг" })</div>
+                    <div class="col-xs-6">@Html.TextBox("dateend", dateend, new { @class = "uc_input", @data_type = "date", @title = "по", @placeholder = "дд.мм.гггг" })</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6"><button type="submit" name="action" value="search-btn" class="button btn-primary">Применить</button></div>
+                    <div class="col-md-6"><button type="submit" name="action" value="clear-btn" class="button btn-default">Сбросить</button></div>
+                </div>
+            }
+            <div class="topIndent-20">&nbsp;</div>
+            <div class="topIndent-20">
+                @Html.ActionLink("Категории товаров", "Index", new { area = "Admin", controller = "CartCategories" }, new { @class = "button icon-attach", @data_class = "LogList", @title = "Категории товаров" })
+                @Html.ActionLink("Товары и услуги", "Index", new { area = "Admin", controller = "CartProducts" }, new { @class = "button icon-attach", @data_class = "LogList", @title = "Товары и услуги" })
+            </div>
+        </div>
+    }
+    using (Html.BeginForm(Model.ActionName, Model.ControllerName))
+    {
+        <div class="buttons">
+            @if (User.Identity.HasClaim(Model.ControllerName, "create"))
+            {
+                <button type="submit" name="action" value="insert-btn" class="button icon-create">Создать</button>
+            }
+        </div>
+    }
+}
+else
+{
+    <div class="content"><p>У вас недостаточно прав.</p></div>
+}

@@ -50,6 +50,11 @@ namespace Portal.Areas.Admin.Controllers
         }
 
         // GET: Admin/Users/<id>
+        /// <summary>
+        /// id линка user 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Item(Guid id)
         {
             model.Item = _cmsRepository.GetUser(id);

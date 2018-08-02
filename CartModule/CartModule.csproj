@@ -105,6 +105,12 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\CartProductsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CartCategoriesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CartController.cs" />
+    <Compile Include="Areas\Admin\Models\CartProductViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\CartCategoryViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\OrderViewModel.cs" />
     <Compile Include="Areas\Cart\CartAreaRegistration.cs" />
     <Compile Include="Areas\Cart\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Cart\Controllers\ProductsController.cs" />
@@ -131,6 +137,12 @@
     <Content Include="Areas\Cart\Content\css\styles.less" />
     <Content Include="Areas\Cart\Views\Orders\Part\Filter.cshtml" />
     <Content Include="Areas\Cart\Views\Orders\New.cshtml" />
+    <Content Include="Areas\Admin\Views\Cart\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Cart\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\CartProducts\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\CartProducts\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\CartCategories\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\CartCategories\Item.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -146,8 +158,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Content\js\" />
-    <Folder Include="Areas\Admin\Controllers\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Cart\Views\Shared\" />
     <Folder Include="Controllers\" />
@@ -197,6 +207,10 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
+
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Cart\*" "$(SolutionDir)Portal\Areas\Admin\Views\Cart\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\CartProducts\*" "$(SolutionDir)Portal\Areas\Admin\Views\CartProducts\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\CartCategories\*" "$(SolutionDir)Portal\Areas\Admin\Views\CartCategories\"
 
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Cart\Views\Products\*" "$(SolutionDir)Portal\Views\Modules\Cart\Products\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Cart\Views\Orders\*" "$(SolutionDir)Portal\Views\Modules\Cart\Orders\"
