@@ -14,15 +14,5 @@ namespace LkModule.Areas.Admin.Models
         /// Список 
         /// </summary>
         public Paged<PaymentModel> List { get; set; }
-
-        /// <summary>
-        /// Статусы
-        /// </summary>
-        public GroupsModel[] Statuses { get; set; }
-
-        /// <summary>
-        /// Типы
-        /// </summary>
-        public GroupsModel[] Types { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿@using LkModule.Areas.Lk.Models
 @model AccrualFrontModel
+@{
+    int i = 1;
+}
 
 @Html.Partial("Partial/header")
 
@@ -16,16 +19,15 @@
             {
                 amountWithOutTax = amountWithOutTax - item.Tax.Value;
             }
-            <div class="box invoice topIndent-20">
+            <div class="box box-solid topIndent-20 @(i>1? "collapsed-box":"")">
                 <div class="box-header with-border">
                     <h3 class="box-title"><b>@item.DocType № @item.Number</b> <small>от @item.Date.ToString("dd.MM.yyyy")</small></h3>
                     <div><b>Задолженность:</b> @item.DebtType</div>
+                    <div><b>Период оплаты</b> @item.Period</div>
                     <div class="box-tools pull-right">
-                        <span><b>Период оплаты</b> @item.Period</span>
                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
+                            <i class="fa @(i>1?" fa-plus":"fa-minus")"></i>
                         </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -40,7 +42,6 @@
                                     <th>НДС</th>
                                     <th>Начислено<br /><small>(с НДС)</small></th>
                                     <th>Статус</th>
-                                    <th>Платеж</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,8 +56,6 @@
                                     <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                     <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
                                     <td>@item.Status</td>
-                                    <td>@if (item.PaymentId.HasValue)
-                                    {<a href="/lk/payments/#payment_@item.PaymentId">#@item.PaymentId</a>}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -69,7 +68,7 @@
                 </div>
                 <!-- /.box-footer -->
             </div>
-
+            i++;
         }
 
         @Html.Partial("Partial/_pager", Model.List.Pager)

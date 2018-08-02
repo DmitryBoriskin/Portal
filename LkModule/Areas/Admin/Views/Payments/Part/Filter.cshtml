@@ -12,38 +12,7 @@
         <div class="col-xs-6">@Html.TextBox("datestart", beginDate, new { @class = "uc_input", @data_type = "date", @title = "Дата с", @placeholder = "дд.мм.гггг" })</div>
         <div class="col-xs-6">@Html.TextBox("dateend", endDate, new { @class = "uc_input", @data_type = "date", @title = "по", @placeholder = "дд.мм.гггг" })</div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="form-group">
-                <label class="label_filtr">Статус:</label>
-                <select class="select2" name="status">
-                    <option value="">не выбрано</option>
-                    @*@foreach (var item in Model.Statuses)
-                        {
-                            Guid status = ViewBag.Status != null ? Guid.Parse(ViewBag.Status) : Guid.Empty;
-                            string selected = (item.Id == status) ? "selected" : "";
-                            <option value="@item.Id" @selected>@item.Title</option>
-                        }*@
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="form-group">
-                <label class="label_filtr">Тип:</label>
-                <select class="select2" name="type">
-                    <option value="">не выбрано</option>
-                    @*@foreach (var item in Model.Types)
-                        {
-                            Guid type = ViewBag.Type != null ? Guid.Parse(ViewBag.Type) : Guid.Empty;
-                            string selected = (item.Id == type) ? "selected" : "";
-                            <option value="@item.Id" @selected>@item.Title</option>
-                        }*@
-                </select>
-            </div>
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-md-6"><button type="submit" name="action" value="search-btn" class="button btn-primary">Применить</button></div>
         <div class="col-md-6"><button type="submit" name="action" value="clear-btn" class="button btn-default">Сбросить</button></div>

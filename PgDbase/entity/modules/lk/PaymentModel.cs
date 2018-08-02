@@ -28,21 +28,5 @@ namespace PgDbase.entity
         /// </summary>
         public int Period { get; set; }
 
-        /// <summary>
-        /// Статус платежа
-        /// </summary>
-        public string Status { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsPeni { get; set; }
-
-        /// <summary>
-        /// Тип платежа
-        /// </summary>
-        public string Type { get; set; }
-
-
     }
 }

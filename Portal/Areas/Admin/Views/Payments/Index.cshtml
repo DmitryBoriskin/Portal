@@ -10,19 +10,19 @@
     {
         <table class="table table-striped table-condensed">
             <tr>
-                <th>Дата</th>
+                <th>Период</th>
+                <th>Дата оплаты</th>
                 <th>Сумма</th>
-                <th>Тип</th>
-                <th>Статус</th>
+                <th>Документ</th>
             </tr>
             @foreach (var item in Model.List.Items)
             {
-                <tr>
-                    <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                    <td>@item.Type</td>
-                    <td>@item.Status</td>
-                </tr>
+            <tr>
+                <td></td>
+                <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
+                <td><a href="#">#1254789</a></td>
+            </tr>
             }
         </table>
         if (Model.List != null && Model.List.Pager != null)

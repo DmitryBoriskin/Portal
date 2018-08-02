@@ -161,7 +161,6 @@
     <Content Include="Areas\Lk\Views\Statistics\Index.cshtml" />
     <Content Include="Areas\Lk\Views\Statistics\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Lk\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Lk\Views\StatisticWidget\Index.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\Integral.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\Interval.cshtml" />
@@ -180,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Lk\Views\Shared\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>

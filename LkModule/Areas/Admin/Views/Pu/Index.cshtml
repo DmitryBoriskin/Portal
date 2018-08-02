@@ -10,18 +10,19 @@
         {
             foreach (var item in Model.List.Items)
             {
-                string disabled = item.Disabled ? "disabled" : "";
                 string meterTitle = "meter_" + item.Id;
                 string tariffTitle = "tariff_" + item.Id;
 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="group-block open" title="@item.Name">
-                            <div class="list-item @disabled">
+                            <div class="list-item">
                                 <div class="li-desc"><span>Номер:</span> @item.Number</div>
                                 <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue ? item.InstallDate.Value.ToString("dd.MM.yyyy") : "")</div>
                                 <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
-                                <div class="li-desc"><span>Дата проверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                                <div class="li-desc"><span>Дата поверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                                <div class="li-desc"><span>Дата следующей поверки:</span> </div>
+                                <div class="li-desc"><span>Тариф:</span> однотарифный (сутки)</div>
                                 @if (item.DeviceInfo != null)
                                 {
                                     <div class="li-desc"><span>Марка:</span> @item.DeviceInfo.Name</div>
@@ -31,13 +32,6 @@
                                     <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory &nbsp; <span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет")</div>
                                     <div class="li-desc"><span>Тариф:</span> @item.DeviceInfo.Tariff</div>
                                 }
-                            </div>
-
-                            <div class="text-right topIndent-20">
-                                <a href="#@tariffTitle" class="tariff-info" data-device="@item.Id" data-toggle="collapse">Подробнее(тарифы)</a>
-                            </div>
-                            <div id="@tariffTitle" class="collapse">
-                                Тут должны быть тарифы, нужно вывести
                             </div>
 
                             <div class="text-right topIndent-20">
