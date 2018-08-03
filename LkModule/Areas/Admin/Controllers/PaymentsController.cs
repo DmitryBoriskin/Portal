@@ -33,8 +33,6 @@ namespace LkModule.Areas.Admin.Controllers
                 Sites = _cmsRepository.GetSites(),
                 MenuCMS = MenuCmsCore,
                 MenuModules = MenuModulCore,
-                Statuses = _cmsRepository.GetPaymentStatuses(),
-                //Types = _cmsRepository.GetPaymentTypes()
             };
         }
 

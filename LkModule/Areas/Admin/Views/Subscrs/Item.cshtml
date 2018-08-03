@@ -9,40 +9,41 @@
         <div class="content">
             <h1>@Model.PageName</h1>
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-2">
+                    @Html.TextBoxFor(m => m.Item.Link, new { required = "", title = "№ в ОМНИС", placeholder = "№ в ОМНИС", readOnly = "" })
+                </div>
+                <div class="col-md-4">
                     @Html.TextBoxFor(m => m.Item.Subscr, new { @required = "", @Title = "Лицевой счет", @placeholder = "Лицевой счет", MaxLength = "1024" })
                 </div>
             </div>
 
             <div class="row">
-                @if (Model.Item.Ee)
-                {
-                    <div class="col-xs-12">
-                        @Html.TextBoxFor(m => m.Item.OrgName, new { @required = "", @Title = "Название организации", @placeholder = "Название организации", MaxLength = "1024" })
-                    </div>
-                    <div class="col-xs-12">
-                        @Html.TextAreaFor(m => m.Item.Address, new { @Title = "Юридический адрес", @placeholder = "Юридический адрес", MaxLength = "2048" })
-                    </div>
-                }
-                else
-                {
-                    <div class="col-xs-8">
-                        @Html.TextBoxFor(m => m.Item.Surname, new { @required = "", @Title = "Фамилия", @placeholder = "Фамилия", MaxLength = "128" })
-                    </div>
-                    <div class="col-xs-8">
-                        @Html.TextBoxFor(m => m.Item.Name, new { @required = "", @Title = "Имя", @placeholder = "Имя", @MaxLength = "128" })
-                    </div>
-                    <div class="col-xs-8">
-                        @Html.TextBoxFor(m => m.Item.Patronymic, new { @Title = "Отчество", @placeholder = "Отчество", @MaxLength = "128" })
-                    </div>
-                }
                 <div class="col-xs-12">
+                    @Html.TextBoxFor(m => m.Item.Name, new { @required = "", @Title = "Название организации", @placeholder = "Название организации", MaxLength = "1024" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Item.Inn, new { @Title = "ИНН", @placeholder = "ИНН", @MaxLength = "12" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBoxFor(m => m.Item.Kpp, new { @Title = "КПП", @placeholder = "КПП", @MaxLength = "9" })
+                </div>
+
+                <div class="col-xs-12">
+                    @Html.TextAreaFor(m => m.Item.Address, new { @Title = "Юридический адрес", @placeholder = "Юридический адрес", MaxLength = "2048" })
                     @Html.TextAreaFor(m => m.Item.PostAddress, new { @Title = "Почтовый адрес", @placeholder = "Почтовый адрес", MaxLength = "2048" })
+                </div>
+
+                <div class="col-xs-4">
                     @Html.TextBoxFor(m => m.Item.Phone, new { title = "Телефон", placeholder = "телефон", @MaxLength = "128" })
+                </div>
+                <div class="col-xs-4">
                     @Html.TextBoxFor(m => m.Item.Email, new { title = "Email", placeholder = "email", @MaxLength = "256" })
                 </div>
             </div>
-            @if (Model.Item.Ee && Model.Item.Bank != null)
+
+            @if (Model.Item.Bank != null)
             {
                 <div class="group-block open  topIndent-20" title="Банковские реквизиты">
                     <div class="row">
@@ -56,9 +57,7 @@
                             <div>
                                 @Html.TextBoxFor(m => m.Item.Bank.Bik, new { @Title = "БИК", @placeholder = "БИК", @MaxLength = "16" })
                             </div>
-                            <div>
-                                @Html.TextBoxFor(m => m.Item.Bank.Kpp, new { @Title = "КПП", @placeholder = "КПП", @MaxLength = "16" })
-                            </div>
+
                             <div>
                                 @Html.TextBoxFor(m => m.Item.Bank.Inn, new { @Title = "ИНН", @placeholder = "ИНН", @MaxLength = "16" })
                             </div>
@@ -76,15 +75,14 @@
 
         <div class="dop_info-block">
             <div class="dop-caption">Настройки</div>
+            @Html.CheckBoxFor(m => m.Item.Ee, new { type = "checkbox", title = "Юр.лицо", data_toggle = "toggle", data_on = "Юр.лицо", data_off = "Физ.лицо", data_width = "248" })
             <div class="form-group">
                 <label for="deps">Подразделение:</label>
                 @Html.DropDownListFor(m => m.Item.Department, Model.Departments, new { title = "Подразделение", @class = "select2", @id = "deps" })
             </div>
-
             <div>
                 @Html.TextBoxFor(m => m.Item.Configs.EDO, new { title = "Ссылка на ЭДО", placeholder = "Ссылка на ЭДО", @MaxLength = "1024" })
             </div>
-
             <div class="form-group">
                 <label for="managers">Персональный менеджер:</label>
                 @Html.DropDownListFor(m => m.Item.Configs.Manager.Id, Model.Managers, new { title = "Персональный менеджер", @class = "select2", @id = "managers" })
@@ -95,12 +93,8 @@
                 @Html.TextBoxFor(m => m.Item.Begin, new { data_type = "date", title = "Действителен с" })
                 @Html.TextBoxFor(m => m.Item.End, new { data_type = "date", title = "Действителен по" })
 
-                @Html.TextBoxFor(m => m.Item.Link, new { required = "", title = "№ в ОМНИС", placeholder = "№ в ОМНИС" })
             </div>
 
-
-
-            @Html.CheckBoxFor(m => m.Item.Disabled, new { type = "checkbox", title = "Запретить просмотр", data_toggle = "toggle", data_on = "запретить просмотр", data_onstyle = "danger", data_off = "показывать на сайте", data_offstyle = "success", data_width = "248" })
             @if (Model.Item != null)
             {
                 <div class="topIndent-20">

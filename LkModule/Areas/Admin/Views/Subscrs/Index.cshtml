@@ -10,23 +10,14 @@
         {
             foreach (var item in Model.List.Items)
             {
-                string disabled = item.Disabled ? "disabled" : "";
-        <div class="list-item @disabled">
-            @if (item.Ee)
-            {
-                <a title="@item.OrgName" class="li-caption" href="/admin/subscrs/item/@item.Id">
-                    @item.OrgName
-                </a>
-            }
-            else
-            {
-            <a title="@(item.Surname + " " + item.Name + " " + item.Patronymic)" class="li-caption" href="/admin/subscrs/item/@item.Id">
-                @(item.Surname + " " + item.Name + " " + item.Patronymic)
-            </a>
-            }
-            <div class="li-desc"><span>Лс:</span> @item.Subscr</div>
-            @*<div class="li-desc"><span>Дата создания:</span> @item.Created.ToString("dd.MM.yyyy")</div>*@
-        </div>
+                <div class="list-item">
+                    <a title="@item.Name" class="li-caption" href="/admin/subscrs/item/@item.Id">
+                        @item.Name
+                    </a>
+
+                    <div class="li-desc"><span>Лс:</span> @item.Subscr</div>
+                    @*<div class="li-desc"><span>Дата создания:</span> @item.Created.ToString("dd.MM.yyyy")</div>*@
+                </div>
             }
             if (Model.List != null && Model.List.Pager != null)
             {

@@ -39,13 +39,11 @@ namespace PgDbase.Repository.cms
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     var text = filter.SearchText.ToLower();
-                    query = query.Where(w => (w.c_surname + " " + w.c_name + " " + w.c_patronymic).ToLower().Contains(text)
-
-                                                      || w.c_org.ToLower().Contains(text)
+                    query = query.Where(w => w.c_name.ToLower().Contains(text)
                                                       || w.c_subscr.Contains(text));
                 }
 
-                query = query.OrderBy(o => new { o.c_surname, o.c_name, o.c_patronymic });
+                query = query.OrderBy(o => new { o.c_name });
 
                 int itemsCount = query.Count();
 
@@ -56,10 +54,7 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         Subscr = s.c_subscr,
-                        Disabled = s.b_disabled,
-                        Surname = s.c_surname,
                         Name = s.c_name,
-                        Patronymic = s.c_patronymic
                     }).ToArray();
 
                 return new Paged<SubscrModel>
@@ -86,14 +81,13 @@ namespace PgDbase.Repository.cms
                 return db.lk_subscrs
                     .Where(w => w.fkdepartments.f_site == _siteId)
                     .Where(w => !w.fkusersubscrs.Any(a => a.f_user == user))
-                    .OrderBy(o => o.c_link)
+                    .OrderBy(o => o.link)
                     .Select(s => new SubscrModel
                     {
                         Id = s.id,
-                        Link = s.c_link,
-                        Surname = s.c_surname,
+                        Link = s.link,
                         Name = s.c_name,
-                        Patronymic = s.c_patronymic
+                        Subscr = s.c_subscr
                     })
                     .ToArray();
             }
@@ -114,28 +108,25 @@ namespace PgDbase.Repository.cms
                     {
                         Id = s.id,
                         Subscr = s.c_subscr,
-                        Link = s.c_link,
+                        Link = s.link,
                         Ee = s.b_ee,
-                        OrgName = s.c_org,
-                        Surname = s.c_surname,
+                        Inn = s.c_inn,
+                        Kpp = s.c_kpp,
                         Name = s.c_name,
-                        Patronymic = s.c_patronymic,
                         Address = s.c_address,
                         PostAddress = s.c_post_address,
                         Phone = s.c_phone,
                         Email = s.c_email,
-                        Disabled = s.b_disabled,
                         Department = s.f_department,
                         Contract = s.c_contract,
                         ContractDate = s.d_contract_date,
-                        Begin = s.d_begin,
-                        End = s.d_end,
+                        Begin = s.d_contract_begin,
+                        End = s.d_contract_end,
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
                             Dep = s.c_bank_dep,
                             Bik = s.c_bank_bik,
-                            Kpp = s.c_bank_kpp,
                             Inn = s.c_bank_inn,
                             Ks = s.c_bank_ks,
                             Rs = s.c_bank_rs
@@ -190,8 +181,6 @@ namespace PgDbase.Repository.cms
                         {
                             id = item.Id,
                             c_subscr = item.Subscr,
-
-                            b_disabled = item.Disabled,
                             b_ee = item.Ee,
 
                             c_address = item.Address,
@@ -199,32 +188,23 @@ namespace PgDbase.Repository.cms
 
                             c_contract = item.Contract,
                             d_contract_date = item.ContractDate,
-                            d_begin = item.Begin,
-                            d_end = item.End,
-                            c_link = item.Link
+                            d_contract_begin = item.Begin,
+                            d_contract_end = item.End,
+                            link = item.Link
                         };
 
 
-                        if (item.Ee)
+                        subscr.c_name = item.Name;
+                        if (item.Bank != null)
                         {
-                            subscr.c_org = item.OrgName;
-                            if (item.Bank != null)
-                            {
-                                subscr.c_bank_name = item.Bank.Name;
-                                subscr.c_bank_dep = item.Bank.Dep;
-                                subscr.c_bank_bik = item.Bank.Bik;
-                                subscr.c_bank_kpp = item.Bank.Kpp;
-                                subscr.c_bank_inn = item.Bank.Inn;
-                                subscr.c_bank_ks = item.Bank.Ks;
-                                subscr.c_bank_rs = item.Bank.Rs;
-                            };
-                        }
-                        else
-                        {
-                            subscr.c_surname = item.Surname;
-                            subscr.c_name = item.Name;
-                            subscr.c_patronymic = item.Patronymic;
-                        }
+                            subscr.c_bank_name = item.Bank.Name;
+                            subscr.c_bank_dep = item.Bank.Dep;
+                            subscr.c_bank_bik = item.Bank.Bik;
+                            subscr.c_bank_inn = item.Bank.Inn;
+                            subscr.c_bank_ks = item.Bank.Ks;
+                            subscr.c_bank_rs = item.Bank.Rs;
+                        };
+
                         db.Insert(subscr);
 
                         if (item.Configs != null)
@@ -247,7 +227,7 @@ namespace PgDbase.Repository.cms
                         var log = new LogModel
                         {
                             PageId = item.Id,
-                            PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
+                            PageName = $"{item.Name}",
                             Section = LogModule.Subscrs,
                             Action = LogAction.insert
                         };
@@ -283,35 +263,25 @@ namespace PgDbase.Repository.cms
 
                         subscr.c_subscr = item.Subscr;
 
-                        subscr.b_disabled = item.Disabled;
                         subscr.b_ee = item.Ee;
-
-                        if (item.Ee)
-                        {
-                            subscr.c_org = item.OrgName;
-                        }
-                        else
-                        {
-                            subscr.c_surname = item.Surname;
-                            subscr.c_name = item.Name;
-                            subscr.c_patronymic = item.Patronymic;
-                        }
+                        subscr.c_name = item.Name;
+                        subscr.c_inn = item.Inn;
+                        subscr.c_kpp = item.Kpp;
 
                         subscr.c_address = item.Address;
                         subscr.c_post_address = item.PostAddress;
 
                         subscr.c_contract = item.Contract;
                         subscr.d_contract_date = item.ContractDate;
-                        subscr.d_begin = item.Begin;
-                        subscr.d_end = item.End;
-                        subscr.c_link = item.Link;
+                        subscr.d_contract_begin = item.Begin;
+                        subscr.d_contract_end = item.End;
+                        subscr.link = item.Link;
 
                         if (item.Ee && item.Bank != null)
                         {
                             subscr.c_bank_name = item.Bank.Name;
                             subscr.c_bank_dep = item.Bank.Dep;
                             subscr.c_bank_bik = item.Bank.Bik;
-                            subscr.c_bank_kpp = item.Bank.Kpp;
                             subscr.c_bank_inn = item.Bank.Inn;
                             subscr.c_bank_ks = item.Bank.Ks;
                             subscr.c_bank_rs = item.Bank.Rs;
@@ -355,7 +325,7 @@ namespace PgDbase.Repository.cms
                         var log = new LogModel
                         {
                             PageId = item.Id,
-                            PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
+                            PageName = $"{item.Name}",
                             Section = LogModule.Subscrs,
                             Action = LogAction.update
                         };
@@ -508,10 +478,8 @@ namespace PgDbase.Repository.cms
                     .Select(s => new SubscrModel
                     {
                         Id = s.f_subscr,
-                        Link = s.fkusersubscrssubscr.c_link,
-                        Surname = s.fkusersubscrssubscr.c_surname,
+                        Link = s.fkusersubscrssubscr.link,
                         Name = s.fkusersubscrssubscr.c_name,
-                        Patronymic = s.fkusersubscrssubscr.c_patronymic,
                         Default = s.b_default
                     }).ToArray();
             }
@@ -551,7 +519,7 @@ namespace PgDbase.Repository.cms
                         var log = new LogModel
                         {
                             PageId = id,
-                            PageName = $"{item.c_surname} {item.c_name} {item.c_patronymic}",
+                            PageName = $"{item.c_name}",
                             Section = LogModule.Subscrs,
                             Action = LogAction.delete
                         };
@@ -579,7 +547,7 @@ namespace PgDbase.Repository.cms
         {
             using (var db = new CMSdb(_context))
             {
-                return db.lk_support_managers
+                return db.lk_managers
                     .Where(w => w.f_site == _siteId)
                     .Select(s => new GroupsModel
                     {
@@ -951,11 +919,6 @@ namespace PgDbase.Repository.cms
                 var query = db.lk_subscr_devices
                     .Where(w => w.f_subscr == subscr);
 
-                if (filter.Disabled.HasValue)
-                {
-                    query = query.Where(w => w.b_disabled == filter.Disabled.Value);
-                }
-
                 query = query.OrderByDescending(o => o.d_install);
                 int itemsCount = query.Count();
 
@@ -968,19 +931,20 @@ namespace PgDbase.Repository.cms
                         InstallPlace = s.c_install_place,
                         InstallDate = s.d_install,
                         CheckDate = s.d_check,
-                        Disabled = s.b_disabled,
-                        DeviceInfo = (s.f_device_type != null) ?
+                        Multiplier = s.n_factor,
+                        Tariff = s.n_tariff,
+                        DeviceInfo = (s.f_device != null) ?
                                 new DeviceModel()
                                 {
-                                    Name = s.fksubscrdevicedevicetypes.c_name,
-                                    Tariff = s.fksubscrdevicedevicetypes.n_tariff,
-                                    Modification = s.fksubscrdevicedevicetypes.c_modification,
-                                    Manufactirer = s.fksubscrdevicedevicetypes.c_manufacturer,
-                                    Phase3 = s.fksubscrdevicedevicetypes.b_phase3,
-                                    DeviceCategory = s.fksubscrdevicedevicetypes.c_device_category,
-                                    EnergyCategory = s.fksubscrdevicedevicetypes.c_energy_category,
-                                    PrecissionClass = s.fksubscrdevicedevicetypes.c_precission_class,
-                                    VoltageNominal = s.fksubscrdevicedevicetypes.c_voltage_nominal
+                                    Name = s.fksubscrdevicesdevices.c_name,
+                                    Tariff = s.fksubscrdevicesdevices.n_tariff,
+                                    Modification = s.fksubscrdevicesdevices.c_modification,
+                                    Manufactirer = s.fksubscrdevicesdevices.c_manufacturer,
+                                    Phase3 = s.fksubscrdevicesdevices.b_phase3,
+                                    DeviceCategory = s.fksubscrdevicesdevices.c_device_category,
+                                    EnergyCategory = s.fksubscrdevicesdevices.c_energy_category,
+                                    PrecissionClass = s.fksubscrdevicesdevices.c_precission_class,
+                                    VoltageNominal = s.fksubscrdevicesdevices.c_voltage_nominal
                                 }
                                 : null
 
@@ -1079,12 +1043,11 @@ namespace PgDbase.Repository.cms
                     .Take(filter.Size)
                     .Select(s => new PaymentModel
                     {
+                        Id = s.id,
                         Date = s.d_date,
                         Amount = s.n_amount,
-                        Status = s.c_status,
-                        IsPeni = s.b_peni
-                            //Type = 
-                        }).ToArray();
+                        Period = s.n_period,
+                    }).ToArray();
 
                 return new Paged<PaymentModel>
                 {
@@ -1098,26 +1061,6 @@ namespace PgDbase.Repository.cms
                 };
             }
         }
-
-        /// <summary>
-        /// Возвращает список статусов по платежам
-        /// </summary>
-        /// <returns></returns>
-        public GroupsModel[] GetPaymentStatuses()
-        {
-            using (var db = new CMSdb(_context))
-            {
-                return db.lk_payments
-                    .OrderBy(o => o.c_status)
-                    .Select(s => new GroupsModel
-                    {
-                        Title = s.c_status
-                    })
-                    .Distinct()
-                    .ToArray();
-            }
-        }
-
 
         #endregion
 

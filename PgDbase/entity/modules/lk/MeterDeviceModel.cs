@@ -44,14 +44,9 @@ namespace PgDbase.entity
         public DateTime? CheckDate { get; set; }
 
         /// <summary>
-        /// Запрещённость
-        /// </summary>
-        public bool Disabled { get; set; }
-
-        /// <summary>
         /// 1, 2 или 3-х тарифный
         /// </summary>
-        public int TariffZoneMode { get; set; }
+        public int Tariff { get; set; }
 
         /// <summary>
         /// Коэфф. расчета

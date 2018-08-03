@@ -39,13 +39,11 @@ namespace PgDbase.Repository.front
                 if (!String.IsNullOrWhiteSpace(filter.SearchText))
                 {
                     var text = filter.SearchText.ToLower();
-                    query = query.Where(w => (w.c_surname + " " + w.c_name + " " + w.c_patronymic).ToLower().Contains(text)
-
-                                                      || w.c_org.ToLower().Contains(text)
+                    query = query.Where(w => w.c_name.ToLower().Contains(text)
                                                       || w.c_subscr.Contains(text));
                 }
 
-                query = query.OrderBy(o => new { o.c_surname, o.c_name, o.c_patronymic });
+                query = query.OrderBy(o => new { o.c_name});
 
                 int itemsCount = query.Count();
 
@@ -56,10 +54,7 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.id,
                         Subscr = s.c_subscr,
-                        Disabled = s.b_disabled,
-                        Surname = s.c_surname,
-                        Name = s.c_name,
-                        Patronymic = s.c_patronymic
+                        Name = s.c_name
                     }).ToArray();
 
                 return new Paged<SubscrModel>
@@ -90,28 +85,25 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.id,
                         Subscr = s.c_subscr,
-                        Link = s.c_link,
+                        Link = s.link,
+                        Inn = s.c_inn,
+                        Kpp = s.c_kpp,
                         Ee = s.b_ee,
-                        OrgName = s.c_org,
-                        Surname = s.c_surname,
                         Name = s.c_name,
-                        Patronymic = s.c_patronymic,
                         Address = s.c_address,
                         PostAddress = s.c_post_address,
                         Phone = s.c_phone,
                         Email = s.c_email,
-                        Disabled = s.b_disabled,
                         Department = s.f_department,
                         Contract = s.c_contract,
                         ContractDate = s.d_contract_date,
-                        Begin = s.d_begin,
-                        End = s.d_end,
+                        Begin = s.d_contract_begin,
+                        End = s.d_contract_end,
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
                             Dep = s.c_bank_dep,
                             Bik = s.c_bank_bik,
-                            Kpp = s.c_bank_kpp,
                             Inn = s.c_bank_inn,
                             Ks = s.c_bank_ks,
                             Rs = s.c_bank_rs
@@ -132,14 +124,12 @@ namespace PgDbase.Repository.front
                 return db.lk_subscrs
                     .Where(w => w.fkdepartments.f_site == _siteId)
                     .Where(w => !w.fkusersubscrs.Any(a => a.f_user == userId))
-                    .OrderBy(o => o.c_link)
+                    .OrderBy(o => o.link)
                     .Select(s => new SubscrModel
                     {
                         Id = s.id,
-                        Link = s.c_link,
-                        Surname = s.c_surname,
+                        Link = s.link,
                         Name = s.c_name,
-                        Patronymic = s.c_patronymic
                     })
                     .ToArray();
             }
@@ -164,29 +154,26 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.id,
                         Subscr = s.c_subscr,
-                        Link = s.c_link,
+                        Link = s.link,
                         Ee = s.b_ee,
+                        Inn = s.c_inn,
+                        Kpp = s.c_kpp,
                         Default = true,
-                        OrgName = s.c_org,
-                        Surname = s.c_surname,
                         Name = s.c_name,
-                        Patronymic = s.c_patronymic,
                         Address = s.c_address,
                         PostAddress = s.c_post_address,
                         Phone = s.c_phone,
                         Email = s.c_email,
-                        Disabled = s.b_disabled,
                         Department = s.f_department,
                         Contract = s.c_contract,
                         ContractDate = s.d_contract_date,
-                        Begin = s.d_begin,
-                        End = s.d_end,
+                        Begin = s.d_contract_begin,
+                        End = s.d_contract_end,
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
                             Dep = s.c_bank_dep,
                             Bik = s.c_bank_bik,
-                            Kpp = s.c_bank_kpp,
                             Inn = s.c_bank_inn,
                             Ks = s.c_bank_ks,
                             Rs = s.c_bank_rs
@@ -297,7 +284,7 @@ namespace PgDbase.Repository.front
         //                    d_contract_date = item.ContractDate,
         //                    d_begin = item.Begin,
         //                    d_end = item.End,
-        //                    c_link = item.Link
+        //                    link = item.Link
         //                };
 
 
@@ -394,7 +381,7 @@ namespace PgDbase.Repository.front
         //                subscr.d_contract_date = item.ContractDate;
         //                subscr.d_begin = item.Begin;
         //                subscr.d_end = item.End;
-        //                subscr.c_link = item.Link;
+        //                subscr.link = item.Link;
 
         //                if (item.Ee && item.Bank != null)
         //                {
@@ -551,7 +538,7 @@ namespace PgDbase.Repository.front
         //            .Select(s => new SubscrModel
         //            {
         //                Id = s.f_subscr,
-        //                Link = s.fkusersubscrssubscr.c_link,
+        //                Link = s.fkusersubscrssubscr.link,
         //                Surname = s.fkusersubscrssubscr.c_surname,
         //                Name = s.fkusersubscrssubscr.c_name,
         //                Patronymic = s.fkusersubscrssubscr.c_patronymic,
@@ -938,11 +925,7 @@ namespace PgDbase.Repository.front
                 var query = db.lk_subscr_devices
                     .Where(w => w.f_subscr == subscr);
 
-                if (filter.Disabled.HasValue)
-                {
-                    query = query.Where(w => w.b_disabled == filter.Disabled.Value);
-                }
-
+              
                 query = query.OrderByDescending(o => o.d_install);
                 int itemsCount = query.Count();
 
@@ -956,20 +939,20 @@ namespace PgDbase.Repository.front
                         InstallPlace = s.c_install_place,
                         InstallDate = s.d_install,
                         CheckDate = s.d_check,
-                        Disabled = s.b_disabled,
-                        TariffZoneMode = s.n_tariff_zone_mode,
-                        DeviceInfo = (s.f_device_type != null) ?
+                        Tariff = s.n_tariff,
+                        Multiplier = s.n_factor,
+                        DeviceInfo = (s.f_device != null) ?
                                 new DeviceModel()
                                 {
-                                    Name = s.fksubscrdevicedevicetypes.c_name,
-                                    Tariff = s.fksubscrdevicedevicetypes.n_tariff,
-                                    Modification = s.fksubscrdevicedevicetypes.c_modification,
-                                    Manufactirer = s.fksubscrdevicedevicetypes.c_manufacturer,
-                                    Phase3 = s.fksubscrdevicedevicetypes.b_phase3,
-                                    DeviceCategory = s.fksubscrdevicedevicetypes.c_device_category,
-                                    EnergyCategory = s.fksubscrdevicedevicetypes.c_energy_category,
-                                    PrecissionClass = s.fksubscrdevicedevicetypes.c_precission_class,
-                                    VoltageNominal = s.fksubscrdevicedevicetypes.c_voltage_nominal
+                                    Name = s.fksubscrdevicesdevices.c_name,
+                                    Tariff = s.fksubscrdevicesdevices.n_tariff,
+                                    Modification = s.fksubscrdevicesdevices.c_modification,
+                                    Manufactirer = s.fksubscrdevicesdevices.c_manufacturer,
+                                    Phase3 = s.fksubscrdevicesdevices.b_phase3,
+                                    DeviceCategory = s.fksubscrdevicesdevices.c_device_category,
+                                    EnergyCategory = s.fksubscrdevicesdevices.c_energy_category,
+                                    PrecissionClass = s.fksubscrdevicesdevices.c_precission_class,
+                                    VoltageNominal = s.fksubscrdevicesdevices.c_voltage_nominal
                                 }
                                 : null
 
@@ -1073,11 +1056,10 @@ namespace PgDbase.Repository.front
                     .Take(filter.Size)
                     .Select(s => new PaymentModel
                     {
+                        Id = s.id,
                         Date = s.d_date,
                         Period = s.n_period,
                         Amount = s.n_amount,
-                        Status = s.c_status,
-                        IsPeni = s.b_peni
                     })
                     .ToArray();
 

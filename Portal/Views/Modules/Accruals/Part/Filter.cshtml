@@ -16,7 +16,7 @@
 <div class="filterByDateBlock">
     <form role="form">
         <div class="row">
-            <div class="col-xs-8 col-sm-6">
+            <div class="col-xs-8 col-sm-4">
                 <div class="form-group">
                     <label for="filterDateRange-input" class="control-label">Диапазон: </label>
                     <div class="input-group date">
@@ -29,11 +29,22 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xs-8 col-sm-4">
+                <div class="form-group">
+                    <label for="filterPayed-select" class="control-label">Статус: </label>
+                    <select name="type" id="filterPayed-select" class="form-control select2">
+                        <option value="0">Все</option>
+                        <option value="1">Оплаченные</option>
+                        <option value="2">Неоплаченные</option>
+                    </select>
+                </div>
+            </div>
             <div class="col-xs-4">
                 <div class="form-group">
                     <button type="submit" class="btn btn-default" style="margin-top: 25px;">Показать</button>
                 </div>
             </div>
+
         </div>
     </form>
 </div>

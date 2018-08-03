@@ -86,7 +86,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Номер
         /// </summary>
-        public string Link { get; set; }
+        public int Link { get; set; }
 
         /// <summary>
         /// Флаг Юрлица
@@ -94,24 +94,19 @@ namespace PgDbase.entity
         public bool Ee { get; set; }
 
         /// <summary>
-        /// Название организации
+        /// КПП
         /// </summary>
-        public string OrgName { get; set; }
+        public string Kpp { get; set; }
 
         /// <summary>
-        /// Фамилия
+        /// ИНН
         /// </summary>
-        public string Surname { get; set; }
+        public string Inn { get; set; }
 
         /// <summary>
         /// Имя
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Отчество
-        /// </summary>
-        public string Patronymic { get; set; }
 
         /// <summary>
         /// Адрес юридический
@@ -132,11 +127,6 @@ namespace PgDbase.entity
         /// Email
         /// </summary>
         public string Email { get; set; }
-
-        /// <summary>
-        /// Запрещённость
-        /// </summary>
-        public bool Disabled { get; set; }
 
         /// <summary>
         /// По умолчанию
@@ -198,11 +188,6 @@ namespace PgDbase.entity
         /// БИК
         /// </summary>
         public string Bik { get; set; }
-
-        /// <summary>
-        /// КПП
-        /// </summary>
-        public string Kpp { get; set; }
 
         /// <summary>
         /// ИНН
