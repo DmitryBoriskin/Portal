@@ -25,8 +25,8 @@ namespace Portal.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-          
 
+            ViewBag.Layout = "/sites/rushydro/view/_Layout.cshtml";
 
 
             _Controller = (String)RouteData.Values["controller"].ToString().ToLower();

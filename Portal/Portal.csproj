@@ -754,6 +754,16 @@
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\popUp_script.js" />
     <Content Include="Scripts\uc_script.js" />
+    <Content Include="sites\rushydro\css\rushydro.css">
+      <DependentUpon>rushydro.less</DependentUpon>
+    </Content>
+    <Content Include="sites\rushydro\css\rushydro.min.css">
+      <DependentUpon>rushydro.css</DependentUpon>
+    </Content>
+    <Content Include="sites\rushydro\css\site.css" />
+    <Content Include="sites\rushydro\img\logo.png" />
+    <Content Include="sites\rushydro\img\logo_bg.png" />
+    <Content Include="sites\rushydro\img\slider_bg.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -996,6 +1006,10 @@
     <Content Include="Areas\Admin\Views\Admins\Part\RoleFilter.cshtml" />
     <Content Include="Areas\Admin\Views\SiteAdmins\Part\RoleFilter.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Part\Filter.cshtml" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1068,6 +1082,11 @@
     <Content Include="Views\Modules\Vote\Item.cshtml" />
     <Content Include="Views\Modules\StatisticWidget\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutWelcome.cshtml" />
+    <Content Include="sites\rushydro\view\_Layout.cshtml" />
+    <Content Include="sites\rushydro\view\web.config" />
+    <Content Include="sites\rushydro\css\rushydro.less" />
+    <Content Include="sites\rushydro\view\partial\mainmenu.cshtml" />
+    <Content Include="sites\rushydro\view\Main.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1077,6 +1096,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="sites\rushydro\js\" />
     <Folder Include="Views\Distributor\" />
     <Folder Include="Views\Layout\" />
     <Folder Include="Views\PageWidget\" />

@@ -1,0 +1,78 @@
+﻿@blue: #0039a6 ;
+@orange: #ff7900;
+@orangelight: #f8e8dd;
+@bluelight:#aacef4;
+@bg:#ededed;
+@white:#fff;
+
+
+a {
+    color: @orange; 
+}
+body{
+    background-color:@bg;
+}
+.menu .navbar {
+    background-color: @blue;
+}
+
+.navbar-nav > li {
+    a {
+        color: @bluelight;
+        &:hover, &:active, &:focus {
+            background-color: inherit;
+            color: @orange;
+        }
+        .fa {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    }
+    &.active a {
+        color: @orange;
+    }
+    &.dropdown {
+        & > a {
+            position: relative;
+            padding-right: 27px;
+            background-color: inherit;
+            &:after {
+                content: "\f107";
+                font-family: FontAwesome;
+                font-size: 16px;
+                line-height: 10px;
+                display: inline-block;
+                position: absolute;
+                right: 9px;
+                top: 32px;
+                width: 10px;
+                height: 10px;
+                transform-origin: 6px 6px 0;
+            }
+        }
+        &.open {
+            & > a {
+                background-color: inherit;
+                &:after {
+                    transform: rotate(180deg);                  
+                }
+            }
+        }
+    }
+}
+
+
+.index_right {
+    background-color: @white;
+}
+
+.alert_orange {
+    border-top: 4px solid @orange;
+    background-color: @orangelight;
+
+    h3 {
+        color: @orange;
+        font-size: 22px;        
+        margin-bottom: 15px;
+    }
+}

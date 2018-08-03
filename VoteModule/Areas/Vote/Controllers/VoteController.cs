@@ -28,9 +28,6 @@ namespace VoteModule.Areas.Vote.Controllers
                 PageName = _pageName,
                 User = CurrentUser
             };
-
-
-
         }
 
         // GET: Vote/Vote

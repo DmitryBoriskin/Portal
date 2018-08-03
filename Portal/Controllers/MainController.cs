@@ -22,7 +22,8 @@ namespace Portal.Controllers
         // GET: Main
         public ActionResult Index()
         {
-            return View(model);
+            
+            return View("/sites/rushydro/view/Main.cshtml", model);
         }
     }
 }
