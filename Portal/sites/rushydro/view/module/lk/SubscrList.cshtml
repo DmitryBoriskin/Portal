@@ -1,0 +1,74 @@
+﻿@using LkModule.Areas.Lk.Models
+@model  SubscrWidgetFrontModel
+
+@{ Layout = null; }
+
+@if (Model.Item != null)
+{
+
+
+    <div class="invoice">
+        @if (Model.List != null && Model.List.Count() > 0)
+        {
+            foreach (var item in Model.List)
+            {
+                string _class = "invoice_item";
+                if (item.Default.HasValue && item.Default.Value)
+                {
+                    _class += " invoice_active";
+                }                
+
+                <a class="@_class"href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id">
+                    <div class="invoice_name">@item.Name</div>
+                    <div class="invoice_num">Лицевой счет № @item.SubscrId</div>
+                    <div class="invoice_pay">94 322 <i class="fa fa-rub"></i></div>
+                </a>
+            }
+        }
+        else
+        {            
+                <a href="/settings">Подключить лицевой счет</a>            
+        }
+    </div>
+
+
+
+
+
+<script>
+    $(document).ready(function (e) {
+        //Переключение лс
+        $('.invoice_item').click(function (e) {
+            e.preventDefault();
+
+            var _subscrId = $(this).data('subscrId');
+            var _action = $(this).attr("href");
+
+            try {
+                $.ajax({
+                    method: "POST",
+                    url: _action,
+                    async: true,
+                    data: { subscrId: _subscrId },
+                })
+                    .done(function (response) {
+                        location.reload();
+                    })
+                    .fail(function (jqXHR, status) {
+                        console.log("Ошибка" + " " + status + " " + jqXHR);
+                    })
+                    .always(function (response) {
+
+                    });
+            }
+            catch (ex) {
+                console.log(ex);
+            };
+
+        });
+
+    });
+</script>
+
+
+

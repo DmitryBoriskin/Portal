@@ -21,7 +21,7 @@ namespace LkModule.Areas.Lk.Controllers
             pFilter.DateEnd = DateTime.Now;
 
             StatisticsFrontModel model = new StatisticsFrontModel();
-            ViewName = "~/Views/Modules/StatisticWidget/Index.cshtml";
+            ViewName = "~/sites/rushydro/view/module/lk/StatisticWidget.cshtml";
             
                 //_Repository.GetModuleView(ControllerName, ActionName);
 
