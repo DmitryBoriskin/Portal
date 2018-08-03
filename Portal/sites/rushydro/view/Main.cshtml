@@ -4,7 +4,8 @@
 }
 <div class="row">
     <div class="index">
-        <div class="index_right visible-md visible-lg">
+        <div class="index_right_dop visible-md visible-lg"></div>
+        <div id="index_right" class="index_right visible-md visible-lg">
 
             
                 <div class="mgr index_padd">
@@ -17,36 +18,16 @@
                 </div>
 
 
-@{ 
-    try
-    {
-        Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
-    }
-    catch (Exception ex)
-    {
-        //Log ex
-    }
-}
-
-            @*<div class="invoice">
-
-                <a class="invoice_item invoice_active" href="#">
-                    <div class="invoice_name">ПАО «МТС»</div>
-                    <div class="invoice_num">Лицевой счет № 36594322</div>
-                    <div class="invoice_pay">94 322 <i class="fa fa-rub"></i></div>
-                </a>
-                <a class="invoice_item" href="#">
-                    <div class="invoice_name">ПАО «МТС»</div>
-                    <div class="invoice_num">Лицевой счет № 36594322</div>
-                    <div class="invoice_pay">94 322 <i class="fa fa-rub"></i></div>
-                </a>
-                <a class="invoice_item" href="#">
-                    <div class="invoice_name">ПАО «МТС»</div>
-                    <div class="invoice_num">Лицевой счет № 36594322</div>
-                    <div class="invoice_pay">94 322 <i class="fa fa-rub"></i></div>
-                </a>
-
-            </div>*@
+                @{ 
+                    try
+                    {
+                        Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
+                    }
+                    catch (Exception ex)
+                    {
+                        //Log ex
+                    }
+                }
 
             
             
@@ -55,38 +36,67 @@
         <div class="index_with ">
             
             <div class="col-md-12">
+
                 <div class="block alert alert_orange hydro_bg block__shadow">
                     <h3>Ежеквартальные отчеты</h3>
                     <p>Приложение к ежеквартальному отчету - аудиторское заключение к бухгалтерской отчетности за 2018 г.</p>
                 </div>
 
-                <div class="block currentpay">
-                    <div class="currentpay_head block_head__blue">Текущий баланс</div>
-                    <div class="currentpay_pay">35 000</div>
-                    <div class="currentpay_btn">
-                        <a class="btn btn_middle btn_white" href="#">Информация о плательщике</a>
-                        <a class="btn btn_middle btn_white" href="#">Персональный менеджер</a>
+                @try
+                {
+                    Html.RenderAction("Balance", "SubscrInfoWidget", new { @area = "Lk" });
+                }
+                catch (Exception ex)
+                {
+                    //Log
+                }
 
-                    </div>
-                </div>
 
-                <div class="block block_white block_padd indicators">
-                    <div class="block_head__blue">Ключевые показатели</div>
-                    
-                    @{ 
-                        try
-                        {
-                            Html.RenderAction("Index", "StatisticWidget", new { @area = "Lk" });
-                        }
-                        catch (Exception ex)
-                        {
-                            //Log
-                        }
+
+                @{
+                    try
+                    {
+                        Html.RenderAction("Index", "StatisticWidget", new { @area = "Lk" });
                     }
-                    
-                  
+                    catch (Exception ex)
+                    {
+                        //Log
+                    }
+                }
+                
+                @{ 
+                     Html.RenderAction("PageChild", "Widget", new { @area = "", @path="/",@alias = "informaciya", @view = "~/sites/rushydro/view/module/page/childlist2col.cshtml", @url = ViewBag.ThisUrl }); 
+                }
+
+                <div class="block block_white block_padd">
+                    <div class="block_head__blue">Счета и платежи</div>
+                    <div class="block_head__orange">Цены указаны в рублях</div>
+
+                    <table>
+                        <tr>                            
+                            <th>Период</th>
+                            <th>Выставлено (с НДС)</th>
+                            <th>Оплачено</th>
+                            <th>Балaанс на начало периода </th>
+                            <th>Баланс на конец периода</th>
+                        </tr>
+                        <tr>
+                            <td>сентябрь 2017</td>
+                            <td>760 000</td>
+                            <td>760 000 </td>
+                            <td>
+                                <span class="rub_positiv">+ 658 000</span>
+                            </td>
+                            <td>
+                                <span class="rub_negativ">- 102 000</span>
+                            </td>
+                        </tr>
+
+                    </table>
 
                 </div>
+           
+
 
 
             </div>

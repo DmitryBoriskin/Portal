@@ -267,7 +267,7 @@ namespace PgDbase.Repository.front
                             {
                                 Name = s.c_name,
                                 Text = s.c_text,
-                                Url = s.c_url,
+                                Url = s.c_url!=null?s.c_url: "/page" + s.c_path + s.c_alias,
                                 Alias = s.c_alias,
                                 Path = s.c_path
                             }).ToList();

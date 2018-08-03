@@ -126,9 +126,12 @@ body {
 .invoice .invoice_item.invoice_active .invoice_pay {
   color: #fff;
 }
+.invoice .invoice_item .invoice_num {
+  line-height: 29px;
+}
 .invoice .invoice_item .invoice_pay {
   font-size: 26px;
-  font-weight: 500;
+  font-weight: 300;
   color: #0039a6;
 }
 .invoice .invoice_item .invoice_pay i {
@@ -138,16 +141,54 @@ body {
   background-color: #fff;
 }
 .block.block_padd {
-  padding: 10px 20px;
+  padding: 32px 20px;
+}
+.block.block_padd .block_head__blue {
+  padding-bottom: 22px;
 }
 .block .block_head__blue {
   color: #0039a6;
   font-size: 22px;
   font-weight: 300;
 }
+.currentpay {
+  margin-bottom: 58px;
+}
 .currentpay .currentpay_pay {
   font-size: 60px;
   font-weight: 200;
   line-height: 76px;
   margin-bottom: 4px;
+}
+.index_with ul {
+  padding-left: 0;
+}
+.index_with ul > li {
+  list-style-type: none;
+  display: flex;
+  margin-bottom: 20px;
+}
+.index_with ul > li:before {
+  content: '—';
+  padding-right: 18px;
+  color: #0039a6;
+}
+.index_with a {
+  color: #0039a6;
+  text-decoration: none;
+}
+.index_with a:hover {
+  text-decoration: underline;
+}
+.block_info {
+  padding-top: 45px;
+}
+.block_info a {
+  color: #333;
+}
+.block_info a:hover {
+  color: #0039a6;
+}
+.block_info ul {
+  padding-top: 19px;
 }

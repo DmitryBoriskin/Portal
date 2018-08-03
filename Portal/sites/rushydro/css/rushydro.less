@@ -162,9 +162,13 @@ body{
             }
         }
 
+        .invoice_num {
+            line-height: 29px;
+        }
+
         .invoice_pay {
             font-size: 26px;
-            font-weight: 500;
+            font-weight: 300;
             color: @blue;
 
             i {
@@ -178,9 +182,15 @@ body{
     &.block_white {
         background-color: @white;
     }
-    &.block_padd{
-        padding:10px 20px; 
+
+    &.block_padd {
+        padding: 32px 20px;
+
+        .block_head__blue {
+            padding-bottom: 22px;
+        }
     }
+
     .block_head__blue {
         color: @blue;
         font-size: 22px;
@@ -189,12 +199,71 @@ body{
 }
 
 .currentpay {
-    
+    margin-bottom: 58px;
 
     .currentpay_pay {
         font-size: 60px;
         font-weight: 200;
         line-height: 76px;
-        margin-bottom:4px;
+        margin-bottom: 4px;
+    }
+
+    .currentpay_sum{
+        span{
+            
+        }
+    }
+}
+
+
+.index_with {
+    ul {
+        padding-left: 0;
+
+        & > li {
+            list-style-type: none;
+            display: flex;
+            margin-bottom: 20px;
+
+            &:before {
+                content: '—';
+                padding-right:18px;
+                color: @blue;
+            }
+        }
+    }
+
+    a {
+        color: @blue;
+        text-decoration:none;
+        &:hover{
+            text-decoration:underline;
+        }
+    }
+
+    table{
+        tr{
+            th{
+
+            }
+            td{
+
+            }
+        }
+    }
+}
+
+
+.block_info {
+    padding-top: 45px;
+    a {
+        color: #333;
+
+        &:hover {
+            color: @blue;
+        }
+    }
+    ul{
+        padding-top:19px;
     }
 }

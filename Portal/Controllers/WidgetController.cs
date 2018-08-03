@@ -29,10 +29,26 @@ namespace Portal.Controllers
                 return PartialView(model);
             }
             else return PartialView(view, model);
-        } 
+        }
+        public ActionResult PageChild(string path, string alias, string view, string url)
+        {
+
+            List<PageModel> model = _Repository.GetPageChild(path,alias);
+            var ModelArr = model != null ? model.ToArray() : null;
+            ViewBag.ThisUrl = url;
+
+            //model.Where(w => w.Url == url).Set(w => w.Active, true).Update();
 
 
-       #region Изменение данных пользователя
+            if (String.IsNullOrEmpty(view))
+            {
+                return PartialView(ModelArr);
+            }
+            else return PartialView(view, ModelArr);
+        }
+
+
+        #region Изменение данных пользователя
         [ChildActionOnly]
         public PartialViewResult GetChangeUserInfo()
         {

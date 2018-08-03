@@ -765,6 +765,7 @@
     <Content Include="sites\rushydro\img\logo.png" />
     <Content Include="sites\rushydro\img\logo_bg.png" />
     <Content Include="sites\rushydro\img\slider_bg.png" />
+    <Content Include="sites\rushydro\js\main.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1114,6 +1115,8 @@
     <Content Include="sites\rushydro\view\Main.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\StatisticWidget.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\SubscrList.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\SubscrBlance.cshtml" />
+    <Content Include="sites\rushydro\view\module\page\childlist2col.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1123,7 +1126,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
-    <Folder Include="sites\rushydro\js\" />
     <Folder Include="Views\Distributor\" />
     <Folder Include="Views\Layout\" />
     <Folder Include="Views\PageWidget\" />

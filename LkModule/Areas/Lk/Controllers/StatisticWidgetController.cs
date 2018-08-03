@@ -23,6 +23,7 @@ namespace LkModule.Areas.Lk.Controllers
             StatisticsFrontModel model = new StatisticsFrontModel();
             //ViewName = "~/sites/rushydro/view/module/lk/StatisticWidget.cshtml";
             ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if(ViewName!=null) ViewName = "~/sites/rushydro/view/module/lk/StatisticWidget.cshtml";
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);

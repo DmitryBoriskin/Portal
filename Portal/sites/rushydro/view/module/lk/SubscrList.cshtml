@@ -5,8 +5,6 @@
 
 @if (Model.Item != null)
 {
-
-
     <div class="invoice">
         @if (Model.List != null && Model.List.Count() > 0)
         {
@@ -16,12 +14,11 @@
                 if (item.Default.HasValue && item.Default.Value)
                 {
                     _class += " invoice_active";
-                }                
-
+                }
                 <a class="@_class"href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id">
                     <div class="invoice_name">@item.Name</div>
                     <div class="invoice_num">Лицевой счет № @item.SubscrId</div>
-                    <div class="invoice_pay">94 322 <i class="fa fa-rub"></i></div>
+                    <div class="invoice_pay">@(item.Saldo.HasValue? item.Saldo.Value.ToString("N2"):"")<span>₽</span></div>
                 </a>
             }
         }
@@ -30,7 +27,7 @@
                 <a href="/settings">Подключить лицевой счет</a>            
         }
     </div>
-
+}
 
 
 
