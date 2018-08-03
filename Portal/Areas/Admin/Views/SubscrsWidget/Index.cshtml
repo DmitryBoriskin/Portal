@@ -24,7 +24,7 @@
                     <tbody>
                         @foreach (var item in Model.SelectedSubscrs)
                         {
-                            string name = String.Format("{0} {1} {2}", item.Surname, item.Name, item.Patronymic);
+                            string name = item.Name;
                             <tr>
                                 <td>
                                     <div class="host-chkbx-div">
@@ -47,10 +47,10 @@
                 <div class="form-group">
                     <label for="subscr-select">Лицевые счета</label>
                     <select name="Item.Subscrs" id="subscr-select" class="form-control select2" multiple>
-                        @foreach (var sub in Model.Subscrs)
+                        @foreach (var subscr in Model.Subscrs)
                         {
-                            string title = String.Format("{0} {1} {2} {3}", sub.Link, sub.Surname, sub.Name, sub.Patronymic);
-                            <option value="@sub.Id">@title</option>
+                            string title = subscr.Name;
+                            <option value="@subscr.Id">@title</option>
                         }
                     </select>
                 </div>
