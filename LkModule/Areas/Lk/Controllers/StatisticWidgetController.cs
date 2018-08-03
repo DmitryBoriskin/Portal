@@ -21,9 +21,7 @@ namespace LkModule.Areas.Lk.Controllers
             pFilter.DateEnd = DateTime.Now;
 
             StatisticsFrontModel model = new StatisticsFrontModel();
-            ViewName = "~/Views/Modules/StatisticWidget/Index.cshtml";
-            
-                //_Repository.GetModuleView(ControllerName, ActionName);
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
