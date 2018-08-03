@@ -1,0 +1,57 @@
+﻿body{
+    color:#333;
+    font-family:Roboto;
+    font-size:16px;
+}
+#logo{
+    background-image:url(/sites/rushydro/img/logo_bg.png);
+    background-position:center right;
+}
+#logo img{
+    padding:0 20px
+}
+
+
+.menu .navbar {
+border-radius:0;
+}
+
+.navbar-brand,.navbar {
+    min-height: 75px;
+}
+.navbar-nav > li > a{
+    font-size:12px;
+    text-transform:uppercase;
+    padding:27px 15px 28px;
+}
+
+.index_right {
+    width: 100%;
+    max-width: 343px;
+    float: right;
+    height: calc(100vh - 75px);
+}
+/*@media (min-width: 768px){
+    .index_with {
+        padding-right: 0;
+    }
+}*/
+.index_with {
+    overflow: auto;
+    padding-top: 20px;
+    padding-right:25px;
+padding-left:25px;
+}
+
+.navbar{
+    margin-bottom:0;
+}
+.hydro_bg {
+    background-image: url(/sites/rushydro/img/slider_bg.png);
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    padding-bottom: 65px;
+}
+.block__shadow {
+    box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.1);
+}
