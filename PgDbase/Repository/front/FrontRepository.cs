@@ -1,4 +1,5 @@
 ﻿using LinqToDB;
+using LinqToDB.Common;
 using PgDbase.entity;
 using PgDbase.Entity.common;
 using PgDbase.models;
@@ -83,17 +84,39 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
+                string view = "";
+
                 var query = db.core_controllers
-                    .Where(t => t.c_controller_name.ToLower() == controller.ToLower() && t.c_action_name.ToLower() == action.ToLower())
-                    .Where(t=> t.b_be == false);
+                   .Where(t => t.c_controller_name.ToLower() == controller.ToLower() && t.c_action_name.ToLower() == action.ToLower())
+                   .Where(t => t.b_be == false);
 
-                var data = query
-                    .Select(t => t.fkcontrollerview.c_path);
+                if (query.Any())
+                {
+                    var controllerlink = query.Single().id;
+                    
+                    //View по умолчанию
+                    view = query.Select(t => t.fkcontrollerview.c_path).Any()
+                        ? query.Select(t => t.fkcontrollerview.c_path).Single()
+                        : "";
 
-                if(data.Any())
-                    return data.Single();
+                    var siteController = db.core_site_controllers
+                            .Where(v => v.f_site == _siteId)
+                            .Where(v => v.f_controller == controllerlink);
+                    
+                    
+                    if(siteController.Any())
+                    {
+                        var viewId = siteController.Single().f_view;
 
-                return "";
+                        if (viewId.HasValue)
+                            view = db.core_views
+                                .Where(s => s.id == viewId.Value).Any()? db.core_views
+                                .Where(s => s.id == viewId.Value).Single().c_path
+                                : view;
+                    }
+                }
+
+                return view;
             }
         }
 
