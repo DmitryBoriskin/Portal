@@ -227,7 +227,7 @@ body{
 
             &:before {
                 content: '—';
-                padding-right:18px;
+                padding-right: 18px;
                 color: @blue;
             }
         }
@@ -235,19 +235,38 @@ body{
 
     a {
         color: @blue;
-        text-decoration:none;
-        &:hover{
-            text-decoration:underline;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 
-    table{
-        tr{
-            th{
+    table {
+        width: 100%;
 
+        tr {
+            &:nth-child(2n) {
+                background-color: #f2f2f2;
             }
-            td{
 
+            th, td {
+                padding: 5px 10px;
+                font-size:14px;
+            }
+
+            th {
+                color: #999;
+            }
+
+            td {
+                .rub_positiv {
+                    color: #0ca109;
+                }
+
+                .rub_negativ {
+                    color: #ca1717;
+                }
             }
         }
     }
@@ -258,9 +277,9 @@ body{
     padding-top: 45px;
     a {
         color: #333;
-
         &:hover {
             color: @blue;
+
         }
     }
     ul{

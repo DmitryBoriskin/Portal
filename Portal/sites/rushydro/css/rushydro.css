@@ -180,6 +180,26 @@ body {
 .index_with a:hover {
   text-decoration: underline;
 }
+.index_with table {
+  width: 100%;
+}
+.index_with table tr:nth-child(2n) {
+  background-color: #f2f2f2;
+}
+.index_with table tr th,
+.index_with table tr td {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+.index_with table tr th {
+  color: #999;
+}
+.index_with table tr td .rub_positiv {
+  color: #0ca109;
+}
+.index_with table tr td .rub_negativ {
+  color: #ca1717;
+}
 .block_info {
   padding-top: 45px;
 }
