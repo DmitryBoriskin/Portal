@@ -79,3 +79,15 @@
     width: 541px;
   }
 }
+.btn_area {
+  margin-top: 20px;
+  margin-bottom: 22px;
+}
+.area_pass {
+  padding: 20px 66px 10px;
+  margin: 20px -66px 20px -66px;
+  background-color: #ecf0f5;
+}
+.form_place .form-group {
+  margin-bottom: 10px;
+}
