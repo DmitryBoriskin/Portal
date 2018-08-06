@@ -3,144 +3,56 @@
 @model LoginViewModel
 @{
     ViewBag.Title = "Вход в личный кабинет";
-    Layout = "~/Views/Shared/_LayoutWelcome.cshtml";
+    Layout = "~/sites/rushydro/view/_LayoutWelcome.cshtml";
+    
 }
 <div class="content">
     <div class="login-box">
         <div class="login-logo">
-            <h2>Вход в личный кабинет</h2>
-        </div>
-        <!-- /.login-logo -->
+            <h2>Вход в личный кабинет пользователя</h2>
+        </div>        
         <div class="login-box-body">
-            <p class="login-box-msg">Введите свои учетные данные</p>
-
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
-                @Html.AntiForgeryToken()
-                <div class="row">
-                    <div class="col-xs-12 register-link text-right">@Html.ActionLink("Регистрация", "Register", null, new { @class = "link__orange" })</div>
-                </div>
-                <div class="row">
-                    <div class="form-group has-feedback">
-                        @Html.LabelFor(m => m.Email, new { @class = "col-xs-3 col-md-2 control-label" })
-                        <div class="col-xs-8 col-md-9">
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                        </div>
-                        @*<input type="email" class="form-control" placeholder="Email">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>*@
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group has-feedback">
-                        @Html.LabelFor(m => m.Password, new { @class = "col-xs-3 col-md-2 control-label" })
-                        <div class="col-xs-8 col-md-9">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                        </div>
-                        @*<input type="password" class="form-control" placeholder="Password">
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>*@
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-offset-3 col-md-offset-2 col-xs-4" style="padding-left:0;">
-                        <div class="checkbox icheck">
-                            <label>
-                                @*<div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;">
-                            <input type="checkbox" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
-                            <ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                             </div> Remember Me*@
-                                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "iCheck" })
-                                @Html.LabelFor(m => m.RememberMe, new { @class = "control-label" })
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-4" style="padding-right:0;">
-                        <button type="submit" class="btn btn-warning btn-block btn-flat">Войти</button>
-                    </div>
-                    <!-- /.col -->
-                </div>
-
+                @Html.AntiForgeryToken()                
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                        
+                 <div class="form-group">
+                     @Html.LabelFor(m => m.Password)
+                     @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                 </div>    
+                 
+                 <div class="form-group">
+                     <div class="checkbox icheck">
+                         <label>
+                             @Html.CheckBoxFor(m => m.RememberMe, new { @class = "iCheck" })
+                             @Html.LabelFor(m => m.RememberMe, new { @class = "control-label" })
+                         </label>
+                     </div>
+                 </div>    
 
-                @*<div class="social-auth-links text-center">
-                <p>- OR -</p>
-                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-                    <i class="fa fa-facebook"></i> Sign in using
-                    Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-                    <i class="fa fa-google-plus"></i> Sign in using
-                    Google+
-                </a>
-            </div>*@
-                <!-- /.social-auth-links -->
+            
+                <div class="form-group">
+                    <button type="submit" class="btn btn-warning btn-block btn-flat">Войти</button>
+                </div>
+                
                 <div class="row">
-                    <div class="col-xs-12 fogotPassword-link text-right">@Html.ActionLink("Забыли пароль?", "ForgotPassword", null, new { @class = "link__orange" })</div>
+                    <div class="col-md-6">
+                        @Html.ActionLink("Забыли пароль?", "ForgotPassword", null, new { @class = "link__orange" })
+                    </div>
+                    <div class="col-md-6 text-right">
+                        @Html.ActionLink("Регистрация", "Register", null, new { @class = "link__orange" })
+                    </div>
                 </div>
             }
 
-        </div>
-        <!-- /.login-box-body -->
+        </div>        
     </div>
-
-
-    @*<div class="invoice">
-        <h2>Вход в личный кабинет</h2>
-        <div class="register-link pull-right">@Html.ActionLink("Регистрация", "Register", null, new { @class = "link__orange" })</div>
-        <div class="row">
-            <div class="col-xs-8">
-                <section id="loginForm">
-                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <div class="authorize-text">Введите свои учетные данные</div>
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Email, new { @class = "col-xs-2 control-label" })
-                            <div class="col-xs-10">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Password, new { @class = "col-xs-2 control-label" })
-                            <div class="col-xs-10">
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-offset-2 col-xs-10">
-                                <div class="checkbox">
-                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "iCheck" })
-                                    @Html.LabelFor(m => m.RememberMe, new { @class = "control-label" })
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-offset-2 col-xs-5">
-                                <input type="submit" value="Войти" class="btn btn-block btn-warning submit-btn" />
-                            </div>
-                        </div>
-                    }
-                </section>
-            </div>
-
-            Внешняя авторизация (через Facebook, Twitter, LinkedIn and Google OAuth2) Не используется
-            <div class="col-xs-4">
-                        <section id="socialLoginForm">
-                            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-                        </section>
-                    </div>
-            </div>
-            <div class="fogotPassword-link pull-right">@Html.ActionLink("Забыли пароль?", "ForgotPassword", null, new { @class = "link__orange" })</div>
-
-        </div>*@
-
 </div>

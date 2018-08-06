@@ -8,7 +8,7 @@
         if (getBodyScrollTop() >= 75) {
             $('#' + id).addClass('index_right__fix');
         }
-        else {
+        else {            
             $('#' + id).removeClass('index_right__fix');
         }
     }

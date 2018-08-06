@@ -762,8 +762,16 @@
       <DependentUpon>rushydro.css</DependentUpon>
     </Content>
     <Content Include="sites\rushydro\css\site.css" />
+    <Content Include="sites\rushydro\css\site_login.css">
+      <DependentUpon>site_login.less</DependentUpon>
+    </Content>
+    <Content Include="sites\rushydro\css\site_login.min.css">
+      <DependentUpon>site_login.css</DependentUpon>
+    </Content>
+    <Content Include="sites\rushydro\img\account_bg.png" />
     <Content Include="sites\rushydro\img\logo.png" />
     <Content Include="sites\rushydro\img\logo_bg.png" />
+    <Content Include="sites\rushydro\img\logo_account.png" />
     <Content Include="sites\rushydro\img\slider_bg.png" />
     <Content Include="sites\rushydro\js\main.js" />
     <Content Include="Web.config">
@@ -1117,6 +1125,8 @@
     <Content Include="sites\rushydro\view\module\lk\SubscrList.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\SubscrBlance.cshtml" />
     <Content Include="sites\rushydro\view\module\page\childlist2col.cshtml" />
+    <Content Include="sites\rushydro\view\_LayoutWelcome.cshtml" />
+    <Content Include="sites\rushydro\css\site_login.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

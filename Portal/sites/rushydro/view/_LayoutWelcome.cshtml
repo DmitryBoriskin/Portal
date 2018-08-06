@@ -1,0 +1,34 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@ViewBag.Title </title>
+    <meta charset="utf-8">       
+
+    <link href="~/Content/fonts/Roboto/roboto.css" rel="stylesheet" />
+    <link href="~/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/sites/rushydro/css/site_login.css" rel="stylesheet" />
+
+    <script src="~/Content/plugins/jquery/jquery.js"></script>
+    <script src="~/Content/plugins/jquery/jquery.cookie.js"></script>
+</head>
+<body>
+
+
+    <div class="modal fade in modal_account" tabindex="-1" role="dialog" style="display:block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content"> 
+                <div class="area">
+                    <img src="~/sites/rushydro/img/logo_account.png" />
+                    @RenderBody()
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    
+
+    @RenderSection("scripts", false)
+
+</body>
+</html>
