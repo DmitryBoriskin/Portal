@@ -59,7 +59,7 @@ namespace Portal.Models
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Display(Name = "Запомнить")]
+        [Display(Name = "Запомнить пароль")]
         public bool RememberMe { get; set; }
     }
 

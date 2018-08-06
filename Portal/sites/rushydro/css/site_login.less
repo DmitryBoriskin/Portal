@@ -10,11 +10,7 @@
 .modal {
     text-align: center;
 }
-h2 {
-    font-size: 22px;
-    color: #0039a6;
-    font-weight:300;
-}
+
 
 @media screen and (min-width: 768px) {
     .modal:before {
@@ -35,7 +31,67 @@ h2 {
         border-radius: 0;
     }
 }
-.area{
-    width:100%;
-    padding:0 66px;
+.area {
+    width: 100%;
+    padding: 0 66px;
+
+    h2 {
+        font-size: 22px;
+        color: #0039a6;
+        font-weight: 300;
+        padding-bottom: 17px;
+    }
+
+    img {
+        margin-bottom: 19px;
+    }
+
+    .btn {
+        border-radius: 0;
+        background-color: #ff7900;
+        color: #fff;
+        text-transform: uppercase;
+        padding-top: 15px;
+        padding-bottom: 9px;
+    }
+
+    a {
+        color: #ff7900;
+        text-transform: uppercase;
+    }
+
+    label {
+        color: #333;
+        font-weight: 300;
+        font-size: 12px;
+        width: 100%;
+
+        label {
+            padding-left: 1px;            
+        }
+    }
+
+    .checkbox {
+        font-family: 400px;
+        margin-top: -1px;
+        font-size: 13px;
+
+        label {
+            margin-top: 3px;
+        }
+    }
+
+    .form-control {
+        border-radius: 0;
+        height: 44px;
+    }
+
+    .area_bottom {
+        margin-top: 20px;
+    }
+}
+@media (min-width: 768px){
+    .modal-dialog {
+        width: 541px;
+    }
 }

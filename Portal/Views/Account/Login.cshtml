@@ -7,52 +7,62 @@
     
 }
 <div class="content">
-    <div class="login-box">
-        <div class="login-logo">
-            <h2>Вход в личный кабинет пользователя</h2>
+    
+        <div class="row">
+            <div class="col-md-12">                
+                    <h2>Вход в личный кабинет пользователя</h2>                   
+            </div>
         </div>        
-        <div class="login-box-body">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        
+        <div class="row">
+            <div class="col-md-12">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "", role = "form" }))
             {
-                @Html.AntiForgeryToken()                
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Email)
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                </div>
-                        
-                 <div class="form-group">
-                     @Html.LabelFor(m => m.Password)
-                     @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                 </div>    
-                 
-                 <div class="form-group">
-                     <div class="checkbox icheck">
-                         <label>
-                             @Html.CheckBoxFor(m => m.RememberMe, new { @class = "iCheck" })
-                             @Html.LabelFor(m => m.RememberMe, new { @class = "control-label" })
-                         </label>
-                     </div>
-                 </div>    
-
-            
-                <div class="form-group">
-                    <button type="submit" class="btn btn-warning btn-block btn-flat">Войти</button>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        @Html.ActionLink("Забыли пароль?", "ForgotPassword", null, new { @class = "link__orange" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                     </div>
-                    <div class="col-md-6 text-right">
-                        @Html.ActionLink("Регистрация", "Register", null, new { @class = "link__orange" })
-                    </div>
-                </div>
-            }
 
-        </div>        
-    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div style="margin-top: 20px;margin-bottom: 22px;">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-warning btn-block btn-flat">Войти</button>
+                        </div>
+                    </div>
+                    
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "iCheck" })
+                                @Html.LabelFor(m => m.RememberMe, new { @class = "control-label" })
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="area_bottom">
+                        <div class="row">
+                            <div class="col-md-6">
+                                @Html.ActionLink("Забыли пароль?", "ForgotPassword", null, new { @class = "link__orange" })
+                            </div>
+                            <div class="col-md-6 text-right">
+                                @Html.ActionLink("Регистрация", "Register", null, new { @class = "link__orange" })
+                            </div>
+                        </div>
+                    </div>
+                    
+                }
+            </div>              
+        </div>            
+        
+    
 </div>
