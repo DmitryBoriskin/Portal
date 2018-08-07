@@ -4,7 +4,7 @@
     font-size:16px;
 }
 #logo {
-    background-image: url(/sites/rushydro/img/logo_bg.png);
+    background-image: url(/sites/rushydro/content/img/logo_bg.png);
     background-position: center right;
     padding: 12px 5px 5px;
 }
@@ -64,8 +64,8 @@ padding:0 20px;
 .navbar{
     margin-bottom:0;
 }
-.hydro_bg {
-    background-image: url(/sites/rushydro/content/img/slider_bg.png);
+.hydro_bg {    
+    background-image:url(/sites/rushydro/content/img/slider_bg.png);
     background-repeat: no-repeat;
     background-position: right bottom;
     padding-bottom: 65px;

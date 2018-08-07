@@ -23,7 +23,7 @@
         <div class="filterByDateBlock">
             <form role="form">
                 <div class="row">
-                    <div class="col-xs-8 col-sm-6">
+                    <div class="col-md-4">
                         <div class="form-group">                            
                             <div class="input-group date">                               
                                 <input type="text" class="form-control pull-right data_period" id="filterDateRange-input" value="@dateRange">
@@ -32,11 +32,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-4 col-sm-6">
+                    <div class="col-sm-8">
                         <div class="payperiod">
-                            <div class="payperiod">
-
-                            </div>
+                            <div class="payperiod_key">Итоги за выбранный период</div>
+                            <div class="payperiod_val">760 000 <span>₽</span></div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +88,19 @@
     $('#filterDateRange-input').on('apply.daterangepicker', function (ev, picker) {
         $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
         $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))
-    });
+            });
+
+            $('#filterDateRange-input').change(function () {
+                var olg = $(this).val();
+
+                var params = {
+                    datestart: $('#filterBeginDate-input').val(),
+                    dateend: $('#filterEndDate-input').val()
+                };
+                var str = jQuery.param(params);
+                location.href = UrlPage() + "?" + str;
+                alert(olg);
+            });
 
         </script>
 

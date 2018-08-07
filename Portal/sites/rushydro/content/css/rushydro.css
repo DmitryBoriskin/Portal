@@ -148,6 +148,10 @@ body {
 .invoice .invoice_item .invoice_pay i {
   font-weight: normal;
 }
+.content .block.block_padd {
+  padding-left: 30px;
+  padding-right: 30px;
+}
 .block.block_white {
   background-color: #fff;
 }
@@ -300,3 +304,15 @@ body {
   padding-top: 5px;
 }
 /*#endregion */
+.payperiod .payperiod_key {
+  float: left;
+  font-size: 14px;
+  color: #999;
+  padding-right: 13px;
+  margin-top: 12px;
+}
+.payperiod .payperiod_val {
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 47px;
+}
