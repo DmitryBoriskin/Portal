@@ -1,5 +1,5 @@
 ﻿@using LkModule.Areas.Lk.Models
-@model AccrualFrontModel
+@model InvoiceFrontModel
 @{
     int i = 1;
 }
@@ -19,7 +19,7 @@
             {
                 amountWithOutTax = amountWithOutTax - item.Tax.Value;
             }
-            <div class="box box-solid topIndent-20 @(i>1?" collapsed-box":"")">
+            <div class="box box-solid topIndent-20 @(i>1? "collapsed-box":"")">
                 <div class="box-header with-border">
                     <h3 class="box-title"><b>@item.DocType № @item.Number</b> <small>от @item.Date.ToString("dd.MM.yyyy")</small></h3>
                     <div><b>Задолженность:</b> @item.DebtType</div>

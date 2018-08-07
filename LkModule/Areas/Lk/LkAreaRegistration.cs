@@ -22,8 +22,8 @@ namespace LkModule.Areas.Lk
 
             context.MapRoute(
                 "Accruals_FE",
-                "Lk/Accruals/{action}/{id}",
-                new { controller = "Accruals", action = "Index", id = UrlParameter.Optional },
+                "Lk/Invoices/{action}/{id}",
+                new { controller = "Invoices", action = "Index", id = UrlParameter.Optional },
                 new[] { "LkModule.Areas.Lk.Controllers" }
             );
             context.MapRoute(

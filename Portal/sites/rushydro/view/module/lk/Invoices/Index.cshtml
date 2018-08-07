@@ -1,5 +1,5 @@
 ﻿@using LkModule.Areas.Lk.Models
-@model AccrualFrontModel
+@model InvoiceFrontModel
 @{
     Layout = ViewBag.Layout;
     int i = 1;
@@ -9,7 +9,7 @@
 @Html.Partial("Partial/header")
 
 <div class="content">
-    @Html.Partial("/Views/Modules/Accruals/Part/Filter.cshtml")
+    @Html.Partial("/sites/rushydro/view/module/lk/Invoices/Part/Filter.cshtml")
 
 
     @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
@@ -21,34 +21,72 @@
             {
                 amountWithOutTax = amountWithOutTax - item.Tax.Value;
             }
-            <div class="box box-solid topIndent-20 @(i>1? "collapsed-box":"")">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><b>@item.DocType № @item.Number</b> <small>от @item.Date.ToString("dd.MM.yyyy")</small></h3>
-                    <div><b>Задолженность:</b> @item.DebtType</div>
-                    <div><b>Период оплаты</b> @item.Period</div>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                            <i class="fa @(i>1?" fa-plus":"fa-minus")"></i>
-                        </button>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="table-responsive">
-                        <table class="table no-margin">
+
+            <div>
+                <table class="table">
+                    <tr>
+                        <td>@item.DocType № @item.Number <span>от @item.Date.ToString("dd.MM.yyyy")</span></td>
+                        <td>Период: @item.Period</td>
+                        <td>
+                            <a class="" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
+                                Подробнее
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="collapse" id="invoice_@item.Link">
+                    <div class="well">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-default">Распечатать</button>
+                        </div>
+                        <div>
+                            <div>Статус: @item.Status</div>
+                            <div>Договор: @item.SaleCategory</div>
+                            <div>Задолженность: @item.DebtType</div>
+                            @if (item.DateBegin.HasValue && item.DateEnd.HasValue)
+                            {
+                            <div>Расчет с @item.DateBegin.Value.ToString("dd.MM.yyyy") по @item.DateEnd.Value.ToString("dd.MM.yyyy")</div>
+                            }
+                            @if (item.DateDue.HasValue)
+                            {
+                            <div>Оплата до: @item.DateDue.Value.ToString("dd.MM.yyyy")</div>
+                            }
+                        </div>
+                        <table class="table">
                             <thead>
                                 <tr>
+                                    <th>Наименование<br /><small>(объем)</small></th>
+                                    <th>Зона</th>
+                                    <th>Тариф</th>
                                     <th>Количество<br /><small>(объем)</small></th>
-                                    <th>Тарифицируемое<br />потребление</th>
-                                    <th>Начислено<br /><small>(без НДС)</small></th>
+                                    <th>Цена<br /><small>(без НДС)</small></th>
                                     <th>НДС</th>
-                                    <th>Начислено<br /><small>(с НДС)</small></th>
-                                    <th>Статус</th>
+                                    <th>Сумма<br /><small>(с НДС)</small></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(item.Details != null && item.Details.Count() > 0)
+                                {
+                                    foreach (var detail in item.Details)
+                                    {
                                 <tr>
-                                    <td>@item.Cons</td>
+                                    <td>@detail.Tariff</td>
+                                    <td>@detail.TimeZone</td>
+
+                                    <td>@detail.Quantity | @detail.Quantity0 | @detail.Quantity1</td>
+                                    <td>@detail.TariffAmount | @detail.TariffAmount0 | @detail.TariffAmount0</td>
+                                    <td></td>
+                                    <td>@detail.TaxAmount | @detail.TaxAmount0 | @detail.TaxAmount1</td>
+                                    <td>@detail.Amount | @detail.Amount0 | @detail.Amount1</td>
+                                </tr>
+                                    }
+                                }
+
+                                <tr>
+                                    <td><b>Итого:</b></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>
                                         @item.Quantity
                                         @if (item.Quantity2.HasValue && item.Quantity2 > 0m)
@@ -57,18 +95,12 @@
                                     <td>@amountWithOutTax.ToString("N2")</td>
                                     <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                     <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                                    <td>@item.Status</td>
+                                   
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <!-- /.table-responsive -->
                 </div>
-                <!-- /.box-body -->
-                <div class="box-footer clearfix">
-                    <div class="pull-right"><small>@item.Date.ToString("dd.MM.yyyy")</small></div>
-                </div>
-                <!-- /.box-footer -->
             </div>
             i++;
         }

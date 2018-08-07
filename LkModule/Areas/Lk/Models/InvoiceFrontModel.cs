@@ -6,7 +6,7 @@ namespace LkModule.Areas.Lk.Models
     /// <summary>
     /// Модель представления платежей
     /// </summary>
-    public class AccrualFrontModel : LayoutFrontModel
+    public class InvoiceFrontModel : LayoutFrontModel
     {
         /// <summary>
         /// Список 

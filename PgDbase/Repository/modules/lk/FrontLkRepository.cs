@@ -502,14 +502,13 @@ namespace PgDbase.Repository.front
 
         #endregion
 
-        #region Выставленные счета
-
+        #region Счета-фактуры
         /// <summary>
         /// Возвращает список выставленных счетов для пользователя
         /// </summary>
         /// <param name="subscr"></param>
         /// <returns></returns>
-        public Paged<InvoiceModel> GetAccruals(Guid subscr, LkFilter filter)
+        public Paged<InvoiceModel> GetInvoices(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -540,19 +539,41 @@ namespace PgDbase.Repository.front
                     .Select(s => new InvoiceModel
                     {
                         Id = s.id,
+                        Link = s.link,
+                        SubscrId = s.f_subscr,
+                        Subscr = s.n_subscr,
+
                         Date = s.d_date,
+                        DateBegin = s.d_date_begin,
+                        DateEnd = s.d_date_end,
+                        DateDue = s.d_date_due,
+
+                        Debit = s.b_debit,
                         Period = s.n_period,
                         Payed = s.b_closed,
+
+                        StatusId = s.n_status,
                         Status = s.c_status,
+
                         Number = s.c_number,
                         Amount = s.n_amount,
                         Tax = s.n_tax,
                         Cons = s.n_cons,
                         Quantity = s.n_quantity,
                         Quantity2 = s.n_quantity2,
-                        //DebtType = s.c_debt,
-                        //DocType = s.c_doctype,
-                        //PaymentId = s.n_payment
+
+                        DebtTypeId = s.n_debts,
+                        DebtType = s.c_debts,
+
+                        DocTypeId = s.n_doc_type,
+                        DocType = s.c_doc_type,
+
+                        PaymentId = s.n_payment,
+                        PaysheetId = s.n_paysheet,
+
+                        SaleCategoryId = s.n_sale_category,
+                        SaleCategory = s.c_sale_category
+
                     })
                     .ToArray();
 
@@ -570,18 +591,106 @@ namespace PgDbase.Repository.front
         }
 
         /// <summary>
-        /// Возвращает ЛС по выставленному счёту
+        /// Возвращает выставленный счёт
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Guid GetSubscrByAccrual(Guid id)
+        public InvoiceModel GetInvoice(Guid id)
         {
             using (var db = new CMSdb(_context))
             {
                 return db.lk_invoices
                     .Where(w => w.id == id)
-                    .Select(s => s.f_subscr)
+                    .Select(s => new InvoiceModel
+                    {
+                        Id = s.id,
+                        Link = s.link,
+                        SubscrId = s.f_subscr,
+                        Subscr = s.n_subscr,
+
+                        Date = s.d_date,
+                        DateBegin = s.d_date_begin,
+                        DateEnd = s.d_date_end,
+                        DateDue = s.d_date_due,
+
+                        Debit = s.b_debit,
+                        Period = s.n_period,
+                        Payed = s.b_closed,
+
+                        StatusId = s.n_status,
+                        Status = s.c_status,
+
+                        Number = s.c_number,
+                        Amount = s.n_amount,
+                        Tax = s.n_tax,
+                        Cons = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Quantity2 = s.n_quantity2,
+
+                        DebtTypeId = s.n_debts,
+                        DebtType = s.c_debts,
+
+                        DocTypeId = s.n_doc_type,
+                        DocType = s.c_doc_type,
+
+                        PaymentId = s.n_payment,
+                        PaysheetId = s.n_paysheet,
+
+                        SaleCategoryId = s.n_sale_category,
+                        SaleCategory = s.c_sale_category,
+
+                        Details = GetInvoiceDetail(s.link)
+                    })
                     .SingleOrDefault();
+            }
+        }
+
+        public InvoiceDetailModel[] GetInvoiceDetail(long link)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                return db.lk_invoices_details
+                    .Where(w => w.n_invoice == link)
+                    .Select(s => new InvoiceDetailModel
+                    {
+                        Id = s.id,
+                        Link = s.link,
+                        InvoiceId = s.f_invoice,
+                        InvoiceLInk = s.n_invoice,
+
+                        TimeZoneId = s.n_time_zone,
+                        TimeZone = s.c_time_zone,
+
+                        SuboperationTypeId = s.n_suboperation_type,
+                        SuboperationType = s.c_suboperation_type,
+
+                        TariffId = s.n_tariff,
+                        Tariff = s.c_tariff,
+
+                        InvoceGrp = s.n_invoce_grp,
+                        BillGrp = s.n_bill_grp,
+
+                        DateBegin = s.d_date_begin,
+                        DateEnd = s.d_date_end,
+                        Period = s.n_period,
+
+                        Amount = s.n_amount,
+                        TaxAmount = s.n_tax,
+                        Quantity = s.n_quantity,
+                        TariffAmount  = s.n_tariff_amount,
+
+                        Amount0 = s.n_amount0,
+                        TaxAmount0 = s.n_tax0,
+                        Quantity0 = s.n_quantity0,
+                        TariffAmount0 = s.n_tariff_amount0,
+
+                        Amount1 = s.n_amount1,
+                        TaxAmount1 = s.n_tax1,
+                        Quantity1 = s.n_quantity1,
+                        TariffAmount1 = s.n_tariff_amount1
+
+                    })
+                    .ToArray();
             }
         }
 

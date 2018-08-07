@@ -53,7 +53,9 @@ namespace LkModule.Areas.Lk.Controllers
             if (userSubscr != null)
             {
                
-                var accruals = _Repository.GetAccruals(userSubscr.Id, aFilter);
+#pragma warning disable CS1061 // 'FrontRepository' does not contain a definition for 'GetInvoices' and no extension method 'GetInvoices' accepting a first argument of type 'FrontRepository' could be found (are you missing a using directive or an assembly reference?)
+                var accruals = _Repository.GetInvoices(userSubscr.Id, aFilter);
+#pragma warning restore CS1061 // 'FrontRepository' does not contain a definition for 'GetInvoices' and no extension method 'GetInvoices' accepting a first argument of type 'FrontRepository' could be found (are you missing a using directive or an assembly reference?)
                 if (accruals.Items != null && accruals.Items.Count() > 0)
                 {
                     var data = accruals.Items

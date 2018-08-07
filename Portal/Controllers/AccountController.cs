@@ -247,7 +247,9 @@ namespace Portal.Controllers
                         AddErrors(addUserResult);
 
                     }
+#pragma warning disable CS0168 // The variable 'ex' is declared but never used
                     catch (Exception ex)
+#pragma warning restore CS0168 // The variable 'ex' is declared but never used
                     {
                         AddErrors(IdentityResult.Failed("Ошибка в базе данных при регистрации"));
                         //log ex

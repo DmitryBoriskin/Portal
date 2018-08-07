@@ -6,7 +6,7 @@ namespace LkModule.Areas.Admin.Models
     /// <summary>
     /// Модель представления выставленных счетов
     /// </summary>
-    public class AccrualViewModel : CoreViewModel
+    public class InvoiceViewModel : CoreViewModel
     {
         /// <summary>
         /// Список

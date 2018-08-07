@@ -80,7 +80,7 @@
     <Compile Include="Entity\modules\cart\CartCategoryModel.cs" />
     <Compile Include="Entity\modules\event\EventFilterModel.cs" />
     <Compile Include="Entity\modules\event\EventsModel.cs" />
-    <Compile Include="Entity\modules\lk\AccrualModel.cs" />
+    <Compile Include="Entity\modules\lk\InvoiceModel.cs" />
     <Compile Include="Entity\modules\lk\DepartmentModel.cs" />
     <Compile Include="Entity\modules\lk\MeterModel.cs" />
     <Compile Include="Entity\modules\lk\MeterDeviceModel.cs" />

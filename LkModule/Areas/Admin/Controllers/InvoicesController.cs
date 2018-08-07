@@ -9,10 +9,10 @@ using System.Web.Mvc;
 namespace LkModule.Areas.Admin.Controllers
 {
 
-    public class AccrualsController : BeCoreController
+    public class InvoicesController : BeCoreController
     {
         FilterModel filter;
-        AccrualViewModel model;
+        InvoiceViewModel model;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -22,10 +22,10 @@ namespace LkModule.Areas.Admin.Controllers
             if (!_cmsRepository.ModuleAllowed(ControllerName))
                 Response.Redirect("/Admin/");
 
-            model = new AccrualViewModel()
+            model = new InvoiceViewModel()
             {
                 SiteId = SiteId,
-                PageName = "Выставленные счета",
+                PageName = "Счета-фактуры",
                 Settings = SettingsInfo,
                 ControllerName = ControllerName,
                 ActionName = ActionName,
@@ -50,7 +50,7 @@ namespace LkModule.Areas.Admin.Controllers
                 if (res)
                     mFilter.Payed = payed;
             }
-            model.List = _cmsRepository.GetAccruals((Guid)subscr, mFilter);
+            model.List = _cmsRepository.GetInvoices((Guid)subscr, mFilter);
 
             if (mFilter.Date.HasValue)
                 ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
@@ -99,7 +99,7 @@ namespace LkModule.Areas.Admin.Controllers
 
         public ActionResult Item(Guid id)
         {
-            model.Item = _cmsRepository.GetAccrual(id);
+            model.Item = _cmsRepository.GetInvoice(id);
             return View("Item", model);
         }
 
@@ -107,7 +107,7 @@ namespace LkModule.Areas.Admin.Controllers
         [MultiButton(MatchFormKey = "action", MatchFormValue = "cancel-btn")]
         public ActionResult Cancel(Guid id)
         {
-            var subscr = _cmsRepository.GetSubscrByAccrual(id);
+            var subscr = _cmsRepository.GetSubscrByInvoice(id);
             string url = "/admin/charges/?subscr=";
             if (subscr != null && subscr != Guid.Empty)
             {

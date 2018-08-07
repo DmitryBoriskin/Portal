@@ -98,18 +98,18 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\AccrualsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\InvoicesController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PUController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscrsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SubscrsWidgetController.cs" />
-    <Compile Include="Areas\Admin\Models\AccrualViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\InvoiceViewModel.cs" />
     <Compile Include="Areas\Admin\Models\DepartmentViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PuViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PaymentViewModel.cs" />
     <Compile Include="Areas\Admin\Models\SubscrViewModel.cs" />
-    <Compile Include="Areas\Lk\Controllers\AccrualsController.cs" />
+    <Compile Include="Areas\Lk\Controllers\InvoicesController.cs" />
     <Compile Include="Areas\Lk\Controllers\StatisticsController.cs" />
     <Compile Include="Areas\Lk\Controllers\StatisticWidgetController.cs" />
     <Compile Include="Areas\Lk\Controllers\SubscrInfoController.cs" />
@@ -118,7 +118,7 @@
     <Compile Include="Areas\Lk\Controllers\SubscrInfoWidgetController.cs" />
     <Compile Include="Areas\Lk\Controllers\PUController.cs" />
     <Compile Include="Areas\Lk\LkAreaRegistration.cs" />
-    <Compile Include="Areas\Lk\Models\AccrualFrontModel.cs" />
+    <Compile Include="Areas\Lk\Models\InvoiceFrontModel.cs" />
     <Compile Include="Areas\Lk\Models\StatisticsFrontModel.cs" />
     <Compile Include="Areas\Lk\Models\SubscrFrontModel.cs" />
     <Compile Include="Areas\Lk\Models\PuFrontModel.cs" />
@@ -139,23 +139,22 @@
     <Content Include="Areas\Admin\Views\Departments\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Departments\Item.cshtml" />
     <Content Include="Areas\Admin\Views\SubscrsWidget\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Accruals\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Accruals\Part\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoices\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoices\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\PU\Index.cshtml" />
     <Content Include="Areas\Admin\Views\PU\Part\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Payments\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Payments\Part\Filter.cshtml" />
-    <Content Include="Areas\Admin\Views\Accruals\Item.cshtml" />
+    <Content Include="Areas\Admin\Views\Invoices\Item.cshtml" />
     <Content Include="Areas\Lk\Views\web.config" />
     <Content Include="Areas\Lk\Views\Payments\Index.cshtml" />
     <Content Include="Areas\Lk\Views\Payments\Part\Filter.cshtml" />
-    <Content Include="Areas\Lk\Views\Accruals\Part\Filter.cshtml" />
-    <Content Include="Areas\Lk\Views\Accruals\Index.cshtml" />
+    <Content Include="Areas\Lk\Views\Invoices\Part\Filter.cshtml" />
+    <Content Include="Areas\Lk\Views\Invoices\Index.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Index.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfoWidget\Info.cshtml" />
     <Content Include="Areas\Lk\Views\Meters\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\Meters\Index.cshtml" />
-    <Content Include="Areas\Lk\Views\Accruals\Payed.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfo\Index.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfoWidget\Index.cshtml" />
     <Content Include="Areas\Lk\Views\Statistics\Index.cshtml" />
@@ -228,14 +227,14 @@
   <PropertyGroup>
     <PostBuildEvent>"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(TargetPath)" "$(SolutionDir)Portal\bin\"
 
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Accruals\*" "$(SolutionDir)Portal\Areas\Admin\Views\Accruals\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Invoices\*" "$(SolutionDir)Portal\Areas\Admin\Views\Invoices\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Departments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Departments\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Payments\*" "$(SolutionDir)Portal\Areas\Admin\Views\Payments\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Pu\*" "$(SolutionDir)Portal\Areas\Admin\Views\Pu\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Subscrs\*" "$(SolutionDir)Portal\Areas\Admin\Views\Subscrs\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\SubscrsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\SubscrsWidget\"
 
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Accruals\*" "$(SolutionDir)Portal\Views\Modules\Accruals\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Invoices\*" "$(SolutionDir)Portal\Views\Modules\Invoices\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Meters\*" "$(SolutionDir)Portal\Views\Modules\Meters\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Payments\*" "$(SolutionDir)Portal\Views\Modules\Payments\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Pu\*" "$(SolutionDir)Portal\Views\Modules\Pu\"

@@ -22,9 +22,12 @@ namespace PgDbase.Repository.front
 
 
 
-                #warning тут надо ограничить по дате завершения и по дате начала публикации
+                
+#pragma warning disable CS1030 // #warning: 'тут надо ограничить по дате завершения и по дате начала публикации'
+#warning тут надо ограничить по дате завершения и по дате начала публикации
 
                 query = query.OrderByDescending(o => o.d_date_start);
+#pragma warning restore CS1030 // #warning: 'тут надо ограничить по дате завершения и по дате начала публикации'
                 if (query.Any())
                 {
                     int itemsCount = query.Count();

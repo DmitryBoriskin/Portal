@@ -41,9 +41,11 @@ namespace VacancyModule.Areas.Vacancy.Controllers
             return View(ViewName,model);
         }
 
+#pragma warning disable CS1030 // #warning: 'Исправить - не нужно передавать в параметрах viewname'
 #warning Исправить - не нужно передавать в параметрах viewname
         // GET: Vacancy/Widget/<:viewName>
         public ActionResult Widget(WidgetParamHelper helper)
+#pragma warning restore CS1030 // #warning: 'Исправить - не нужно передавать в параметрах viewname'
         {
             VacancyWidgetModel model = new VacancyWidgetModel
             {

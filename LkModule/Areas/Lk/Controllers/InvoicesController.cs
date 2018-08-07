@@ -13,10 +13,10 @@ using System.Web.Mvc;
 namespace LkModule.Areas.Lk.Controllers
 {
     [Authorize]
-    public class AccrualsController : LayoutController
+    public class InvoicesController : LayoutController
     {
         FilterModel filter;
-        AccrualFrontModel model;
+        InvoiceFrontModel model;
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -32,7 +32,7 @@ namespace LkModule.Areas.Lk.Controllers
                 throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
 
-            model = new AccrualFrontModel()
+            model = new InvoiceFrontModel()
             {
                 LayoutInfo = _layoutData,
                 Breadcrumbs = _breadcrumb,
@@ -41,20 +41,23 @@ namespace LkModule.Areas.Lk.Controllers
             };
         }
 
-        //Неоплаченные платежи
+        //Нплаченные платежи
         public ActionResult Index()
         {
-           
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
-            mFilter.Payed = false;
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
             if (userSubscr != null)
             {
-                model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
+#pragma warning disable CS1061 // 'FrontRepository' does not contain a definition for 'GetInvoices' and no extension method 'GetInvoices' accepting a first argument of type 'FrontRepository' could be found (are you missing a using directive or an assembly reference?)
+                model.List = _Repository.GetInvoices(userSubscr.Id, mFilter);
+#pragma warning restore CS1061 // 'FrontRepository' does not contain a definition for 'GetInvoices' and no extension method 'GetInvoices' accepting a first argument of type 'FrontRepository' could be found (are you missing a using directive or an assembly reference?)
             }
+
+            if(mFilter.Payed.HasValue)
+                ViewBag.payed = mFilter.Payed.Value;
 
             if (mFilter.Date.HasValue)
                 ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
@@ -65,28 +68,6 @@ namespace LkModule.Areas.Lk.Controllers
             return View(ViewName, model);
         }
 
-        //Оплаченные платежи
-        public ActionResult Payed()
-        {
-            filter = GetFilter();
-            var mFilter = FilterModel.Extend<LkFilter>(filter);
-            mFilter.Payed = true;
-
-            var userId = CurrentUser.UserId;
-            var userSubscr = _Repository.GetUserSubscrDefault(userId);
-            if (userSubscr != null)
-            {
-                model.List = _Repository.GetAccruals(userSubscr.Id, mFilter);
-            }
-
-            if (mFilter.Date.HasValue)
-                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
-
-            if (mFilter.DateEnd.HasValue)
-                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
-
-            return View(ViewName, model);
-        }
 
         //[HttpPost]
         //[MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
