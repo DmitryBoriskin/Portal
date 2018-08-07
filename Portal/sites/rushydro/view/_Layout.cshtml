@@ -10,8 +10,8 @@
 
     <link href="~/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
-    <link href="~/sites/rushydro/css/site.css" rel="stylesheet" />
-    <link href="~/sites/rushydro/css/rushydro.min.css" rel="stylesheet" />
+    <link href="~/sites/rushydro/content/css/site.css" rel="stylesheet" />
+    <link href="~/sites/rushydro/content/css/rushydro.min.css" rel="stylesheet" />
 
     @RenderSection("Styles", false)
 
@@ -19,7 +19,7 @@
     <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Content/plugins/jquery/jquery.ui.js"></script>
 
-    <script src="~/sites/rushydro/js/main.js"></script>
+    <script src="~/sites/rushydro/content/js/main.js"></script>
 
     <script src="~/Content/plugins/daterangepicker/moment.min.js"></script>
     <script src="~/Content/plugins/daterangepicker/daterangepicker.js"></script>
@@ -41,10 +41,17 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a id="logo" class="navbar-brand" href="/">
-                        <img src="~/sites/rushydro/img/logo.png" alt="" />
+                        <img src="~/sites/rushydro/content/img/logo.png" alt="" />
                     </a>
                 </div>
-                @{ Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl }); }
+				@try
+                        {
+                            Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl }); 
+                        }
+                        catch (Exception ex)
+                        {
+                            //Log ex
+                        }
             </div>
         </nav>
 
