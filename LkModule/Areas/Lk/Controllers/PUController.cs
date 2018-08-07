@@ -79,7 +79,8 @@ namespace LkModule.Areas.Lk.Controllers
         [HttpPost]
         public ActionResult GetPuMeters(Guid device)
         {
-            ViewName = "/Views/Modules/Pu/Part/CounterReading.cshtml";
+            //ViewName = "/Views/Modules/Pu/Part/CounterReading.cshtml";
+            ViewName = "/sites/rushydro/view/module/lk/PU/Part/CounterReading.cshtml";
             var model = _Repository.GetMeters(device);
 
             //var json = JsonConvert.SerializeObject(meters);
