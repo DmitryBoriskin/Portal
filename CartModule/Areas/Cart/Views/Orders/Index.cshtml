@@ -59,7 +59,7 @@
                                         @item.Date.ToString("dd.MM.yyyy")
                                     </td>
                                     <td><a href="/cart/orders/item/@item.Id">@("OR" + item.Number.ToString())</a></td>
-                                    <td>Заказ @("№"+ item.Number.ToString()) от @item.Date.ToShortDateString()</td>
+                                    <td>Заказ @("№" + item.Number.ToString()) от @item.Date.ToShortDateString()</td>
                                     <td class="text-nowrap">@item.TotalSum.ToString("N2") <i class="fa fa-rouble"></i></td>
                                     <td><span class="label @status">@CartDictionary.OrderStatusDic.Where(s => s.Key == item.Status).ToString()).Select(s => s.Value).SingleOrDefault()</span></td>
                                 </tr>
@@ -72,7 +72,7 @@
             }
             else
             {
-              <div class="noItems">Нет данных</div>
+                <div class="noItems">Нет данных</div>
             }
         </div>
         <!-- /.box-body -->
@@ -83,3 +83,12 @@
     </div>
 
 </div>
+
+@section Styles{
+    <link href="~/Views/Modules/Cart/css/styles.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/Views/Modules/Cart/js/script.js"></script>
+}
+
+

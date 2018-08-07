@@ -1,5 +1,5 @@
 ﻿@using CartModule.Areas.Cart.Models
-@{ 
+@{
     Layout = ViewBag.Layout;
 }
 
@@ -38,15 +38,15 @@
                                 <tbody>
                                     @foreach (var item in Model.List)
                                     {
-                                    decimal amountSum = (decimal)item.Amount * item.Price;
-                                    <tr>
-                                        <td>@item.Number</td>
-                                        <td><a href="/cart/products/item/@item.Id">@item.Title</a></td>
-                                        <td class="text-nowrap"><input type="hidden" class="js_cart-itemPrice-span" value="@item.Price.ToString("N2")" />@item.Price.ToString("N2") <i class="fa fa-rouble"></i></td>
-                                        <td><input type="number" value="@item.Amount" class="form-control js_cart-itemAmount-input" data-product-id="@item.ProductId" min="1" /></td>
-                                        <td class="text-nowrap"><span class="js_cart-itemAmountSum-span">@amountSum.ToString("N2")</span> <i class="fa fa-rouble"></i></td>
-                                        <td><a class="cart-itemDelete-link js_cart-itemDelete-link" data-product-id="@item.ProductId"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
+                                        decimal amountSum = (decimal)item.Amount * item.Price;
+                                        <tr>
+                                            <td>@item.Number</td>
+                                            <td><a href="/cart/products/item/@item.Id">@item.Title</a></td>
+                                            <td class="text-nowrap"><input type="hidden" class="js_cart-itemPrice-span" value="@item.Price.ToString("N2")" />@item.Price.ToString("N2") <i class="fa fa-rouble"></i></td>
+                                            <td><input type="number" value="@item.Amount" class="form-control js_cart-itemAmount-input" data-product-id="@item.ProductId" min="1" /></td>
+                                            <td class="text-nowrap"><span class="js_cart-itemAmountSum-span">@amountSum.ToString("N2")</span> <i class="fa fa-rouble"></i></td>
+                                            <td><a class="cart-itemDelete-link js_cart-itemDelete-link" data-product-id="@item.ProductId"><i class="fa fa-trash-o"></i></a></td>
+                                        </tr>
                                     }
                                     <tr>
                                         <td colspan="4"><b>Итого:</b></td>
@@ -85,3 +85,10 @@
         </div>
     }
 </div>
+
+@section Styles{
+    <link href="~/sites/rushydro/view/module/cart/css/styles.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/sites/rushydro/view/module/cart/js/script.js"></script>
+}

@@ -774,6 +774,11 @@
     <Content Include="sites\rushydro\img\logo_account.png" />
     <Content Include="sites\rushydro\img\slider_bg.png" />
     <Content Include="sites\rushydro\js\main.js" />
+    <Content Include="sites\rushydro\view\module\cart\css\style.css" />
+    <Content Include="sites\rushydro\view\module\cart\css\styles.css" />
+    <Content Include="sites\rushydro\view\module\cart\css\styles.min.css" />
+    <Content Include="sites\rushydro\view\module\cart\img\default-50x50.gif" />
+    <Content Include="sites\rushydro\view\module\cart\js\script.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1149,6 +1154,7 @@
     <Content Include="sites\rushydro\view\module\cart\Products\Item.cshtml" />
     <Content Include="sites\rushydro\view\module\cart\Products\List.cshtml" />
     <Content Include="sites\rushydro\view\module\cart\Products\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\css\styles.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

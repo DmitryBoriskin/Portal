@@ -23,6 +23,8 @@
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/template/css/skin.css" rel="stylesheet" />
 
+    @RenderSection("Styles", false)
+
     <!-- jQuery 2.1.4 -->
     <script src="~/Content/plugins/jquery/jquery.js"></script>
     <script src="~/Content/plugins/jquery/jquery.cookie.js"></script>
@@ -135,6 +137,7 @@
     <script src="~/Content/template/js/app.min.js"></script>
     <script src="~/Content/template/js/demo.js"></script>
     <script src="~/Scripts/main.js"></script>
-    @RenderSection("scripts", false)
+
+    @RenderSection("Scripts", false)
 </body>
 </html>
