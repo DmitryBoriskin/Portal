@@ -1,0 +1,58 @@
+﻿@using LkModule.Areas.Lk.Models
+@using PgDbase.entity
+
+@model MeterModel[]
+
+<table class="table table-striped table-condensed topIndent-20">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Период</th>
+            <th>Источник</th>
+            <th title="Измеряемый показатель">Изм.показ.</th>
+            <th title="Тарифная зона">Тар.зона</th>
+            <th title="Текущее показание">Показание</th>
+            <th titlе="Дополнительное потребление">Доп.потреб.</th>
+            <th>Пред.показ.</th>
+            <th>Расход</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Date.ToString("dd.MM.yyyy")
+                </td>
+                <td>
+                    @(item.Year)/@(item.Month)
+                </td>
+                <td>
+                    @item.DeliveryMethod
+                </td>
+                <td title="@item.EnergyTypeName">
+                    @item.EnergyType
+                </td>
+                <td>
+                    @item.TimeZone
+                </td>
+                <td>
+                    @item.Value.ToString("N5")
+                </td>
+                <td>
+                    @(item.Const.HasValue? item.Const.Value.ToString("N5"): "")
+                </td>
+                <td>
+                    @(item.DatePrev.HasValue? item.DatePrev.Value.ToString("dd.MM.yyyy"): "")
+                </td>
+                <td>
+                    @if (item.Quantity.HasValue)
+                    {
+                        <span>@item.Quantity.Value.ToString("N5")</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

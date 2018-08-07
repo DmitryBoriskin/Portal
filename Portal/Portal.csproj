@@ -1121,12 +1121,29 @@
     <Content Include="sites\rushydro\css\rushydro.less" />
     <Content Include="sites\rushydro\view\partial\mainmenu.cshtml" />
     <Content Include="sites\rushydro\view\Main.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\StatisticWidget.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\SubscrList.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\SubscrBlance.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\StatisticWidget\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\SubscrWidget\SubscrList.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\SubscrWidget\Bаlance.cshtml" />
     <Content Include="sites\rushydro\view\module\page\childlist2col.cshtml" />
     <Content Include="sites\rushydro\view\_LayoutWelcome.cshtml" />
     <Content Include="sites\rushydro\css\site_login.less" />
+    <Content Include="sites\rushydro\view\module\lk\Accruals\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Accruals\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Accruals\Payed.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Meters\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Meters\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Payments\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Payments\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\CounterReading.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\History.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\HistoryFilter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\Integral.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\Interval.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\ReadingsFilter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Statistics\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\Statistics\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\SubscrInfo\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1136,6 +1153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="sites\rushydro\view\module\lk\Shared\" />
     <Folder Include="Views\Distributor\" />
     <Folder Include="Views\Layout\" />
     <Folder Include="Views\PageWidget\" />
