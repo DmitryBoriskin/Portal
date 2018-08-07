@@ -179,15 +179,15 @@ body {
   line-height: 76px;
   margin-bottom: 4px;
 }
-.index_with ul {
+.index_with ul:not(.pagination) {
   padding-left: 0;
 }
-.index_with ul > li {
+.index_with ul:not(.pagination) > li {
   list-style-type: none;
   display: flex;
   margin-bottom: 20px;
 }
-.index_with ul > li:before {
+.index_with ul:not(.pagination) > li:before {
   content: '—';
   padding-right: 18px;
   color: #0039a6;

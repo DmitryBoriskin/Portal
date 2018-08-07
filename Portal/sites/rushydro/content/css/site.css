@@ -73,7 +73,8 @@ padding:0 20px;
 .block__shadow {
     box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.1);
 }
-#indicators_period {
+/*#indicators_period*/ 
+.data_period {
     padding-left: 30px;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAALVBMVEUAAACampqampqampqampqampqampqampqampqampqampqampqampqampqampqSWl1iAAAADnRSTlMAESIzRGZ3iJmqu8zd7gKjCLQAAABhSURBVHgBdc0xEsMgEENRUNhFBqH7HzfEQ+HC+QWa17BlV2fut1/lBhBWRZEB1D1Oiw652fy5zbzcOeNYSXtl6vjRqzk8uUweI+4FjiUvLevff580IbdxnN0j5PF6L/ksvu43CRXcxbIXAAAAAElFTkSuQmCC);
     background-repeat: no-repeat;
@@ -82,5 +83,5 @@ padding:0 20px;
     padding-top: 12px;
     padding-bottom: 13px;
     height: 44px;
-    display:inline-block;
+    display: inline-block;
 }
