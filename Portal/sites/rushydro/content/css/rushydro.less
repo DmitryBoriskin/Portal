@@ -245,10 +245,19 @@ body{
         }
     }
 }
+.index_with {
+    ul {        
+            &.pagination, &.nav-tabs {
+                li:before{
+                    display:none;
+                }
+            }
+        }
+}
 
 
 .index_with {
-    ul:not(.pagination) {
+    ul{
         padding-left: 0;
 
         & > li {

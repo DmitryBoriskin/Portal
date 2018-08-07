@@ -755,8 +755,12 @@
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\popUp_script.js" />
     <Content Include="Scripts\uc_script.js" />
-    <Content Include="sites\rushydro\content\css\rushydro.css" />
-    <Content Include="sites\rushydro\content\css\rushydro.min.css" />
+    <Content Include="sites\rushydro\content\css\rushydro.css">
+      <DependentUpon>rushydro.less</DependentUpon>
+    </Content>
+    <Content Include="sites\rushydro\content\css\rushydro.min.css">
+      <DependentUpon>rushydro.css</DependentUpon>
+    </Content>
     <Content Include="sites\rushydro\content\css\site.css" />
     <Content Include="sites\rushydro\content\css\site_login.css" />
     <Content Include="sites\rushydro\content\css\site_login.min.css" />
@@ -772,12 +776,6 @@
     <Content Include="sites\rushydro\content\module\cart\img\mastercard.png" />
     <Content Include="sites\rushydro\content\module\cart\img\visa.png" />
     <Content Include="sites\rushydro\content\module\cart\js\script.js" />
-    <Content Include="sites\rushydro\css\rushydro.css">
-      <DependentUpon>rushydro.less</DependentUpon>
-    </Content>
-    <Content Include="sites\rushydro\content\css\rushydro.min.css">
-      <DependentUpon>rushydro.css</DependentUpon>
-    </Content>
     <Content Include="sites\rushydro\content\css\site.css" />
     <Content Include="sites\rushydro\content\css\site_login.css" />
     <Content Include="sites\rushydro\content\css\site_login.min.css" />
@@ -1175,6 +1173,7 @@
     <Content Include="sites\rushydro\content\css\rushydro.less" />
     <Content Include="sites\rushydro\content\css\site_login.less" />
     <Content Include="sites\rushydro\content\module\cart\css\styles.less" />
+    <Content Include="sites\rushydro\view\module\cart\Orders\Cart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
