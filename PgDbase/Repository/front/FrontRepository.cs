@@ -308,41 +308,41 @@ namespace PgDbase.Repository.front
         /// <returns></returns>
         public List<PageModel> GetPageGroup(string Alias)
         {
-            using (var db = new CMSdb(_context))
+            try
             {
-                var q = db.core_page_groups.Where(w => w.f_site == _siteId && w.c_alias == Alias)
-                          .Join(db.core_page_group_links, n => n.id, m => m.f_page_group, (n, m) => m)
-                          .Join(db.core_pages, e => e.f_page, o => o.gid, (e, o) => new { e, o });
-
-
-
-                if (q.Any())
+                using (var db = new CMSdb(_context))
                 {
+                    var q = db.core_sv_page_list_group.Where(w => w.f_site == _siteId && w.groupalias == Alias);
 
-                    var data = q.OrderBy(o => o.e.n_sort)
-                              .Select(s => new PageModel { }).ToList();
-
-                    return q.OrderBy(o => o.e.n_sort)
+                    //if (q.Any())
+                    //{
+                    return q.OrderBy(o => o.n_sort)
                             .Select(s => new PageModel
                             {
-                                Name = s.o.c_name,
-                                //Url = (String.IsNullOrEmpty(s.o.c_url)) ? "/page" + s.o.c_path + s.o.c_alias : s.o.c_url,
-                                //url заполняется по следующей логике:
-                                //-если есть значение c_url то оно
-                                //иначе-если элементу неприсвоен контроллер, то возвращает "/page" + s.o.c_path + s.o.c_alias
-                                //       иначе возвращается путь определенный его контроллером
-                                Url = ((!String.IsNullOrEmpty(s.o.c_url)) ? s.o.c_url
+                                Name = s.c_name,
+                                Childrens = (s.gid!=null)?GetChildMenu((Guid)s.gid):null,                                
+                                ////url заполняется по следующей логике:
+                                ////-если есть значение c_url то оно
+                                ////иначе-если элементу неприсвоен контроллер, то возвращает "/page" + s.o.c_path + s.o.c_alias
+                                ////       иначе возвращается путь определенный его контроллером
+                                Url = ((!String.IsNullOrEmpty(s.c_url)) ? s.c_url
                                                              :
-                                                             (s.o.f_sites_controller == null) ? "/page" + s.o.c_path + s.o.c_alias
-                                                                                : (from u in db.core_controllers where u.id == s.o.f_sites_controller select "/"+u.c_controller_name+((u.c_action_name.ToLower() == "index") ? "": "/" + u.c_action_name)).FirstOrDefault()
-                                                             
-                                                             ).ToLower(),
-                                FaIcon = s.o.c_fa_icon,
-                                Childrens = GetChildMenu(s.o.gid)
+                                                             (s.f_sites_controller == null) ? "/page" + s.c_path + s.c_alias
+                                                                                : (from u in db.core_controllers where u.id == s.f_sites_controller select "/" + u.c_controller_name + ((u.c_action_name.ToLower() == "index") ? "" : "/" + u.c_action_name)).FirstOrDefault()
+
+                                                             ),
+
                             }).ToList();
+                    //}
+                    //return null;
                 }
-                return null;
             }
+            catch(Exception e)
+            {
+                var t = e.Message;
+            }
+            return null;
+           
         }
 
         #endregion
