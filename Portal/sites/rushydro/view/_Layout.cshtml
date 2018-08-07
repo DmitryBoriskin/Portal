@@ -30,28 +30,21 @@
 <body>
     <div class="menu">
 
-        <!-- Классы navbar и navbar-default -->
-        <nav class="navbar">
-            <!-- Контейнер -->
-            <div class="container-fluid">
-                <!-- Заголовок -->
-                <div class="navbar-header">
-                    <!-- Кнопка «Гамбургер» -->
+        
+        <nav class="navbar">        
+            <div class="container-fluid">        
+                <div class="navbar-header">                    
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-main" aria-expanded="false">
                         <span class=sr-only>Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>
-                    <!-- Бренд или название сайта -->
+                    </button>                    
                     <a id="logo" class="navbar-brand" href="/">
                         <img src="~/sites/rushydro/img/logo.png" alt="" />
                     </a>
                 </div>
-                <!-- Основная часть меню -->
-                @{ Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl }); }
-                
-
+                @{ Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl }); }                
             </div>
         </nav>
 
@@ -60,9 +53,52 @@
     <div class="container-fluid">
 
 
+
+        <div class="row">
+            <div class="index">
+                <div class="index_right_dop visible-md visible-lg"></div>
+                <div id="index_right" class="index_right visible-md visible-lg">
+
+                    <div class="mgr index_padd">
+                        <div class="mgr_spec">Персональный менеджер</div>
+                        <div class="mgr_name">Константинопольская Надежда</div>
+                        <div class="mgr_btn">
+                            <a href="/messages" class="btn btn_border btn_border__blue">написать обращение</a>
+                            <a href="#" class="btn btn_border btn_border__blue">заказать звонок</a>
+                        </div>
+                    </div>
+
+
+                    @{
+                        try
+                        {
+                            Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
+                        }
+                        catch (Exception ex)
+                        {
+                            //Log ex
+                        }
+                    }
+
+
+                </div>
+
+                <div class="index_with ">
+
+                    @RenderBody()
+
+
+
+                </div>
+            </div>
+        </div>
+
+
         
-        
-        @RenderBody()
+
+
+
+
     </div>
 </body>
 </html>
