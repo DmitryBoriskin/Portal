@@ -22,7 +22,7 @@ namespace LkModule.Areas.Lk.Models
         /// <summary>
         ///  Начисления Список 
         /// </summary>
-        public List<AccrualModel> Accruals { get; set; }
+        public List<InvoiceModel> Accruals { get; set; }
 
         /// <summary>
         /// Начисления json
@@ -32,7 +32,7 @@ namespace LkModule.Areas.Lk.Models
         /// <summary>
         ///  Потребление Список 
         /// </summary>
-        public List<AccrualModel> Consumption { get; set; }
+        public List<InvoiceModel> Consumption { get; set; }
 
 
         /// <summary>

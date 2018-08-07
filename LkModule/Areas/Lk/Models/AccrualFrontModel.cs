@@ -11,7 +11,7 @@ namespace LkModule.Areas.Lk.Models
         /// <summary>
         /// Список 
         /// </summary>
-        public Paged<AccrualModel> List { get; set; }
+        public Paged<InvoiceModel> List { get; set; }
 
     }
 

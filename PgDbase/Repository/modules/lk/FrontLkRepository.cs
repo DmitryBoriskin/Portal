@@ -40,7 +40,7 @@ namespace PgDbase.Repository.front
                 {
                     var text = filter.SearchText.ToLower();
                     query = query.Where(w => w.c_name.ToLower().Contains(text)
-                                                      || w.c_subscr.Contains(text));
+                                                      || w.n_subscr.ToString().Contains(text));
                 }
 
                 query = query.OrderBy(o => new { o.c_name});
@@ -53,7 +53,7 @@ namespace PgDbase.Repository.front
                     .Select(s => new SubscrModel
                     {
                         Id = s.id,
-                        Subscr = s.c_subscr,
+                        Subscr = s.n_subscr,
                         Name = s.c_name
                     }).ToArray();
 
@@ -84,7 +84,7 @@ namespace PgDbase.Repository.front
                     .Select(s => new SubscrModel
                     {
                         Id = s.id,
-                        Subscr = s.c_subscr,
+                        Subscr = s.n_subscr,
                         Link = s.link,
                         Inn = s.c_inn,
                         Kpp = s.c_kpp,
@@ -102,10 +102,8 @@ namespace PgDbase.Repository.front
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
-                            Dep = s.c_bank_dep,
                             Bik = s.c_bank_bik,
                             Inn = s.c_bank_inn,
-                            Ks = s.c_bank_ks,
                             Rs = s.c_bank_rs
                         }
                     })
@@ -153,7 +151,7 @@ namespace PgDbase.Repository.front
                     return query.Select(s => new SubscrModel
                     {
                         Id = s.id,
-                        Subscr = s.c_subscr,
+                        Subscr = s.n_subscr,
                         Link = s.link,
                         Ee = s.b_ee,
                         Inn = s.c_inn,
@@ -172,10 +170,8 @@ namespace PgDbase.Repository.front
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
-                            Dep = s.c_bank_dep,
                             Bik = s.c_bank_bik,
                             Inn = s.c_bank_inn,
-                            Ks = s.c_bank_ks,
                             Rs = s.c_bank_rs
                         }
 
@@ -200,7 +196,7 @@ namespace PgDbase.Repository.front
                 return query.Select(s => new SubscrShortModel
                 {
                     Id = s.subscruid,
-                    SubscrId = s.subscrid,
+                    SubscrId = (long)s.subscrid,
                     Name = s.subscrname,
                     Default = s.subscrdefault,
                     Disabled = s.subscrdisabled,
@@ -265,14 +261,14 @@ namespace PgDbase.Repository.front
         //        using (var tran = db.BeginTransaction())
         //        {
         //            var dbSubscr = db.lk_subscrs
-        //              .Where(s => s.id == item.Id || s.c_subscr == item.Subscr);
+        //              .Where(s => s.id == item.Id || s.n_subscr == item.Subscr);
 
         //            if (!dbSubscr.Any())
         //            {
         //                var subscr = new lk_subscrs()
         //                {
         //                    id = item.Id,
-        //                    c_subscr = item.Subscr,
+        //                    n_subscr = item.Subscr,
 
         //                    b_disabled = item.Disabled,
         //                    b_ee = item.Ee,
@@ -358,7 +354,7 @@ namespace PgDbase.Repository.front
         //            {
         //                var subscr = dbSubscr.Single();
 
-        //                subscr.c_subscr = item.Subscr;
+        //                subscr.n_subscr = item.Subscr;
 
         //                subscr.b_disabled = item.Disabled;
         //                subscr.b_ee = item.Ee;
@@ -831,12 +827,12 @@ namespace PgDbase.Repository.front
         /// </summary>
         /// <param name="subscr"></param>
         /// <returns></returns>
-        public Paged<AccrualModel> GetAccruals(Guid subscr, LkFilter filter)
+        public Paged<InvoiceModel> GetAccruals(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<AccrualModel> result = new Paged<AccrualModel>();
-                var query = db.lk_accruals
+                Paged<InvoiceModel> result = new Paged<InvoiceModel>();
+                var query = db.lk_invoices
                     .Where(w => w.f_subscr == subscr);
 
                 if (filter.Payed.HasValue)
@@ -859,7 +855,7 @@ namespace PgDbase.Repository.front
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new AccrualModel
+                    .Select(s => new InvoiceModel
                     {
                         Id = s.id,
                         Date = s.d_date,
@@ -872,13 +868,13 @@ namespace PgDbase.Repository.front
                         Cons = s.n_cons,
                         Quantity = s.n_quantity,
                         Quantity2 = s.n_quantity2,
-                        DebtType = s.c_debt,
-                        DocType = s.c_doctype,
-                        PaymentId = s.n_payment
+                        //DebtType = s.c_debt,
+                        //DocType = s.c_doctype,
+                        //PaymentId = s.n_payment
                     })
                     .ToArray();
 
-                return new Paged<AccrualModel>
+                return new Paged<InvoiceModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -900,7 +896,7 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                return db.lk_accruals
+                return db.lk_invoices
                     .Where(w => w.id == id)
                     .Select(s => s.f_subscr)
                     .SingleOrDefault();
@@ -926,7 +922,7 @@ namespace PgDbase.Repository.front
                     .Where(w => w.f_subscr == subscr);
 
               
-                query = query.OrderByDescending(o => o.d_install);
+                query = query.OrderByDescending(o => o.d_setup);
                 int itemsCount = query.Count();
 
                 var list = query
@@ -937,10 +933,10 @@ namespace PgDbase.Repository.front
                         Number = s.c_number,
                         Name = s.c_name,
                         InstallPlace = s.c_install_place,
-                        InstallDate = s.d_install,
+                        InstallDate = s.d_setup,
                         CheckDate = s.d_check,
-                        Tariff = s.n_tariff,
-                        Multiplier = s.n_factor,
+                        //Tariff = s.n_tariff,
+                        Multiplier = s.n_rate,
                         DeviceInfo = (s.f_device != null) ?
                                 new DeviceModel()
                                 {
@@ -1002,7 +998,7 @@ namespace PgDbase.Repository.front
                         Days = s.n_days,
                         DeliveryMethod = s.c_delivery_method,
                         EnergyType = s.c_energytype,
-                        EnergyTypeName = s.c_energytype_name,
+                        //EnergyTypeName = s.c_energytype_name,
                         TimeZone = s.c_timezone,
 
 

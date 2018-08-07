@@ -15,7 +15,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Номер ID
         /// </summary>
-        public string SubscrId { get; set; }
+        public long? SubscrId { get; set; }
 
         /// <summary>
         /// Название лиц счета
@@ -81,7 +81,7 @@ namespace PgDbase.entity
         /// <summary>
         /// Номер
         /// </summary>
-        public string Subscr { get; set; }
+        public long Subscr { get; set; }
 
         /// <summary>
         /// Номер

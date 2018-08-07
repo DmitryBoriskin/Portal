@@ -11,11 +11,11 @@ namespace LkModule.Areas.Admin.Models
         /// <summary>
         /// Список
         /// </summary>
-        public Paged<AccrualModel> List { get; set; }
+        public Paged<InvoiceModel> List { get; set; }
 
         /// <summary>
         /// Единичная запись счёта
         /// </summary>
-        public AccrualModel Item { get; set; }
+        public InvoiceModel Item { get; set; }
     }
 }

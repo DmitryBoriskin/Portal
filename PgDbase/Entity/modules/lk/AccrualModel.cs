@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Выставленный счёт
     /// </summary>
-    public class AccrualModel
+    public class InvoiceModel
     {
         /// <summary>
         /// Идентификатор
