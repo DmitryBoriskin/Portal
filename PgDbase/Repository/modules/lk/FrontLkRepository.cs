@@ -81,6 +81,8 @@ namespace PgDbase.Repository.front
             {
                 return db.lk_subscrs
                     .Where(w => w.id == id)
+                    .Where(w => w.f_site == _siteId)
+                    .Where(w => w.b_disabled == false)
                     .Select(s => new SubscrModel
                     {
                         Id = s.id,
@@ -89,16 +91,26 @@ namespace PgDbase.Repository.front
                         Inn = s.c_inn,
                         Kpp = s.c_kpp,
                         Ee = s.b_ee,
+                        //Default = s.fkusersubscrs.Where(p => p.b_default == true).Any() ? true : false,
                         Name = s.c_name,
+                        NameShort = s.c_name_short,
+                        Department = s.f_department,
                         Address = s.c_address,
                         PostAddress = s.c_post_address,
                         Phone = s.c_phone,
                         Email = s.c_email,
-                        Department = s.f_department,
-                        Contract = s.c_contract,
-                        ContractDate = s.d_contract_date,
+                        Fax = s.c_fax,
+                        Site = s.c_site,
+
                         Begin = s.d_contract_begin,
                         End = s.d_contract_end,
+
+                        ContractLink = s.n_contract,
+                        Contract = s.c_contract,
+                        ContractDate = s.d_contract_date,
+                        ContractBegin = s.d_contract_begin,
+                        ContractEnd = s.d_contract_end,
+
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
@@ -145,6 +157,7 @@ namespace PgDbase.Repository.front
             {
                 var query = db.lk_user_subscrs
                                .Where(w => w.f_user == userId && w.b_default == true)
+                               .Where(w => w.fkusersubscrssubscr.f_site == _siteId && w.fkusersubscrssubscr.b_disabled == false)
                                .Join(db.lk_subscrs, u => u.f_subscr, s => s.id, (u, s) => s);
                 if (query.Any())
                 {
@@ -153,20 +166,29 @@ namespace PgDbase.Repository.front
                         Id = s.id,
                         Subscr = s.n_subscr,
                         Link = s.link,
-                        Ee = s.b_ee,
                         Inn = s.c_inn,
                         Kpp = s.c_kpp,
+                        Ee = s.b_ee,
                         Default = true,
                         Name = s.c_name,
+                        NameShort = s.c_name_short,
+                        Department = s.f_department,
                         Address = s.c_address,
                         PostAddress = s.c_post_address,
                         Phone = s.c_phone,
                         Email = s.c_email,
-                        Department = s.f_department,
-                        Contract = s.c_contract,
-                        ContractDate = s.d_contract_date,
+                        Fax = s.c_fax,
+                        Site = s.c_site,
+
                         Begin = s.d_contract_begin,
                         End = s.d_contract_end,
+
+                        ContractLink = s.n_contract,
+                        Contract = s.c_contract,
+                        ContractDate = s.d_contract_date,
+                        ContractBegin = s.d_contract_begin,
+                        ContractEnd = s.d_contract_end,
+
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
@@ -252,351 +274,6 @@ namespace PgDbase.Repository.front
                 }
             }
         }
-
-
-        ///// <summary>
-        ///// Создаёт лицевой счёт
-        ///// </summary>
-        ///// <param name="item"></param>
-        ///// <returns></returns>
-        //public bool InsertSubscr(SubscrModel item)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var tran = db.BeginTransaction())
-        //        {
-        //            var dbSubscr = db.lk_subscrs
-        //              .Where(s => s.id == item.Id || s.n_subscr == item.Subscr);
-
-        //            if (!dbSubscr.Any())
-        //            {
-        //                var subscr = new lk_subscrs()
-        //                {
-        //                    id = item.Id,
-        //                    n_subscr = item.Subscr,
-
-        //                    b_disabled = item.Disabled,
-        //                    b_ee = item.Ee,
-
-        //                    c_address = item.Address,
-        //                    c_post_address = item.PostAddress,
-
-        //                    c_contract = item.Contract,
-        //                    d_contract_date = item.ContractDate,
-        //                    d_begin = item.Begin,
-        //                    d_end = item.End,
-        //                    link = item.Link
-        //                };
-
-
-        //                if (item.Ee)
-        //                {
-        //                    subscr.c_org = item.OrgName;
-        //                    if (item.Bank != null)
-        //                    {
-        //                        subscr.c_bank_name = item.Bank.Name;
-        //                        subscr.c_bank_dep = item.Bank.Dep;
-        //                        subscr.c_bank_bik = item.Bank.Bik;
-        //                        subscr.c_bank_kpp = item.Bank.Kpp;
-        //                        subscr.c_bank_inn = item.Bank.Inn;
-        //                        subscr.c_bank_ks = item.Bank.Ks;
-        //                        subscr.c_bank_rs = item.Bank.Rs;
-        //                    };
-        //                }
-        //                else
-        //                {
-        //                    subscr.c_surname = item.Surname;
-        //                    subscr.c_name = item.Name;
-        //                    subscr.c_patronymic = item.Patronymic;
-        //                }
-
-
-        //                db.Insert(subscr);
-
-        //                var log = new LogModel
-        //                {
-        //                    PageId = item.Id,
-        //                    PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
-        //                    Section = LogModule.Subscrs,
-        //                    Action = LogAction.insert
-        //                };
-        //                InsertLog(log);
-
-        //                tran.Commit();
-        //                return true;
-
-        //            }
-
-        //            return false;
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Обновляет лицевой счёт
-        ///// </summary>
-        ///// <param name="item"></param>
-        ///// <returns></returns>
-        //public bool UpdateSubscr(SubscrModel item)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var tran = db.BeginTransaction())
-        //        {
-        //            var log = new LogModel
-        //            {
-        //                PageId = item.Id,
-        //                PageName = $"{item.Surname} {item.Name} {item.Patronymic}",
-        //                Section = LogModule.Subscrs,
-        //                Action = LogAction.update
-        //            };
-        //            InsertLog(log);
-
-        //            var dbSubscr = db.lk_subscrs
-        //                .Where(s => s.id == item.Id);
-
-        //            if (dbSubscr.Any())
-        //            {
-        //                var subscr = dbSubscr.Single();
-
-        //                subscr.n_subscr = item.Subscr;
-
-        //                subscr.b_disabled = item.Disabled;
-        //                subscr.b_ee = item.Ee;
-
-        //                if (item.Ee)
-        //                {
-        //                    subscr.c_org = item.OrgName;
-        //                }
-        //                else
-        //                {
-        //                    subscr.c_surname = item.Surname;
-        //                    subscr.c_name = item.Name;
-        //                    subscr.c_patronymic = item.Patronymic;
-        //                }
-
-        //                subscr.c_address = item.Address;
-        //                subscr.c_post_address = item.PostAddress;
-
-        //                subscr.c_contract = item.Contract;
-        //                subscr.d_contract_date = item.ContractDate;
-        //                subscr.d_begin = item.Begin;
-        //                subscr.d_end = item.End;
-        //                subscr.link = item.Link;
-
-        //                if (item.Ee && item.Bank != null)
-        //                {
-        //                    subscr.c_bank_name = item.Bank.Name;
-        //                    subscr.c_bank_dep = item.Bank.Dep;
-        //                    subscr.c_bank_bik = item.Bank.Bik;
-        //                    subscr.c_bank_kpp = item.Bank.Kpp;
-        //                    subscr.c_bank_inn = item.Bank.Inn;
-        //                    subscr.c_bank_ks = item.Bank.Ks;
-        //                    subscr.c_bank_rs = item.Bank.Rs;
-        //                }
-
-        //                db.Update(subscr);
-        //                tran.Commit();
-        //                return true;
-        //            }
-
-        //            return false;
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Прикрепляет лицевые счета к пользователю
-        ///// </summary>
-        ///// <param name="user"></param>
-        ///// <param name="subscrs"></param>
-        ///// <returns></returns>
-        //public bool AddUserSubscr(Guid user, Guid[] subscrs)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var tr = db.BeginTransaction())
-        //        {
-        //            try
-        //            {
-        //                var listExistsSubscrs = db.lk_user_subscrs
-        //                    .Where(w => w.f_user == user)
-        //                    .Select(s => new { s.f_subscr, s.b_default })
-        //                    .ToArray();
-
-        //                List<lk_user_subscrs> list = new List<lk_user_subscrs>();
-        //                int count = 0;
-        //                foreach (var subscr in subscrs)
-        //                {
-        //                    if (!listExistsSubscrs.Select(s => s.f_subscr).Contains(subscr))
-        //                    {
-        //                        list.Add(new lk_user_subscrs
-        //                        {
-        //                            f_user = user,
-        //                            f_subscr = subscr,
-        //                            d_attached = DateTime.Now,
-        //                            b_default = !listExistsSubscrs.Any(a => a.b_default) && count == 0
-        //                        });
-        //                        count++;
-        //                    }
-        //                }
-        //                db.BulkCopy(list);
-
-        //                tr.Commit();
-        //                return true;
-        //            }
-        //            catch
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Удаляет связь пользователя с ЛС
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <param name="user"></param>
-        ///// <returns></returns>
-        //public bool DropUserSubscr(Guid id, Guid user)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var tr = db.BeginTransaction())
-        //        {
-        //            var query = db.lk_user_subscrs
-        //                .Where(w => w.f_subscr == id)
-        //                .Where(w => w.f_user == user);
-
-        //            var link = query.SingleOrDefault();
-
-        //            bool result = query.Delete() > 0;
-
-        //            if (link.b_default)
-        //            {
-        //                var newDefault = db.lk_user_subscrs
-        //                    .Where(w => w.f_user == user)
-        //                    .FirstOrDefault();
-
-        //                if (newDefault != null)
-        //                {
-        //                    result = db.lk_user_subscrs
-        //                        .Where(w => w.f_user == user)
-        //                        .Where(w => w.f_subscr == newDefault.f_subscr)
-        //                        .Set(s => s.b_default, true)
-        //                        .Update() > 0;
-        //                }
-        //            }
-        //            tr.Commit();
-        //            return result;
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Выставляет дефолтный ЛС для пользователя
-        ///// </summary>
-        ///// <param name="subscr"></param>
-        ///// <param name="user"></param>
-        ///// <returns></returns>
-        //public bool SetDefaultUserSubscrLink(Guid subscr, Guid user)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var tr = db.BeginTransaction())
-        //        {
-        //            var query = db.lk_user_subscrs
-        //                .Where(w => w.f_user == user);
-
-        //            bool result = query
-        //                .Set(s => s.b_default, false)
-        //                .Update() > 0;
-
-        //            result = query
-        //                .Where(w => w.f_subscr == subscr)
-        //                .Set(s => s.b_default, true)
-        //                .Update() > 0;
-
-        //            tr.Commit();
-        //            return result;
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Возвращает список прикреплённых ЛС
-        ///// </summary>
-        ///// <param name="user"></param>
-        ///// <returns></returns>
-        //public SubscrModel[] GetSelectedSubscrs(Guid user)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        return db.lk_user_subscrs
-        //            .Where(w => w.f_user == user)
-        //            .OrderBy(o => o.d_attached)
-        //            .Select(s => new SubscrModel
-        //            {
-        //                Id = s.f_subscr,
-        //                Link = s.fkusersubscrssubscr.link,
-        //                Surname = s.fkusersubscrssubscr.c_surname,
-        //                Name = s.fkusersubscrssubscr.c_name,
-        //                Patronymic = s.fkusersubscrssubscr.c_patronymic,
-        //                Default = s.b_default
-        //            }).ToArray();
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Проверяет существование лицевого счёта
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        //public bool CheckSubscrExists(Guid id)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        return db.lk_subscrs
-        //            .Where(w => w.id == id).Any();
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Удаляет лицевой счёт
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        //public bool DeleteSubscr(Guid id)
-        //{
-        //    using (var db = new CMSdb(_context))
-        //    {
-        //        using (var tr = db.BeginTransaction())
-        //        {
-        //            var item = db.lk_subscrs
-        //                .Where(w => w.id == id)
-        //                .SingleOrDefault();
-
-        //            if (item != null)
-        //            {
-        //                var log = new LogModel
-        //                {
-        //                    PageId = id,
-        //                    PageName = $"{item.c_surname} {item.c_name} {item.c_patronymic}",
-        //                    Section = LogModule.Subscrs,
-        //                    Action = LogAction.delete
-        //                };
-
-        //                InsertLog(log, item);
-        //                db.Delete(item);
-        //                tr.Commit();
-        //                return true;
-        //            }
-
-        //            return false;
-        //        }
-        //    }
-        //}
 
         #endregion
 

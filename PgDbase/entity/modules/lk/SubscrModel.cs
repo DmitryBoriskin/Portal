@@ -73,20 +73,41 @@ namespace PgDbase.entity
     /// </summary>
     public class SubscrModel
     {
-        /// <summary>
+  
+       /// <summary>
         /// Идентификатор
         /// </summary>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Номер
+        /// Номер в ОМНИС
+        /// </summary>
+        public long Link { get; set; }
+
+        /// <summary>
+        /// Номер лицевого счета
         /// </summary>
         public long Subscr { get; set; }
 
         /// <summary>
-        /// Номер
+        /// дата открытия лс
         /// </summary>
-        public int Link { get; set; }
+        public DateTime? Begin { get; set; }
+
+        /// <summary>
+        /// дата закрытия лс
+        /// </summary>
+        public DateTime? End { get; set; }
+
+        /// <summary>
+        /// По умолчанию
+        /// </summary>
+        public bool Default { get; set; }
+
+        /// <summary>
+        /// Отделение
+        /// </summary>
+        public Guid Department { get; set; }
 
         /// <summary>
         /// Флаг Юрлица
@@ -109,6 +130,12 @@ namespace PgDbase.entity
         public string Name { get; set; }
 
         /// <summary>
+        /// Имя
+        /// </summary>
+        public string NameShort { get; set; }
+
+
+        /// <summary>
         /// Адрес юридический
         /// </summary>
         public string Address { get; set; }
@@ -129,34 +156,40 @@ namespace PgDbase.entity
         public string Email { get; set; }
 
         /// <summary>
-        /// По умолчанию
+        /// Fax
         /// </summary>
-        public bool Default { get; set; }
+        public string Fax { get; set; }
 
         /// <summary>
-        /// Номер договора
+        /// Сайт
+        /// </summary>
+        public string Site { get; set; }
+
+        /// <summary>
+        /// Линк договора в ОМНИСЕ
+        /// </summary>
+        public long? ContractLink { get; set; }
+
+        /// <summary>
+        /// Номер договора и пр названия
         /// </summary>
         public string Contract { get; set; }
+
+        /// <summary>
+        /// Действителен с
+        /// </summary>
+        public DateTime? ContractBegin { get; set; }
+
+        /// <summary>
+        /// Действителен по
+        /// </summary>
+        public DateTime? ContractEnd { get; set; }
 
         /// <summary>
         /// Дата заключения договора
         /// </summary>
         public DateTime? ContractDate { get; set; }
 
-        /// <summary>
-        /// Действителен с
-        /// </summary>
-        public DateTime? Begin { get; set; }
-
-        /// <summary>
-        /// Действителен по
-        /// </summary>
-        public DateTime? End { get; set; }
-
-        /// <summary>
-        /// Подразделение
-        /// </summary>
-        public Guid Department { get; set; }
 
         /// <summary>
         /// Банк
@@ -175,14 +208,9 @@ namespace PgDbase.entity
     public class BankModel
     {
         /// <summary>
-        /// Наименование
+        /// Наименование банка
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Код подразделения
-        /// </summary>
-        public string Dep { get; set; }
 
         /// <summary>
         /// БИК
@@ -194,10 +222,6 @@ namespace PgDbase.entity
         /// </summary>
         public string Inn { get; set; }
 
-        /// <summary>
-        /// Кор счет
-        /// </summary>
-        public string Ks { get; set; }
 
         /// <summary>
         /// Расчетный счет
@@ -205,6 +229,9 @@ namespace PgDbase.entity
         public string Rs { get; set; }
 
     }
+
+
+
 
     /// <summary>
     /// Настройки лицевого счета

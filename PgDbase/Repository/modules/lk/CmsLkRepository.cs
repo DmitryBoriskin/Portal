@@ -109,26 +109,34 @@ namespace PgDbase.Repository.cms
                         Id = s.id,
                         Subscr = s.n_subscr,
                         Link = s.link,
-                        Ee = s.b_ee,
                         Inn = s.c_inn,
                         Kpp = s.c_kpp,
+                        Ee = s.b_ee,
+                        Default = s.fkusersubscrs.Where(p => p.b_default == true).Any() ? true : false,
                         Name = s.c_name,
+                        NameShort = s.c_name_short,
+                        Department = s.f_department,
                         Address = s.c_address,
                         PostAddress = s.c_post_address,
                         Phone = s.c_phone,
                         Email = s.c_email,
-                        Department = s.f_department,
-                        Contract = s.c_contract,
-                        ContractDate = s.d_contract_date,
+                        Fax = s.c_fax,
+                        Site = s.c_site,
+
                         Begin = s.d_contract_begin,
                         End = s.d_contract_end,
+
+                        ContractLink = s.n_contract,
+                        Contract = s.c_contract,
+                        ContractDate = s.d_contract_date,
+                        ContractBegin = s.d_contract_begin,
+                        ContractEnd = s.d_contract_end,
+
                         Bank = new BankModel()
                         {
                             Name = s.c_bank_name,
-                            //Dep = s.c_bank_dep,
                             Bik = s.c_bank_bik,
                             Inn = s.c_bank_inn,
-                            //Ks = s.c_bank_ks,
                             Rs = s.c_bank_rs
                         }
                     })
