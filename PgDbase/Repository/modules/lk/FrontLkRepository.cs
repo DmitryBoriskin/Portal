@@ -192,23 +192,28 @@ namespace PgDbase.Repository.front
             {
                 var query = db.lk_cv_subscr_saldo
                         .Where(s => s.userid == userId && s.siteid == _siteId);
-
-                return query.Select(s => new SubscrShortModel
+                query = query.OrderBy(o => o.subscrname);
+                if (query.Any())
                 {
-                    Id = s.subscruid,
-                    SubscrId = (long)s.subscrid,
-                    Name = s.subscrname,
-                    Default = s.subscrdefault,
-                    Disabled = s.subscrdisabled,
-                    Date = s.d_date,
-                    Saldo = s.n_amount,
-                    Peni = s.n_peny,
-                    Percent = s.n_persent,
-                    LastPaymentDate = s.d_lastpayment_date,
-                    LastPaymentAmount = s.n_lastpayment_amount,
-                    LastPaymentLink = s.c_lastpayment_link
+                    return query.Select(s => new SubscrShortModel
+                    {
+                        Id = s.subscruid,
+                        SubscrId = (long)s.subscrid,
+                        Name = s.subscrname,
+                        Default = s.subscrdefault,
+                        Disabled = s.subscrdisabled,
+                        Date = s.d_date,
+                        Saldo = s.n_amount,
+                        Peni = s.n_peny,
+                        Percent = s.n_persent,
+                        LastPaymentDate = s.d_lastpayment_date,
+                        LastPaymentAmount = s.n_lastpayment_amount,
+                        LastPaymentLink = s.c_lastpayment_link
 
-                }).ToList();
+                    }).ToList();
+                }
+                return null;
+                
             }
         }
 
