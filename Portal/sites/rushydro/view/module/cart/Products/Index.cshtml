@@ -4,38 +4,41 @@
     Layout = ViewBag.Layout;
 }
 
-@Html.Partial("Partial/header")
+
 
 <div class="content">
-    @Html.Partial("/sites/rushydro/view/module/cart/Products/Part/Filter.cshtml")
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
+        @Html.Partial("/sites/rushydro/view/module/cart/Products/Part/Filter.cshtml")
 
 
-    @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
-    {
-        <div class="row">
-            @foreach (var item in Model.List.Items)
-            {
-                <div class="col-md-4">
-                    <a class="category category__white" href="/cart/products/list/@item.Id">
-                        <img class="category_img" src="@item.Icon" alt="@item.Title">
-                        <div class="category_info">
-                            <div class="category_info_text">@item.Title</div>
-                        </div>
-                    </a>
-                </div>
+        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+        {
+            <div class="row">
+                @foreach (var item in Model.List.Items)
+                {
+                    <div class="col-md-6">
+                        <a class="category category__gray" href="/cart/products/list/@item.Id">
+                            <img class="category_img" src="@item.Icon" alt="@item.Title">
+                            <div class="category_info">
+                                <div class="category_info_text">@item.Title</div>
+                            </div>
+                        </a>
+                    </div>
 
-            }
-        </div>
+                }
+            </div>
 
-        @Html.Partial("Partial/_pager", Model.List.Pager)
+            @Html.Partial("Partial/_pager", Model.List.Pager)
 
-    }
-    else
-    {
-        <div class="box invoice topIndent-20">
-            <div class="noItems">Нет данных</div>
-        </div>
-    }
+        }
+        else
+        {
+            <div class="box invoice topIndent-20">
+                <div class="noItems">Нет данных</div>
+            </div>
+        }
+    </div>    
 </div>
 @section Styles{
     <link href="~/sites/rushydro/content/module/cart/css/styles.min.css" rel="stylesheet">

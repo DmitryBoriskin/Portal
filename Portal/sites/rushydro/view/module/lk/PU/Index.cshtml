@@ -8,136 +8,135 @@
     Layout = ViewBag.Layout;
 }
 
-@Html.Partial("Partial/header")
 <div class="content">
-    <div class="filterByDateBlock">
-        <form role="form">
-            <div class="row">
-                <div class="col-xs-8 col-sm-6">
-                    <div class="form-group">
-                        <select id="deviceItem-select" class="form-control select2">
+
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
+
+
+        <div class="filterByDateBlock">
+            <form role="form">
+                <div class="row">
+                    <div class="col-xs-8 col-sm-6">
+                        <div class="form-group">
+                            <select id="deviceItem-select" class="form-control select2">
+                                @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+                                {
+                                    foreach (var item in Model.List.Items)
+                                    {
+                                        if (item.IsPu)
+                                        {
+                                            <option value="@item.Id">@item.Name (@item.Number)</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Показать</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Общая информация</a></li>
+                <li id="deviceMetersInfo-tab"><a href="#tab_2" data-toggle="tab" aria-expanded="false">Показания</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+
+                    @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+                    {
+                        foreach (var item in Model.List.Items)
+                        {
+                            if (item.IsPu)
+                            {
+                                <div id="meter_@item.Id" class="meterInfo topIndent-20 hidden">
+                                    <h3 class="box-title">Счетчик: @item.Name (@item.Number)</h3>
+                                    <div class="table-responsive">
+                                        <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue ? item.InstallDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                                        <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
+                                        <div class="li-desc"><span>Дата поверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                                        <br />
+                                        @if (item.DeviceInfo != null)
+                                        {
+                                            <div class="li-desc"><span>Марка:</span> @item.DeviceInfo.Name</div>
+                                            <div class="li-desc"><span>Разрядность:</span> @item.DeviceInfo.Modification</div>
+                                            <div class="li-desc"><span>Производитель:</span> @item.DeviceInfo.Manufactirer</div>
+                                            <div class="li-desc"><span>Вид:</span> @item.DeviceInfo.EnergyCategory</div>
+                                            <div class="li-desc"><span>Класс:</span> @item.DeviceInfo.PrecissionClass</div>
+                                            <div class="li-desc"><span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
+                                            <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory</div>
+                                            <div class="li-desc"><span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет")</div>
+
+                                            <br />
+                                            <div class="li-desc"><span>Тариф:</span> @item.DeviceInfo.Tariff</div>
+                                            <div class="li-desc"><span>Расчетный коэфициент:</span> @item.Multiplier.ToString("N2")</div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="noItems topIndent-20">Нет данных</div>
+
+                    }
+                </div>                
+                <div class="tab-pane device-meters" id="tab_2">
+                    <h3>Переданные показания</h3>
+                    @Html.Partial("/sites/rushydro/view/module/lk/PU/Part/ReadingsFilter.cshtml")
+                    <div id="deviceMetersData-block">
+                        <div class="noItems topIndent-20">Нет данных</div>
+                    </div>                    
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="box box-primary topIndent-20 collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Дополнительные учетные показатели</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+            </div>            
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
                             @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
                             {
                                 foreach (var item in Model.List.Items)
                                 {
-                                    if (item.IsPu)
+                                    if (!item.IsPu)
                                     {
-                                        <option value="@item.Id">@item.Name (@item.Number)</option>
+                                        <tr>
+                                            <td>@item.Name</td>
+                                        </tr>
                                     }
                                 }
                             }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-default">Показать</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+                        </tbody>
+                    </table>
+                </div>                
+            </div>            
+        </div>
     </div>
 
-    <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Общая информация</a></li>
-            <li id="deviceMetersInfo-tab"><a href="#tab_2" data-toggle="tab" aria-expanded="false">Показания</a></li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" id="tab_1">
 
-                @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
-                {
-                    foreach (var item in Model.List.Items)
-                    {
-                        if (item.IsPu)
-                        {
-                            <div id="meter_@item.Id" class="meterInfo topIndent-20 hidden">
-                                <h3 class="box-title">Счетчик: @item.Name (@item.Number)</h3>
-                                <div class="table-responsive">
-                                    <div class="li-desc"><span>Дата установки:</span> @(item.InstallDate.HasValue ? item.InstallDate.Value.ToString("dd.MM.yyyy") : "")</div>
-                                    <div class="li-desc"><span>Адресс установки:</span> @item.InstallPlace</div>
-                                    <div class="li-desc"><span>Дата поверки:</span> @(item.CheckDate.HasValue ? item.CheckDate.Value.ToString("dd.MM.yyyy") : "")</div>
-                                    <br />
-                                    @if (item.DeviceInfo != null)
-                                    {
-                                        <div class="li-desc"><span>Марка:</span> @item.DeviceInfo.Name</div>
-                                        <div class="li-desc"><span>Разрядность:</span> @item.DeviceInfo.Modification</div>
-                                        <div class="li-desc"><span>Производитель:</span> @item.DeviceInfo.Manufactirer</div>
-                                        <div class="li-desc"><span>Вид:</span> @item.DeviceInfo.EnergyCategory</div>
-                                        <div class="li-desc"><span>Класс:</span> @item.DeviceInfo.PrecissionClass</div>
-                                        <div class="li-desc"><span>Напряжение:</span> @item.DeviceInfo.VoltageNominal</div>
-                                        <div class="li-desc"><span>Тип:</span> @item.DeviceInfo.DeviceCategory</div>
-                                        <div class="li-desc"><span>Трехфазный:</span> @(item.DeviceInfo.Phase3 ? "да" : "нет")</div>
 
-                                        <br />
-                                        <div class="li-desc"><span>Тариф:</span> @item.DeviceInfo.Tariff</div>
-                                        <div class="li-desc"><span>Расчетный коэфициент:</span> @item.Multiplier.ToString("N2")</div>
-                                    }
-                                </div>
-                            </div>
-                        }
-                    }
-                }
-                else
-                {
-                    <div class="noItems topIndent-20">Нет данных</div>
-
-                }
-            </div>
-            <!-- /.tab-pane -->
-            <div class="tab-pane device-meters" id="tab_2">
-                <h3>Переданные показания</h3>
-                @Html.Partial("/sites/rushydro/view/module/lk/PU/Part/ReadingsFilter.cshtml")
-                <div id="deviceMetersData-block">
-                    <div class="noItems topIndent-20">Нет данных</div>
-                </div>
-                @*
-                    ajax data from page
-                    "/Views/Modules/Pu/Part/CounterReading.cshtml"
-                *@
-            </div>
-                      
-            <!-- /.tab-pane -->
-        </div>
-        <!-- /.tab-content -->
-    </div>
-
-    <div class="box box-primary topIndent-20 collapsed-box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Дополнительные учетные показатели</h3>
-
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-plus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <tbody>
-                        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
-                        {
-                            foreach (var item in Model.List.Items)
-                            {
-                                if (!item.IsPu)
-                                {
-                                    <tr>
-                                        <td>@item.Name</td>
-                                    </tr>
-                                }
-                            }
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.table-responsive -->
-        </div>
-        <!-- /.box-body -->
-    </div>
+    
 </div>
 
 @section Scripts {
