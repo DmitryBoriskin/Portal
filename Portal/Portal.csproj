@@ -768,6 +768,7 @@
     <Content Include="sites\rushydro\css\site_login.min.css">
       <DependentUpon>site_login.css</DependentUpon>
     </Content>
+    <Content Include="sites\rushydro\favicon.ico" />
     <Content Include="sites\rushydro\img\account_bg.png" />
     <Content Include="sites\rushydro\img\logo.png" />
     <Content Include="sites\rushydro\img\logo_bg.png" />

@@ -3,13 +3,14 @@
     font-family:Roboto;
     font-size:16px;
 }
-#logo{
-    background-image:url(/sites/rushydro/img/logo_bg.png);
-    background-position:center right;
+#logo {
+    background-image: url(/sites/rushydro/img/logo_bg.png);
+    background-position: center right;
+    padding: 12px 5px 5px;
 }
-#logo img{
-    padding:0 20px
-}
+    #logo img {
+        padding: 0 50px 0 24px;
+    }
 
 
 .menu .navbar {
