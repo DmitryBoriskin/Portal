@@ -768,7 +768,6 @@
     <Content Include="sites\rushydro\css\site_login.min.css">
       <DependentUpon>site_login.css</DependentUpon>
     </Content>
-    <Content Include="sites\rushydro\favicon.ico" />
     <Content Include="sites\rushydro\img\account_bg.png" />
     <Content Include="sites\rushydro\img\logo.png" />
     <Content Include="sites\rushydro\img\logo_bg.png" />
@@ -1124,7 +1123,6 @@
     <Content Include="Views\Shared\_LayoutWelcome.cshtml" />
     <Content Include="sites\rushydro\view\_Layout.cshtml" />
     <Content Include="sites\rushydro\view\web.config" />
-    <Content Include="sites\rushydro\css\rushydro.less" />
     <Content Include="sites\rushydro\view\partial\mainmenu.cshtml" />
     <Content Include="sites\rushydro\view\Main.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\StatisticWidget\Index.cshtml" />
@@ -1132,7 +1130,6 @@
     <Content Include="sites\rushydro\view\module\lk\SubscrWidget\Bаlance.cshtml" />
     <Content Include="sites\rushydro\view\module\page\childlist2col.cshtml" />
     <Content Include="sites\rushydro\view\_LayoutWelcome.cshtml" />
-    <Content Include="sites\rushydro\css\site_login.less" />
     <Content Include="sites\rushydro\view\module\lk\Invoices\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\Invoices\Part\Filter.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\Invoices\Payed.cshtml" />
@@ -1155,7 +1152,9 @@
     <Content Include="sites\rushydro\view\module\cart\Products\Item.cshtml" />
     <Content Include="sites\rushydro\view\module\cart\Products\List.cshtml" />
     <Content Include="sites\rushydro\view\module\cart\Products\Part\Filter.cshtml" />
-    <Content Include="sites\rushydro\view\module\cart\css\styles.less" />
+    <Content Include="sites\rushydro\content\css\rushydro.less" />
+    <Content Include="sites\rushydro\content\css\site_login.less" />
+    <Content Include="sites\rushydro\content\module\cart\css\styles.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
