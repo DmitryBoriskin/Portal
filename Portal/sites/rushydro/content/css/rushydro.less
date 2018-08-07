@@ -190,6 +190,14 @@ body{
         }
     }
 }
+.content {
+    .block {
+        &.block_padd {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+    }
+} 
 
 .block {
     &.block_white {
@@ -240,7 +248,7 @@ body{
 
 
 .index_with {
-    ul {
+    ul:not(.pagination) {
         padding-left: 0;
 
         & > li {
@@ -299,9 +307,9 @@ body{
                     color: #ca1717;
                 }
 
-                .table_price{
-                    font-size:22px;
-                    font-weight:300;
+                .table_price {
+                    font-size: 22px;
+                    font-weight: 300;
                 }
             }
         }
@@ -398,3 +406,18 @@ body{
 }
 
 /*#endregion */
+.payperiod {
+    .payperiod_key {
+        float: left;
+        font-size: 14px;
+        color: #999;
+        padding-right: 13px;    
+        margin-top: 12px;
+    }
+
+    .payperiod_val {
+        font-size: 26px;
+        font-weight: 300;
+        line-height: 47px;
+    }
+}

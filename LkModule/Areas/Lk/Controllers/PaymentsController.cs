@@ -50,6 +50,13 @@ namespace LkModule.Areas.Lk.Controllers
             mFilter.Status = ViewBag.Status = Request.Params["status"];
             mFilter.Type = ViewBag.Type = Request.Params["type"];
 
+            if (!mFilter.Date.HasValue && !mFilter.DateEnd.HasValue)
+            {
+                mFilter.Date = DateTime.Today.AddMonths(-6);
+                mFilter.DateEnd = DateTime.Today;
+            }
+
+
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
             if (userSubscr != null)

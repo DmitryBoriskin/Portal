@@ -4,7 +4,7 @@
     font-size:16px;
 }
 #logo {
-    background-image: url(/sites/rushydro/img/logo_bg.png);
+    background-image: url(/sites/rushydro/content/img/logo_bg.png);
     background-position: center right;
     padding: 12px 5px 5px;
 }
@@ -64,8 +64,8 @@ padding:0 20px;
 .navbar{
     margin-bottom:0;
 }
-.hydro_bg {
-    background-image: url(/sites/rushydro/content/img/slider_bg.png);
+.hydro_bg {    
+    background-image:url(/sites/rushydro/content/img/slider_bg.png);
     background-repeat: no-repeat;
     background-position: right bottom;
     padding-bottom: 65px;
@@ -73,7 +73,8 @@ padding:0 20px;
 .block__shadow {
     box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.1);
 }
-#indicators_period {
+/*#indicators_period*/ 
+.data_period {
     padding-left: 30px;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAMAAAAMCGV4AAAALVBMVEUAAACampqampqampqampqampqampqampqampqampqampqampqampqampqampqSWl1iAAAADnRSTlMAESIzRGZ3iJmqu8zd7gKjCLQAAABhSURBVHgBdc0xEsMgEENRUNhFBqH7HzfEQ+HC+QWa17BlV2fut1/lBhBWRZEB1D1Oiw652fy5zbzcOeNYSXtl6vjRqzk8uUweI+4FjiUvLevff580IbdxnN0j5PF6L/ksvu43CRXcxbIXAAAAAElFTkSuQmCC);
     background-repeat: no-repeat;
@@ -82,5 +83,5 @@ padding:0 20px;
     padding-top: 12px;
     padding-bottom: 13px;
     height: 44px;
-    display:inline-block;
+    display: inline-block;
 }

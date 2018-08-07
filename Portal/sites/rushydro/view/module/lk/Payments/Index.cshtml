@@ -3,41 +3,137 @@
 
 @{
     Layout = ViewBag.Layout;
+    var dateRange = "";
+    if (!string.IsNullOrEmpty(ViewBag.beginDate))
+    {
+        dateRange = ViewBag.beginDate;
+    }
+    if (!string.IsNullOrEmpty(ViewBag.endDate))
+    {
+        dateRange = dateRange + " - " + ViewBag.endDate;
+    }
 }
 
-@Html.Partial("Partial/header")
+
 
 <div class="content">
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
+        
+        <div class="filterByDateBlock">
+            <form role="form">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">                            
+                            <div class="input-group date">                               
+                                <input type="text" class="form-control pull-right data_period" id="filterDateRange-input" value="@dateRange">
+                                <input type="hidden" name="datestart" id="filterBeginDate-input" value="@ViewBag.beginDate">
+                                <input type="hidden" name="dateend" id="filterEndDate-input" value="@ViewBag.endDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="payperiod">
+                            <div class="payperiod_key">Итоги за выбранный период</div>
+                            <div class="payperiod_val">760 000 <span>₽</span></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    @Html.Partial("/Views/Modules/Payments/Part/Filter.cshtml")
-    <div class="invoice">
-        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
-        {
-            <table class="table table-striped table-condensed">
-                <tr>
-                    <th>Период</th>
-                    <th>Дата платежа</th>
-                    <th>Сумма</th>
-                    <th>Выставленный документ</th>
-                </tr>
-                @foreach (var item in Model.List.Items)
-                {
+        <script>
+    $('#filterDateRange-input').daterangepicker({
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": "Применить",
+            "cancelLabel": "Отмена",
+            "fromLabel": "С",
+            "toLabel": "По",
+            "customRangeLabel": "Custom",
+            "weekLabel": "Нед",
+            "daysOfWeek": [
+                "Вс",
+                "ПН",
+                "Вт",
+                "Ср",
+                "Чт",
+                "Пн",
+                "Сб"
+            ],
+            "monthNames": [
+                "Январь",
+                "Февраль",
+                "Март",
+                "Апрель",
+                "Май",
+                "Июнь",
+                "Июль",
+                "Август",
+                "Сентябрь",
+                "Октябрь",
+                "Ноябрь",
+                "Декабрь"
+            ],
+            "firstDay": 1
+        },
+        "opens": "right"
+    }, function (start, end, label) {
+        $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
+        $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))
+        console.log('range: ' + label);
+    });
+
+    $('#filterDateRange-input').on('apply.daterangepicker', function (ev, picker) {
+        $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
+        $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))
+            });
+
+            $('#filterDateRange-input').change(function () {
+                var olg = $(this).val();
+
+                var params = {
+                    datestart: $('#filterBeginDate-input').val(),
+                    dateend: $('#filterEndDate-input').val()
+                };
+                var str = jQuery.param(params);
+                location.href = UrlPage() + "?" + str;
+                alert(olg);
+            });
+
+        </script>
+
+
+
+        <div class="invoice">
+            @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+            {
+                <table class="table table-striped table-condensed">
                     <tr>
-                        <td>@item.Date.ToString("MM.yyyy")</td>
-                        <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                        <td>
-                            @(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")
-                        </td>
-                        <td><a href="#">#1234567</a></td>
+                        <th>Дата платежа</th>
+                        <th>Сумма</th>
+                        <th>Выставленный документ</th>
                     </tr>
-                }
-            </table>
+                    @foreach (var item in Model.List.Items)
+                {
+                        <tr>
+                            <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                @(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")
+                            </td>
+                            <td><a href="#">Счет</a></td>
+                        </tr>
+                    }
+                </table>
 
-            @Html.Partial("Partial/_pager", Model.List.Pager)
-        }
-        else
-        {
-            <div class="noItems">Нет данных</div>
-        }
+                @Html.Partial("Partial/_pager", Model.List.Pager)
+            }
+            else
+            {
+                <div class="noItems">Нет данных</div>
+            }
+        </div>
     </div>
+    
 </div>
