@@ -33,7 +33,12 @@
     }
 
     @{
-        Html.RenderAction("PageChild", "Widget", new { @area = "", @path = "/", @alias = "informaciya", @view = "~/sites/rushydro/view/module/page/childlist2col.cshtml", @url = ViewBag.ThisUrl });
+        try
+        {
+            Html.RenderAction("PageChild", "Widget", new { @area = "", @path = "/", @alias = "informaciya", @view = "~/sites/rushydro/view/module/page/childlist2col.cshtml", @url = ViewBag.ThisUrl });
+        }
+        catch { }
+
     }
 
     <div class="block block_white block_padd">

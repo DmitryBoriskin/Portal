@@ -45,7 +45,15 @@
                         <img src="~/sites/rushydro/img/logo.png" alt="" />
                     </a>
                 </div>
-                @{ Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl }); }
+                @{ 
+                    //try {
+                    Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "authorize", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl });
+                    //}
+                    //catch (Exception ex)
+                    //{
+
+                    //}
+                }
             </div>
         </nav>
 
