@@ -1,6 +1,9 @@
 ﻿@using CartModule.Areas.Cart.Models
 @model ProductFrontModel
 
+@{
+    Layout = ViewBag.Layout;
+}
 @Html.Partial("Partial/header")
 
 <link href="/Content/Modules/Cart/css/styles.css" rel="stylesheet">
@@ -102,7 +105,7 @@
 
                         <div class="item_cart">
                             <div class="pull-left">
-                                <input type="checkbox" id="product_@Model.Item.Id" data-product-id="@Model.Item.Id" class="iCheck js_order-product-chkbx"  @inCart/>
+                                <input type="checkbox" id="product_@Model.Item.Id" data-product-id="@Model.Item.Id" class="iCheck js_order-product-chkbx" @inCart />
                                 <label for="product_@Model.Item.Id">@chkbxlabel</label>
                             </div>
 
@@ -154,3 +157,9 @@
         </div>
     }
 </div>
+@section Styles{
+    <link href="~/sites/rushydro/view/module/cart/css/styles.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/sites/rushydro/view/module/cart/js/script.js"></script>
+}

@@ -1,6 +1,6 @@
 ﻿@using PgDbase.entity
 @using CartModule.Areas.Cart.Models
-@{ 
+@{
     Layout = ViewBag.Layout;
 }
 @model  OrderFrontModel
@@ -8,7 +8,7 @@
 @Html.Partial("Partial/header")
 
 <div class="content">
-    @Html.Partial("/Views/Modules/Cart/Orders/Part/Filter.cshtml")
+    @Html.Partial("/sites/rushydro/view/module/cart/Orders/Part/Filter.cshtml")
 
     <div class="box box-solid">
         <div class="box-header with-border">
@@ -61,7 +61,7 @@
                                         @item.Date.ToString("dd.MM.yyyy")
                                     </td>
                                     <td><a href="/cart/orders/item/@item.Id">@("OR" + item.Number.ToString())</a></td>
-                                    <td>Заказ @("№"+ item.Number.ToString()) от @item.Date.ToShortDateString()</td>
+                                    <td>Заказ @("№" + item.Number.ToString()) от @item.Date.ToShortDateString()</td>
                                     <td class="text-nowrap">@item.TotalSum.ToString("N2") <i class="fa fa-rouble"></i></td>
                                     <td><span class="label @status">@CartDictionary.OrderStatusDic.Where(s => s.Key == item.Status).ToString()).Select(s => s.Value).SingleOrDefault()</span></td>
                                 </tr>
@@ -74,7 +74,7 @@
             }
             else
             {
-              <div class="noItems">Нет данных</div>
+                <div class="noItems">Нет данных</div>
             }
         </div>
         <!-- /.box-body -->
@@ -85,3 +85,9 @@
     </div>
 
 </div>
+@section Styles{
+    <link href="~/sites/rushydro/view/module/cart/css/styles.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/sites/rushydro/view/module/cart/js/script.js"></script>
+}

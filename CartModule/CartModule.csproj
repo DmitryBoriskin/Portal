@@ -215,7 +215,7 @@
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Cart\Views\Products\*" "$(SolutionDir)Portal\Views\Modules\Cart\Products\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Cart\Views\Orders\*" "$(SolutionDir)Portal\Views\Modules\Cart\Orders\"
 
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Cart\Content\*" "$(SolutionDir)Portal\Content\Modules\Cart\"
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Cart\Content\*" "$(SolutionDir)Portal\Views\Modules\Cart\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

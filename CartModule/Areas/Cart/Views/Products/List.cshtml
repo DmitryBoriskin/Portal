@@ -1,17 +1,14 @@
 ﻿@using CartModule.Areas.Cart.Models
 @model ProductCategoryFrontModel
 
-<link href="/Content/Modules/Cart/css/styles.css" rel="stylesheet">
-<script src="/Content/Modules/Cart/js/script.js"></script>
-
 @Html.Partial("Partial/header")
-@{ 
+@{
     string inCart = "";
     string chkbxlabel = "Заказать";
 }
 
 <div class="content product_list topIndent-20">
- 
+
     <div class="box box-solid">
         <div class="box-header">
             <h3 class="box-title"><a href="#"><i class="fa fa-tags"></i> @Model.Item.Title</a></h3>
@@ -38,16 +35,16 @@
                         image = item.Images.Where(i => i.IsMain).First();
 
                     }
-                    if(File.Exists(image.Path))
+                    if (File.Exists(image.Path))
                     {
                         itemImagePath = image.Path;
                     }
-                    if(!string.IsNullOrEmpty(image.Title))
+                    if (!string.IsNullOrEmpty(image.Title))
                     {
                         itemImageTitle = image.Title;
                     }
                 }
-               
+
                 <div class="col-md-4 col-lg-3">
                     <div class="box box-solid product_item">
                         <div class="box-header with-border">
@@ -80,7 +77,7 @@
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
                             <div class="pull-left">
-                                @if(Model.InCart != null && Model.InCart.Count() > 0 && Model.InCart.Contains(item.Id))
+                                @if (Model.InCart != null && Model.InCart.Count() > 0 && Model.InCart.Contains(item.Id))
                                 {
                                     inCart = "checked";
                                     chkbxlabel = "В корзине";
@@ -110,3 +107,9 @@
         }
     </div>
 </div>
+@section Styles{
+    <link href="/Views/Modules/Cart/css/styles.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="/Views/Modules/Cart/js/script.js"></script>
+}

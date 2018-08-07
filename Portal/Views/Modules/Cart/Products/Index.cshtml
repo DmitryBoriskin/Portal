@@ -12,14 +12,14 @@
         <div class="row">
             @foreach (var item in Model.List.Items)
             {
-            <div class="col-md-4">
-                <a class="block block__white" href="/cart/products/list/@item.Id">
-                    <img class="block_img" src="@item.Icon" alt="@item.Title">
-                    <div class="block_info">
-                        <div class="block_info_text">@item.Title</div>
-                    </div>
-                </a>
-            </div>
+                <div class="col-md-4">
+                    <a class="block block__white" href="/cart/products/list/@item.Id">
+                        <img class="block_img" src="@item.Icon" alt="@item.Title">
+                        <div class="block_info">
+                            <div class="block_info_text">@item.Title</div>
+                        </div>
+                    </a>
+                </div>
 
             }
         </div>
@@ -34,3 +34,9 @@
         </div>
     }
 </div>
+@section Styles{
+    <link href="/Views/Modules/Cart/css/styles.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="/Views/Modules/Cart/js/script.js"></script>
+}

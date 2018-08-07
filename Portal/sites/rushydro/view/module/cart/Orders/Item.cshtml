@@ -6,6 +6,7 @@
 
 @model  OrderFrontModel
 @{
+    Layout = ViewBag.Layout;
     var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
     var user = manager.FindById(User.Identity.GetUserId());
 }
@@ -225,3 +226,9 @@
         </div>
     }
 </div>
+@section Styles{
+    <link href="~/sites/rushydro/view/module/cart/css/styles.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/sites/rushydro/view/module/cart/js/script.js"></script>
+}

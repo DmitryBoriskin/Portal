@@ -1,6 +1,9 @@
 ﻿@using CartModule.Areas.Cart.Models
 @model ProductFrontModel
 
+@{
+    Layout = ViewBag.Layout;
+}
 @Html.Partial("Partial/header")
 
 <div class="content">
@@ -25,3 +28,9 @@
         </div>
     }
 </div>
+@section Styles{
+    <link href="~/sites/rushydro/view/module/cart/css/styles.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="~/sites/rushydro/view/module/cart/js/script.js"></script>
+}
