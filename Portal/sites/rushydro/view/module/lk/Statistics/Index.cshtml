@@ -2,6 +2,10 @@
 @using LkModule.Areas.Lk.Models
 @model StatisticsFrontModel
 
+@{
+    Layout = ViewBag.Layout;
+}
+
 @Html.Partial("Partial/header")
 
 @{
@@ -188,7 +192,7 @@
     </script>
     <style>
         div.google-visualization-tooltip {
-            font-size:12px;
+            font-size: 12px;
         }
     </style>
 }

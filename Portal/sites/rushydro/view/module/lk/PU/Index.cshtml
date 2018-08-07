@@ -4,6 +4,10 @@
 <link href="~/Content/plugins/select2/css/select2.min.css" rel="stylesheet" />
 <script src="~/Content/plugins/select2/select2.min.js"></script>
 
+@{
+    Layout = ViewBag.Layout;
+}
+
 @Html.Partial("Partial/header")
 <div class="content">
     <div class="filterByDateBlock">
@@ -38,22 +42,6 @@
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Общая информация</a></li>
             <li id="deviceMetersInfo-tab"><a href="#tab_2" data-toggle="tab" aria-expanded="false">Показания</a></li>
-            <li><a href="#tab_3" data-toggle="tab">Передача показаний</a></li>
-            <li><a href="#tab_4" data-toggle="tab">Передача почасовых объемов</a></li>
-            <li><a href="#tab_5" data-toggle="tab">История</a></li>
-            @*<li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Dropdown <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-                        <li role="presentation" class="divider"></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-                    </ul>
-                </li>
-                <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>*@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab_1">
@@ -100,29 +88,16 @@
             <!-- /.tab-pane -->
             <div class="tab-pane device-meters" id="tab_2">
                 <h3>Переданные показания</h3>
-                @Html.Partial("/Views/Modules/Pu/Part/ReadingsFilter.cshtml")
+                @Html.Partial("/sites/rushydro/view/module/lk/PU/Part/ReadingsFilter.cshtml")
                 <div id="deviceMetersData-block">
                     <div class="noItems topIndent-20">Нет данных</div>
                 </div>
                 @*
-                    ajax data from page 
+                    ajax data from page
                     "/Views/Modules/Pu/Part/CounterReading.cshtml"
                 *@
             </div>
-            <!-- /.tab-pane -->
-            <div class="tab-pane" id="tab_3">
-                @Html.Partial("/Views/Modules/Pu/Part/Interval.cshtml")
-
-            </div>
-            <!-- /.tab-pane -->
-            <div class="tab-pane" id="tab_4">
-                @Html.Partial("/Views/Modules/Pu/Part/Integral.cshtml")
-            </div>
-            <div class="tab-pane" id="tab_5">
-                <h3>История переданных показаний</h3>
-                @Html.Partial("/Views/Modules/Pu/Part/HistoryFilter.cshtml")
-                @Html.Partial("/Views/Modules/Pu/Part/History.cshtml")
-            </div>
+                      
             <!-- /.tab-pane -->
         </div>
         <!-- /.tab-content -->
@@ -218,7 +193,7 @@
                     //        contentBlock.html("Не удалось загрузить данные..." + jqXHR + status);
                     //    })
                     //    .always(function (response) {
-                           
+
                     //    });
 
                     $.post("/Lk/Pu/GetPuMeters", params)
