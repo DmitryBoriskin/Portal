@@ -1,0 +1,87 @@
+﻿@using CartModule.Areas.Cart.Models
+@{ 
+    Layout = ViewBag.Layout;
+}
+
+@model  CartFrontModel
+
+<link href="/Content/Modules/Cart/css/styles.css" rel="stylesheet">
+<script src="/Content/Modules/Cart/js/script.js"></script>
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+    @if (Model.List != null)
+    {
+        <div class="box box-solid cart_block">
+            <div class="box-header with-border">
+                <h3 class="box-title"><i class="fa fa-shopping-cart"></i> Корзина</h3>
+            </div>
+            <div class="box-body">
+                <!-- Table row -->
+                <div class="row topIndent-20">
+                    <div class="col-xs-12 table-responsive">
+
+                        @if (Model.List != null && Model.List.Count() > 0)
+                        {
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Название</th>
+                                        <th>Цена</th>
+                                        <th>Кол-во ед.</th>
+                                        <th>Сумма</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.List)
+                                    {
+                                    decimal amountSum = (decimal)item.Amount * item.Price;
+                                    <tr>
+                                        <td>@item.Number</td>
+                                        <td><a href="/cart/products/item/@item.Id">@item.Title</a></td>
+                                        <td class="text-nowrap"><input type="hidden" class="js_cart-itemPrice-span" value="@item.Price.ToString("N2")" />@item.Price.ToString("N2") <i class="fa fa-rouble"></i></td>
+                                        <td><input type="number" value="@item.Amount" class="form-control js_cart-itemAmount-input" data-product-id="@item.ProductId" min="1" /></td>
+                                        <td class="text-nowrap"><span class="js_cart-itemAmountSum-span">@amountSum.ToString("N2")</span> <i class="fa fa-rouble"></i></td>
+                                        <td><a class="cart-itemDelete-link js_cart-itemDelete-link" data-product-id="@item.ProductId"><i class="fa fa-trash-o"></i></a></td>
+                                    </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="4"><b>Итого:</b></td>
+                                        <td class="text-nowrap"><b>@Model.List.Sum(p => p.Amount * p.Price).ToString("N2")</b> <i class="fa fa-rouble"></i></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="noItems">Корзина пуста</div>
+                        }
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="box-footer clearfix">
+                    <a class="pull-left btn btn-default" id="" href="/cart/products/">
+                        Добавить товар
+                    </a>
+                    <a class="pull-right btn btn-warning" id="" href="/cart/orders/new/">
+                        Оформить заказ
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="box box-solid">
+            <div class="box-body">
+                <div class="noItems">Корзина пуста</div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,87 @@
+﻿@using PgDbase.entity
+@using CartModule.Areas.Cart.Models
+@{ 
+    Layout = ViewBag.Layout;
+}
+@model  OrderFrontModel
+
+@Html.Partial("Partial/header")
+
+<div class="content">
+    @Html.Partial("/Views/Modules/Cart/Orders/Part/Filter.cshtml")
+
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title">История заказов</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Номер заказа</th>
+                                <th>Название</th>
+                                <th>Сумма</th>
+                                <th>Статус</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.List.Items)
+                            {
+                                var status = "";
+                                switch (item.Status)
+                                {
+                                    case (OrderStatus.Pending):
+                                        status = "label-default";
+                                        break;
+                                    case (OrderStatus.Processing):
+                                        status = "label-warning";
+                                        break;
+                                    case (OrderStatus.Shipped):
+                                        status = "label-success";
+                                        break;
+                                    case (OrderStatus.Complete):
+                                        status = "label-success";
+                                        break;
+                                    case (OrderStatus.Сanceled):
+                                        status = "label-danger";
+                                        break;
+                                    case (OrderStatus.Error):
+                                    default:
+                                        status = "label-danger";
+                                        break;
+                                }
+                                <tr>
+                                    <td>
+                                        @item.Date.ToString("dd.MM.yyyy")
+                                    </td>
+                                    <td><a href="/cart/orders/item/@item.Id">@("OR" + item.Number.ToString())</a></td>
+                                    <td>Заказ @("№"+ item.Number.ToString()) от @item.Date.ToShortDateString()</td>
+                                    <td class="text-nowrap">@item.TotalSum.ToString("N2") <i class="fa fa-rouble"></i></td>
+                                    <td><span class="label @status">@CartDictionary.OrderStatusDic.Where(s => s.Key == item.Status).ToString()).Select(s => s.Value).SingleOrDefault()</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+                @Html.Partial("Partial/_pager", Model.List.Pager)
+            }
+            else
+            {
+              <div class="noItems">Нет данных</div>
+            }
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+            <a href="/cart/products/" class="btn btn-sm btn-warning btn-flat pull-left topIndent-20">Новый заказ</a>
+        </div>
+        <!-- /.box-footer -->
+    </div>
+
+</div>
