@@ -6,5 +6,9 @@
   {
     "outputFile": "sites/rushydro/css/site_login.css",
     "inputFile": "sites/rushydro/css/site_login.less"
+  },
+  {
+    "outputFile": "sites/rushydro/content/css/rushydro.css",
+    "inputFile": "sites/rushydro/content/css/rushydro.less"
   }
 ]
