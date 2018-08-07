@@ -1140,6 +1140,15 @@
     <Content Include="sites\rushydro\view\module\lk\Statistics\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\Statistics\Part\Filter.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\SubscrInfo\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Orders\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Orders\Item.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Orders\New.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Orders\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Orders\Сonfirm.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Products\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Products\Item.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Products\List.cshtml" />
+    <Content Include="sites\rushydro\view\module\cart\Products\Part\Filter.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
