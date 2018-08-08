@@ -43,8 +43,28 @@
     });
 
     $('#js_filterDateRange-input').on('apply.daterangepicker', function (ev, picker) {
-        $("#js_filterBeginDate-input").val(start.format('DD.MM.YYYY'))
-        $("#js_filterEndDate-input").val(end.format('DD.MM.YYYY'))
+        $("#js_filterBeginDate-input").val(picker.startDate.format('DD.MM.YYYY'));
+        $("#js_filterEndDate-input").val(picker.endDate.format('DD.MM.YYYY'));
+
+        $("#filter-form").submit();
     });
+
+    $("#js_filterDocType-select").on("change", function () {
+        $("#filter-form").submit();
+    });
+
+    $("#js_filterPayed-select").on("change", function () {
+        $("#filter-form").submit();
+    });
+
+    //НЕ правильно работает
+    //$('#js_filterDateRange-input').on("change", function () {
+    //    var params = {
+    //        datestart: $('#js_filterBeginDate-input').val(),
+    //        dateend: $('#js_filterEndDate-input').val()
+    //    };
+    //    var str = jQuery.param(params);
+    //    location.href = UrlPage() + "?" + str;
+    //});
 
 });

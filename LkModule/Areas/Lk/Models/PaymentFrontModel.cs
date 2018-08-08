@@ -16,7 +16,7 @@ namespace LkModule.Areas.Lk.Models
         /// <summary>
         /// Сумма за выбранный период
         /// </summary>
-        public decimal? SummaZaPeriod { get; set; }
+        public decimal SummaZaPeriod { get; set; }
 
     }
 

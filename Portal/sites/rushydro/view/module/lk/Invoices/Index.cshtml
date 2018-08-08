@@ -10,7 +10,9 @@
 <div class="content">
     <div class="block block_white block_padd block__shadow">
         <div class="block_head__blue">@Model.PageName</div>
+
         @Html.Partial("/sites/rushydro/view/module/lk/Invoices/Part/Filter.cshtml")
+
         @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
         {
             foreach (var item in Model.List.Items)
@@ -27,7 +29,7 @@
                             <td><span>Период расчета:</span> @item.Period</td>
                             <td>
                                 <a class="js_collapse_btn" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
-                                    @(i == 1? "Свернуть":"Подробнее")                                    
+                                    @(i == 1 ? "Свернуть" : "Подробнее")
                                 </a>
                             </td>
                         </tr>
@@ -36,18 +38,18 @@
                     <div class="collapse @(i==1? "in":"")" id="invoice_@item.Link">
                         <div class="factura_more">
                             @*<div>
-                                <div>Статус: @item.Status</div>
-                                <div>Вид договора: @item.SaleCategory</div>
-                                <div>Задолженность: @item.DebtType</div>
-                                @if (item.DateBegin.HasValue && item.DateEnd.HasValue)
-                                {
-                                    <div>Расчет с @item.DateBegin.Value.ToString("dd.MM.yyyy") по @item.DateEnd.Value.ToString("dd.MM.yyyy")</div>
-                                }
-                                @if (item.DateDue.HasValue)
-                                {
-                                    <div>Оплата до: @item.DateDue.Value.ToString("dd.MM.yyyy")</div>
-                                }
-                            </div>*@
+                                    <div>Статус: @item.Status</div>
+                                    <div>Вид договора: @item.SaleCategory</div>
+                                    <div>Задолженность: @item.DebtType</div>
+                                    @if (item.DateBegin.HasValue && item.DateEnd.HasValue)
+                                    {
+                                        <div>Расчет с @item.DateBegin.Value.ToString("dd.MM.yyyy") по @item.DateEnd.Value.ToString("dd.MM.yyyy")</div>
+                                    }
+                                    @if (item.DateDue.HasValue)
+                                    {
+                                        <div>Оплата до: @item.DateDue.Value.ToString("dd.MM.yyyy")</div>
+                                    }
+                                </div>*@
                             <button type="button" class="btn btn_border btn_border__blue">Распечатать</button>
                             <div class="factura_more_table">
                                 <table>
@@ -57,7 +59,7 @@
                                             <th>Тарифицируемое потребление</th>
                                             <th>Ед.изм.</th>
                                             <th>Тариф</th>
-                                            
+
                                             <th>Стоимость<br /><small>(без НДС)</small></th>
                                             <th>НДС</th>
                                             <th>Сумма<br /><small>(с НДС)</small></th>
@@ -96,7 +98,7 @@
                                                         }
 
                                                     </td>
-                                                    
+
                                                     <td>
                                                         @if (detail.TaxAmount0.HasValue && detail.Amount0.HasValue)
                                                         {
@@ -142,15 +144,15 @@
                                         <tr>
                                             <td><b>Итого:</b></td>
                                             <td>
-                                                @(item.Quantity.HasValue? item.Quantity.Value.ToString("N2"): "")
+                                                @(item.Quantity.HasValue ? item.Quantity.Value.ToString("N2") : "")
                                                 @*@if (item.Quantity2.HasValue && item.Quantity2 > 0m)
-                                                {
-                                                    <br />@item.Quantity2.Value.ToString("N2")
-                                                }*@
+                                                    {
+                                                        <br />@item.Quantity2.Value.ToString("N2")
+                                                    }*@
                                             </td>
                                             <td>@item.Unit</td>
                                             <td></td>
-                                            
+
                                             <td>@amountWithOutTax.ToString("N2")</td>
                                             <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                             <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
@@ -179,6 +181,7 @@
 
 @section Scripts{
     <script src="~/sites/rushydro/content/module/lk/js/script.js"></script>
+
     <script>
         $(document).ready(function () {
             $(".js_collapse_btn").click(function () {

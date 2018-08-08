@@ -44,36 +44,26 @@ namespace LkModule.Areas.Lk.Controllers
         {
             filter = GetFilter();
 
-            var userId = CurrentUser.UserId;
+            if (!filter.Date.HasValue)
+                filter.Date = DateTime.Now.AddMonths(-1);
+            if (!filter.DateEnd.HasValue)
+                filter.DateEnd = DateTime.Now;
 
+            model.Filter = filter;
             var mFilter = FilterModel.Extend<LkFilter>(filter);
-            mFilter.Status = ViewBag.Status = Request.Params["status"];
-            mFilter.Type = ViewBag.Type = Request.Params["type"];
 
-            if (!mFilter.Date.HasValue && !mFilter.DateEnd.HasValue)
-            {
-                mFilter.Date = DateTime.Today.AddMonths(-6);
-                mFilter.DateEnd = DateTime.Today;
-            }
-
-
+            var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
             if (userSubscr != null)
             {
                 model.List = _Repository.GetPayments(userSubscr.Id, mFilter);
-                if (model.List != null)
+                if (model.List != null && model.List.Items != null && model.List.Items.Count() > 0)
                 {
-                    model.SummaZaPeriod = model.List.Items.Select(s => s.Amount).Sum();
+                    var summaZaPeriod = model.List.Items.Select(s => s.Amount).Sum();
+                    model.SummaZaPeriod = summaZaPeriod.HasValue ? summaZaPeriod.Value : 0m;
                 }
-
             }
-
-            if (mFilter.Date.HasValue)
-                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
-
-            if (mFilter.DateEnd.HasValue)
-                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
             return View(ViewName, model);
         }
