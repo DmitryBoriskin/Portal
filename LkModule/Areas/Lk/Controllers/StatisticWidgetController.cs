@@ -23,7 +23,6 @@ namespace LkModule.Areas.Lk.Controllers
             StatisticsFrontModel model = new StatisticsFrontModel();
             ViewName = _Repository.GetModuleView(ControllerName, ActionName);
             
-
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
 

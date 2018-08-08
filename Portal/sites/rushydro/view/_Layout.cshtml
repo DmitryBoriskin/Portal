@@ -30,8 +30,6 @@
 </head>
 <body>
     <div class="menu">
-
-
         <nav class="navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -49,12 +47,8 @@
             </div>
         </nav>
 
-
     </div>
     <div class="container-fluid">
-
-
-
         <div class="row">
             <div class="index">
                 <div class="index_right_dop visible-md visible-lg"></div>
@@ -69,8 +63,8 @@
                         </div>
                     </div>
 
-
-                    @{
+                    @if (User.Identity.IsAuthenticated)
+                    {
                         try
                         {
                             Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
@@ -80,12 +74,9 @@
                             //Log ex
                         }
                     }
-
-
                 </div>
 
-                <div class="index_with ">
-
+                <div class="index_with">
                     @RenderBody()
                 </div>
             </div>
