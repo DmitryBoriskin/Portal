@@ -529,6 +529,10 @@ namespace PgDbase.Repository.front
                 {
                     query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
                 }
+                if (!string.IsNullOrEmpty(filter.Type))
+                {
+                    query = query.Where(w => w.n_doc_type.ToString() == filter.Type);
+                }
 
                 query = query.OrderByDescending(o => o.d_date);
                 int itemsCount = query.Count();
@@ -653,6 +657,11 @@ namespace PgDbase.Repository.front
             }
         }
 
+        /// <summary>
+        /// Детализация по выставленному счету
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
         public InvoiceDetailModel[] GetInvoiceDetail(long link)
         {
             using (var db = new CMSdb(_context))
@@ -671,6 +680,9 @@ namespace PgDbase.Repository.front
 
                         SuboperationTypeId = s.n_suboperation_type,
                         SuboperationType = s.c_suboperation_type,
+
+                        UnitId = s.n_unit,
+                        Unit = s.c_unit,
 
                         TariffId = s.n_tariff,
                         Tariff = s.c_tariff,
@@ -699,6 +711,25 @@ namespace PgDbase.Repository.front
 
                     })
                     .ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Типы счет-фактур
+        /// </summary>
+        public HdbkModel[] GetInvoiceDocTypes()
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var data = db.lk_invoices.Select(s => new HdbkModel()
+                {
+                    Id = s.n_doc_type.ToString(),
+                    Name = s.c_doc_type
+                })
+                .Distinct()
+                .ToArray();
+
+                return data;
             }
         }
 

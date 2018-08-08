@@ -1,6 +1,8 @@
-﻿<link href="~/Content/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
-<script src="~/Content/plugins/daterangepicker/moment.min.js"></script>
-<script src="~/Content/plugins/daterangepicker/daterangepicker.js"></script>
+﻿@using LkModule.Areas.Lk.Models
+@model InvoiceFrontModel
+@{
+    Layout = null;
+}
 
 @{
     var dateRange = "";
@@ -16,7 +18,7 @@
 <div class="filterByDateBlock">
     <form role="form">
         <div class="row">
-            <div class="col-xs-8 col-sm-4">
+            <div class="col-xs-8 col-sm-3">
                 <div class="form-group">
                     <label for="filterDateRange-input" class="control-label">Диапазон: </label>
                     <div class="input-group date">
@@ -29,17 +31,32 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-8 col-sm-4">
+            <div class="col-xs-8 col-sm-3">
                 <div class="form-group">
-                    <label for="filterPayed-select" class="control-label">Статус: </label>
-                    <select name="type" id="filterPayed-select" class="form-control select2">
-                        <option value="0">Все</option>
-                        <option value="1">Оплаченные</option>
-                        <option value="2">Неоплаченные</option>
+                    <label for="filterDocType-select" class="control-label">Тип документа: </label>
+                    <select name="type" id="filterDocType-select" class="form-control select2">
+                        <option value="">Все</option>
+                        @if (Model.DocTypes != null && Model.DocTypes.Count() > 0)
+                        {
+                            foreach (var docType in Model.DocTypes)
+                            {
+                                <option value="@docType.Id">@docType.Name</option>
+                            }
+                        }
                     </select>
                 </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-8 col-sm-3">
+                <div class="form-group">
+                    <label for="filterPayed-select" class="control-label">Статус: </label>
+                    <select name="category" id="filterPayed-select" class="form-control select2">
+                        <option value="">Все</option>
+                        <option value="1">Оплаченные</option>
+                        <option value="0">Неоплаченные</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-3">
                 <div class="form-group">
                     <button type="submit" class="btn btn-default" style="margin-top: 25px;">Показать</button>
                 </div>
@@ -48,53 +65,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    $('#filterDateRange-input').daterangepicker({
-        "locale": {
-            "format": "DD.MM.YYYY",
-            "separator": " - ",
-            "applyLabel": "Применить",
-            "cancelLabel": "Отмена",
-            "fromLabel": "С",
-            "toLabel": "По",
-            "customRangeLabel": "Custom",
-            "weekLabel": "Нед",
-            "daysOfWeek": [
-                "Вс",
-                "ПН",
-                "Вт",
-                "Ср",
-                "Чт",
-                "Пн",
-                "Сб"
-            ],
-            "monthNames": [
-                "Январь",
-                "Февраль",
-                "Март",
-                "Апрель",
-                "Май",
-                "Июнь",
-                "Июль",
-                "Август",
-                "Сентябрь",
-                "Октябрь",
-                "Ноябрь",
-                "Декабрь"
-            ],
-            "firstDay": 1
-        },
-        "opens": "left"
-    }, function (start, end, label) {
-        $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
-        $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))
-        console.log('range: ' + label);
-    });
-
-    $('#filterDateRange-input').on('apply.daterangepicker', function (ev, picker) {
-        $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
-        $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))
-    });
-
-</script>

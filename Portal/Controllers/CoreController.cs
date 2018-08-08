@@ -201,6 +201,7 @@ namespace Portal.Controllers
                 Group = Request.QueryString["group"],
                 Lang = Request.QueryString["lang"],
                 SearchText = Request.QueryString["searchtext"],
+
                 Page = 1,
                 Size = defaultPageSize,
                 Disabled = null

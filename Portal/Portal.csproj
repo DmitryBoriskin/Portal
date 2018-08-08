@@ -776,6 +776,7 @@
     <Content Include="sites\rushydro\content\module\cart\img\mastercard.png" />
     <Content Include="sites\rushydro\content\module\cart\img\visa.png" />
     <Content Include="sites\rushydro\content\module\cart\js\script.js" />
+    <Content Include="sites\rushydro\content\module\lk\js\script.js" />
     <Content Include="sites\rushydro\favicon.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -39,6 +39,8 @@ namespace LkModule.Areas.Lk.Controllers
                 PageName = _pageName,
                 User = CurrentUser
             };
+            model.DocTypes = _Repository.GetInvoiceDocTypes();
+
         }
 
         //Нплаченные платежи
@@ -47,6 +49,18 @@ namespace LkModule.Areas.Lk.Controllers
             filter = GetFilter();
             var mFilter = FilterModel.Extend<LkFilter>(filter);
 
+            if (!string.IsNullOrEmpty(mFilter.Category))
+            {
+                mFilter.Payed = (filter.Category == "1") ? true : false;
+                ViewBag.payed = filter.Category;
+            }
+
+            if (mFilter.Date.HasValue)
+                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
+
+            if (mFilter.DateEnd.HasValue)
+                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
+
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
             if (userSubscr != null)
@@ -54,14 +68,7 @@ namespace LkModule.Areas.Lk.Controllers
                 model.List = _Repository.GetInvoices(userSubscr.Id, mFilter);
             }
 
-            if(mFilter.Payed.HasValue)
-                ViewBag.payed = mFilter.Payed.Value;
-
-            if (mFilter.Date.HasValue)
-                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
-
-            if (mFilter.DateEnd.HasValue)
-                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
+           
 
             return View(ViewName, model);
         }

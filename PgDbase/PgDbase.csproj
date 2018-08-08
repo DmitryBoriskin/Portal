@@ -96,6 +96,7 @@
     <Compile Include="Entity\services\Filters\TemplateFilter.cs" />
     <Compile Include="Entity\services\Filters\ModuleFilter.cs" />
     <Compile Include="Entity\services\Filters\PageFilterModel.cs" />
+    <Compile Include="Entity\services\HdbkModel.cs" />
     <Compile Include="Repository\cms\CmsPagesRepository.cs" />
     <Compile Include="Repository\cms\CmsPhotoRepository.cs" />
     <Compile Include="Repository\cms\CmsRepository.cs" />
