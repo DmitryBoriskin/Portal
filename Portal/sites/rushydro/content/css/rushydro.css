@@ -118,8 +118,6 @@ body {
 .invoice {
   height: calc(100vh - 118px);
   overflow: auto;
-}
-.invoice .invoice-list {
   margin: 30px 0 0 0;
 }
 .invoice .invoice-list .invoice_item {
@@ -352,6 +350,9 @@ body {
   font-size: 16px !important;
   line-height: 20px;
 }
+.factura table tr td:first-child {
+  padding-left: 20px;
+}
 .factura table tr td:last-child {
   padding-right: 21px;
   width: 100px;
@@ -372,8 +373,8 @@ body {
   border-color: #e5ebf6;
 }
 .factura .factura_more {
-  padding: 10px;
-  margin: 10px;
+  padding: 0 10px 10px 10px;
+  margin: 0 10px 10px 10px;
   font-size: 12px;
 }
 .factura .factura_more .factura_more_table {
@@ -389,6 +390,7 @@ body {
   background-color: #fff !important;
 }
 .factura .factura_more table tr {
+  font-size: 13px;
   background-color: #fff;
 }
 .factura .factura_more table tr:nth-child(2n+1) {
