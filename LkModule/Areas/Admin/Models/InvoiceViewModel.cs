@@ -17,5 +17,10 @@ namespace LkModule.Areas.Admin.Models
         /// Единичная запись счёта
         /// </summary>
         public InvoiceModel Item { get; set; }
+
+        /// <summary>
+        /// фильтр
+        /// </summary>
+        public FilterModel Filter { get; set; }
     }
 }

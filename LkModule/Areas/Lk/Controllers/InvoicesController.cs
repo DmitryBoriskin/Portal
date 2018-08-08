@@ -47,28 +47,22 @@ namespace LkModule.Areas.Lk.Controllers
         public ActionResult Index()
         {
             filter = GetFilter();
+
+            filter.Date = DateTime.Now.AddMonths(-1);
+            filter.DateEnd = DateTime.Now;
+
+            model.Filter = filter;
             var mFilter = FilterModel.Extend<LkFilter>(filter);
 
             if (!string.IsNullOrEmpty(mFilter.Category))
-            {
                 mFilter.Payed = (filter.Category == "1") ? true : false;
-                ViewBag.payed = filter.Category;
-            }
-
-            if (mFilter.Date.HasValue)
-                ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");
-
-            if (mFilter.DateEnd.HasValue)
-                ViewBag.endDate = mFilter.DateEnd.Value.ToString("dd.MM.yyyy");
+ 
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
             if (userSubscr != null)
-            {
                 model.List = _Repository.GetInvoices(userSubscr.Id, mFilter);
-            }
-
-           
+          
 
             return View(ViewName, model);
         }

@@ -28,5 +28,10 @@ namespace Portal.Models
         /// </summary>
         public ApplicationUser User { get; set; }
 
+        /// <summary>
+        /// фильтр
+        /// </summary>
+        public FilterModel Filter { get; set; }
+
     }
 }

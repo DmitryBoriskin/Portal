@@ -8,9 +8,7 @@
 <div class="content">
     <div class="block block_white block_padd block__shadow">
         <div class="block_head__blue">@Model.PageName</div>
-
         @Html.Partial("/sites/rushydro/view/module/lk/Invoices/Part/Filter.cshtml")
-
 
         @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
         {
@@ -155,7 +153,6 @@
                                         <td>@amountWithOutTax.ToString("N2")</td>
                                         <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                         <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-
                                     </tr>
                                 </tbody>
                             </table>
@@ -164,9 +161,7 @@
                 </div>
                 i++;
             }
-
             @Html.Partial("Partial/_pager", Model.List.Pager)
-
         }
         else
         {
@@ -175,16 +170,9 @@
             </div>
         }
 
-
     </div>
 </div>
 
-@section Styles{
-    <link href="~/Content/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" />
-}
-
 @section Scripts{
-    @*<script src="~/Content/plugins/daterangepicker/moment.min.js"></script>
-        <script src="~/Content/plugins/daterangepicker/daterangepicker.js"></script>*@
     <script src="~/sites/rushydro/content/module/lk/js/script.js"></script>
 }
