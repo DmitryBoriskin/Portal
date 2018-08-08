@@ -125,9 +125,8 @@ body {
   padding: 25px 20px;
   color: #333;
   border-bottom: 1px solid rgba(178, 178, 178, 0.3);
+  /*&:hover, &:focus,*/
 }
-#index_right .invoice .invoice-list .invoice_item:hover,
-#index_right .invoice .invoice-list .invoice_item:focus,
 #index_right .invoice .invoice-list .invoice_item.invoice_active {
   background-color: #ff7900;
   color: #fff;
@@ -135,10 +134,13 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0);
   outline: none;
 }
-#index_right .invoice .invoice-list .invoice_item:hover .invoice_pay,
-#index_right .invoice .invoice-list .invoice_item:focus .invoice_pay,
 #index_right .invoice .invoice-list .invoice_item.invoice_active .invoice_pay {
   color: #fff;
+}
+#index_right .invoice .invoice-list .invoice_item:not(.invoice_active):hover,
+#index_right .invoice .invoice-list .invoice_item:not(.invoice_active):focus {
+  background-color: #f8e8dd;
+  text-decoration: none;
 }
 #index_right .invoice .invoice-list .invoice_item .invoice_num {
   line-height: 29px;

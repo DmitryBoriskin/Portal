@@ -168,8 +168,7 @@ body{
             padding: 25px 20px;
             color: #333;
             border-bottom: 1px solid @gray;
-
-            &:hover, &:focus,
+            /*&:hover, &:focus,*/
             &.invoice_active {
                 background-color: @orange;
                 color: @white;
@@ -180,6 +179,11 @@ body{
                 .invoice_pay {
                     color: @white;
                 }
+            }
+
+            &:not(.invoice_active):hover, &:not(.invoice_active):focus {
+                background-color: @orangelight;
+                text-decoration: none;
             }
 
             .invoice_num {
