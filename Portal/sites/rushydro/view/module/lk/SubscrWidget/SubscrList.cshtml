@@ -1,7 +1,9 @@
 ﻿@using LkModule.Areas.Lk.Models
 @model  SubscrWidgetFrontModel
 
-@{ Layout = null; }
+@{ Layout = null;
+    int i = 0;
+    }
 
 @if (Model.Item != null)
 {
@@ -11,12 +13,13 @@
             {
                 foreach (var item in Model.List)
                 {
+                    i++;
                     string _class = "invoice_item";
                     if (item.Default.HasValue && item.Default.Value)
                     {
                         _class += " invoice_active";
                     }
-                    <a class="@_class" href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id">
+                    <a id="subid_@i" class="@_class" href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id">
                         <div class="invoice_name">@item.Name</div>
                         <div class="invoice_num">Лицевой счет № @item.SubscrId</div>
                         <div class="invoice_pay">@(item.Saldo.HasValue ? item.Saldo.Value.ToString("N2") : "")<span>₽</span></div>

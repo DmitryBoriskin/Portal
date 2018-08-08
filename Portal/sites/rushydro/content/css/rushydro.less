@@ -155,9 +155,11 @@ body{
 }
 
 .invoice {
+    height: ~"calc(100vh - 118px)";
+    overflow: auto;
+
     .invoice-list {
         margin: 30px 0 0 0;
-        height: calc(100vh - 191px);
 
         .invoice_item {
             display: block;
@@ -171,6 +173,7 @@ body{
                 color: @white;
                 text-decoration: none;
                 border-bottom: 1px solid rgba(0,0,0,0);
+                outline:none;
 
                 .invoice_pay {
                     color: @white;

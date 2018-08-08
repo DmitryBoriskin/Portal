@@ -1,10 +1,11 @@
 ﻿$(document).ready(function () {
 
-
+    if ($('.invoice_active').length > 0) {
+        $('.invoice_active').focus();        
+    }
 
     window.onscroll = function () {
         var id = 'index_right';
-
         if (getBodyScrollTop() >= 75) {
             $('#' + id).addClass('index_right__fix');
         }

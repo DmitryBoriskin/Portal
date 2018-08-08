@@ -115,9 +115,12 @@ body {
 .mgr .mgr_name {
   padding-bottom: 17px;
 }
+.invoice {
+  height: calc(100vh - 118px);
+  overflow: auto;
+}
 .invoice .invoice-list {
   margin: 30px 0 0 0;
-  height: calc(-91vh);
 }
 .invoice .invoice-list .invoice_item {
   display: block;
@@ -132,6 +135,7 @@ body {
   color: #fff;
   text-decoration: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
+  outline: none;
 }
 .invoice .invoice-list .invoice_item:hover .invoice_pay,
 .invoice .invoice-list .invoice_item:focus .invoice_pay,
