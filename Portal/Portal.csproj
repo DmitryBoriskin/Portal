@@ -776,15 +776,6 @@
     <Content Include="sites\rushydro\content\module\cart\img\mastercard.png" />
     <Content Include="sites\rushydro\content\module\cart\img\visa.png" />
     <Content Include="sites\rushydro\content\module\cart\js\script.js" />
-    <Content Include="sites\rushydro\content\css\site.css" />
-    <Content Include="sites\rushydro\content\css\site_login.css" />
-    <Content Include="sites\rushydro\content\css\site_login.min.css" />
-    <Content Include="sites\rushydro\content\img\account_bg.png" />
-    <Content Include="sites\rushydro\content\img\logo.png" />
-    <Content Include="sites\rushydro\content\img\logo_account.png" />
-    <Content Include="sites\rushydro\content\img\logo_bg.png" />
-    <Content Include="sites\rushydro\content\img\slider_bg.png" />
-    <Content Include="sites\rushydro\content\js\main.js" />
     <Content Include="sites\rushydro\favicon.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

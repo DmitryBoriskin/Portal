@@ -51,6 +51,7 @@ namespace LkModule.Areas.Admin.Controllers
                     mFilter.Payed = payed;
             }
             model.List = _cmsRepository.GetInvoices((Guid)subscr, mFilter);
+           
 
             if (mFilter.Date.HasValue)
                 ViewBag.beginDate = mFilter.Date.Value.ToString("dd.MM.yyyy");

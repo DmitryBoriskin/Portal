@@ -572,7 +572,9 @@ namespace PgDbase.Repository.front
                         PaysheetId = s.n_paysheet,
 
                         SaleCategoryId = s.n_sale_category,
-                        SaleCategory = s.c_sale_category
+                        SaleCategory = s.c_sale_category,
+
+                        Details = GetInvoiceDetail(s.link)
 
                     })
                     .ToArray();

@@ -120,6 +120,11 @@ namespace PgDbase.entity
         public string Kpp { get; set; }
 
         /// <summary>
+        /// ОГРН
+        /// </summary>
+        public string Ogrn { get; set; }
+
+        /// <summary>
         /// ИНН
         /// </summary>
         public string Inn { get; set; }

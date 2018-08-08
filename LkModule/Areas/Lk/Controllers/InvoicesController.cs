@@ -51,9 +51,7 @@ namespace LkModule.Areas.Lk.Controllers
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
             if (userSubscr != null)
             {
-#pragma warning disable CS1061 // 'FrontRepository' does not contain a definition for 'GetInvoices' and no extension method 'GetInvoices' accepting a first argument of type 'FrontRepository' could be found (are you missing a using directive or an assembly reference?)
                 model.List = _Repository.GetInvoices(userSubscr.Id, mFilter);
-#pragma warning restore CS1061 // 'FrontRepository' does not contain a definition for 'GetInvoices' and no extension method 'GetInvoices' accepting a first argument of type 'FrontRepository' could be found (are you missing a using directive or an assembly reference?)
             }
 
             if(mFilter.Payed.HasValue)
