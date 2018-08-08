@@ -115,37 +115,38 @@ body {
 .mgr .mgr_name {
   padding-bottom: 17px;
 }
-.invoice {
+.invoice .invoice-list {
   margin: 30px 0 0 0;
+  height: calc(-91vh);
 }
-.invoice .invoice_item {
+.invoice .invoice-list .invoice_item {
   display: block;
   padding: 25px 20px;
   color: #333;
   border-bottom: 1px solid rgba(178, 178, 178, 0.3);
 }
-.invoice .invoice_item:hover,
-.invoice .invoice_item:focus,
-.invoice .invoice_item.invoice_active {
+.invoice .invoice-list .invoice_item:hover,
+.invoice .invoice-list .invoice_item:focus,
+.invoice .invoice-list .invoice_item.invoice_active {
   background-color: #ff7900;
   color: #fff;
   text-decoration: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
 }
-.invoice .invoice_item:hover .invoice_pay,
-.invoice .invoice_item:focus .invoice_pay,
-.invoice .invoice_item.invoice_active .invoice_pay {
+.invoice .invoice-list .invoice_item:hover .invoice_pay,
+.invoice .invoice-list .invoice_item:focus .invoice_pay,
+.invoice .invoice-list .invoice_item.invoice_active .invoice_pay {
   color: #fff;
 }
-.invoice .invoice_item .invoice_num {
+.invoice .invoice-list .invoice_item .invoice_num {
   line-height: 29px;
 }
-.invoice .invoice_item .invoice_pay {
+.invoice .invoice-list .invoice_item .invoice_pay {
   font-size: 26px;
   font-weight: 300;
   color: #0039a6;
 }
-.invoice .invoice_item .invoice_pay i {
+.invoice .invoice-list .invoice_item .invoice_pay i {
   font-weight: normal;
 }
 .content .block.block_padd {
