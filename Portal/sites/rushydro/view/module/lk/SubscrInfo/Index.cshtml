@@ -25,10 +25,10 @@
                 <div class="li-desc"><span>Сайт:</span> @Model.Item.Site</div>
                 <br />
                 @*<div class="li-desc"><span>Лицевой счет</span></div>
-        <div class="li-desc"><span>Номер:</span> @Model.Item.Subscr</div>
-        <div class="li-desc"><span>Дата открытия:</span> @(Model.Item.Begin.HasValue ? Model.Item.Begin.Value.ToString("dd.MM.yyyy") : "")</div>
-        <div class="li-desc"><span>Дата закрытия:</span> @(Model.Item.End.HasValue ? Model.Item.End.Value.ToString("dd.MM.yyyy") : "")</div>
-        <br />*@
+                <div class="li-desc"><span>Номер:</span> @Model.Item.Subscr</div>
+                <div class="li-desc"><span>Дата открытия:</span> @(Model.Item.Begin.HasValue ? Model.Item.Begin.Value.ToString("dd.MM.yyyy") : "")</div>
+                <div class="li-desc"><span>Дата закрытия:</span> @(Model.Item.End.HasValue ? Model.Item.End.Value.ToString("dd.MM.yyyy") : "")</div>
+                <br />*@
                 <div class="li-desc"><span>Договор:</span> </div>
                 <div class="li-desc"><span>Номер:</span> @Model.Item.Contract</div>
                 <div class="li-desc"><span>Дата заключения:</span> @(Model.Item.ContractDate.HasValue ? Model.Item.ContractDate.Value.ToString("dd.MM.yyyy") : "")</div>
