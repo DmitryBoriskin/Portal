@@ -33,7 +33,7 @@
         ],
         "firstDay": 1
     },
-    "opens": "left"
+    "opens": "right"
 }, function (start, end, label) {
     $("#filterBeginDate-input").val(start.format('DD.MM.YYYY'))
     $("#filterEndDate-input").val(end.format('DD.MM.YYYY'))

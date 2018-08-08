@@ -4,15 +4,6 @@
         $('.invoice_active').focus();        
     }
 
-    $('.collapse_btn').click(function () {
-        var el = $(this).closest('.factura');
-        if (el.hasClass("factura_open")) {
-            el.removeClass('factura_open');
-        }
-        else {
-            el.addClass('factura_open');
-        }
-    });
 
 
     window.onscroll = function () {
