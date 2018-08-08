@@ -115,40 +115,40 @@ body {
 .mgr .mgr_name {
   padding-bottom: 17px;
 }
-.invoice {
+#index_right .invoice {
   height: calc(100vh - 118px);
   overflow: auto;
   margin: 30px 0 0 0;
 }
-.invoice .invoice-list .invoice_item {
+#index_right .invoice .invoice-list .invoice_item {
   display: block;
   padding: 25px 20px;
   color: #333;
   border-bottom: 1px solid rgba(178, 178, 178, 0.3);
 }
-.invoice .invoice-list .invoice_item:hover,
-.invoice .invoice-list .invoice_item:focus,
-.invoice .invoice-list .invoice_item.invoice_active {
+#index_right .invoice .invoice-list .invoice_item:hover,
+#index_right .invoice .invoice-list .invoice_item:focus,
+#index_right .invoice .invoice-list .invoice_item.invoice_active {
   background-color: #ff7900;
   color: #fff;
   text-decoration: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
   outline: none;
 }
-.invoice .invoice-list .invoice_item:hover .invoice_pay,
-.invoice .invoice-list .invoice_item:focus .invoice_pay,
-.invoice .invoice-list .invoice_item.invoice_active .invoice_pay {
+#index_right .invoice .invoice-list .invoice_item:hover .invoice_pay,
+#index_right .invoice .invoice-list .invoice_item:focus .invoice_pay,
+#index_right .invoice .invoice-list .invoice_item.invoice_active .invoice_pay {
   color: #fff;
 }
-.invoice .invoice-list .invoice_item .invoice_num {
+#index_right .invoice .invoice-list .invoice_item .invoice_num {
   line-height: 29px;
 }
-.invoice .invoice-list .invoice_item .invoice_pay {
+#index_right .invoice .invoice-list .invoice_item .invoice_pay {
   font-size: 26px;
   font-weight: 300;
   color: #0039a6;
 }
-.invoice .invoice-list .invoice_item .invoice_pay i {
+#index_right .invoice .invoice-list .invoice_item .invoice_pay i {
   font-weight: normal;
 }
 .content .block.block_padd {

@@ -28,7 +28,7 @@
                             <td><span>Период расчета:</span> @item.Period</td>
                             <td>
                                 <a class="collapse_btn" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
-                                    Подробнее
+                                    @(First?"Скрыть":"Подробнее")                                    
                                 </a>
                             </td>
                         </tr>
@@ -189,9 +189,13 @@
             var el = $(this).closest('.factura');
             if (el.hasClass("factura_open")) {
                 el.removeClass('factura_open');
+                $(this).text('Подробнее');
+                
             }
             else {
                 el.addClass('factura_open');
+                $(this).text('Свернуть');
+                
             }
         }); 
     </script>
