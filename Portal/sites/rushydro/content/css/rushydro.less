@@ -246,13 +246,16 @@ body{
     }
 }
 .index_with {
-    ul {        
-            &.pagination, &.nav-tabs {
-                li:before{
-                    display:none;
+    ul {
+        &.pagination, &.nav-tabs {
+            li {
+                display:contents;
+                &:before {
+                    display: none;
                 }
             }
         }
+    }
 }
 
 
@@ -428,5 +431,16 @@ body{
         font-size: 26px;
         font-weight: 300;
         line-height: 47px;
+    }
+}
+
+.table-responsive {
+    .li-desc{
+
+        span{
+            min-width:165px;
+            font-weight:600;
+            display:inline-block;
+        }
     }
 }

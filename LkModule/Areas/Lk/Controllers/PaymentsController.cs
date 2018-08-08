@@ -62,6 +62,11 @@ namespace LkModule.Areas.Lk.Controllers
             if (userSubscr != null)
             {
                 model.List = _Repository.GetPayments(userSubscr.Id, mFilter);
+                if (model.List != null)
+                {
+                    model.SummaZaPeriod = model.List.Items.Select(s => s.Amount).Sum();
+                }
+
             }
 
             if (mFilter.Date.HasValue)

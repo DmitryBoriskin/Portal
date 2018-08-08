@@ -183,6 +183,10 @@ body {
   line-height: 76px;
   margin-bottom: 4px;
 }
+.index_with ul.pagination li,
+.index_with ul.nav-tabs li {
+  display: contents;
+}
 .index_with ul.pagination li:before,
 .index_with ul.nav-tabs li:before {
   display: none;
@@ -319,4 +323,9 @@ body {
   font-size: 26px;
   font-weight: 300;
   line-height: 47px;
+}
+.table-responsive .li-desc span {
+  min-width: 165px;
+  font-weight: 600;
+  display: inline-block;
 }
