@@ -11,220 +11,221 @@
     var user = manager.FindById(User.Identity.GetUserId());
 }
 
-@Html.Partial("Partial/header")
+@*@Html.Partial("Partial/header")*@
 
 <div class="content">
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
 
-    @if (Model.Item != null)
-    {
-
-        var status = "";
-        switch (Model.Item.Status)
+        @if (Model.Item != null)
         {
-            case (OrderStatus.Pending):
-                status = "Ожидается";
-                break;
-            case (OrderStatus.Processing):
-                status = "Обрабатывается";
-                break;
-            case (OrderStatus.Shipped):
-                status = "Отправлен";
-                break;
-            case (OrderStatus.Complete):
-                status = "Выполнен";
-                break;
-            case (OrderStatus.Сanceled):
-                status = "Аннулирован";
-                break;
-            case (OrderStatus.Error):
-            default:
-                status = "Ошибка";
-                break;
-        }
 
-        var paymentType = "";
-        switch (Model.Item.AcquiringType)
-        {
-            case (AcquiringMethod.Cash):
-                paymentType = "Наличные";
-                break;
-            case (AcquiringMethod.Card):
-                paymentType = "Банковская карта";
-                break;
-            case (AcquiringMethod.Transfer):
-                paymentType = "Банковский перевод";
-                break;
-            default:
-                paymentType = "Не определено";
-                break;
-        }
+            var status = "";
+            switch (Model.Item.Status)
+            {
+                case (OrderStatus.Pending):
+                    status = "Ожидается";
+                    break;
+                case (OrderStatus.Processing):
+                    status = "Обрабатывается";
+                    break;
+                case (OrderStatus.Shipped):
+                    status = "Отправлен";
+                    break;
+                case (OrderStatus.Complete):
+                    status = "Выполнен";
+                    break;
+                case (OrderStatus.Сanceled):
+                    status = "Аннулирован";
+                    break;
+                case (OrderStatus.Error):
+                default:
+                    status = "Ошибка";
+                    break;
+            }
 
-        var deliveryType = "";
-        switch (Model.Item.DeliveryType)
-        {
-            case (DeliveryMethod.Self):
-                deliveryType = "Самовывоз";
-                break;
-            case (DeliveryMethod.Post):
-                deliveryType = "Почтой";
-                break;
-            case (DeliveryMethod.Сourier):
-                deliveryType = "Курьером";
-                break;
-            default:
-                deliveryType = "Не определено";
-                break;
-        }
+            var paymentType = "";
+            switch (Model.Item.AcquiringType)
+            {
+                case (AcquiringMethod.Cash):
+                    paymentType = "Наличные";
+                    break;
+                case (AcquiringMethod.Card):
+                    paymentType = "Банковская карта";
+                    break;
+                case (AcquiringMethod.Transfer):
+                    paymentType = "Банковский перевод";
+                    break;
+                default:
+                    paymentType = "Не определено";
+                    break;
+            }
 
-        <section class="invoice">
-            <!-- title row -->
-            <div class="row">
-                <div class="col-xs-12">
-                    <h2 class="page-header">
-                        <i class="fa fa-paperclip"></i> Заказ @("№" + Model.Item.Number.ToString() )
-                        <small class="pull-right">Дата: @Model.Item.Date.ToString("dd.MM.yyyy")</small>
-                    </h2>
+            var deliveryType = "";
+            switch (Model.Item.DeliveryType)
+            {
+                case (DeliveryMethod.Self):
+                    deliveryType = "Самовывоз";
+                    break;
+                case (DeliveryMethod.Post):
+                    deliveryType = "Почтой";
+                    break;
+                case (DeliveryMethod.Сourier):
+                    deliveryType = "Курьером";
+                    break;
+                default:
+                    deliveryType = "Не определено";
+                    break;
+            }
+
+            <section class="invoice">
+                <!-- title row -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2 class="page-header">
+                            <i class="fa fa-paperclip"></i> Заказ @("№" + Model.Item.Number.ToString() )
+                            <small class="pull-right">Дата: @Model.Item.Date.ToString("dd.MM.yyyy")</small>
+                        </h2>
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- /.col -->
-            </div>
-            <!-- info row -->
-            <div class="row invoice-info">
-                @*<div class="col-sm-4 invoice-col">
-                        Исполнитель:
+                <!-- info row -->
+                <div class="row invoice-info">
+                    @*<div class="col-sm-4 invoice-col">
+                            Исполнитель:
+                            <address>
+                                <strong>Admin, Inc.</strong><br>
+                                795 Folsom Ave, Suite 600<br>
+                                San Francisco, CA 94107<br>
+                                Phone: (804) 123-5432<br>
+                                Email: info@almasaeedstudio.com
+                            </address>
+                        </div>*@
+                    <!-- /.col -->
+                    <div class="col-sm-4 invoice-col">
+                        <b>Заказ #@Model.Item.Number</b><br>
+                        <br>
+                        <b>Статус:</b> @status<br>
+                        <b>Статус оплаты:</b> @(Model.Item.Payed ? "оплачно" : "не оплачено")<br>
+                        <b>Пользователь:</b> @user.Email
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-offset-4 col-sm-4 invoice-col">
+                        Заказчик:
                         <address>
-                            <strong>Admin, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            Phone: (804) 123-5432<br>
-                            Email: info@almasaeedstudio.com
+                            <strong>@Model.Item.UserName</strong><br>
+                            @Model.Item.UserAddress<br>
+                            Тел: @Model.Item.UserPhone<br>
+                            Email: @Model.Item.UserEmail
                         </address>
-                    </div>*@
-                <!-- /.col -->
-                <div class="col-sm-4 invoice-col">
-                    <b>Заказ #@Model.Item.Number</b><br>
-                    <br>
-                    <b>Статус:</b> @status<br>
-                    <b>Статус оплаты:</b> @(Model.Item.Payed ? "оплачно" : "не оплачено")<br>
-                    <b>Пользователь:</b> @user.Email
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-offset-4 col-sm-4 invoice-col">
-                    Заказчик:
-                    <address>
-                        <strong>@Model.Item.UserName</strong><br>
-                        @Model.Item.UserAddress<br>
-                        Тел: @Model.Item.UserPhone<br>
-                        Email: @Model.Item.UserEmail
-                    </address>
-                </div>
+                    </div>
 
-            </div>
-            <!-- /.row -->
-            <!-- Table row -->
-            <div class="row topIndent-20">
-                <div class="col-xs-12 table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Название</th>
-                                <th>Цена <i class="fa fa-rouble"></i></th>
-                                <th>Кол-во ед.</th>
-                                <th>Сумма <i class="fa fa-rouble"></i></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.Item.Products != null && Model.Item.Products.Count() > 0)
-                            {
-                                foreach (var item in Model.Item.Products)
-                                {
-                                    <tr>
-                                        <td>@item.Number</td>
-                                        <td>@item.Title</td>
-                                        <td>@item.Price.ToString("N2")</td>
-                                        <td>@item.Amount</td>
-                                        <td>@item.AmountSum.ToString("N2")</td>
-                                    </tr>
-                                }
-                            }
-
-                        </tbody>
-                    </table>
                 </div>
-                <!-- /.col -->
-            </div>
-            <!-- /.row -->
-
-            <div class="row topIndent-20">
-                <!-- accepted payments column -->
-                <div class="col-xs-5">
-                    <p class="lead">Информация: </p>
-                    <div>Способ оплаты: @paymentType</div>
-                    <div>Дата оплаты: @Model.Item.Date.AddDays(5).ToString("dd.MM.yyyy")</div><br />
-                    <div>Способ доставки: @deliveryType</div>
-                    <div>Дата доставки: @Model.Item.Date.AddDays(15).ToString("dd.MM.yyyy")</div>
-
-                    @if (!string.IsNullOrEmpty(Model.Item.Note))
-                    {
-                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                            @Model.Item.Note
-                        </p>
-                    }
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-offset-1 col-xs-6">
-                    <p class="lead">Итого: </p>
-                    <div class="table-responsive">
-                        <table class="table">
+                <!-- /.row -->
+                <!-- Table row -->
+                <div class="row topIndent-20">
+                    <div class="col-xs-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Название</th>
+                                    <th>Цена <i class="fa fa-rouble"></i></th>
+                                    <th>Кол-во ед.</th>
+                                    <th>Сумма <i class="fa fa-rouble"></i></th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr>
-                                    <th style="width:50%">Позиций:</th>
-                                    <td>@Model.Item.Total</td>
-                                </tr>
-                                <tr>
-                                    <th style="width:50%">Сумма:</th>
-                                    <td>@Model.Item.TotalSum.ToString("N2") <i class="fa fa-rouble"></i></td>
-                                </tr>
-                                <tr>
-                                    <th>Налог (18%)</th>
-                                    <td>@(Model.Item.TotalSum * 0.18m) <i class="fa fa-rouble"></i></td>
-                                </tr>
-                                <tr>
-                                    <th>Доставка:</th>
-                                    <td>500 <i class="fa fa-rouble"></i></td>
-                                </tr>
-                                <tr>
-                                    <th>Всего:</th>
-                                    <td>@(Model.Item.TotalSum * 1.18m + 500m) <i class="fa fa-rouble"></i></td>
-                                </tr>
+                                @if (Model.Item.Products != null && Model.Item.Products.Count() > 0)
+                                {
+                                    foreach (var item in Model.Item.Products)
+                                    {
+                                        <tr>
+                                            <td>@item.Number</td>
+                                            <td>@item.Title</td>
+                                            <td>@item.Price.ToString("N2")</td>
+                                            <td>@item.Amount</td>
+                                            <td>@item.AmountSum.ToString("N2")</td>
+                                        </tr>
+                                    }
+                                }
+
                             </tbody>
                         </table>
                     </div>
+                    <!-- /.col -->
                 </div>
-                <!-- /.col -->
-            </div>
-            <!-- /.row -->
-            <!-- this row will not appear when printing -->
-            @*<div class="row no-print">
-                    <div class="col-xs-12">
-                        <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-                        <button type="button" class="btn btn-success pull-right">
-                            <i class="fa fa-credit-card"></i> Submit Payment
-                        </button>
-                        <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                            <i class="fa fa-download"></i> Generate PDF
-                        </button>
-                    </div>
-                </div>*@
-        </section>
+                <!-- /.row -->
 
-    }
-    else
-    {
-        <div class="box invoice topIndent-20">
+                <div class="row topIndent-20">
+                    <!-- accepted payments column -->
+                    <div class="col-xs-5">
+                        <p class="lead">Информация: </p>
+                        <div>Способ оплаты: @paymentType</div>
+                        <div>Дата оплаты: @Model.Item.Date.AddDays(5).ToString("dd.MM.yyyy")</div><br />
+                        <div>Способ доставки: @deliveryType</div>
+                        <div>Дата доставки: @Model.Item.Date.AddDays(15).ToString("dd.MM.yyyy")</div>
+
+                        @if (!string.IsNullOrEmpty(Model.Item.Note))
+                        {
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                @Model.Item.Note
+                            </p>
+                        }
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-offset-1 col-xs-6">
+                        <p class="lead">Итого: </p>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th style="width:50%">Позиций:</th>
+                                        <td>@Model.Item.Total</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:50%">Сумма:</th>
+                                        <td>@Model.Item.TotalSum.ToString("N2") <i class="fa fa-rouble"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Налог (18%)</th>
+                                        <td>@(Model.Item.TotalSum * 0.18m) <i class="fa fa-rouble"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Доставка:</th>
+                                        <td>500 <i class="fa fa-rouble"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Всего:</th>
+                                        <td>@(Model.Item.TotalSum * 1.18m + 500m) <i class="fa fa-rouble"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <!-- this row will not appear when printing -->
+                @*<div class="row no-print">
+                        <div class="col-xs-12">
+                            <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+                            <button type="button" class="btn btn-success pull-right">
+                                <i class="fa fa-credit-card"></i> Submit Payment
+                            </button>
+                            <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                                <i class="fa fa-download"></i> Generate PDF
+                            </button>
+                        </div>
+                    </div>*@
+            </section>
+
+        }
+        else
+        {
             <div class="noItems">Нет данных</div>
-        </div>
-    }
+        }
+    </div>
 </div>
 @section Styles{
     <link href="~/sites/rushydro/content/module/cart/css/styles.min.css" rel="stylesheet">

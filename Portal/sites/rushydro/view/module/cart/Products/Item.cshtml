@@ -4,158 +4,161 @@
 @{
     Layout = ViewBag.Layout;
 }
-@Html.Partial("Partial/header")
+@*@Html.Partial("Partial/header")*@
 
-<link href="/Content/Modules/Cart/css/styles.css" rel="stylesheet">
-<script src="/Content/Modules/Cart/js/script.js"></script>
+
+
 
 <div class="content">
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
 
-    @if (Model.Item != null)
-    {
-        string inCart = "";
-        string chkbxlabel = "Заказать";
-
-        if (Model.InCart != null && Model.InCart.Count() > 0 && Model.InCart.Contains(Model.Item.Id))
+        @if (Model.Item != null)
         {
-            inCart = "checked";
-            chkbxlabel = "В корзине";
-        }
+            string inCart = "";
+            string chkbxlabel = "Заказать";
 
-        int i = 0;
+            if (Model.InCart != null && Model.InCart.Count() > 0 && Model.InCart.Contains(Model.Item.Id))
+            {
+                inCart = "checked";
+                chkbxlabel = "В корзине";
+            }
 
-        <div class="box box-solid product_info topIndent-20">
-            <div class="box-header with-border">
-                <h3 class="box-title"><small>КОД ТОВАРА / УСЛУГИ:</small> @Model.Item.Number</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            int i = 0;
 
-                            <ol class="carousel-indicators">
-                                @if (Model.Item.Images != null && Model.Item.Images.Count() > 0)
-                                {
-                                    foreach (var img in Model.Item.Images)
+            <div class="box box-solid product_info topIndent-20">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><small>КОД ТОВАРА / УСЛУГИ:</small> @Model.Item.Number</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+                                <ol class="carousel-indicators">
+                                    @if (Model.Item.Images != null && Model.Item.Images.Count() > 0)
                                     {
-                                        <li data-target="#carousel-example-generic" data-slide-to="@i" class=""></li>
-                                        i++;
+                                        foreach (var img in Model.Item.Images)
+                                        {
+                                            <li data-target="#carousel-example-generic" data-slide-to="@i" class=""></li>
+                                            i++;
+                                        }
+                                        i = 0;
                                     }
-                                    i = 0;
-                                }
-                            </ol>
-                            <div class="carousel-inner">
-                                @if (Model.Item.Images != null && Model.Item.Images.Count() > 0)
-                                {
-                                    foreach (var img in Model.Item.Images)
+                                </ol>
+                                <div class="carousel-inner">
+                                    @if (Model.Item.Images != null && Model.Item.Images.Count() > 0)
                                     {
-                                        <div class="item">
-                                            @if (!string.IsNullOrEmpty(img.Path) && File.Exists(img.Path))
-                                            {
-                                                <img src="@img.Path" alt="@img.Title">
-                                            }
-                                            else
-                                            {
-                                                <img src="http://placehold.it/320x240/3c8dbc/ffffff&amp;text=No+product+image" alt="">
-                                            }
+                                        foreach (var img in Model.Item.Images)
+                                        {
+                                            <div class="item">
+                                                @if (!string.IsNullOrEmpty(img.Path) && File.Exists(img.Path))
+                                                {
+                                                    <img src="@img.Path" alt="@img.Title">
+                                                }
+                                                else
+                                                {
+                                                    <img src="http://placehold.it/320x240/3c8dbc/ffffff&amp;text=No+product+image" alt="">
+                                                }
 
-                                            <div class="carousel-caption">
-                                                @img.Title
+                                                <div class="carousel-caption">
+                                                    @img.Title
+                                                </div>
                                             </div>
-                                        </div>
-                                        i++;
+                                            i++;
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    <div class="item active">
-                                        <img src="http://placehold.it/320x240/3c8dbc/ffffff&amp;text=No+product+image" alt="">
-                                    </div>
-                                }
+                                    else
+                                    {
+                                        <div class="item active">
+                                            <img src="http://placehold.it/320x240/3c8dbc/ffffff&amp;text=No+product+image" alt="">
+                                        </div>
+                                    }
 
+                                </div>
+                                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
                             </div>
-                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                <span class="fa fa-angle-left"></span>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                <span class="fa fa-angle-right"></span>
-                            </a>
-                        </div>
 
-                    </div>
-                    <div class="col-md-6 vertical-divider">
-                        <div class="item_title">
-                            @Model.Item.Title
                         </div>
+                        <div class="col-md-6 vertical-divider">
+                            <div class="item_title">
+                                @Model.Item.Title
+                            </div>
 
-                        <div class="item_category_list">
-                            @if (Model.Item.Categories != null && Model.Item.Categories.Count() > 0)
+                            <div class="item_category_list">
+                                @if (Model.Item.Categories != null && Model.Item.Categories.Count() > 0)
+                                {
+                                    <i class="fa fa-tags"></i> <small>
+                                        @Html.Raw(string.Join(", ", Model.Item.Categories.Select(p => $"<a href='/cart/products/list/{p.Id}'>{p.Title}</a>").ToArray()))
+                                    </small>
+                                }
+                            </div>
+
+                            <div class="item_price text-center">
+                                <span class="price_old">@Model.Item.PriceInfo</span>
+                                <span class="price_new">@Model.Item.PriceInfo</span>
+                            </div>
+
+                            <div class="item_cart">
+                                <div class="pull-left">
+                                    <input type="checkbox" id="product_@Model.Item.Id" data-product-id="@Model.Item.Id" class="iCheck js_order-product-chkbx" @inCart />
+                                    <label for="product_@Model.Item.Id">@chkbxlabel</label>
+                                </div>
+
+                                <a class="pull-right" href="/cart/orders/new/" title="Перейти в корзину"><i class="fa fa-shopping-cart"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            @if (Model.Item.Discount.HasValue)
                             {
-                                <i class="fa fa-tags"></i> <small>
-                                    @Html.Raw(string.Join(", ", Model.Item.Categories.Select(p => $"<a href='/cart/products/list/{p.Id}'>{p.Title}</a>").ToArray()))
-                                </small>
+                                <div class="label label-warning pull-right">
+                                    @(Model.Item.Discount.Value.ToString("N0"))%
+                                </div>
                             }
                         </div>
-
-                        <div class="item_price text-center">
-                            <span class="price_old">@Model.Item.PriceInfo</span>
-                            <span class="price_new">@Model.Item.PriceInfo</span>
-                        </div>
-
-                        <div class="item_cart">
-                            <div class="pull-left">
-                                <input type="checkbox" id="product_@Model.Item.Id" data-product-id="@Model.Item.Id" class="iCheck js_order-product-chkbx" @inCart />
-                                <label for="product_@Model.Item.Id">@chkbxlabel</label>
-                            </div>
-
-                            <a class="pull-right" href="/cart/orders/new/" title="Перейти в корзину"><i class="fa fa-shopping-cart"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        @if (Model.Item.Discount.HasValue)
-                        {
-                            <div class="label label-warning pull-right">
-                                @(Model.Item.Discount.Value.ToString("N0"))%
-                            </div>
-                        }
                     </div>
                 </div>
+                <!-- /.box-body -->
+
             </div>
-            <!-- /.box-body -->
 
-        </div>
+            <div class="nav-tabs-custom topIndent-20">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab_1" data-toggle="tab">Описание</a></li>
+                    <li><a href="#tab_2" data-toggle="tab">Характеристики</a></li>
+                    <li><a href="#tab_3" data-toggle="tab">Отзывы</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        @Model.Item.Desc
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_2">
 
-        <div class="nav-tabs-custom topIndent-20">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab_1" data-toggle="tab">Описание</a></li>
-                <li><a href="#tab_2" data-toggle="tab">Характеристики</a></li>
-                <li><a href="#tab_3" data-toggle="tab">Отзывы</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="tab_1">
-                    @Model.Item.Desc
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_3">
+
+                    </div>
+                    <!-- /.tab-pane -->
                 </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="tab_2">
-
-                </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="tab_3">
-
-                </div>
-                <!-- /.tab-pane -->
+                <!-- /.tab-content -->
             </div>
-            <!-- /.tab-content -->
-        </div>
 
-    }
-    else
-    {
-        <div class="box topIndent-20">
-            <div class="noItems">Нет данных</div>
-        </div>
-    }
+        }
+        else
+        {
+            <div class="topIndent-20">
+                <div class="noItems">Нет данных</div>
+            </div>
+        }
+    </div>
 </div>
 @section Styles{
     <link href="~/sites/rushydro/content/module/cart/css/styles.min.css" rel="stylesheet">

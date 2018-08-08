@@ -1138,7 +1138,7 @@
     <Content Include="sites\rushydro\view\module\lk\Payments\Part\Filter.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\PU\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\PU\Part\CounterReading.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\PU\Part\ReadingsFilter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\Filter.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\Statistics\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\Statistics\Part\Filter.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\SubscrInfo\Index.cshtml" />
@@ -1154,7 +1154,6 @@
     <Content Include="sites\rushydro\content\css\rushydro.less" />
     <Content Include="sites\rushydro\content\css\site_login.less" />
     <Content Include="sites\rushydro\content\module\cart\css\styles.less" />
-    <Content Include="sites\rushydro\view\module\cart\Orders\Cart.cshtml" />
     <Content Include="sites\rushydro\view\page\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\messages\MsgWidget\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\messages\MsgWidget\LastMessages.cshtml" />

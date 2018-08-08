@@ -80,11 +80,6 @@ namespace Portal.Controllers
         public string ViewName;
 
         /// <summary>
-        /// Название страницы
-        /// </summary>
-        public string PageName;
-
-        /// <summary>
         /// Текущий пользователь
         /// </summary>
         public ApplicationUser CurrentUser;

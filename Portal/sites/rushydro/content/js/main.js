@@ -1,11 +1,5 @@
 ﻿$(document).ready(function () {
 
-    //if ($('.invoice_active').length > 0) {
-    //    $('.invoice_active').focus();        
-    //}
-
-
-
     window.onscroll = function () {
         var id = 'index_right';
         if (getBodyScrollTop() >= 75) {
@@ -15,6 +9,12 @@
             $('#' + id).removeClass('index_right__fix');
         }
     }
+
+    $('.iCheck').iCheck({
+        checkboxClass: 'icheckbox_square-orange',
+        radioClass: 'iradio_square-orange',
+        increaseArea: '20%' // optional
+    });
 
 });
 

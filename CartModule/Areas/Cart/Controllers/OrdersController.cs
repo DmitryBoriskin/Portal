@@ -44,14 +44,16 @@ namespace CartModule.Areas.Cart.Controllers
                 throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
             filter = GetFilter();
+
+            if (!filter.Date.HasValue)
+                filter.Date = DateTime.Now.AddYears(-1);
+            if (!filter.DateEnd.HasValue)
+                filter.DateEnd = DateTime.Now;
+
+            model.Filter = filter;
+
             var cFilter = FilterModel.Extend<CartFilter>(filter);
             cFilter.UserId = CurrentUser.UserId;
-
-            if (cFilter.Date.HasValue)
-                ViewBag.beginDate = cFilter.Date.Value.ToString("dd.MM.yyyy");
-
-            if (cFilter.DateEnd.HasValue)
-                ViewBag.endDate = cFilter.DateEnd.Value.ToString("dd.MM.yyyy");
 
             model.List = _Repository.GetOrders(cFilter);
 
@@ -81,7 +83,7 @@ namespace CartModule.Areas.Cart.Controllers
         //Корзина
         public ActionResult New()
         {
-            //Шаблон
+           
             ViewName = _Repository.GetModuleView(ControllerName, ActionName);
             if (string.IsNullOrEmpty(ViewName))
                 throw new Exception("Не указан шаблон представления для данного контроллера и метода");
@@ -90,6 +92,7 @@ namespace CartModule.Areas.Cart.Controllers
 
             var model = new CartFrontModel()
             {
+                
                 LayoutInfo = _layoutData,
                 Breadcrumbs = _breadcrumb,
                 PageName = _pageName,
