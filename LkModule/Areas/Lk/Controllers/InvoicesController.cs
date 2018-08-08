@@ -48,8 +48,10 @@ namespace LkModule.Areas.Lk.Controllers
         {
             filter = GetFilter();
 
-            filter.Date = DateTime.Now.AddMonths(-1);
-            filter.DateEnd = DateTime.Now;
+            if(!filter.Date.HasValue)
+                filter.Date = DateTime.Now.AddMonths(-1);
+            if (!filter.DateEnd.HasValue)
+                filter.DateEnd = DateTime.Now;
 
             model.Filter = filter;
             var mFilter = FilterModel.Extend<LkFilter>(filter);

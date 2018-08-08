@@ -20,21 +20,20 @@
                 {
                     amountWithOutTax = amountWithOutTax - item.Tax.Value;
                 }
-                bool First = (item == Model.List.Items.First());
-                <div class="factura @(First?"factura_open":"")">
+                <div class="factura @(i==1?"factura_open":"")">
                     <table>
                         <tr>
                             <td>@item.DocType № @item.Number <span>от @item.Date.ToString("dd.MM.yyyy")</span></td>
                             <td><span>Период расчета:</span> @item.Period</td>
                             <td>
-                                <a class="collapse_btn" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
-                                    @(First?"Свернуть":"Подробнее")                                    
+                                <a class="js_collapse_btn" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
+                                    @(i == 1? "Свернуть":"Подробнее")                                    
                                 </a>
                             </td>
                         </tr>
                     </table>
 
-                    <div class="collapse @(First?"in":"")" id="invoice_@item.Link">
+                    <div class="collapse @(i==1? "in":"")" id="invoice_@item.Link">
                         <div class="factura_more">
                             @*<div>
                                 <div>Статус: @item.Status</div>
@@ -56,7 +55,6 @@
                                         <tr>
                                             <th>Наименование</th>
                                             <th>Тарифицируемое потребление</th>
-                                            @*<th>Зона</th>*@
                                             <th>Ед.изм.</th>
                                             <th>Тариф</th>
                                             
@@ -84,7 +82,6 @@
                                                             <span class="text-success">@detail.Quantity1.Value.ToString("N2")</span>
                                                         }
                                                     </td>
-                                                    @*<td>@detail.TimeZone</td>*@
                                                     <td>@detail.Unit</td>
                                                     <td>
                                                         @if (detail.TariffAmount0.HasValue)
@@ -145,11 +142,12 @@
                                         <tr>
                                             <td><b>Итого:</b></td>
                                             <td>
-                                                @item.Quantity
-                                                @if (item.Quantity2.HasValue && item.Quantity2 > 0m)
-                                                {<br />@item.Quantity2.Value.ToString("N2")}
+                                                @(item.Quantity.HasValue? item.Quantity.Value.ToString("N2"): "")
+                                                @*@if (item.Quantity2.HasValue && item.Quantity2 > 0m)
+                                                {
+                                                    <br />@item.Quantity2.Value.ToString("N2")
+                                                }*@
                                             </td>
-                                            @*<td></td>*@
                                             <td>@item.Unit</td>
                                             <td></td>
                                             
@@ -172,8 +170,8 @@
         }
         else
         {
-            <div class="box invoice topIndent-20">
-                <div class="noItems">Нет данных</div>
+            <div class="topIndent-20">
+                <div class="noItems">Нет данных за выбранный период</div>
             </div>
         }
     </div>
@@ -181,20 +179,19 @@
 
 @section Scripts{
     <script src="~/sites/rushydro/content/module/lk/js/script.js"></script>
-
     <script>
-        $('.collapse_btn').click(function () {
-            var el = $(this).closest('.factura');
-            if (el.hasClass("factura_open")) {
-                el.removeClass('factura_open');
-                $(this).text('Подробнее');
-                
-            }
-            else {
-                el.addClass('factura_open');
-                $(this).text('Свернуть');
-                
-            }
-        }); 
+        $(document).ready(function () {
+            $(".js_collapse_btn").click(function () {
+                var el = $(this).closest(".factura");
+                if (el.hasClass("factura_open")) {
+                    el.removeClass("factura_open");
+                    $(this).text("Подробнее");
+                }
+                else {
+                    el.addClass("factura_open");
+                    $(this).text("Свернуть");
+                }
+            });
+        });
     </script>
 }
