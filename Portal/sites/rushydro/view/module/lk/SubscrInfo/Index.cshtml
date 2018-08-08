@@ -11,35 +11,36 @@
         <div class="box topIndent-20">
             @if (Model.Item != null)
             {                
-                    <div class="table-responsive">
-                        <div class="li-desc"><span>Наименование:</span> @Model.Item.Name</div>
-                        <div class="li-desc"><span>ИНН:</span> @Model.Item.Inn </div>
-                        <div class="li-desc"><span>КПП:</span> @Model.Item.Kpp</div>
-                        <div class="li-desc"><span>Юридический адрес:</span> @Model.Item.Address</div>
-                        <div class="li-desc"><span>Почтовый адрес:</span> @Model.Item.PostAddress</div>
-                        <br />
-                        <div class="li-desc"><span>E-mail:</span> @Model.Item.Email</div>
-                        <div class="li-desc"><span>Телефон:</span> @Model.Item.Phone</div>
-                        <div class="li-desc"><span>Факс:</span> @Model.Item.Fax</div>
-                        <div class="li-desc"><span>Сайт:</span> @Model.Item.Site</div>
-                        <br />
-                        <div class="li-desc"><span>Лицевой счет</span></div>
-                        <div class="li-desc"><span>Номер:</span> @Model.Item.Subscr</div>
-                        <div class="li-desc"><span>Дата открытия:</span> @(Model.Item.Begin.HasValue ? Model.Item.Begin.Value.ToString("dd.MM.yyyy") : "")</div>
-                        <div class="li-desc"><span>Договор закрытия:</span> @(Model.Item.End.HasValue ? Model.Item.End.Value.ToString("dd.MM.yyyy") : "")</div>
-                        <br />
-                        <div class="li-desc"><span>Договор:</span> </div>
-                        <div class="li-desc"><span>Номер:</span> @Model.Item.Subscr</div>
-                        <div class="li-desc"><span>Дата заключения:</span> @(Model.Item.ContractDate.HasValue ? Model.Item.ContractDate.Value.ToString("dd.MM.yyyy") : "")</div>
-                        <div class="li-desc"><span>Действителен с:</span> @(Model.Item.ContractBegin.HasValue ? Model.Item.ContractBegin.Value.ToString("dd.MM.yyyy") : "")</div>
-                        <div class="li-desc"><span>Действителен по:</span> @(Model.Item.ContractEnd.HasValue ? Model.Item.ContractEnd.Value.ToString("dd.MM.yyyy") : "")</div>
-                        <br />
-                        <div class="li-desc"><span>Банк:</span></div>
-                        <div class="li-desc"><span>Наименование:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Name : "")</div>
-                        <div class="li-desc"><span>БИК:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Bik : "")</div>
-                        <div class="li-desc"><span>ИНН:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Inn : "")</div>
-                        <div class="li-desc"><span>Расчетный счет:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Rs : "")</div>
-                    </div>                
+            <div class="table-responsive">
+                <div class="li-desc"><span>Наименование:</span> @Model.Item.Name</div>
+                <div class="li-desc"><span>ОГРН:</span> @Model.Item.Ogrn</div>
+                <div class="li-desc"><span>ИНН:</span> @Model.Item.Inn</div>
+                <div class="li-desc"><span>КПП:</span> @Model.Item.Kpp</div>
+                <div class="li-desc"><span>Юридический адрес:</span> @Model.Item.Address</div>
+                <div class="li-desc"><span>Почтовый адрес:</span> @Model.Item.PostAddress</div>
+                <br />
+                <div class="li-desc"><span>E-mail:</span> @Model.Item.Email</div>
+                <div class="li-desc"><span>Телефон:</span> @Model.Item.Phone</div>
+                <div class="li-desc"><span>Факс:</span> @Model.Item.Fax</div>
+                <div class="li-desc"><span>Сайт:</span> @Model.Item.Site</div>
+                <br />
+                @*<div class="li-desc"><span>Лицевой счет</span></div>
+        <div class="li-desc"><span>Номер:</span> @Model.Item.Subscr</div>
+        <div class="li-desc"><span>Дата открытия:</span> @(Model.Item.Begin.HasValue ? Model.Item.Begin.Value.ToString("dd.MM.yyyy") : "")</div>
+        <div class="li-desc"><span>Дата закрытия:</span> @(Model.Item.End.HasValue ? Model.Item.End.Value.ToString("dd.MM.yyyy") : "")</div>
+        <br />*@
+                <div class="li-desc"><span>Договор:</span> </div>
+                <div class="li-desc"><span>Номер:</span> @Model.Item.Contract</div>
+                <div class="li-desc"><span>Дата заключения:</span> @(Model.Item.ContractDate.HasValue ? Model.Item.ContractDate.Value.ToString("dd.MM.yyyy") : "")</div>
+                <div class="li-desc"><span>Действителен с:</span> @(Model.Item.ContractBegin.HasValue ? Model.Item.ContractBegin.Value.ToString("dd.MM.yyyy") : "")</div>
+                <div class="li-desc"><span>Действителен по:</span> @(Model.Item.ContractEnd.HasValue ? Model.Item.ContractEnd.Value.ToString("dd.MM.yyyy") : "")</div>
+                <br />
+                <div class="li-desc"><span>Банковские реквизиты:</span></div>
+                <div class="li-desc"><span>Наименование:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Name : "")</div>
+                <div class="li-desc"><span>БИК:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Bik : "")</div>
+                <div class="li-desc"><span>ИНН:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Inn : "")</div>
+                <div class="li-desc"><span>Расчетный счет:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Rs : "")</div>
+            </div>
             }
             else
             {

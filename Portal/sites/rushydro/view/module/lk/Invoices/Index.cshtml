@@ -56,7 +56,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Наименование<br /><small>(объем)</small></th>
+                                    <th>Наименование</th>
                                     <th>Зона</th>
                                     <th>Тариф</th>
                                     <th>Количество<br /><small>(объем)</small></th>
@@ -73,9 +73,9 @@
                                 <tr>
                                     <td>@detail.Tariff</td>
                                     <td>@detail.TimeZone</td>
-
-                                    <td>@detail.Quantity | @detail.Quantity0 | @detail.Quantity1</td>
                                     <td>@detail.TariffAmount | @detail.TariffAmount0 | @detail.TariffAmount0</td>
+                                    <td>@detail.Quantity | @detail.Quantity0 | @detail.Quantity1</td>
+                                    
                                     <td></td>
                                     <td>@detail.TaxAmount | @detail.TaxAmount0 | @detail.TaxAmount1</td>
                                     <td>@detail.Amount | @detail.Amount0 | @detail.Amount1</td>
@@ -90,7 +90,7 @@
                                     <td>
                                         @item.Quantity
                                         @if (item.Quantity2.HasValue && item.Quantity2 > 0m)
-                                        {<br />@item.Quantity2}
+                                        {<br />@item.Quantity2.Value.ToString("N2")}
                                     </td>
                                     <td>@amountWithOutTax.ToString("N2")</td>
                                     <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
