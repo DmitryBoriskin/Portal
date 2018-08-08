@@ -44,7 +44,7 @@
                         </div>
                         <div>
                             <div>Статус: @item.Status</div>
-                            <div>Договор: @item.SaleCategory</div>
+                            <div>Вид договора: @item.SaleCategory</div>
                             <div>Задолженность: @item.DebtType</div>
                             @if (item.DateBegin.HasValue && item.DateEnd.HasValue)
                             {
@@ -60,6 +60,7 @@
                                 <tr>
                                     <th>Наименование</th>
                                     <th>Зона</th>
+                                    <th>Ед.изм.</th>
                                     <th>Тариф</th>
                                     <th>Количество<br /><small>(объем)</small></th>
                                     <th>Цена<br /><small>(без НДС)</small></th>
@@ -75,12 +76,70 @@
                                 <tr>
                                     <td>@detail.Tariff</td>
                                     <td>@detail.TimeZone</td>
-                                    <td>@detail.TariffAmount | @detail.TariffAmount0 | @detail.TariffAmount0</td>
-                                    <td>@detail.Quantity | @detail.Quantity0 | @detail.Quantity1</td>
-                                    
-                                    <td></td>
-                                    <td>@detail.TaxAmount | @detail.TaxAmount0 | @detail.TaxAmount1</td>
-                                    <td>@detail.Amount | @detail.Amount0 | @detail.Amount1</td>
+                                    <td>@detail.Unit</td>
+                                    <td>
+                                        @if (detail.TariffAmount0.HasValue)
+                                        {
+                                            //Отрицательная сумма
+                                            <span class="text-danger">@detail.TariffAmount0.Value.ToString("N2")</span>
+                                        }
+                                        @if (detail.TariffAmount1.HasValue)
+                                        {
+                                            //Положительная сумма
+                                            <span class="text-success">@detail.TariffAmount1.Value.ToString("N2")</span>
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if (detail.Quantity0.HasValue)
+                                        {
+                                            //Отрицательное значение
+                                            <span class="text-danger">@(((-1) * detail.Quantity0.Value).ToString("N2"))</span>
+                                        }
+                                        @if (detail.Quantity1.HasValue)
+                                        {
+                                            //Положительное значение
+                                            <span class="text-success">@detail.Quantity1.Value.ToString("N2")</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (detail.TaxAmount0.HasValue && detail.Amount0.HasValue)
+                                        {
+                                            //Отрицательное значение
+                                            decimal amount = detail.Amount0.Value - detail.TaxAmount0.Value;
+                                            <span class="text-danger">@amount.ToString("N2")</span>
+                                        }
+                                        @if (detail.TaxAmount1.HasValue && detail.Amount1.HasValue)
+                                        {
+                                            //Положительное значение
+                                            decimal amount = detail.Amount1.Value - detail.TaxAmount1.Value;
+                                            <span class="text-success">@amount.ToString("N2")</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (detail.TaxAmount0.HasValue)
+                                        {
+                                            //Отрицательное значение
+                                            <span class="text-danger">@(((-1) * detail.TaxAmount0.Value).ToString("N2"))</span>
+                                        }
+                                        @if (detail.TaxAmount1.HasValue)
+                                        {
+                                            //Положительное значение
+                                            <span class="text-success">@detail.TaxAmount1.Value.ToString("N2")</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (detail.Amount0.HasValue)
+                                        {
+                                            //Отрицательное значение
+                                            <span class="text-danger">@(((-1) * detail.Amount0.Value).ToString("N2"))</span>
+                                        }
+                                        @if (detail.Amount1.HasValue)
+                                        {
+                                            //Положительное значение
+                                            <span class="text-success">@detail.Amount1.Value.ToString("N2")</span>
+                                        }
+                                    </td>
                                 </tr>
                                     }
                                 }
@@ -88,6 +147,7 @@
                                 <tr>
                                     <td><b>Итого:</b></td>
                                     <td></td>
+                                    <td>@item.Unit</td>
                                     <td></td>
                                     <td>
                                         @item.Quantity
@@ -97,7 +157,7 @@
                                     <td>@amountWithOutTax.ToString("N2")</td>
                                     <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                     <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-                                   
+
                                 </tr>
                             </tbody>
                         </table>

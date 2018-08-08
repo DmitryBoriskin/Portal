@@ -555,6 +555,9 @@ namespace PgDbase.Repository.front
                         StatusId = s.n_status,
                         Status = s.c_status,
 
+                        UnitId = s.n_unit,
+                        Unit = s.c_unit,
+
                         Number = s.c_number,
                         Amount = s.n_amount,
                         Tax = s.n_tax,
@@ -621,6 +624,9 @@ namespace PgDbase.Repository.front
 
                         StatusId = s.n_status,
                         Status = s.c_status,
+
+                        UnitId = s.n_unit,
+                        Unit = s.c_unit,
 
                         Number = s.c_number,
                         Amount = s.n_amount,

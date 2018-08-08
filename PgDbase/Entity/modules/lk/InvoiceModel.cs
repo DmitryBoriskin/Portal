@@ -68,6 +68,16 @@ namespace PgDbase.entity
         public bool Debit { get; set; }
 
         /// <summary>
+        /// Единицы измерения
+        /// </summary>
+        public short? UnitId { get; set; }
+
+        /// <summary>
+        ///Единицы измерения
+        /// </summary>
+        public string Unit { get; set; }
+
+        /// <summary>
         /// сумма по документу(с налогом)
         /// </summary>
         public decimal? Amount { get; set; }
@@ -202,6 +212,16 @@ namespace PgDbase.entity
         /// Временная зона
         /// </summary>
         public string TimeZone { get; set; }
+
+        /// <summary>
+        /// Единицы измерения
+        /// </summary>
+        public short? UnitId { get; set; }
+
+        /// <summary>
+        ///Единицы измерения
+        /// </summary>
+        public string Unit { get; set; }
 
         /// <summary>
         /// Группа строки СФ
