@@ -112,20 +112,20 @@
         <div class="invoice">
             @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
             {
-                <table class="table table-striped table-condensed">
+                <table class="table table-striped table-condensed payments">
                     <tr>
                         <th>Дата платежа</th>
-                        <th>Сумма</th>
                         <th>Выставленный документ</th>
+                        <th>Сумма</th>                        
                     </tr>
                     @foreach (var item in Model.List.Items)
                 {
                         <tr>
                             <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                            <td>
-                                @(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")
-                            </td>
                             <td><a href="#">Счет</a></td>
+                            <td>
+                                <span class="paysum">@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</span>                                
+                            </td>                            
                         </tr>
                     }
                 </table>

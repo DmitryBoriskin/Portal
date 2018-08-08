@@ -29,7 +29,7 @@ namespace Portal.Controllers
         public ActionResult Index()
         {
             model.Page = _Repository.GetPage(_path, _alias);
-            return View(model);
+            return View("~/sites/rushydro/view/page/Index.cshtml", model);
         }
 
         public ActionResult Group(string alias, string view)

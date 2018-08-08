@@ -1,0 +1,27 @@
+﻿@model PageFrontModel
+@{
+    Layout = ViewBag.Layout;
+}
+
+@*@if (Model.Breadcrumbs != null)
+{
+    <ol class="breadcrumb">
+        @foreach (var item in Model.Breadcrumbs)
+        {
+            <li><a href="@item.Url">@item.Title</a></li>
+        }
+    </ol>
+}*@
+
+<div class="content">
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
+        <div class="invoice">
+            <div class="content">
+                @Html.Raw(Model.Page.Text)
+            </div>
+        </div>
+    </div>
+</div>
+
+

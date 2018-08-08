@@ -136,8 +136,10 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 var q = db.core_pages.Where(w => w.c_url == path + alias && w.f_site == _siteId);
+
                 if (!q.Any())
                     q = db.core_pages.Where(w => w.c_path == path && w.c_alias == alias && w.f_site == _siteId);
+
 
                 while (q.Any())
                 {

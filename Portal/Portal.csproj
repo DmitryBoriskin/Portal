@@ -1155,6 +1155,11 @@
     <Content Include="sites\rushydro\content\css\site_login.less" />
     <Content Include="sites\rushydro\content\module\cart\css\styles.less" />
     <Content Include="sites\rushydro\view\module\cart\Orders\Cart.cshtml" />
+    <Content Include="sites\rushydro\view\page\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\messages\MsgWidget\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\messages\MsgWidget\LastMessages.cshtml" />
+    <Content Include="sites\rushydro\view\module\messages\Messages\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\messages\Messages\Item.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

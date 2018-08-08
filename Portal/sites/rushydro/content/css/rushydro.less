@@ -154,30 +154,36 @@ body{
     }
 }
 
-.invoice {
+
+#index_right .invoice {
     height: ~"calc(100vh - 118px)";
     overflow: auto;
+    margin: 30px 0 0 0;
 
     .invoice-list {
-        margin: 30px 0 0 0;
+
 
         .invoice_item {
             display: block;
             padding: 25px 20px;
             color: #333;
             border-bottom: 1px solid @gray;
-
-            &:hover, &:focus,
+            /*&:hover, &:focus,*/
             &.invoice_active {
                 background-color: @orange;
                 color: @white;
                 text-decoration: none;
                 border-bottom: 1px solid rgba(0,0,0,0);
-                outline:none;
+                outline: none;
 
                 .invoice_pay {
                     color: @white;
                 }
+            }
+
+            &:not(.invoice_active):hover, &:not(.invoice_active):focus {
+                background-color: @orangelight;
+                text-decoration: none;
             }
 
             .invoice_num {
@@ -283,7 +289,7 @@ body{
     }
 
     a {
-        color: @blue;
+        color: @orange;
         text-decoration: none;
 
         &:hover {
@@ -307,9 +313,9 @@ body{
                 font-size: 14px;
             }
 
-            th:not(:nth-child(1)), td:not(:nth-child(1)) {
+            /*th:not(:nth-child(1)), td:not(:nth-child(1)) {
                 text-align: right;
-            }
+            }*/
 
             th {
                 color: #999;
@@ -449,5 +455,152 @@ body{
             font-weight:600;
             display:inline-block;
         }
+    }
+}
+
+.factura {
+    border: 1px solid #d9d9d9;
+    margin-bottom: 10px;
+
+
+    table {
+        border: none;
+        margin: 0;
+
+        tr {
+            td {
+                padding: 16px 10px 17px;
+                font-size: 16px !important;
+                line-height: 20px;
+
+                &:first-child{
+                    padding-left: 20px;
+                }
+                &:last-child {
+                    padding-right: 21px;
+                    width: 100px;
+                }
+
+                &:nth-last-child(2) {
+                    width: 300px;
+                }
+
+                span {
+                    color: #999;
+                    font-size: 14px;
+                }
+
+                a {
+                    text-transform: uppercase;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
+    &.factura_open {
+        background-color: #e5ebf6;
+        border-color: #e5ebf6;
+    }
+
+    .factura_more {
+        padding: 0 10px 10px 10px;
+        margin: 0 10px 10px 10px;
+        font-size: 12px;
+
+        .factura_more_table {
+            background-color: #fff;
+            padding: 10px;
+            overflow: auto;
+        }
+
+        table {
+            border: 1px solid #d9d9d9;
+            max-width: 100%;
+
+            thead {
+                tr {
+                    background-color: #fff !important;
+                }
+            }
+
+            tr {
+                font-size: 13px;
+                background-color: #fff;
+
+                &:nth-child(2n+1) {
+                    background-color: #f2f2f2;
+                }
+
+                td, th {
+                    border: 1px solid #d9d9d9;
+                    line-height: 13px;
+                }
+            }
+        }
+
+        button {
+            margin: 10px 0 20px;
+        }
+    }
+}
+
+table.payments {
+
+    tr {
+        td, th {
+
+            
+            &:last-child {
+                text-align: right;
+            }
+
+            a {
+                text-transform: uppercase;
+            }
+        }
+
+        .paysum {
+            line-height:22px;
+        }
+    }
+}
+span.paysum {
+    font-size: 26px;
+    font-weight: 300;
+}
+
+
+
+
+.mess_theme {
+    span {
+        padding-left: 10px;
+        color: #0d4f9c;
+    }
+}
+
+
+
+.mess-list {
+    .username {
+        margin-left: 0;
+    }
+
+    .user-block {
+        .description {
+            margin-left: 0;
+        }
+    }
+}
+
+
+.post {
+    padding: 20px !important;
+    margin-bottom: 0;
+    background-color: @bg;
+
+    &.post_admin {
+        background-color: @orangelight;
     }
 }
