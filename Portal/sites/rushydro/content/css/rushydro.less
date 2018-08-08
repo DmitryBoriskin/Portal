@@ -155,37 +155,40 @@ body{
 }
 
 .invoice {
-    margin: 30px 0 0 0;
+    .invoice-list {
+        margin: 30px 0 0 0;
+        height: calc(100vh - 191px);
 
-    .invoice_item {
-        display: block;
-        padding: 25px 20px;
-        color: #333;
-        border-bottom: 1px solid @gray;
+        .invoice_item {
+            display: block;
+            padding: 25px 20px;
+            color: #333;
+            border-bottom: 1px solid @gray;
 
-        &:hover, &:focus,
-        &.invoice_active {
-            background-color: @orange;
-            color: @white;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(0,0,0,0);
+            &:hover, &:focus,
+            &.invoice_active {
+                background-color: @orange;
+                color: @white;
+                text-decoration: none;
+                border-bottom: 1px solid rgba(0,0,0,0);
+
+                .invoice_pay {
+                    color: @white;
+                }
+            }
+
+            .invoice_num {
+                line-height: 29px;
+            }
 
             .invoice_pay {
-                color: @white;
-            }
-        }
+                font-size: 26px;
+                font-weight: 300;
+                color: @blue;
 
-        .invoice_num {
-            line-height: 29px;
-        }
-
-        .invoice_pay {
-            font-size: 26px;
-            font-weight: 300;
-            color: @blue;
-
-            i {
-                font-weight: normal;
+                i {
+                    font-weight: normal;
+                }
             }
         }
     }

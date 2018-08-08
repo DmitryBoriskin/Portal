@@ -6,26 +6,28 @@
 @if (Model.Item != null)
 {
     <div class="invoice">
-        @if (Model.List != null && Model.List.Count() > 0)
-        {
-            foreach (var item in Model.List)
+        <div class="invoice-list">
+            @if (Model.List != null && Model.List.Count() > 0)
             {
-                string _class = "invoice_item";
-                if (item.Default.HasValue && item.Default.Value)
+                foreach (var item in Model.List)
                 {
-                    _class += " invoice_active";
+                    string _class = "invoice_item";
+                    if (item.Default.HasValue && item.Default.Value)
+                    {
+                        _class += " invoice_active";
+                    }
+                    <a class="@_class" href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id">
+                        <div class="invoice_name">@item.Name</div>
+                        <div class="invoice_num">Лицевой счет № @item.SubscrId</div>
+                        <div class="invoice_pay">@(item.Saldo.HasValue ? item.Saldo.Value.ToString("N2") : "")<span>₽</span></div>
+                    </a>
                 }
-                <a class="@_class"href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id">
-                    <div class="invoice_name">@item.Name</div>
-                    <div class="invoice_num">Лицевой счет № @item.SubscrId</div>
-                    <div class="invoice_pay">@(item.Saldo.HasValue? item.Saldo.Value.ToString("N2"):"")<span>₽</span></div>
-                </a>
             }
-        }
-        else
-        {            
-                <a href="/settings">Подключить лицевой счет</a>            
-        }
+            else
+            {
+                <a href="/settings">Подключить лицевой счет</a>
+            }
+        </div>        
     </div>
 }
 
