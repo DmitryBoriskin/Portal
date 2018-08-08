@@ -6,34 +6,36 @@
 }
 
 
-@Html.Partial("Partial/header")
 
 <div class="content">
-    @Html.Partial("/sites/rushydro/view/module/lk/Invoices/Part/Filter.cshtml")
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
+
+        @Html.Partial("/sites/rushydro/view/module/lk/Invoices/Part/Filter.cshtml")
 
 
-    @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
-    {
-        foreach (var item in Model.List.Items)
+        @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
         {
-            decimal amountWithOutTax = (item.Amount.HasValue) ? item.Amount.Value : 0.00m;
-            if (item.Tax.HasValue)
+            foreach (var item in Model.List.Items)
             {
-                amountWithOutTax = amountWithOutTax - item.Tax.Value;
-            }
+                decimal amountWithOutTax = (item.Amount.HasValue) ? item.Amount.Value : 0.00m;
+                if (item.Tax.HasValue)
+                {
+                    amountWithOutTax = amountWithOutTax - item.Tax.Value;
+                }
 
-            <div>
-                <table class="table">
-                    <tr>
-                        <td>@item.DocType № @item.Number <span>от @item.Date.ToString("dd.MM.yyyy")</span></td>
-                        <td>Период: @item.Period</td>
-                        <td>
-                            <a class="" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
-                                Подробнее
-                            </a>
-                        </td>
-                    </tr>
-                </table>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <td>@item.DocType № @item.Number <span>от @item.Date.ToString("dd.MM.yyyy")</span></td>
+                            <td>Период: @item.Period</td>
+                            <td>
+                                <a class="" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
+                                    Подробнее
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
 
                 <div class="collapse" id="invoice_@item.Link">
                     <div class="well">
@@ -105,13 +107,16 @@
             i++;
         }
 
-        @Html.Partial("Partial/_pager", Model.List.Pager)
+            @Html.Partial("Partial/_pager", Model.List.Pager)
 
-    }
-    else
-    {
-        <div class="box invoice topIndent-20">
-            <div class="noItems">Нет данных</div>
-        </div>
-    }
+        }
+        else
+        {
+            <div class="box invoice topIndent-20">
+                <div class="noItems">Нет данных</div>
+            </div>
+        }
+
+
+    </div>   
 </div>

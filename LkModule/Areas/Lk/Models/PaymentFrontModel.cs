@@ -13,6 +13,10 @@ namespace LkModule.Areas.Lk.Models
         /// Список 
         /// </summary>
         public Paged<PaymentModel> List { get; set; }
+        /// <summary>
+        /// Сумма за выбранный период
+        /// </summary>
+        public decimal? SummaZaPeriod { get; set; }
 
     }
 
