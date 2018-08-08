@@ -325,7 +325,8 @@ body {
   line-height: 47px;
 }
 .table-responsive .li-desc {
-  margin-bottom: 9px;
+  margin-bottom: 12px;
+  font-size: 14px;
 }
 .table-responsive .li-desc span {
   min-width: 165px;
