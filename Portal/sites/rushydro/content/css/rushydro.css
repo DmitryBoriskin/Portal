@@ -404,3 +404,18 @@ body {
 .factura .factura_more button {
   margin: 10px 0 20px;
 }
+table.payments tr td:last-child,
+table.payments tr th:last-child {
+  text-align: right;
+}
+table.payments tr td a,
+table.payments tr th a {
+  text-transform: uppercase;
+}
+table.payments tr .paysum {
+  line-height: 22px;
+}
+span.paysum {
+  font-size: 26px;
+  font-weight: 300;
+}
