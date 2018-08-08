@@ -178,6 +178,7 @@ namespace PgDbase.Repository.cms
                             c_text=insert.Text,
                             c_theme=insert.Theme,
                             f_user= _currentUserId,
+
                             f_user_destination=insert.UserDestination,
                             d_date=insert.Date,
                             f_parent= _parent,

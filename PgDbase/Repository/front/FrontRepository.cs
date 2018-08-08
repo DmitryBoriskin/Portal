@@ -140,6 +140,7 @@ namespace PgDbase.Repository.front
                 if (!q.Any())
                     q = db.core_pages.Where(w => w.c_path == path && w.c_alias == alias && w.f_site == _siteId);
 
+
                 while (q.Any())
                 {
                     var d = q.Single();

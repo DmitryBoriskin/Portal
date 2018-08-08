@@ -1,0 +1,74 @@
+﻿@using MessagesModule.Areas.Messages.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using Portal.Models
+
+@model MessagesFrontModel
+@{
+    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+    var user = manager.FindById(User.Identity.GetUserId());
+    Layout = ViewBag.Layout;
+}
+
+<div class="content">
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">Обращения</div>
+        <div class="invoice">
+
+            <a class="go_back" href="/messages"> ← Назад</a>
+            <br />  <br />
+            <div class="well">
+                <h3>Тема: @(@Model.Theme != null ? Model.Theme.Theme : "")</h3>
+                @using (Html.BeginForm("Send", "Messages"))
+            {
+                    @Html.HiddenFor(m => m.Item.Id)
+                    @Html.TextAreaFor(m => m.Item.Text, new { @placeholder = "Текст сообщения...", @rows = "4", @class = "form-control", @required = "required" })
+                    <br />
+                    <div class="text-right">
+                        <button type="submit" class="btn btn_orange">Отправить</button>
+                    </div>
+                }
+            </div>
+
+            @if (Model.Theme != null)
+            {
+                <div class="mess-list">
+                    @foreach (var item in Model.Theme.MessageList)
+                    {
+                        string _class = "";
+                        if (item.Admin)
+                        {
+                            _class = "post_admin";
+                        }
+
+                        string UserName = "";
+                        if (user.Id == item.User.ToString() && !item.Admin)
+                        {
+                            UserName = "Вы";
+                        }
+                        else
+                        {
+                            UserName = item.MsgUser.Surname + " " + item.MsgUser.Name;
+                        }
+
+                        <div class="post @_class">
+                            <div class="user-block">
+                                <span class="username">
+                                    <a><span>@UserName</span></a>
+                                </span>
+                                <div class="description">@item.Date.ToString("F")</div>
+                            </div>
+
+                            <p>@item.Text</p>
+                        </div>
+
+                    }
+                </div>
+
+            }
+
+
+        </div>
+    </div>
+    
+</div>
