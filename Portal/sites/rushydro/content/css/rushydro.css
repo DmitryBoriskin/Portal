@@ -210,7 +210,7 @@ body {
   color: #0039a6;
 }
 .index_with a {
-  color: #0039a6;
+  color: #ff7900;
   text-decoration: none;
 }
 .index_with a:hover {
@@ -222,6 +222,11 @@ body {
   border-bottom: 1px solid #ccc;
   margin: 27px 0 5px;
 }
+.index_with table tr {
+  /*th:not(:nth-child(1)), td:not(:nth-child(1)) {
+                text-align: right;
+            }*/
+}
 .index_with table tr:nth-child(2n) {
   background-color: #f2f2f2;
 }
@@ -229,10 +234,6 @@ body {
 .index_with table tr td {
   padding: 15px 10px 16px;
   font-size: 14px;
-}
-.index_with table tr th:not(:nth-child(1)),
-.index_with table tr td:not(:nth-child(1)) {
-  text-align: right;
 }
 .index_with table tr th {
   color: #999;
@@ -337,4 +338,67 @@ body {
   min-width: 165px;
   font-weight: 600;
   display: inline-block;
+}
+.factura {
+  border: 1px solid #d9d9d9;
+  margin-bottom: 10px;
+}
+.factura table {
+  border: none;
+  margin: 0;
+}
+.factura table tr td {
+  padding: 16px 10px 17px;
+  font-size: 16px !important;
+  line-height: 20px;
+}
+.factura table tr td:last-child {
+  padding-right: 21px;
+  width: 100px;
+}
+.factura table tr td:nth-last-child(2) {
+  width: 300px;
+}
+.factura table tr td span {
+  color: #999;
+  font-size: 14px;
+}
+.factura table tr td a {
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.factura.factura_open {
+  background-color: #e5ebf6;
+  border-color: #e5ebf6;
+}
+.factura .factura_more {
+  padding: 10px;
+  margin: 10px;
+  font-size: 12px;
+}
+.factura .factura_more .factura_more_table {
+  background-color: #fff;
+  padding: 10px;
+  overflow: auto;
+}
+.factura .factura_more table {
+  border: 1px solid #d9d9d9;
+  max-width: 100%;
+}
+.factura .factura_more table thead tr {
+  background-color: #fff !important;
+}
+.factura .factura_more table tr {
+  background-color: #fff;
+}
+.factura .factura_more table tr:nth-child(2n+1) {
+  background-color: #f2f2f2;
+}
+.factura .factura_more table tr td,
+.factura .factura_more table tr th {
+  border: 1px solid #d9d9d9;
+  line-height: 13px;
+}
+.factura .factura_more button {
+  margin: 10px 0 20px;
 }

@@ -6,14 +6,10 @@
 }
 
 
-
 <div class="content">
     <div class="block block_white block_padd block__shadow">
         <div class="block_head__blue">@Model.PageName</div>
-
         @Html.Partial("/sites/rushydro/view/module/lk/Invoices/Part/Filter.cshtml")
-
-
         @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
         {
             foreach (var item in Model.List.Items)
@@ -24,148 +20,150 @@
                     amountWithOutTax = amountWithOutTax - item.Tax.Value;
                 }
 
-                <div>
-                    <table class="table">
+                <div class="factura">                    
+                    <table>
                         <tr>
                             <td>@item.DocType № @item.Number <span>от @item.Date.ToString("dd.MM.yyyy")</span></td>
-                            <td>Период: @item.Period</td>
+                            <td><span>Период расчета:</span> @item.Period</td>
                             <td>
-                                <a class="" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
+                                <a class="collapse_btn" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
                                     Подробнее
                                 </a>
                             </td>
                         </tr>
                     </table>
 
-                <div class="collapse" id="invoice_@item.Link">
-                    <div class="well">
-                        <div class="pull-right">
-                            <button type="button" class="btn btn-default">Распечатать</button>
-                        </div>
-                        <div>
-                            <div>Статус: @item.Status</div>
-                            <div>Вид договора: @item.SaleCategory</div>
-                            <div>Задолженность: @item.DebtType</div>
-                            @if (item.DateBegin.HasValue && item.DateEnd.HasValue)
-                            {
-                            <div>Расчет с @item.DateBegin.Value.ToString("dd.MM.yyyy") по @item.DateEnd.Value.ToString("dd.MM.yyyy")</div>
-                            }
-                            @if (item.DateDue.HasValue)
-                            {
-                            <div>Оплата до: @item.DateDue.Value.ToString("dd.MM.yyyy")</div>
-                            }
-                        </div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Наименование</th>
-                                    <th>Зона</th>
-                                    <th>Ед.изм.</th>
-                                    <th>Тариф</th>
-                                    <th>Количество<br /><small>(объем)</small></th>
-                                    <th>Цена<br /><small>(без НДС)</small></th>
-                                    <th>НДС</th>
-                                    <th>Сумма<br /><small>(с НДС)</small></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if(item.Details != null && item.Details.Count() > 0)
+                    <div class="collapse" id="invoice_@item.Link">
+                        <div class="factura_more">
+                            <div>
+                                <div>Статус: @item.Status</div>
+                                <div>Вид договора: @item.SaleCategory</div>
+                                <div>Задолженность: @item.DebtType</div>
+                                @if (item.DateBegin.HasValue && item.DateEnd.HasValue)
                                 {
-                                    foreach (var detail in item.Details)
-                                    {
-                                <tr>
-                                    <td>@detail.Tariff</td>
-                                    <td>@detail.TimeZone</td>
-                                    <td>@detail.Unit</td>
-                                    <td>
-                                        @if (detail.TariffAmount0.HasValue)
-                                        {
-                                            //Отрицательная сумма
-                                            <span class="text-danger">@detail.TariffAmount0.Value.ToString("N2")</span>
-                                        }
-                                        @if (detail.TariffAmount1.HasValue)
-                                        {
-                                            //Положительная сумма
-                                            <span class="text-success">@detail.TariffAmount1.Value.ToString("N2")</span>
-                                        }
-
-                                    </td>
-                                    <td>
-                                        @if (detail.Quantity0.HasValue)
-                                        {
-                                            //Отрицательное значение
-                                            <span class="text-danger">@(((-1) * detail.Quantity0.Value).ToString("N2"))</span>
-                                        }
-                                        @if (detail.Quantity1.HasValue)
-                                        {
-                                            //Положительное значение
-                                            <span class="text-success">@detail.Quantity1.Value.ToString("N2")</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (detail.TaxAmount0.HasValue && detail.Amount0.HasValue)
-                                        {
-                                            //Отрицательное значение
-                                            decimal amount = detail.Amount0.Value - detail.TaxAmount0.Value;
-                                            <span class="text-danger">@amount.ToString("N2")</span>
-                                        }
-                                        @if (detail.TaxAmount1.HasValue && detail.Amount1.HasValue)
-                                        {
-                                            //Положительное значение
-                                            decimal amount = detail.Amount1.Value - detail.TaxAmount1.Value;
-                                            <span class="text-success">@amount.ToString("N2")</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (detail.TaxAmount0.HasValue)
-                                        {
-                                            //Отрицательное значение
-                                            <span class="text-danger">@(((-1) * detail.TaxAmount0.Value).ToString("N2"))</span>
-                                        }
-                                        @if (detail.TaxAmount1.HasValue)
-                                        {
-                                            //Положительное значение
-                                            <span class="text-success">@detail.TaxAmount1.Value.ToString("N2")</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        @if (detail.Amount0.HasValue)
-                                        {
-                                            //Отрицательное значение
-                                            <span class="text-danger">@(((-1) * detail.Amount0.Value).ToString("N2"))</span>
-                                        }
-                                        @if (detail.Amount1.HasValue)
-                                        {
-                                            //Положительное значение
-                                            <span class="text-success">@detail.Amount1.Value.ToString("N2")</span>
-                                        }
-                                    </td>
-                                </tr>
-                                    }
+                                    <div>Расчет с @item.DateBegin.Value.ToString("dd.MM.yyyy") по @item.DateEnd.Value.ToString("dd.MM.yyyy")</div>
                                 }
+                                @if (item.DateDue.HasValue)
+                                {
+                                    <div>Оплата до: @item.DateDue.Value.ToString("dd.MM.yyyy")</div>
+                                }
+                            </div>
+                            <button type="button" class="btn btn_border btn_border__blue">Распечатать</button>
+                            <div class="factura_more_table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Зона</th>
+                                            <th>Ед.изм.</th>
+                                            <th>Тариф</th>
+                                            <th>Количество<br /><small>(объем)</small></th>
+                                            <th>Цена<br /><small>(без НДС)</small></th>
+                                            <th>НДС</th>
+                                            <th>Сумма<br /><small>(с НДС)</small></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (item.Details != null && item.Details.Count() > 0)
+                                        {
+                                            foreach (var detail in item.Details)
+                                            {
+                                                <tr>
+                                                    <td>@detail.Tariff</td>
+                                                    <td>@detail.TimeZone</td>
+                                                    <td>@detail.Unit</td>
+                                                    <td>
+                                                        @if (detail.TariffAmount0.HasValue)
+                                                        {
+                                                            //Отрицательная сумма
+                                                            <span class="text-danger">@detail.TariffAmount0.Value.ToString("N2")</span>
+                                                        }
+                                                        @if (detail.TariffAmount1.HasValue)
+                                                        {
+                                                            //Положительная сумма
+                                                            <span class="text-success">@detail.TariffAmount1.Value.ToString("N2")</span>
+                                                        }
 
-                                <tr>
-                                    <td><b>Итого:</b></td>
-                                    <td></td>
-                                    <td>@item.Unit</td>
-                                    <td></td>
-                                    <td>
-                                        @item.Quantity
-                                        @if (item.Quantity2.HasValue && item.Quantity2 > 0m)
-                                        {<br />@item.Quantity2.Value.ToString("N2")}
-                                    </td>
-                                    <td>@amountWithOutTax.ToString("N2")</td>
-                                    <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
-                                    <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
+                                                    </td>
+                                                    <td>
+                                                        @if (detail.Quantity0.HasValue)
+                                                        {
+                                                            //Отрицательное значение
+                                                            <span class="text-danger">@(((-1) * detail.Quantity0.Value).ToString("N2"))</span>
+                                                        }
+                                                        @if (detail.Quantity1.HasValue)
+                                                        {
+                                                            //Положительное значение
+                                                            <span class="text-success">@detail.Quantity1.Value.ToString("N2")</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (detail.TaxAmount0.HasValue && detail.Amount0.HasValue)
+                                                        {
+                                                            //Отрицательное значение
+                                                            decimal amount = detail.Amount0.Value - detail.TaxAmount0.Value;
+                                                            <span class="text-danger">@amount.ToString("N2")</span>
+                                                        }
+                                                        @if (detail.TaxAmount1.HasValue && detail.Amount1.HasValue)
+                                                        {
+                                                            //Положительное значение
+                                                            decimal amount = detail.Amount1.Value - detail.TaxAmount1.Value;
+                                                            <span class="text-success">@amount.ToString("N2")</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (detail.TaxAmount0.HasValue)
+                                                        {
+                                                            //Отрицательное значение
+                                                            <span class="text-danger">@(((-1) * detail.TaxAmount0.Value).ToString("N2"))</span>
+                                                        }
+                                                        @if (detail.TaxAmount1.HasValue)
+                                                        {
+                                                            //Положительное значение
+                                                            <span class="text-success">@detail.TaxAmount1.Value.ToString("N2")</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (detail.Amount0.HasValue)
+                                                        {
+                                                            //Отрицательное значение
+                                                            <span class="text-danger">@(((-1) * detail.Amount0.Value).ToString("N2"))</span>
+                                                        }
+                                                        @if (detail.Amount1.HasValue)
+                                                        {
+                                                            //Положительное значение
+                                                            <span class="text-success">@detail.Amount1.Value.ToString("N2")</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
 
-                                </tr>
-                            </tbody>
-                        </table>
+                                        <tr>
+                                            <td><b>Итого:</b></td>
+                                            <td></td>
+                                            <td>@item.Unit</td>
+                                            <td></td>
+                                            <td>
+                                                @item.Quantity
+                                                @if (item.Quantity2.HasValue && item.Quantity2 > 0m)
+                                                {<br />@item.Quantity2.Value.ToString("N2")}
+                                            </td>
+                                            <td>@amountWithOutTax.ToString("N2")</td>
+                                            <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
+                                            <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            
+                        </div>
                     </div>
                 </div>
-            </div>
-            i++;
-        }
+                i++;
+            }
 
             @Html.Partial("Partial/_pager", Model.List.Pager)
 
