@@ -3,24 +3,27 @@
     Layout = ViewBag.Layout;
 }
 
-@Html.Partial("Partial/header")
-
 <div class="content">
-    <h1>@Model.PageName</h1>
-    <div class="row">
-        @{Html.RenderAction("GetChangeUserInfo", "Widget");}
-        @{Html.RenderAction("GetChangePassword", "Widget");}
-    </div>
-    <div class="row">
-        <div class="col-md-7">
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
+        <div class="row">
+            @{Html.RenderAction("GetChangeUserInfo", "Widget");}
+            @{Html.RenderAction("GetChangePassword", "Widget");}
+        </div>
+        <div class="row">
+            <div class="col-md-7">
 
-            @try{
-                Html.RenderAction("Index", "SubscrInfoWidget", new { @area = "Lk" });
-            }
-            catch (Exception ex)
-            {
-                //Log
-            }
+                @try
+                {
+                    Html.RenderAction("Index", "SubscrInfoWidget", new { @area = "Lk" });
+                }
+                catch (Exception ex)
+                {
+                    //Log
+                }
+            </div>
         </div>
     </div>
+    
+   
 </div>

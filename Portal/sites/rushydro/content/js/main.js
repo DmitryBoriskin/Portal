@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
 
-    if ($('.invoice_active').length > 0) {
-        $('.invoice_active').focus();        
-    }
+    //if ($('.invoice_active').length > 0) {
+    //    $('.invoice_active').focus();        
+    //}
 
 
 
