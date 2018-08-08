@@ -39,7 +39,10 @@
                         <div class="li-desc"><span>БИК:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Bik : "")</div>
                         <div class="li-desc"><span>ИНН:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Inn : "")</div>
                         <div class="li-desc"><span>Расчетный счет:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Rs : "")</div>
-                    </div>                
+                    </div>
+                    <div style="margin-top:27px;">
+                        <a class="btn btn__blue btn_big" href="#" onclick="window.history.back();">загрузить еще</a>
+                    </div>                    
             }
             else
             {
