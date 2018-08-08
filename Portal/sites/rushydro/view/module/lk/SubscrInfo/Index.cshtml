@@ -14,7 +14,7 @@
             <div class="table-responsive">
                 <div class="li-desc"><span>Наименование:</span> @Model.Item.Name</div>
                 <div class="li-desc"><span>ОГРН:</span> @Model.Item.Ogrn</div>
-                <div class="li-desc"><span>ИНН:</span> @Model.Item.Inn</div>
+                <div class="li-desc"><span>ИНН:</span> @Model.Item.Inn </div>
                 <div class="li-desc"><span>КПП:</span> @Model.Item.Kpp</div>
                 <div class="li-desc"><span>Юридический адрес:</span> @Model.Item.Address</div>
                 <div class="li-desc"><span>Почтовый адрес:</span> @Model.Item.PostAddress</div>
@@ -41,6 +41,9 @@
                 <div class="li-desc"><span>ИНН:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Inn : "")</div>
                 <div class="li-desc"><span>Расчетный счет:</span> @(Model.Item.Bank != null ? Model.Item.Bank.Rs : "")</div>
             </div>
+                    <div style="margin-top:27px;">
+                        <a class="btn btn__blue btn_big" onclick="window.history.back();">вернуться назад</a>
+                    </div>                    
             }
             else
             {
