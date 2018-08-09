@@ -221,6 +221,7 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.subscruid,
                         SubscrId = (long)s.subscrid,
+                        Addres=s.c_address,
                         Name = s.subscrname,
                         Default = s.subscrdefault,
                         Disabled = s.subscrdisabled,

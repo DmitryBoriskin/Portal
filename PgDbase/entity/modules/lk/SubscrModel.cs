@@ -66,6 +66,10 @@ namespace PgDbase.entity
         /// Id Последний платеж
         /// </summary>
         public string LastPaymentLink { get; set; }
+        /// <summary>
+        /// Юридический адрес
+        /// </summary>
+        public string Addres { get; set; }
     }
 
     /// <summary>

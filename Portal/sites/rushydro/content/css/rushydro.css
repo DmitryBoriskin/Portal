@@ -195,9 +195,6 @@ body {
   padding-left: 30px;
   padding-right: 30px;
 }
-.block {
-  overflow: auto;
-}
 .block.block_white {
   background-color: #fff;
 }
@@ -228,6 +225,12 @@ body {
   font-weight: 200;
   line-height: 76px;
   margin-bottom: 4px;
+}
+.currentpay_addres {
+  margin-bottom: 39px;
+}
+.currentpay_addres .currentpay_addres_head {
+  margin-bottom: 13px;
 }
 .index_with ul.pagination li,
 .index_with ul.nav-tabs li {

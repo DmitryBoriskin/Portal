@@ -37,7 +37,7 @@
             <div class="col-xs-8 col-sm-4">
                 <div class="form-group">
                     @*<label for="filterDocType-select" class="control-label">Тип документа: </label>*@
-                    <select name="type" id="js_filterDocType-select" class="form-control select2">
+                    @*<select name="type" id="js_filterDocType-select" class="form-control select2">
                         <option value="">Все</option>
                         @if (Model.DocTypes != null && Model.DocTypes.Count() > 0)
                         {
@@ -46,17 +46,17 @@
                                 <option value="@docType.Id" @(type == docType.Id.ToString()? "selected": "") >@docType.Name</option>
                             }
                         }
-                    </select>
+                    </select>*@
                 </div>
             </div>
             <div class="col-xs-8 col-sm-4">
                 <div class="form-group">
                     @*<label for="filterPayed-select" class="control-label">Статус: </label>*@
-                    <select name="category" id="js_filterPayed-select" class="form-control select2">
+                    @*<select name="category" id="js_filterPayed-select" class="form-control select2">
                         <option value="">Все</option>
                         <option value="1" @(category == "1"? "selected" :"")>Оплаченные</option>
                         <option value="0" @(category == "0"? "selected" :"")>Неоплаченные</option>
-                    </select>
+                    </select>*@
                 </div>
             </div>
 
