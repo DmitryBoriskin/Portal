@@ -532,7 +532,6 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<InvoiceModel> result = new Paged<InvoiceModel>();
                 var query = db.lk_invoices
                     .Where(w => w.f_subscr == subscr);
 
@@ -616,6 +615,89 @@ namespace PgDbase.Repository.front
                         TotalCount = itemsCount
                     }
                 };
+            }
+        }
+
+        /// <summary>
+        /// Возвращает список выставленных счетов для пользователя
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <returns></returns>
+        public InvoiceModel[] GetInvoicesList(Guid subscr, LkFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_invoices
+                    .Where(w => w.f_subscr == subscr);
+
+                if (filter.Payed.HasValue)
+                {
+                    query = query.Where(w => w.b_closed == filter.Payed.Value);
+                }
+
+                if (filter.Date.HasValue)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date.Value);
+                }
+                if (filter.DateEnd.HasValue)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
+                }
+                if (!string.IsNullOrEmpty(filter.Type))
+                {
+                    query = query.Where(w => w.n_doc_type.ToString() == filter.Type);
+                }
+
+                query = query.OrderBy(o => o.d_date);
+
+                var list = query
+                    .Select(s => new InvoiceModel
+                    {
+                        Id = s.id,
+                        Link = s.link,
+                        SubscrId = s.f_subscr,
+                        Subscr = s.n_subscr,
+
+                        Date = s.d_date,
+                        DateBegin = s.d_date_begin,
+                        DateEnd = s.d_date_end,
+                        DateDue = s.d_date_due,
+
+                        Debit = s.b_debit,
+                        Period = s.n_period,
+                        Payed = s.b_closed,
+
+                        StatusId = s.n_status,
+                        Status = s.c_status,
+
+                        UnitId = s.n_unit,
+                        Unit = s.c_unit,
+
+                        Number = s.c_number,
+                        Amount = s.n_amount,
+                        Tax = s.n_tax,
+                        Cons = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Quantity2 = s.n_quantity2,
+
+                        DebtTypeId = s.n_debts,
+                        DebtType = s.c_debts,
+
+                        DocTypeId = s.n_doc_type,
+                        DocType = s.c_doc_type,
+
+                        PaymentId = s.n_payment,
+                        PaysheetId = s.n_paysheet,
+
+                        SaleCategoryId = s.n_sale_category,
+                        SaleCategory = s.c_sale_category,
+
+                        Details = GetInvoiceDetail(s.link)
+
+                    })
+                    .ToArray();
+
+                return list;
             }
         }
 
@@ -753,6 +835,52 @@ namespace PgDbase.Repository.front
             }
         }
 
+        #endregion
+
+        #region
+        
+        /// <summary>
+        /// Возвращает дебит - кредит, оборот
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <returns></returns>
+        public BalanceModel[] getBalanceList(Guid subscr, LkFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_cv_subscr_debit_credit
+                    .Where(w => w.f_subscr == subscr);
+
+                if (filter.Date.HasValue)
+                {
+                    var month = (filter.Date.Value.Month < 10) ? "0" + filter.Date.Value.Month : filter.Date.Value.Month.ToString();
+                    var beginPeriod = int.Parse($"{filter.Date.Value.Year}{month}");
+                    query = query.Where(w => w.n_period >= beginPeriod);
+                }
+                if (filter.DateEnd.HasValue)
+                {
+                    var month = (filter.DateEnd.Value.Month < 10) ? "0" + filter.DateEnd.Value.Month : filter.DateEnd.Value.Month.ToString();
+                    var endPeriod = int.Parse($"{filter.DateEnd.Value.Year}{month}");
+                    query = query.Where(w => w.n_period <= endPeriod);
+                }
+                query = query.OrderByDescending(o => o.n_period);
+
+                var list = query
+                    .Select(s => new BalanceModel
+                    {
+                        SubscrId = s.f_subscr,
+                        Subscr = s.n_subscr,
+
+                        PeriodId = s.n_period,
+                        InvoiceAmount = s.n_invoice_amount,
+                        PaymentAmount = s.n_payment_amount
+                    })
+                    .ToArray();
+
+                return list;
+            }
+        }
+       
         #endregion
 
         #region Приборы учёта
@@ -905,7 +1033,7 @@ namespace PgDbase.Repository.front
         #region Платежи
 
         /// <summary>
-        /// Возвращает список платежей
+        /// Возвращает постраничный список платежей
         /// </summary>
         /// <param name="subscr"></param>
         /// <param name="filter"></param>
@@ -957,7 +1085,52 @@ namespace PgDbase.Repository.front
             }
         }
 
-        
+        /// <summary>
+        /// Возвращает список платежей в виде массива
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public PaymentModel[] GetPaymentsList(Guid subscr, LkFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var result = new Paged<PaymentModel>();
+                var query = db.lk_payments
+                    .Where(w => w.f_subscr == subscr);
+
+                if (filter.Date.HasValue)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date.Value);
+                }
+                if (filter.DateEnd.HasValue)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
+                }
+
+                query = query.OrderBy(o => o.d_date);
+
+                var list = query
+                    .Select(s => new PaymentModel
+                    {
+                        Id = s.id,
+                        Date = s.d_date,
+                        Period = s.n_period,
+                        Amount = s.n_amount,
+                        Destination = s.c_destination,
+                        Documents = GetBindInvoiceDocuments(s.link)
+                    })
+                    .ToArray();
+
+                return list;
+            }
+        }
+
+        /// <summary>
+        /// Связанные документы(счета-фактуры) по платежам
+        /// </summary>
+        /// <param name="paymentId"></param>
+        /// <returns></returns>
         public DocumentModel[] GetBindInvoiceDocuments(long paymentId)
         {
             using (var db = new CMSdb(_context))

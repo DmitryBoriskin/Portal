@@ -21,7 +21,7 @@ namespace LkModule.Areas.Lk
             //);
 
             context.MapRoute(
-                "Accruals_FE",
+                "Invoices_FE",
                 "Lk/Invoices/{action}/{id}",
                 new { controller = "Invoices", action = "Index", id = UrlParameter.Optional },
                 new[] { "LkModule.Areas.Lk.Controllers" }
@@ -45,24 +45,17 @@ namespace LkModule.Areas.Lk
              new[] { "LkModule.Areas.Lk.Controllers" }
              );
             context.MapRoute(
-              "SubscrInfoWidget_FE",
-              "Lk/SubscrInfoWidget/{action}/{id}",
-              new { controller = "SubscrInfoWidget", action = "Info", id = UrlParameter.Optional },
-              new[] { "LkModule.Areas.Lk.Controllers" }
-              );
-            context.MapRoute(
-              "StatisticWidget_FE",
-              "Lk/StatisticWidget/{action}/{id}",
-              new { controller = "StatisticWidget", action = "Index", id = UrlParameter.Optional },
-              new[] { "LkModule.Areas.Lk.Controllers" }
-              );
-
-            context.MapRoute(
              "Statistics_FE",
              "Lk/Statistics/{action}/{id}",
              new { controller = "Statistics", action = "Index", id = UrlParameter.Optional },
              new[] { "LkModule.Areas.Lk.Controllers" }
              );
+            context.MapRoute(
+              "LkWidgets_FE",
+              "Lk/LkWidgets/{action}/{id}",
+              new { controller = "LkWidgets", action = "Info", id = UrlParameter.Optional },
+              new[] { "LkModule.Areas.Lk.Controllers" }
+              );
         }
     }
 }

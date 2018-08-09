@@ -10,96 +10,54 @@
         <p>Приложение к ежеквартальному отчету - аудиторское заключение к бухгалтерской отчетности за 2018 г.</p>
     </div>
 
-        @if (User.Identity.IsAuthenticated)
+    @if (User.Identity.IsAuthenticated)
+    {
+        try
         {
-            try
-            {
-                Html.RenderAction("Balance", "SubscrInfoWidget", new { @area = "Lk" });
-            }
-            catch (Exception ex)
-            {
-                //Log
-            }
+            Html.RenderAction("Balance", "LkWidgets", new { @area = "Lk" });
         }
-
-        @if (User.Identity.IsAuthenticated)
+        catch (Exception ex)
         {
-            try
-            {
-                Html.RenderAction("Index", "StatisticWidget", new { @area = "Lk" });
-            }
-            catch (Exception ex)
-            {
-                //Log
-            }
+            //Log
         }
+    }
 
-        @{
-            try
-            {
-                Html.RenderAction("PageChild", "Widget", new { @area = "", @path = "/", @alias = "informaciya", @view = "~/sites/rushydro/view/module/page/childlist2col.cshtml", @url = ViewBag.ThisUrl });
-            }
-            catch { }
-
+    @if (User.Identity.IsAuthenticated)
+    {
+        try
+        {
+            Html.RenderAction("Chart", "LkWidgets", new { @area = "Lk" });
         }
+        catch (Exception ex)
+        {
+            //Log
+        }
+    }
 
-        <div class="block block_white block_padd">
-            <div class="block_head__blue">Счета и платежи</div>
-            <div class="block_head__orange">Цены указаны в рублях</div>
+    @{
+        try
+        {
+            Html.RenderAction("PageChild", "Widget", new { @area = "", @path = "/", @alias = "informaciya", @view = "~/sites/rushydro/view/module/page/childlist2col.cshtml", @url = ViewBag.ThisUrl });
+        }
+        catch { }
 
-            <table>
-                <tr>
-                    <th>Период</th>
-                    <th>Выставлено (с НДС)</th>
-                    <th>Оплачено</th>
-                    <th>Балaнс <br /> на начало периода </th>
-                    <th>Баланс<br /> на конец периода</th>
-                </tr>
-                <tr>
-                    <td>СЕНТЯБРЬ 2017</td>
-                    <td><span class="table_price">760 000</span></td>
-                    <td><span class="table_price">760 000</span></td>
-                    <td>
-                        <span class="rub_positiv table_price">+ 658 000</span>
-                    </td>
-                    <td>
-                        <span class="rub_negativ table_price">- 102 000</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>СЕНТЯБРЬ 2017</td>
-                    <td><span class="table_price">760 000</span></td>
-                    <td><span class="table_price">760 000</span></td>
-                    <td>
-                        <span class="rub_positiv table_price">+ 658 000</span>
-                    </td>
-                    <td>
-                        <span class="rub_negativ table_price">- 102 000</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>СЕНТЯБРЬ 2017</td>
-                    <td><span class="table_price">760 000</span></td>
-                    <td><span class="table_price">760 000</span> </td>
-                    <td>
-                        <span class="rub_positiv table_price">+ 658 000</span>
-                    </td>
-                    <td>
-                        <span class="rub_negativ table_price">- 102 000</span>
-                    </td>
-                </tr>
+    }
 
-            </table>
-
-            <div class="block_btnarea">
-                <a class="btn btn__blue btn_big" href="#">загрузить еще</a>
-            </div>
-        </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        try
+        {
+            Html.RenderAction("DebitCredit", "LkWidgets", new { @area = "Lk" });
+        }
+        catch (Exception ex)
+        {
+            //Log
+        }
+    }
 
 
 
-
-    </div>
+</div>
 
 
 

@@ -9,10 +9,6 @@ namespace LkModule.Areas.Lk.Models
     /// </summary>
     public class StatisticsFrontModel : LayoutFrontModel
     {
-        /// <summary>
-        /// Платежи Список 
-        /// </summary>
-        public List<PaymentModel> Payments { get; set; }
 
         /// <summary>
         /// Платежи json
@@ -20,14 +16,14 @@ namespace LkModule.Areas.Lk.Models
         public string PaymentsByDateJson { get; set; }
 
         /// <summary>
-        ///  Начисления Список 
-        /// </summary>
-        public List<InvoiceModel> Accruals { get; set; }
-
-        /// <summary>
         /// Начисления json
         /// </summary>
-        public string AccrualsByDateJson { get; set; }
+        public string InvoicesByDateJson { get; set; }
+
+        /// <summary>
+        /// Начисления и платежи (объединение) json
+        /// </summary>
+        public string InvoicesAndPaymentsByDateJson { get; set; }
 
         /// <summary>
         ///  Потребление Список 

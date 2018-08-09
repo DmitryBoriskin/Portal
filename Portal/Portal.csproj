@@ -1125,9 +1125,8 @@
     <Content Include="sites\rushydro\view\web.config" />
     <Content Include="sites\rushydro\view\partial\mainmenu.cshtml" />
     <Content Include="sites\rushydro\view\Main.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\StatisticWidget\Index.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\SubscrWidget\SubscrList.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\SubscrWidget\Bаlance.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\SubscrList.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Bаlance.cshtml" />
     <Content Include="sites\rushydro\view\module\page\childlist2col.cshtml" />
     <Content Include="sites\rushydro\view\_LayoutWelcome.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\Invoices\Index.cshtml" />
@@ -1161,6 +1160,10 @@
     <Content Include="sites\rushydro\view\module\messages\Messages\Item.cshtml" />
     <Content Include="Views\Modules\SubscrInfoWidget\Manager.cshtml" />
     <Content Include="Views\Modules\SubscrInfoWidget\Balance.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Chart.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\DebitCredit.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Manager.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\SubscrWidget\Manager.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\PU\Devices.cshtml" />
     <None Include="Web.Debug.config">

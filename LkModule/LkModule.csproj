@@ -111,11 +111,10 @@
     <Compile Include="Areas\Admin\Models\SubscrViewModel.cs" />
     <Compile Include="Areas\Lk\Controllers\InvoicesController.cs" />
     <Compile Include="Areas\Lk\Controllers\StatisticsController.cs" />
-    <Compile Include="Areas\Lk\Controllers\StatisticWidgetController.cs" />
+    <Compile Include="Areas\Lk\Controllers\LkWidgetsController.cs" />
     <Compile Include="Areas\Lk\Controllers\SubscrInfoController.cs" />
     <Compile Include="Areas\Lk\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Lk\Controllers\MetersController.cs" />
-    <Compile Include="Areas\Lk\Controllers\SubscrInfoWidgetController.cs" />
     <Compile Include="Areas\Lk\Controllers\PUController.cs" />
     <Compile Include="Areas\Lk\LkAreaRegistration.cs" />
     <Compile Include="Areas\Lk\Models\InvoiceFrontModel.cs" />
@@ -152,24 +151,26 @@
     <Content Include="Areas\Lk\Views\Invoices\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\Invoices\Index.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Index.cshtml" />
-    <Content Include="Areas\Lk\Views\SubscrInfoWidget\Info.cshtml" />
+    <Content Include="Areas\Lk\Views\LkWidgets\Info.cshtml" />
     <Content Include="Areas\Lk\Views\Meters\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\Meters\Index.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfo\Index.cshtml" />
-    <Content Include="Areas\Lk\Views\SubscrInfoWidget\Index.cshtml" />
+    <Content Include="Areas\Lk\Views\LkWidgets\Index.cshtml" />
     <Content Include="Areas\Lk\Views\Statistics\Index.cshtml" />
     <Content Include="Areas\Lk\Views\Statistics\Part\Filter.cshtml" />
     <Content Include="Areas\Lk\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Lk\Views\StatisticWidget\Index.cshtml" />
+    <Content Include="Areas\Lk\Views\LkWidgets\Chart.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\Integral.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\Interval.cshtml" />
-    <Content Include="Areas\Lk\Views\SubscrInfoWidget\Balance.cshtml" />
+    <Content Include="Areas\Lk\Views\LkWidgets\Balance.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\CounterReading.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\History.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\ReadingsFilter.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\HistoryFilter.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfoWidget\Manager.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Devices.cshtml" />
+    <Content Include="Areas\Lk\Views\LkWidgets\Manager.cshtml" />
+    <Content Include="Areas\Lk\Views\LkWidgets\DebitCredit.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -180,7 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Lk\Views\Shared\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -236,13 +236,12 @@
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\Subscrs\*" "$(SolutionDir)Portal\Areas\Admin\Views\Subscrs\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Admin\Views\SubscrsWidget\*" "$(SolutionDir)Portal\Areas\Admin\Views\SubscrsWidget\"
 
+"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\LkWidgets\*" "$(SolutionDir)Portal\Views\Modules\LkWidgets\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Invoices\*" "$(SolutionDir)Portal\Views\Modules\Invoices\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Meters\*" "$(SolutionDir)Portal\Views\Modules\Meters\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Payments\*" "$(SolutionDir)Portal\Views\Modules\Payments\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Pu\*" "$(SolutionDir)Portal\Views\Modules\Pu\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\SubscrInfo\*" "$(SolutionDir)Portal\Views\Modules\SubscrInfo\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\SubscrInfoWidget\*" "$(SolutionDir)Portal\Views\Modules\SubscrInfoWidget\"
-"%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\StatisticWidget\*" "$(SolutionDir)Portal\Views\Modules\StatisticWidget\"
 "%25SystemRoot%25\system32\xcopy" /E /S /R /Y "$(ProjectDir)Areas\Lk\Views\Statistics\*" "$(SolutionDir)Portal\Views\Modules\Statistics\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
