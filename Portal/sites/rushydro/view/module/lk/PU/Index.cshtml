@@ -10,6 +10,23 @@
     <div class="block block_white block_padd block__shadow">
         <div class="block_head__blue">@Model.PageName</div>
 
+
+
+        <div class="devices-list">
+            <h3 class="devices_head">Список приборов учета</h3>
+
+            @if (Model.List != null && Model.List.Items != null && Model.List.Items.Count() > 0)
+            {
+                foreach (var item in Model.List.Items)
+                {
+                    if (item.IsPu)
+                    {
+                        <a class="devices_item" href="/lk/pu/devices/@item.Id">№ @item.Number @item.Name </a>
+                    }
+                }
+            }
+        </div>
+
         <div class="filterByDateBlock">
             <form role="form">
                 <div class="row">

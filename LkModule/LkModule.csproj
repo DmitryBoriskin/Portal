@@ -167,6 +167,8 @@
     <Content Include="Areas\Lk\Views\PU\Part\History.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\ReadingsFilter.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\HistoryFilter.cshtml" />
+    <Content Include="Areas\Lk\Views\SubscrInfoWidget\Manager.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Devices.cshtml" />
     <Content Include="Areas\Lk\Views\LkWidgets\Manager.cshtml" />
     <Content Include="Areas\Lk\Views\LkWidgets\DebitCredit.cshtml" />
     <None Include="packages.config" />

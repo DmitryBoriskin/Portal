@@ -1,0 +1,97 @@
+﻿@model PuFrontModel
+@using LkModule.Areas.Lk.Models
+
+@{
+    Layout = ViewBag.Layout;
+}
+<div class="content">
+    <div class="block block_white block_padd block__shadow">
+        <div class="block_head__blue">@Model.PageName</div>
+
+        <div class="devices_single">
+            <h3 class="devices_single_name">@Model.Devices.Name</h3>
+            <div class="devices_single_num">@Model.Devices.Number</div>
+
+            <div class="devices_info border_and_logo">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="keyval">
+                            <div class="keyval_key">Марка ПУ</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Год выпуска</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Дата установки</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Место установки</div>
+                            @*<div class="keyval_val">@Model.Devices.InstallPlace</div>*@
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Дата поверки</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Дата следующей поверки</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Дата замены</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Тариф по уровню напряжения</div>
+                            <div class="keyval_val"></div>
+                        </div>                        
+                        <div class="keyval">
+                            <div class="keyval_key">Расчетный коэффициент</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">                        
+                        <div class="keyval">
+                            <div class="keyval_key">Категория</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Разрядность (модификация)</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Трехфазный (да / нет)</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Производитель</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Класс точности</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Для счетчиков</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Номинальное напряжение</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                        <div class="keyval">
+                            <div class="keyval_key">Класс напряжения, кВ.</div>
+                            <div class="keyval_val"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>

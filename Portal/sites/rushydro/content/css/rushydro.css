@@ -487,3 +487,25 @@ span.paysum {
 .post.post_admin {
   background-color: #f8e8dd;
 }
+h3 {
+  font-size: 20px;
+  color: #1d3f82;
+  font-weight: 300;
+}
+.devices-list {
+  margin-top: 9px;
+}
+.devices-list .devices_head {
+  padding-bottom: 16px;
+}
+.devices-list .devices_item {
+  display: block;
+  border: 2px solid #d9d9d9;
+  margin-bottom: 10px;
+  padding: 16px 10px 16px;
+  color: #333;
+}
+.devices-list .devices_item:hover {
+  text-decoration: none;
+  border-color: rgba(0, 57, 166, 0.3);
+}

@@ -56,7 +56,16 @@ namespace LkModule.Areas.Lk.Controllers
 
             return View(ViewName, model);
         }
+        public ActionResult Devices(Guid id)
+        {
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
+            model.Devices = _Repository.GetPuModel(id);
+
+            return View(ViewName, model);
+        }
         //[HttpPost]
         //[MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
         //public ActionResult Search(string size, string page, bool enabled)
