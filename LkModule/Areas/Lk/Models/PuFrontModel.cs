@@ -13,7 +13,9 @@ namespace LkModule.Areas.Lk.Models
         /// Список 
         /// </summary>
         public Paged<PuModel> List { get; set; }
-
+        /// <summary>
+        /// Прибор учета
+        /// </summary>
+        public PuModel Devices { get; set; }
     }
-
 }

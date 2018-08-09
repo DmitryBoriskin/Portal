@@ -817,6 +817,50 @@ namespace PgDbase.Repository.front
             }
         }
 
+
+        public PuModel GetPuModel(Guid id)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_subscr_devices
+                              .Where(w => w.id==id);
+                if (query.Any())
+                {
+                    return query
+                   .Select(s => new PuModel
+                   {
+                       Id = s.id,
+                       IsPu = (s.link != null) ? true : false,
+                       Number = s.c_number,
+                       Name = s.c_name,
+                       InstallPlace = s.c_install_place,
+                       InstallDate = s.d_setup,
+                       CheckDate = s.d_check,
+                        //Tariff = s.n_tariff,
+                        Multiplier = s.n_rate,
+                       DeviceInfo = (s.f_device != null) ?
+                               new DeviceModel()
+                               {
+                                   Name = s.fksubscrdevicesdevices.c_name,
+                                   Tariff = s.fksubscrdevicesdevices.n_tariff,
+                                   Modification = s.fksubscrdevicesdevices.c_modification,
+                                   Manufactirer = s.fksubscrdevicesdevices.c_manufacturer,
+                                   Phase3 = s.fksubscrdevicesdevices.b_phase3,
+                                   DeviceCategory = s.fksubscrdevicesdevices.c_device_category,
+                                   EnergyCategory = s.fksubscrdevicesdevices.c_energy_category,
+                                   PrecissionClass = s.fksubscrdevicesdevices.c_precission_class,
+                                   VoltageNominal = s.fksubscrdevicesdevices.c_voltage_nominal
+                               }
+                               : null
+
+                   }).Single();
+                }
+               
+
+                return null;
+            }
+        }
+
         #endregion
 
         #region Показания ПУ

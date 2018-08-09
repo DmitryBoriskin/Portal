@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace Portal.Controllers
 {
+    [Authorize]
     public class LayoutController : CoreController
     {
         protected LayoutModel _layoutData;

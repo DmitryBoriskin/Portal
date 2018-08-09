@@ -169,6 +169,7 @@
     <Content Include="Areas\Lk\Views\PU\Part\ReadingsFilter.cshtml" />
     <Content Include="Areas\Lk\Views\PU\Part\HistoryFilter.cshtml" />
     <Content Include="Areas\Lk\Views\SubscrInfoWidget\Manager.cshtml" />
+    <Content Include="Areas\Lk\Views\PU\Devices.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
