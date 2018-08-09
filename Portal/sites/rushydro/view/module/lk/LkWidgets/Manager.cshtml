@@ -1,9 +1,12 @@
 ﻿@model PgDbase.entity.SubscrManager
-<div class="mgr index_padd">
-    <div class="mgr_spec">Персональный менеджер</div>
-    <div class="mgr_name">@Model.FIO</div>
-    <div class="mgr_btn">
-        <a href="/messages" class="btn btn_border btn_border__blue">написать обращение</a>
-        <a href="/messages?type=ordercall" class="btn btn_border btn_border__blue">заказать звонок</a>
+@if (Model != null)
+{
+    <div class="mgr index_padd">
+        <div class="mgr_spec">Персональный менеджер</div>
+        <div class="mgr_name">@Model.FIO</div>
+        <div class="mgr_btn">
+            <a href="/messages" class="btn btn_border btn_border__blue">написать обращение</a>
+            <a href="/messages?type=ordercall" class="btn btn_border btn_border__blue">заказать звонок</a>
+        </div>
     </div>
-</div>
+}

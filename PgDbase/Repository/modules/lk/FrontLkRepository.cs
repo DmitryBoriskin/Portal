@@ -43,7 +43,7 @@ namespace PgDbase.Repository.front
                                                       || w.n_subscr.ToString().Contains(text));
                 }
 
-                query = query.OrderBy(o => new { o.c_name});
+                query = query.OrderBy(o => new { o.c_name });
 
                 int itemsCount = query.Count();
 
@@ -214,6 +214,7 @@ namespace PgDbase.Repository.front
             {
                 var query = db.lk_cv_subscr_saldo
                         .Where(s => s.userid == userId && s.siteid == _siteId);
+
                 query = query.OrderBy(o => o.subscrname);
                 if (query.Any())
                 {
@@ -221,7 +222,7 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.subscruid,
                         SubscrId = (long)s.subscrid,
-                        Addres=s.c_address,
+                        Addres = s.c_address,
                         Name = s.subscrname,
                         Default = s.subscrdefault,
                         Disabled = s.subscrdisabled,
@@ -236,7 +237,7 @@ namespace PgDbase.Repository.front
                     }).ToList();
                 }
                 return null;
-                
+
             }
         }
 
@@ -281,15 +282,18 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.lk_subscr_configs.Where(w => w.f_subscr == subscrId)
-                               .Join(db.lk_managers, n => n.f_manager, m => m.id, (n, m) => m);
+                var query = db.lk_subscr_configs
+                    .Where(w => w.f_subscr == subscrId);
+                               
                 if (query.Any())
                 {
-                    return query.Select(s => new SubscrManager {
-                        FIO=s.c_name,
-                        Id=s.id,
-                        Email=s.c_email                        
-                    }).FirstOrDefault();
+                    return query.Select(s => new SubscrManager
+                    {
+                        Id = s.fksubscrconfigssubscrs.id,
+                        FIO = s.fksubscrconfigssubscrs.c_name,
+                        Email = s.fksubscrconfigssubscrs.c_email
+                    })
+                    .FirstOrDefault();
                 }
                 return null;
             }
@@ -799,7 +803,7 @@ namespace PgDbase.Repository.front
                         Amount = s.n_amount,
                         TaxAmount = s.n_tax,
                         Quantity = s.n_quantity,
-                        TariffAmount  = s.n_tariff_amount,
+                        TariffAmount = s.n_tariff_amount,
 
                         Amount0 = s.n_amount0,
                         TaxAmount0 = s.n_tax0,
@@ -838,13 +842,12 @@ namespace PgDbase.Repository.front
         #endregion
 
         #region
-        
         /// <summary>
         /// Возвращает дебит - кредит, оборот
         /// </summary>
         /// <param name="subscr"></param>
         /// <returns></returns>
-        public BalanceModel[] getBalanceList(Guid subscr, LkFilter filter)
+        public DebitCreditModel[] GetDebitCreditList(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -863,10 +866,11 @@ namespace PgDbase.Repository.front
                     var endPeriod = int.Parse($"{filter.DateEnd.Value.Year}{month}");
                     query = query.Where(w => w.n_period <= endPeriod);
                 }
+
                 query = query.OrderByDescending(o => o.n_period);
 
                 var list = query
-                    .Select(s => new BalanceModel
+                    .Select(s => new DebitCreditModel
                     {
                         SubscrId = s.f_subscr,
                         Subscr = s.n_subscr,
@@ -875,12 +879,66 @@ namespace PgDbase.Repository.front
                         InvoiceAmount = s.n_invoice_amount,
                         PaymentAmount = s.n_payment_amount
                     })
-                    .ToArray();
+                     .ToArray();
 
                 return list;
             }
         }
-       
+        /// <summary>
+        /// Возвращает дебит - кредит, оборот
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <returns></returns>
+        public Paged<DebitCreditModel> GetDebitCreditData(Guid subscr, LkFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_cv_subscr_debit_credit
+                    .Where(w => w.f_subscr == subscr);
+
+                //if (filter.Date.HasValue)
+                //{
+                //    var month = (filter.Date.Value.Month < 10) ? "0" + filter.Date.Value.Month : filter.Date.Value.Month.ToString();
+                //    var beginPeriod = int.Parse($"{filter.Date.Value.Year}{month}");
+                //    query = query.Where(w => w.n_period >= beginPeriod);
+                //}
+                //if (filter.DateEnd.HasValue)
+                //{
+                //    var month = (filter.DateEnd.Value.Month < 10) ? "0" + filter.DateEnd.Value.Month : filter.DateEnd.Value.Month.ToString();
+                //    var endPeriod = int.Parse($"{filter.DateEnd.Value.Year}{month}");
+                //    query = query.Where(w => w.n_period <= endPeriod);
+                //}
+
+                query = query.OrderByDescending(o => o.n_period);
+                int itemsCount = query.Count();
+
+                var list = query
+                    .Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size)
+                    .Select(s => new DebitCreditModel
+                    {
+                        SubscrId = s.f_subscr,
+                        Subscr = s.n_subscr,
+
+                        PeriodId = s.n_period,
+                        InvoiceAmount = s.n_invoice_amount,
+                        PaymentAmount = s.n_payment_amount
+                    })
+                     .ToArray();
+
+                return new Paged<DebitCreditModel>
+                {
+                    Items = list,
+                    Pager = new PagerModel
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
         #endregion
 
         #region Приборы учёта
@@ -899,7 +957,7 @@ namespace PgDbase.Repository.front
                 var query = db.lk_subscr_devices
                     .Where(w => w.f_subscr == subscr);
 
-              
+
                 query = query.OrderByDescending(o => o.d_setup);
                 int itemsCount = query.Count();
 
@@ -951,7 +1009,7 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 var query = db.lk_subscr_devices
-                              .Where(w => w.id==id);
+                              .Where(w => w.id == id);
                 if (query.Any())
                 {
                     return query
@@ -964,8 +1022,8 @@ namespace PgDbase.Repository.front
                        InstallPlace = s.c_install_place,
                        InstallDate = s.d_setup,
                        CheckDate = s.d_check,
-                        //Tariff = s.n_tariff,
-                        Multiplier = s.n_rate,
+                       //Tariff = s.n_tariff,
+                       Multiplier = s.n_rate,
                        DeviceInfo = (s.f_device != null) ?
                                new DeviceModel()
                                {
@@ -983,7 +1041,7 @@ namespace PgDbase.Repository.front
 
                    }).Single();
                 }
-               
+
 
                 return null;
             }
@@ -1135,7 +1193,7 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                
+
                 var query = db.lk_invoices
                     .Where(w => w.n_payment == paymentId);
 

@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Выставленный счёт
     /// </summary>
-    public class BalanceModel
+    public class DebitCreditModel
     {
         /// <summary>
         /// Линк в ОМНИС

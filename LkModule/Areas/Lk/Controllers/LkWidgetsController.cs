@@ -30,12 +30,10 @@ namespace LkModule.Areas.Lk.Controllers
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
-
             if (userSubscr != null)
             {
-                model.List = _Repository.GetSubscrSaldoInfo(userId);
+                model.List = _Repository.GetSubscrSaldoInfo(userSubscr.Id);
                 model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
-
             }
 
             return PartialView(ViewName, model);
@@ -65,7 +63,6 @@ namespace LkModule.Areas.Lk.Controllers
             {
                 model.List = _Repository.GetSubscrSaldoInfo(userId);
                 model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
-
             }
 
             return PartialView(ViewName, model);
@@ -95,7 +92,6 @@ namespace LkModule.Areas.Lk.Controllers
             {
                 model.List = _Repository.GetSubscrSaldoInfo(userId);
                 model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
-
             }
 
             return PartialView(ViewName, model);
@@ -106,9 +102,8 @@ namespace LkModule.Areas.Lk.Controllers
         public ActionResult SetUserSubscrDefault(Guid subscrId)
         {
             var userId = CurrentUser.UserId;
-            var userSubscr = _Repository.GetUserSubscrDefault(userId);
 
-            var res = _Repository.SetUserSubscrDefault(userSubscr.Id, userId);
+            var res = _Repository.SetUserSubscrDefault(subscrId, userId);
             if (res)
                 return Json("success");
 
@@ -153,7 +148,8 @@ namespace LkModule.Areas.Lk.Controllers
             if (string.IsNullOrEmpty(ViewName))
                 throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
-            var filter = GetFilter();
+            FilterModel filter;
+            filter = GetFilter();
 
             if (!filter.Date.HasValue)
                 filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
@@ -172,8 +168,7 @@ namespace LkModule.Areas.Lk.Controllers
                 var pFilter = FilterModel.Extend<LkFilter>(filter);
 
                 //Для двойного графика (начисления, платежи)
-                var balances = _Repository.getBalanceList(userSubscr.Id, pFilter);
-
+                var balances = _Repository.GetDebitCreditList(userSubscr.Id, pFilter);
 
                 if (balances != null && balances.Count() > 0)
                 {
@@ -192,6 +187,7 @@ namespace LkModule.Areas.Lk.Controllers
                     model.InvoicesAndPaymentsByDateJson = "[['Месяц','Начисления','Платежи']," + string.Join(",", data.Select(s => string.Format("['{0}',{1}, {2}]", s.Period.Value.ToString("MMM"), s.InvoiceAmount.Value.ToString("0.00").Replace(",", "."), s.PaymentAmount.Value.ToString("0.00").Replace(",", ".")))) + "]";
                 }
 
+                #region Графики по отдельности (закоментировано)
                 //Для графика (начисления)
                 //var invoices = _Repository.GetInvoicesList(userSubscr.Id, pFilter);
                 //if(invoices!= null && invoices.Count()>0)
@@ -224,6 +220,8 @@ namespace LkModule.Areas.Lk.Controllers
 
                 //    model.InvoicesByDateJson = "[['Месяц','руб']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToString("MMM"), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
                 //}
+
+                #endregion
             }
 
             return PartialView(ViewName, model);
@@ -245,10 +243,10 @@ namespace LkModule.Areas.Lk.Controllers
 
             var filter = GetFilter();
 
-            if (!filter.Date.HasValue)
-                filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
-            if (!filter.DateEnd.HasValue)
-                filter.DateEnd = DateTime.Now;
+            //if (!filter.Date.HasValue)
+            //    filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
+            //if (!filter.DateEnd.HasValue)
+            //    filter.DateEnd = DateTime.Now;
 
             var model = new StatisticsFrontModel();
             ViewName = _Repository.GetModuleView(ControllerName, ActionName);
@@ -257,12 +255,31 @@ namespace LkModule.Areas.Lk.Controllers
 
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
             if (userSubscr != null)
             {
                 var pFilter = FilterModel.Extend<LkFilter>(filter);
+                pFilter.Size = 10;
 
-                //Для двойного графика (начисления, платежи)
-                var balances = _Repository.getBalanceList(userSubscr.Id, pFilter);
+
+                var subscrBalances = _Repository.GetSubscrSaldoInfo(userId);
+                model.Balance = (subscrBalances != null) ? subscrBalances.SingleOrDefault(s => s.Default == true) : null;
+
+                model.DebitCreditData = _Repository.GetDebitCreditData(userSubscr.Id, pFilter);
+                if (model.DebitCreditData != null && model.DebitCreditData.Items != null && model.DebitCreditData.Items.Count() > 0)
+                {
+                    foreach (var balance in model.DebitCreditData.Items)
+                    {
+                        if (balance.PeriodId.HasValue)
+                        {
+                            var str = balance.PeriodId.Value.ToString();
+                            var year = str.Substring(0, 4);
+                            var month = str.Substring(4, 1) == "0" ? str.Substring(5, 1) : str.Substring(4, 2);
+
+                            balance.Period = new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
+                        }
+                    }
+                }
             }
 
             return PartialView(ViewName, model);
