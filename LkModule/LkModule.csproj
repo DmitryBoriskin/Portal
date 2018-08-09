@@ -111,7 +111,7 @@
     <Compile Include="Areas\Admin\Models\SubscrViewModel.cs" />
     <Compile Include="Areas\Lk\Controllers\InvoicesController.cs" />
     <Compile Include="Areas\Lk\Controllers\StatisticsController.cs" />
-    <Compile Include="Areas\Lk\Controllers\StatisticWidgetController.cs" />
+    <Compile Include="Areas\Lk\Controllers\LkWidgetsController.cs" />
     <Compile Include="Areas\Lk\Controllers\SubscrInfoController.cs" />
     <Compile Include="Areas\Lk\Controllers\PaymentsController.cs" />
     <Compile Include="Areas\Lk\Controllers\MetersController.cs" />

@@ -1126,8 +1126,8 @@
     <Content Include="sites\rushydro\view\partial\mainmenu.cshtml" />
     <Content Include="sites\rushydro\view\Main.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\StatisticWidget\Index.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\SubscrWidget\SubscrList.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\SubscrWidget\Bаlance.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\SubscrList.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Bаlance.cshtml" />
     <Content Include="sites\rushydro\view\module\page\childlist2col.cshtml" />
     <Content Include="sites\rushydro\view\_LayoutWelcome.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\Invoices\Index.cshtml" />
@@ -1159,6 +1159,9 @@
     <Content Include="sites\rushydro\view\module\messages\MsgWidget\LastMessages.cshtml" />
     <Content Include="sites\rushydro\view\module\messages\Messages\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\messages\Messages\Item.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\StatisticWidget\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Part\Filter.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,25 +1,34 @@
 ﻿<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 @{
-    string paymentsJson = Model.AccrualsByDateJson;
+    string dataJson = Model.InvoicesAndPayments;
 }
 
-<div class="block block__white" style="min-height:438px;">
-    <div class="text-right"><a class="link__orange" href="/lk/statistics">Подробнее</a></div>
-    <div id="chartPayments" class="chart-block">
-        <span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />
-        <div class="noItems">Нет данных...</div>
+<div class="block block_white block_padd indicators">
+    <div class="block_head__blue">Ключевые показатели</div>
+    @*<input type="text" class="form-control meterActualDate-input" value="@DateTime.Now.ToString(" dd.MM.yyyy")" />*@
+
+    <div class="form-group">
+        <input id="indicators_period" type="text" name="dates" class="data_period form-control">
     </div>
 
-    @if (Model != null && Model.AccrualsByDateJson != null)
-    {
-        <script type="text/javascript">
+
+    <div class="block block__white" style="min-height:438px;">
+        <div class="text-right"><a class="link__orange" href="/lk/statistics">Подробнее</a></div>
+        <div id="chartPayments" class="chart-block">
+            <span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />
+            <div class="noItems">Нет данных...</div>
+        </div>
+
+        @if (Model != null && Model.InvoicesByDateJson != null)
+        {
+            <script type="text/javascript">
             google.charts.load('current', { packages: ['bar', 'corechart'], 'language': 'ru' });
             google.charts.setOnLoadCallback(drawCharts);
 
 
             function drawCharts() {
-                var dataPayments = google.visualization.arrayToDataTable(eval("@Html.Raw(paymentsJson)"));
+                var dataPayments = google.visualization.arrayToDataTable(eval("@Html.Raw(dataJson)"));
 
                 var optionsPayments = {
                     isStacked: false,
@@ -27,17 +36,39 @@
                         title: 'Статистика потребления за @DateTime.Now.Year',
                         //subtitle: 'руб.',
                     },
-                    //bars: 'vertical',
-                    vAxis: { format: 'decimal' },
+                    width: 900,
                     height: 400,
-                    //width: 760,
-                    colors: ['#ffa000']
+                    isStacked: false,
+                    vAxis: { format: 'decimal' },
+
+                    colors: ['#ff7900','#0050e6'],
+                    series: {
+                        0: { axis: 'invoices' },
+                        1: { axis: 'payments' }
+                    },
+                    axes: {
+                        y: {
+                            invoices : { label: 'руб' }, // Left y-axis.
+                            payments: { side: 'right', label: 'руб' } // Right y-axis.
+                        }
+                    }
                 };
 
                 var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));
                chartPayments.draw(dataPayments, optionsPayments);
             }
-        </script>
-    }
+            </script>
+        }
+    </div>
+
+
+
+
+
 </div>
 
+
+<script>
+
+
+</script>

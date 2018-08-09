@@ -71,14 +71,14 @@ namespace LkModule.Areas.Lk.Controllers
 
                     filter.Date = data.First().Date;
                     filter.DateEnd = DateTime.Now;
-                    model.AccrualsByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToString("MM.yyyy"), s.Amount.Value.ToString("0.00").Replace(",",".")))) + "]";
+                    model.InvoicesByDateJson = "[['Месяцы','рубли']," + string.Join(",", data.Where(s => s.Amount != null).Select(s => string.Format("['{0}',{1}]", s.Date.ToString("MM.yyyy"), s.Amount.Value.ToString("0.00").Replace(",",".")))) + "]";
                 }
                 //model.Payments = _Repository.GetPayments(userSubscr.Id, filter);
                 //model.Consumption = _Repository.GetMeters(device)
 
-                // model.AccrualsByDateJson = "[['Месяцы','рубли'],['декабрь',8651486.31],['январь',13223292.59],['февраль',11916139.67],['март',1501363.17],['апрель',10639269.23],['май',11251567.51],['июнь',0.00]]";
+                // model.InvoicesByDateJson = "[['Месяцы','рубли'],['декабрь',8651486.31],['январь',13223292.59],['февраль',11916139.67],['март',1501363.17],['апрель',10639269.23],['май',11251567.51],['июнь',0.00]]";
 
-              
+
                 var payments = _Repository.GetPayments(userSubscr.Id, pFilter);
                 if (payments.Items != null && payments.Items.Count() > 0)
                 {
