@@ -49,7 +49,7 @@ namespace LkModule.Areas.Lk.Controllers
             filter = GetFilter();
 
             if(!filter.Date.HasValue)
-                filter.Date = DateTime.Now.AddMonths(-1);
+                filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0); //DateTime.Now.AddMonths(-1);
             if (!filter.DateEnd.HasValue)
                 filter.DateEnd = DateTime.Now;
 

@@ -27,14 +27,26 @@
                 <table class="table table-striped table-condensed payments">
                     <tr>
                         <th>Дата платежа</th>
-                        <th>Выставленный документ</th>
+                        <th>Связанный документ</th>
                         <th>Сумма</th>
                     </tr>
                     @foreach (var item in Model.List.Items)
                     {
-                        <tr>
+                        <tr title="@item.Destination">
                             <td>@item.Date.ToString("dd.MM.yyyy")</td>
-                            <td><a href="#">Счет</a></td>
+                            <td>
+                                @if (item.Documents != null && item.Documents.Count() > 0)
+                                {
+                                    foreach (var doc in item.Documents)
+                                    {
+                                        <a href="@doc.Id" class="js_printDocument-link">
+                                        @doc.Type
+                                        @(!string.IsNullOrEmpty(doc.Number) ? "N " + doc.Number : "")
+                                        от @doc.Date.ToString("dd.MM.yyyy")
+                                    </a>
+                                }
+                            }
+                            </td>
                             <td>
                                 <span class="paysum">@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</span>
                             </td>
@@ -55,4 +67,12 @@
 
 @section Scripts{
     <script src="~/sites/rushydro/content/module/lk/js/script.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".js_printDocument-link").on("click", function (e) {
+                e.preventDefault();
+                alert("Данный функционал находится в разработке. Идентификатор документа " + $(this).attr("href"));
+            });
+        });
+    </script>
 }

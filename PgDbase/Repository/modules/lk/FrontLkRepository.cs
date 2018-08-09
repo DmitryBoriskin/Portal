@@ -850,20 +850,9 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                Paged<PaymentModel> result = new Paged<PaymentModel>();
+                var result = new Paged<PaymentModel>();
                 var query = db.lk_payments
                     .Where(w => w.f_subscr == subscr);
-
-                //if (!String.IsNullOrWhiteSpace(filter.Status))
-                //{
-                //    Guid status = Guid.Parse(filter.Status);
-                //    query = query.Where(w => w.f_status == status);
-                //}
-                //if (!String.IsNullOrWhiteSpace(filter.Type))
-                //{
-                //    Guid type = Guid.Parse(filter.Type);
-                //    query = query.Where(w => w.f_type == type);
-                //}
 
                 if (filter.Date.HasValue)
                 {
@@ -886,6 +875,8 @@ namespace PgDbase.Repository.front
                         Date = s.d_date,
                         Period = s.n_period,
                         Amount = s.n_amount,
+                        Destination = s.c_destination,
+                        Documents = GetBindInvoiceDocuments(s.link)
                     })
                     .ToArray();
 
@@ -899,6 +890,29 @@ namespace PgDbase.Repository.front
                         TotalCount = itemsCount
                     }
                 };
+            }
+        }
+
+        
+        public DocumentModel[] GetBindInvoiceDocuments(long paymentId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                
+                var query = db.lk_invoices
+                    .Where(w => w.n_payment == paymentId);
+
+                var data = query
+                    .Select(s => new DocumentModel
+                    {
+                        Id = s.id,
+                        Date = s.d_date,
+                        Number = s.c_number,
+                        Type = s.c_doc_type
+                    })
+                    .ToArray();
+
+                return data;
             }
         }
 
