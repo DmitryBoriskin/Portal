@@ -10,11 +10,14 @@ body {
 .navbar-nav > li a {
   color: #aacef4;
 }
-.navbar-nav > li a:hover,
 .navbar-nav > li a:active,
 .navbar-nav > li a:focus {
   background-color: inherit;
   color: #ff7900;
+}
+.navbar-nav > li a:hover {
+  background-color: inherit;
+  color: #fff;
 }
 .navbar-nav > li a .fa {
   font-size: 16px;
@@ -46,6 +49,28 @@ body {
 }
 .navbar-nav > li.dropdown.open > a:after {
   transform: rotate(180deg);
+}
+.navbar-nav > li.dropdown.open .dropdown-menu {
+  border-radius: 0;
+  padding: 10px 10px 20px;
+  border: 0;
+  margin-top: -8px;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu a {
+  color: #333;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 17px 20px 15px;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu a:hover {
+  color: #0039a6;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu li:first-child a {
+  padding-top: 20px;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu li:not(:last-child) a {
+  border-bottom: 1px solid #ccc;
 }
 .index_right {
   background-color: #fff;
@@ -169,6 +194,9 @@ body {
 .content .block.block_padd {
   padding-left: 30px;
   padding-right: 30px;
+}
+.block {
+  overflow: auto;
 }
 .block.block_white {
   background-color: #fff;

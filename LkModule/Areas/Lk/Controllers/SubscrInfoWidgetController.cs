@@ -14,6 +14,10 @@ namespace LkModule.Areas.Lk.Controllers
     [Authorize]
     public class SubscrInfoWidgetController : CoreController
     {
+        /// <summary>
+        /// текущий ЛС и его баланс
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             //Есть ли у сайта доступ к модулю
@@ -39,7 +43,10 @@ namespace LkModule.Areas.Lk.Controllers
 
             return PartialView(ViewName, model);
         }
-
+        /// <summary>
+        /// все подключенные лицевые счета
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Info()
         {
             //Есть ли у сайта доступ к модулю
@@ -104,5 +111,16 @@ namespace LkModule.Areas.Lk.Controllers
             return Json("An Error Has Occourred");
         }
 
+
+        //public ActionResult AccountsAndPayments()
+        //{
+        //    //Есть ли у сайта доступ к модулю
+        //    if (!_Repository.ModuleAllowed(ControllerName))
+        //        Response.Redirect("/page/error/451");
+
+        //    //Шаблон
+        //    ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+        //    return PartialView(ViewName, model);
+        //}
     }
 }

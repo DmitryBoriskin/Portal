@@ -22,23 +22,33 @@ body{
 .navbar-nav > li {
     a {
         color: @bluelight;
-        &:hover, &:active, &:focus {
+
+        &:active, &:focus {
             background-color: inherit;
             color: @orange;
         }
+
+        &:hover {
+            background-color: inherit;
+            color: #fff;
+        }
+
         .fa {
             font-size: 16px;
             font-weight: bold;
         }
     }
+
     &.active a {
         color: @orange;
     }
+
     &.dropdown {
         & > a {
             position: relative;
             padding-right: 27px;
             background-color: inherit;
+
             &:after {
                 content: "\f107";
                 font-family: FontAwesome;
@@ -53,11 +63,46 @@ body{
                 transform-origin: 6px 6px 0;
             }
         }
+
         &.open {
             & > a {
                 background-color: inherit;
+
                 &:after {
-                    transform: rotate(180deg);                  
+                    transform: rotate(180deg);
+                }
+            }
+
+            .dropdown-menu {
+                border-radius: 0;
+                padding: 10px 10px 20px;
+                border: 0;
+                margin-top: -8px;
+                a {
+                    color: #333;
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding: 17px 20px 15px;
+                    &:hover {
+                        color: @blue;
+                    }
+                }
+
+                li:first-child {
+                    a {
+                        padding-top: 20px;
+                    }
+                }
+
+                li:last-child {
+                }
+
+
+                li:not(:last-child) {
+                    a {
+                        border-bottom: 1px solid #ccc;
+                    }
                 }
             }
         }
@@ -226,6 +271,7 @@ body{
 } 
 
 .block {
+    overflow:auto;
     &.block_white {
         background-color: @white;
     }
