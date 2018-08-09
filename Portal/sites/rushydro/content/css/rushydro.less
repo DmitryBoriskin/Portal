@@ -22,23 +22,33 @@ body{
 .navbar-nav > li {
     a {
         color: @bluelight;
-        &:hover, &:active, &:focus {
+
+        &:active, &:focus {
             background-color: inherit;
             color: @orange;
         }
+
+        &:hover {
+            background-color: inherit;
+            color: #fff;
+        }
+
         .fa {
             font-size: 16px;
             font-weight: bold;
         }
     }
+
     &.active a {
         color: @orange;
     }
+
     &.dropdown {
         & > a {
             position: relative;
             padding-right: 27px;
             background-color: inherit;
+
             &:after {
                 content: "\f107";
                 font-family: FontAwesome;
@@ -53,11 +63,46 @@ body{
                 transform-origin: 6px 6px 0;
             }
         }
+
         &.open {
             & > a {
                 background-color: inherit;
+
                 &:after {
-                    transform: rotate(180deg);                  
+                    transform: rotate(180deg);
+                }
+            }
+
+            .dropdown-menu {
+                border-radius: 0;
+                padding: 10px 10px 20px;
+                border: 0;
+                margin-top: -8px;
+                a {
+                    color: #333;
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding: 17px 20px 15px;
+                    &:hover {
+                        color: @blue;
+                    }
+                }
+
+                li:first-child {
+                    a {
+                        padding-top: 20px;
+                    }
+                }
+
+                li:last-child {
+                }
+
+
+                li:not(:last-child) {
+                    a {
+                        border-bottom: 1px solid #ccc;
+                    }
                 }
             }
         }
@@ -118,6 +163,12 @@ body{
     &.btn_border__blue {
         border-color: @blueopacity;
         color: @blue;
+        background-color: #fff;
+
+        &:hover {
+            border-color: rgba(0,57,166,.6);
+            background-color: #f7f7f7;
+        }
     }
 
     &.btn_white {
@@ -127,15 +178,23 @@ body{
         box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.1);
         text-transform: uppercase;
         font-size: 12px;
+
+        &:hover, &:active {
+            text-decoration:none;
+            background-color:@blue;
+            color:#fff;
+        }
     }
 
     &.btn__blue {
         background-color: @blue;
         color: @white;
         border-radius: 0;
-    }
-    &.btn__blue:hover{
-        text-decoration:none;
+
+        &:hover, &:active {
+            text-decoration: none;
+            background-color: #002d80;
+        }
     }
 }
 
@@ -211,7 +270,7 @@ body{
     }
 } 
 
-.block {
+.block {    
     &.block_white {
         background-color: @white;
     }
@@ -257,6 +316,16 @@ body{
         }
     }
 }
+
+.currentpay_addres {
+    margin-bottom:39px;
+    .currentpay_addres_head {
+        margin-bottom: 13px;
+    }
+}
+
+
+
 .index_with {
     ul {
         &.pagination, &.nav-tabs {
@@ -347,6 +416,7 @@ body{
         color: #333;
         &:hover {
             color: @blue;
+            text-decoration:none;
 
         }
     }
@@ -574,6 +644,10 @@ span.paysum {
 
 
 .mess_theme {
+    a {
+        color: #0d4f9c;
+    }
+
     span {
         padding-left: 10px;
         color: #0d4f9c;

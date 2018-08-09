@@ -4,6 +4,11 @@
 @if (Model.Item != null)
 {
     <div class="block currentpay">
+        <div class="currentpay_addres">
+            <div class="currentpay_addres_head block_head__blue">Юридический адрес</div>
+            <div class="currentpay_addres_val">@Model.Item.Addres</div>
+
+        </div>
         <div class="currentpay_head block_head__blue">Текущий баланс</div>
         <div class="currentpay_pay">
             <div class="currentpay_sum @(Model.Item.Saldo.HasValue && Model.Item.Saldo.Value>0 ?"currentpay_sum__positiv": "currentpay_sum__negativ")">
@@ -17,6 +22,4 @@
 
         </div>
     </div>
-
-
 }

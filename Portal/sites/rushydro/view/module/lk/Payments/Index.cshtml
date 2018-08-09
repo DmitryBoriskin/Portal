@@ -28,7 +28,7 @@
                     <tr>
                         <th>Дата платежа</th>
                         <th>Связанный документ</th>
-                        <th>Сумма</th>
+                        <th>Сумма (в рублях)</th>
                     </tr>
                     @foreach (var item in Model.List.Items)
                     {
@@ -44,8 +44,8 @@
                                         @(!string.IsNullOrEmpty(doc.Number) ? "N " + doc.Number : "")
                                         от @doc.Date.ToString("dd.MM.yyyy")
                                     </a>
+                                    }
                                 }
-                            }
                             </td>
                             <td>
                                 <span class="paysum">@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</span>

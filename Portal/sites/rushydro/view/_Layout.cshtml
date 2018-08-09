@@ -45,7 +45,22 @@
                         <img src="~/sites/rushydro/content/img/logo.png" alt="" />
                     </a>
                 </div>
-                @{ Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "main", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl }); }
+                <div class="collapse navbar-collapse" id="navbar-main">
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
+                   @{ Html.RenderAction("PageGroup", "Widget", new { @area = "", @alias = "main", @view = "/sites/rushydro/view/partial/mainmenu.cshtml", @url = ViewBag.ThisUrl }); }
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <li><a>@Model.User.UserInfo.Surname @Model.User.UserInfo.Name.Substring(0,1). @Model.User.UserInfo.Patronymic.Substring(0, 1).</a></li>
+                        <li><a href="/cart/orders/new/"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li><a href="/settings"><i class="fa fa-cog"></i></a></li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+
+                
             </div>
         </nav>
 
@@ -56,17 +71,22 @@
                 <div class="index_right_dop visible-md visible-lg"></div>
                 <div id="index_right" class="index_right visible-md visible-lg">
 
-                    <div class="mgr index_padd">
-                        <div class="mgr_spec">Персональный менеджер</div>
-                        <div class="mgr_name">Константинопольская Надежда</div>
-                        <div class="mgr_btn">
-                            <a href="/messages" class="btn btn_border btn_border__blue">написать обращение</a>
-                            <a href="#" class="btn btn_border btn_border__blue">заказать звонок</a>
-                        </div>
+                    @{ 
+                        try
+                        {
+                            Html.RenderAction("Manager", "SubscrInfoWidget", new { @area = "Lk" });
+                        }
+                        catch (Exception ex)
+                        {
+                            //Log ex
+                        }
+                    }
+                    <div style="padding: 13px 20px 16px;">
+                        <a href="~/sites/rushydro/content/doc/rukovodstvo_lk_rushydro.pdf" style="font-size:12px;">РУКОВОДСТВО ПОЛЬЗОВАТЕЛЯ</a>
                     </div>
+                    
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
+                    @{
                         try
                         {
                             Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });

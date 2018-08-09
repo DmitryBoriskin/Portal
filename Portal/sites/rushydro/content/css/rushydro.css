@@ -10,11 +10,14 @@ body {
 .navbar-nav > li a {
   color: #aacef4;
 }
-.navbar-nav > li a:hover,
 .navbar-nav > li a:active,
 .navbar-nav > li a:focus {
   background-color: inherit;
   color: #ff7900;
+}
+.navbar-nav > li a:hover {
+  background-color: inherit;
+  color: #fff;
 }
 .navbar-nav > li a .fa {
   font-size: 16px;
@@ -46,6 +49,28 @@ body {
 }
 .navbar-nav > li.dropdown.open > a:after {
   transform: rotate(180deg);
+}
+.navbar-nav > li.dropdown.open .dropdown-menu {
+  border-radius: 0;
+  padding: 10px 10px 20px;
+  border: 0;
+  margin-top: -8px;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu a {
+  color: #333;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 17px 20px 15px;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu a:hover {
+  color: #0039a6;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu li:first-child a {
+  padding-top: 20px;
+}
+.navbar-nav > li.dropdown.open .dropdown-menu li:not(:last-child) a {
+  border-bottom: 1px solid #ccc;
 }
 .index_right {
   background-color: #fff;
@@ -89,6 +114,11 @@ body {
 .btn.btn_border__blue {
   border-color: rgba(0, 57, 166, 0.3);
   color: #0039a6;
+  background-color: #fff;
+}
+.btn.btn_border__blue:hover {
+  border-color: rgba(0, 57, 166, 0.6);
+  background-color: #f7f7f7;
 }
 .btn.btn_white {
   background-color: #fff;
@@ -98,13 +128,21 @@ body {
   text-transform: uppercase;
   font-size: 12px;
 }
+.btn.btn_white:hover,
+.btn.btn_white:active {
+  text-decoration: none;
+  background-color: #0039a6;
+  color: #fff;
+}
 .btn.btn__blue {
   background-color: #0039a6;
   color: #fff;
   border-radius: 0;
 }
-.btn.btn__blue:hover {
+.btn.btn__blue:hover,
+.btn.btn__blue:active {
   text-decoration: none;
+  background-color: #002d80;
 }
 .mgr .mgr_spec {
   color: #0039a6;
@@ -188,6 +226,12 @@ body {
   line-height: 76px;
   margin-bottom: 4px;
 }
+.currentpay_addres {
+  margin-bottom: 39px;
+}
+.currentpay_addres .currentpay_addres_head {
+  margin-bottom: 13px;
+}
 .index_with ul.pagination li,
 .index_with ul.nav-tabs li {
   display: contents;
@@ -257,6 +301,7 @@ body {
 }
 .block_info a:hover {
   color: #0039a6;
+  text-decoration: none;
 }
 .block_info ul {
   padding-top: 19px;
@@ -420,6 +465,9 @@ table.payments tr .paysum {
 span.paysum {
   font-size: 26px;
   font-weight: 300;
+}
+.mess_theme a {
+  color: #0d4f9c;
 }
 .mess_theme span {
   padding-left: 10px;

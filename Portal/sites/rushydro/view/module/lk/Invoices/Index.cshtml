@@ -58,11 +58,12 @@
                                             <th>Наименование</th>
                                             <th>Тарифицируемое потребление</th>
                                             <th>Ед.изм.</th>
-                                            <th>Тариф</th>
+                                            @*<th>Тариф</th>*@
 
                                             <th>Стоимость<br /><small>(без НДС)</small></th>
                                             <th>НДС</th>
                                             <th>Сумма<br /><small>(с НДС)</small></th>
+                                            <th>Статус</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -85,7 +86,7 @@
                                                         }
                                                     </td>
                                                     <td>@detail.Unit</td>
-                                                    <td>
+                                                    @*<td>
                                                         @if (detail.TariffAmount0.HasValue)
                                                         {
                                                             //Отрицательная сумма
@@ -97,7 +98,7 @@
                                                             <span class="text-success">@detail.TariffAmount1.Value.ToString("N2")</span>
                                                         }
 
-                                                    </td>
+                                                    </td>*@
 
                                                     <td>
                                                         @if (detail.TaxAmount0.HasValue && detail.Amount0.HasValue)
@@ -137,6 +138,7 @@
                                                             <span class="text-success">@detail.Amount1.Value.ToString("N2")</span>
                                                         }
                                                     </td>
+                                                    <td></td>
                                                 </tr>
                                             }
                                         }
@@ -151,12 +153,12 @@
                                                     }*@
                                             </td>
                                             <td>@item.Unit</td>
-                                            <td></td>
+                                            @*<td></td>*@
 
                                             <td>@amountWithOutTax.ToString("N2")</td>
                                             <td>@(item.Tax.HasValue ? item.Tax.Value.ToString("N2") : "")</td>
                                             <td>@(item.Amount.HasValue ? item.Amount.Value.ToString("N2") : "")</td>
-
+                                            <td>@((item.Payed)?"Оплачено":"Неоплачено")</td>
                                         </tr>
                                     </tbody>
                                 </table>

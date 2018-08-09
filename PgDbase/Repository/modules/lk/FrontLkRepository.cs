@@ -221,6 +221,7 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.subscruid,
                         SubscrId = (long)s.subscrid,
+                        Addres=s.c_address,
                         Name = s.subscrname,
                         Default = s.subscrdefault,
                         Disabled = s.subscrdisabled,
@@ -272,6 +273,25 @@ namespace PgDbase.Repository.front
                     }
                     return false;
                 }
+            }
+        }
+
+
+        public SubscrManager GetManager(Guid subscrId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_subscr_configs.Where(w => w.f_subscr == subscrId)
+                               .Join(db.lk_managers, n => n.f_manager, m => m.id, (n, m) => m);
+                if (query.Any())
+                {
+                    return query.Select(s => new SubscrManager {
+                        FIO=s.c_name,
+                        Id=s.id,
+                        Email=s.c_email                        
+                    }).FirstOrDefault();
+                }
+                return null;
             }
         }
 
