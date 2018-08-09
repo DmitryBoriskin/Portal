@@ -19,7 +19,7 @@
                     {
                         _class += " invoice_active";
                     }
-                    <a id="subid_@i" class="@_class" href="/lk/subscrInfoWidget/setUserSubscrDefault" data-subscr-id="@item.Id">
+                    <a id="subid_@i" class="@_class" href="/lk/LkWidgets/setUserSubscrDefault" data-subscr-id="@item.Id">
                         <div class="invoice_name">@item.Name</div>
                         <div class="invoice_num">Лицевой счет № @item.SubscrId</div>
                         <div class="invoice_pay">@(item.Saldo.HasValue ? item.Saldo.Value.ToString("N2") : "")<span>₽</span></div>
