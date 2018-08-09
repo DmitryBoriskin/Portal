@@ -1159,6 +1159,8 @@
     <Content Include="sites\rushydro\view\module\messages\MsgWidget\LastMessages.cshtml" />
     <Content Include="sites\rushydro\view\module\messages\Messages\Index.cshtml" />
     <Content Include="sites\rushydro\view\module\messages\Messages\Item.cshtml" />
+    <Content Include="Views\Modules\SubscrInfoWidget\Manager.cshtml" />
+    <Content Include="Views\Modules\SubscrInfoWidget\Balance.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

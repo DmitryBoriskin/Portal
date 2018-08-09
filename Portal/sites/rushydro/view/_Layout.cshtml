@@ -56,17 +56,18 @@
                 <div class="index_right_dop visible-md visible-lg"></div>
                 <div id="index_right" class="index_right visible-md visible-lg">
 
-                    <div class="mgr index_padd">
-                        <div class="mgr_spec">Персональный менеджер</div>
-                        <div class="mgr_name">Константинопольская Надежда</div>
-                        <div class="mgr_btn">
-                            <a href="/messages" class="btn btn_border btn_border__blue">написать обращение</a>
-                            <a href="#" class="btn btn_border btn_border__blue">заказать звонок</a>
-                        </div>
-                    </div>
+                    @{ 
+                        try
+                        {
+                            Html.RenderAction("Manager", "SubscrInfoWidget", new { @area = "Lk" });
+                        }
+                        catch (Exception ex)
+                        {
+                            //Log ex
+                        }
+                    }
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
+                    @{
                         try
                         {
                             Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });

@@ -270,5 +270,6 @@ namespace PgDbase.entity
         /// Телефон
         /// </summary>
         public string Phone { get; set; }
+        public string Email { get; set; }
     }
  }
