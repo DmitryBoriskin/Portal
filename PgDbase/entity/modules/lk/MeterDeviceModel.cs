@@ -99,12 +99,12 @@ namespace PgDbase.entity
         public string Manufactirer { get; set; }
 
         /// <summary>
-        /// 
+        /// Класс точности
         /// </summary>
         public string PrecissionClass { get; set; }
 
         /// <summary>
-        /// 
+        /// Номинальное напряжение
         /// </summary>
         public string VoltageNominal { get; set; }
 

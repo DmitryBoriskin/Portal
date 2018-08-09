@@ -681,7 +681,7 @@ span.paysum {
 
 h3 {
     font-size: 20px;
-    color: #1d3f82;
+    color: #0039a6;
     font-weight: 300;
 }
 
@@ -703,5 +703,56 @@ h3 {
             text-decoration: none;
             border-color: rgba(0,57,166,.3);
         }
+    }
+}
+
+
+.border_and_logo {
+    border: 1px solid #d9d9d9;    
+    padding: 32px 25px 50px;
+}
+.devices_single_num {
+    font-weight: 200;
+    font-size: 60px;
+    margin-bottom: 22px;
+}
+
+.keyval {
+    padding-bottom: 7px;
+
+    div {
+        display: inline-block;
+        width: 49%;
+    }
+
+    .keyval_key {
+        position: relative;
+        padding-right: 14px;
+
+        span {
+            background-color: #fff;
+            padding: 5px 5px 4px 5px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-block;
+            z-index: 2;
+            position: relative;
+        }
+
+
+
+        &:before {
+            content: '';
+            position: absolute;
+            bottom: 9px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #d9d9d9;
+        }
+    }
+
+    .keyval_val {
+        padding-left: 14px;
     }
 }
