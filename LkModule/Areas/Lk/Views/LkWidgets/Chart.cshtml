@@ -1,26 +1,26 @@
-﻿@using LkModule.Areas.Lk.Models
-@model StatisticsFrontModel
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="~/sites/rushydro/content/module/lk/js/script.js"></script>
+﻿<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 @{
-    string dataJson = Model.InvoicesAndPaymentsByDateJson;
+    string dataJson = Model.InvoicesAndPayments;
 }
 
 <div class="block block_white block_padd indicators">
     <div class="block_head__blue">Ключевые показатели</div>
     @*<input type="text" class="form-control meterActualDate-input" value="@DateTime.Now.ToString(" dd.MM.yyyy")" />*@
 
-    @Html.Partial("/sites/rushydro/view/module/lk/StatisticWidget/Part/Filter.cshtml")
+    <div class="form-group">
+        <input id="indicators_period" type="text" name="dates" class="data_period form-control">
+    </div>
+
 
     <div class="block block__white" style="min-height:438px;">
+        <div class="text-right"><a class="link__orange" href="/lk/statistics">Подробнее</a></div>
         <div id="chartPayments" class="chart-block">
             <span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />
             <div class="noItems">Нет данных...</div>
         </div>
 
-        @if (!string.IsNullOrEmpty(dataJson))
+        @if (Model != null && Model.InvoicesByDateJson != null)
         {
             <script type="text/javascript">
             google.charts.load('current', { packages: ['bar', 'corechart'], 'language': 'ru' });
@@ -28,15 +28,15 @@
 
 
             function drawCharts() {
-                var chartData = google.visualization.arrayToDataTable(eval("@Html.Raw(dataJson)"));
+                var dataPayments = google.visualization.arrayToDataTable(eval("@Html.Raw(dataJson)"));
 
                 var optionsPayments = {
                     isStacked: false,
                     chart: {
-                        //title: 'Статистика потребления за @DateTime.Now.Year',
+                        title: 'Статистика потребления за @DateTime.Now.Year',
                         //subtitle: 'руб.',
                     },
-                    //width: 900,
+                    width: 900,
                     height: 400,
                     isStacked: false,
                     vAxis: { format: 'decimal' },
@@ -55,9 +55,20 @@
                 };
 
                 var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));
-                chartPayments.draw(chartData, optionsPayments);
+               chartPayments.draw(dataPayments, optionsPayments);
             }
             </script>
         }
     </div>
+
+
+
+
+
 </div>
+
+
+<script>
+
+
+</script>

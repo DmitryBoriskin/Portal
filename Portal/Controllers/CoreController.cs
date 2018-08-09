@@ -20,6 +20,7 @@ using Portal.Models;
 
 namespace Portal.Controllers
 {
+   [Authorize]
     public class CoreController : Controller
     {
         private ApplicationSignInManager _signInManager;

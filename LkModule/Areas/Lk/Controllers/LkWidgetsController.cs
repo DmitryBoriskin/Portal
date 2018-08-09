@@ -11,10 +11,149 @@ namespace LkModule.Areas.Lk.Controllers
 {
     public class LkWidgetsController : CoreController
     {
+        /// <summary>
+        /// текущий ЛС и его баланс
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
+        {
+            //Есть ли у сайта доступ к модулю
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/page/error/451");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
+            var model = new SubscrWidgetFrontModel();
+
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            if (userSubscr != null)
+            {
+                model.List = _Repository.GetSubscrSaldoInfo(userId);
+                model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
+
+            }
+
+            return PartialView(ViewName, model);
+        }
+        
+        /// <summary>
+        /// все подключенные лицевые счета
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Info()
+        {
+            //Есть ли у сайта доступ к модулю
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/page/error/451");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
+            var model = new SubscrWidgetFrontModel();
+
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            if (userSubscr != null)
+            {
+                model.List = _Repository.GetSubscrSaldoInfo(userId);
+                model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
+
+            }
+
+            return PartialView(ViewName, model);
+        }
+
+        /// <summary>
+        /// блок баланса
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Balance()
+        {
+            //Есть ли у сайта доступ к модулю
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/page/error/451");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
+            var model = new SubscrWidgetFrontModel();
+
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            if (userSubscr != null)
+            {
+                model.List = _Repository.GetSubscrSaldoInfo(userId);
+                model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
+
+            }
+
+            return PartialView(ViewName, model);
+        }
+
+
+        [HttpPost]
+        public ActionResult SetUserSubscrDefault(Guid subscrId)
+        {
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            var res = _Repository.SetUserSubscrDefault(userSubscr.Id, userId);
+            if (res)
+                return Json("success");
+
+            return Json("An Error Has Occourred");
+        }
+
+        /// <summary>
+        /// Менеджер
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Manager()
+        {
+            //Есть ли у сайта доступ к модулю
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/page/error/451");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
+            var userId = CurrentUser.UserId;
+            var userSubscr = _Repository.GetUserSubscrDefault(userId);
+
+            SubscrManager model = new SubscrManager();
+            model = _Repository.GetManager(userSubscr.Id);
+
+            return PartialView(ViewName, model);//, model
+        }
+
+        /// <summary>
+        /// Графики - ключевые показатели
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Chart()
         {
-            FilterModel filter;
-            filter = GetFilter();
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/page/error/451");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
+            var filter = GetFilter();
 
             if (!filter.Date.HasValue)
                 filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
@@ -90,10 +229,21 @@ namespace LkModule.Areas.Lk.Controllers
             return PartialView(ViewName, model);
         }
 
-        public ActionResult DebitCreditData()
+        /// <summary>
+        /// Дебит кредит баланс
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DebitCredit()
         {
-            FilterModel filter;
-            filter = GetFilter();
+            if (!_Repository.ModuleAllowed(ControllerName))
+                Response.Redirect("/page/error/451");
+
+            //Шаблон
+            ViewName = _Repository.GetModuleView(ControllerName, ActionName);
+            if (string.IsNullOrEmpty(ViewName))
+                throw new Exception("Не указан шаблон представления для данного контроллера и метода");
+
+            var filter = GetFilter();
 
             if (!filter.Date.HasValue)
                 filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);

@@ -60,7 +60,6 @@
                     </ul>
                 </div>
 
-                
             </div>
         </nav>
 
@@ -74,7 +73,7 @@
                     @{ 
                         try
                         {
-                            Html.RenderAction("Manager", "SubscrInfoWidget", new { @area = "Lk" });
+                            Html.RenderAction("Manager", "LkWidgets", new { @area = "Lk" });
                         }
                         catch (Exception ex)
                         {
@@ -84,12 +83,10 @@
                     <div style="padding: 13px 20px 16px;">
                         <a href="~/sites/rushydro/content/doc/rukovodstvo_lk_rushydro.pdf" style="font-size:12px;">РУКОВОДСТВО ПОЛЬЗОВАТЕЛЯ</a>
                     </div>
-                    
-
                     @{
                         try
                         {
-                            Html.RenderAction("Info", "SubscrInfoWidget", new { @area = "Lk" });
+                            Html.RenderAction("Info", "LkWidgets", new { @area = "Lk" });
                         }
                         catch (Exception ex)
                         {
