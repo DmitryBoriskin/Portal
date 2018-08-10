@@ -558,3 +558,16 @@ h3 {
 .devices-stat h3 {
   padding-bottom: 20px;
 }
+.device_meters_val {
+  font-size: 22px;
+  font-weight: 300;
+}
+.devices_meters {
+  padding: 19px 0 0 0;
+}
+.devices_meters h3 {
+  padding-bottom: 11px;
+}
+.devices_meters table {
+  margin-top: 5px;
+}
