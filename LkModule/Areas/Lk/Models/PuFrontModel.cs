@@ -20,6 +20,6 @@ namespace LkModule.Areas.Lk.Models
         /// <summary>
         /// Показания прибора учета
         /// </summary>
-        public MeterModel[] DevicesMeter { get; set; }
+        public Paged<MeterModel> DevicesMeter { get; set; }
     }
 }

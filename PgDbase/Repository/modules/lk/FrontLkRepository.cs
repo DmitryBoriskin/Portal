@@ -1085,8 +1085,24 @@ namespace PgDbase.Repository.front
                         .Take(filter.Size)
                         .Select(s => new MeterModel {
                             Date=s.d_date,
-                            
+                            Year=s.n_year,
+                            Month=s.n_month,
+                            DeliveryMethod=s.c_delivery_method,
+                            EnergyTypeName=s.c_energytype,
+                            TimeZone=s.c_timezone,
+                            Value=s.n_value
                         }).ToArray();
+
+                    return new Paged<MeterModel>
+                    {
+                        Items = list,
+                        Pager = new PagerModel
+                        {
+                            PageNum = filter.Page,
+                            PageSize = filter.Size,
+                            TotalCount = itemsCount
+                        }
+                    };
                 }
                 return null;
             }
