@@ -291,7 +291,10 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.fksubscrconfigsmanagers.id,
                         FIO = s.fksubscrconfigsmanagers.c_name,
-                        Email = s.fksubscrconfigsmanagers.c_email
+                        Email = s.fksubscrconfigsmanagers.c_email,
+                        Desc=s.fksubscrconfigsmanagers.c_desc,
+                        Phone=s.fksubscrconfigsmanagers.c_phone,
+                        Post=s.fksubscrconfigsmanagers.c_post                        
                     })
                     .FirstOrDefault();
                 }
@@ -1076,6 +1079,18 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 var query = db.lk_meters.Where(w => w.f_device == id);
+
+                if (filter.Date != null)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date);
+                }
+
+                if (filter.DateEnd!= null)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd);
+                }
+
+
                 if (query.Any())
                 {
                     query = query.OrderByDescending(o => o.d_date);
@@ -1085,8 +1100,24 @@ namespace PgDbase.Repository.front
                         .Take(filter.Size)
                         .Select(s => new MeterModel {
                             Date=s.d_date,
-                            
+                            Year=s.n_year,
+                            Month=s.n_month,
+                            DeliveryMethod=s.c_delivery_method,
+                            EnergyTypeName=s.c_energytype,
+                            TimeZone=s.c_timezone,
+                            Value=s.n_value
                         }).ToArray();
+
+                    return new Paged<MeterModel>
+                    {
+                        Items = list,
+                        Pager = new PagerModel
+                        {
+                            PageNum = filter.Page,
+                            PageSize = filter.Size,
+                            TotalCount = itemsCount
+                        }
+                    };
                 }
                 return null;
             }

@@ -1164,7 +1164,6 @@
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\Chart.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\DebitCredit.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\Manager.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\SubscrWidget\Manager.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\PU\Devices.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\Index.cshtml" />
     <None Include="Web.Debug.config">
@@ -1177,6 +1176,7 @@
   <ItemGroup>
     <Folder Include="bin\" />
     <Folder Include="sites\rushydro\view\module\lk\Shared\" />
+    <Folder Include="sites\rushydro\view\module\lk\SubscrWidget\" />
     <Folder Include="Views\Distributor\" />
     <Folder Include="Views\Layout\" />
     <Folder Include="Views\PageWidget\" />

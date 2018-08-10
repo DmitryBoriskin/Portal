@@ -85,7 +85,8 @@ namespace LkModule.Areas.Lk.Controllers
                 throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
             model.Devices = _Repository.GetPuModel(id);
-            //model.DevicesMeter
+            filter = GetFilter();
+            model.DevicesMeter = _Repository.GetMeterModel(id, filter);
 
             return View(ViewName, model);
         }

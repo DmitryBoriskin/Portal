@@ -11,8 +11,7 @@
 
             @using (Html.BeginForm("SendNew", "Messages"))
             {
-                <div class="well">
-                    <div class="mess_btn">
+                <div class="msgform">                    
                         <div class="form-group">
                             <label>Тема</label>
                             @Html.TextBoxFor(m => m.Theme.Theme, new { @class = "form-control", @required = "required" })
@@ -24,9 +23,8 @@
 
                         <br />
                         <div class="text-right">
-                            <button type="submit" class="btn btn_orange">Отправить</button>
-                        </div>
-                    </div>
+                            <button type="submit" class="btn btn_border btn_border__blue">Отправить</button>
+                        </div>                    
                 </div>
             }
 

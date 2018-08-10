@@ -179,6 +179,8 @@ body{
         box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.1);
         text-transform: uppercase;
         font-size: 12px;
+        padding-right:30px;
+        padding-left:30px;
 
         &:hover, &:active {
             text-decoration:none;
@@ -201,7 +203,6 @@ body{
 
 
 .mgr {
-
     .mgr_spec {
         color: @blue;
         font-size: 12px;
@@ -211,6 +212,15 @@ body{
 
     .mgr_name {
         padding-bottom: 17px;
+
+        a {
+            color: #333;
+            &:hover{
+                text-decoration:none;
+                cursor:pointer;
+                color:@orange;
+            }
+        }
     }
 }
 
@@ -221,13 +231,17 @@ body{
     margin: 30px 0 0 0;
 
     .invoice-list {
-
+        padding-bottom: 90px;
 
         .invoice_item {
             display: block;
             padding: 25px 20px;
             color: #333;
             border-bottom: 1px solid @gray;
+
+            &:first-child {
+                border-top: 1px solid @gray;
+            }
             /*&:hover, &:focus,*/
             &.invoice_active {
                 background-color: @orange;
@@ -242,7 +256,7 @@ body{
             }
 
             &:not(.invoice_active):hover, &:not(.invoice_active):focus {
-                background-color: @orangelight;
+                background-color: #ededed;
                 text-decoration: none;
             }
 
@@ -297,12 +311,16 @@ body{
     }
 
     .block_btnarea {
-        margin: 20px 0 0;
+        margin: 20px 0 20px;
     }
 }
 
 .currentpay {
     margin-bottom: 58px;
+
+    .btn+.btn{
+        margin-left:10px;
+    }
 
     .currentpay_pay {
         font-size: 60px;
@@ -413,6 +431,7 @@ body{
 
 .block_info {
     padding-top: 45px;
+    padding-bottom:30px;    
     a {
         color: #333;
         &:hover {
@@ -672,13 +691,68 @@ span.paysum {
 
 .post {
     padding: 20px !important;
-    margin-bottom: 0;
-    background-color: @bg;
+    margin-bottom: 15px;
+    border: 1px solid;
+    border-color: #d9d9d9;
+    position: relative;
+    margin-right: 90px;
+
+    .user-block {
+        overflow: auto;
+    }
+
+    &:after {
+        content: '';
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAOCAMAAADDoWbgAAAAFVBMVEX////a2tra2tra2tra2trt7e3///+hPUw3AAAABHRSTlMAFWzU4Yg1ZwAAAC9JREFUeNpVx7ERACAMxDACgf1H5t3gQ51Gn2dPBrKKmcxkhhlmmGGGGUZcIqIvFwR9AeVl0eU0AAAAAElFTkSuQmCC);
+        width: 13px;
+        height: 14px;
+        position: absolute;
+        left: -1px;
+        bottom: -14px;
+    }
+
+    .username {
+        float: left;
+        padding-right: 20px;
+
+        a span {
+            color: @blue;
+        }
+    }
+
+    .description {
+        color: #999;
+        font-size: 14px;
+    }
+
+
 
     &.post_admin {
-        background-color: @orangelight;
+        margin-left: 90px;
+        margin-right: 0;
+        box-shadow: 0px 3px 12px 0px rgba(0, 0, 0, 0.1);
+
+        &:after {
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAMAAACecocUAAAAElBMVEX////a2tra2trg4OD8/Pz///+s6bg9AAAAAnRSTlMAgJsrThgAAAAoSURBVHgBRcexAQAgDMOwEOD/lztoqCcr576vBjx48AsPHjx48ODVAVHxAOhSSVpcAAAAAElFTkSuQmCC);
+            left: inherit;
+            right: -3px;
+            height: 11px;
+            bottom: -11px;
+        }
+
+        .username {
+            a span {
+                color: #333;
+            }
+        }
     }
 }
+
+
+.msgform{
+
+}
+
 
 h3 {
     font-size: 20px;
@@ -759,8 +833,46 @@ h3 {
     }
 }
 
-.devices-stat {
+.devices-stat {    
+    
     h3 {
         padding-bottom: 20px;
+    }
+}
+.device_meters_val{
+    font-size:22px;
+    font-weight:300;
+}
+.devices_meters {
+    padding: 19px 0 0 0;
+
+    h3 {
+        padding-bottom: 11px;
+    }
+    table{
+        margin-top:5px;
+    }
+}
+
+.modal_hydro {
+
+    .modal-content {
+        border-radius: 0;
+    }
+}
+.modal_hydro_content{
+
+}
+
+table.index_scheta_plategi {
+
+    tr {
+        td, th {
+            &:not(:first-child) {
+                text-align: right;
+            }
+
+            
+        }
     }
 }
