@@ -8,10 +8,26 @@ namespace PgDbase.entity
     /// </summary>
     public class MeterModel
     {
+
         /// <summary>
         /// Идентификатор
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        ///  линк показания в ОМНИС
+        /// </summary>
+        public long Link { get; set; }
+
+        /// <summary>
+        /// Идентификатор устройства, подключенного к лс
+        /// </summary>
+        public Guid DeciceId { get; set; }
+
+        /// <summary>
+        ///  Идентификатор устройства, подключенного к лс  в ОМНИС
+        /// </summary>
+        public long DeviceLink { get; set; }
 
         /// <summary>
         /// Дата передачи
@@ -29,12 +45,12 @@ namespace PgDbase.entity
         public decimal Value { get; set; }
 
         /// <summary>
-        /// Потребление
+        /// Суммарное потребление
         /// </summary>
         public decimal? Const { get; set; }
 
         /// <summary>
-        /// Потребление
+        /// Тарифицируемое потребление
         /// </summary>
         public decimal? Quantity { get; set; }
 
@@ -69,14 +85,19 @@ namespace PgDbase.entity
         public string EnergyType { get; set; }
 
         /// <summary>
-        /// Тип измеряемой энергии 
+        /// Вид измеряемой энергии, например АЭ-
         /// </summary>
         public string EnergyTypeName { get; set; }
 
         /// <summary>
-        /// Коэфф. расчета
+        /// Ид. Статус
         /// </summary>
-        public decimal Multiplier { get; set; }
+        public int StatusId { get; set; }
+
+        /// <summary>
+        /// Статус
+        /// </summary>
+        public int Status { get; set; }
 
     }
 }
