@@ -8,10 +8,31 @@ namespace PgDbase.entity
     /// </summary>
     public class PuModel
     {
-        /// <summary>
+         /// <summary>
         /// Идентификатор
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
+        public long Link { get; set; }
+
+        /// <summary>
+        /// Идентификатор
+        /// </summary>
+        public Guid SubscrId { get; set; }
+
+        /// <summary>
+        /// лицевой счет линк из ОМНИС
+        /// </summary>
+        public long SubscrLink { get; set; }
+
+        /// <summary>
+        /// Идентификатор модели устройства
+        /// </summary>
+        public int? DeviceId { get; set; }
+
 
         /// <summary>
         /// Кроме приборов учета могут быть еще др. учетные показатели 
@@ -24,9 +45,14 @@ namespace PgDbase.entity
         public string Number { get; set; }
 
         /// <summary>
-        /// Наименование
+        /// наименование/описание пу
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Год выпуска
+        /// </summary>
+        public int? Year { get; set; }
 
         /// <summary>
         /// Дата установки
@@ -44,12 +70,27 @@ namespace PgDbase.entity
         public DateTime? CheckDate { get; set; }
 
         /// <summary>
-        /// 1, 2 или 3-х тарифный
+        /// Дата следующей проверки
         /// </summary>
-        public int Tariff { get; set; }
+        public DateTime? NextCheckDate { get; set; }
 
         /// <summary>
-        /// Коэфф. расчета
+        ///  Заменить до
+        /// </summary>
+        public DateTime? ReplaceBeforeDate { get; set; }
+
+        /// <summary>
+        /// Дата гос. проверки
+        /// </summary>
+        public DateTime? ValidDate { get; set; }
+
+        /// <summary>
+        /// Тариф по уровню напряжения
+        /// </summary>
+        public string EnergyLvl { get; set; }
+
+        /// <summary>
+        /// Расчетный коэффициент, коэф. трансформации
         /// </summary>
         public decimal Multiplier { get; set; }
 
@@ -62,34 +103,39 @@ namespace PgDbase.entity
 
     public class DeviceModel
     {
-
+  
         /// <summary>
         /// Место установки, др характ. параметры
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Разрядность
+        /// Разрядность счетчика 0,5S/12/8,4
         /// </summary>
         public string Modification { get; set; }
 
         /// <summary>
-        /// Тариф
+        /// Межповерочный интервал, лет
+        /// </summary>
+        public int? CheckCycle { get; set; }
+
+        /// <summary>
+        /// одно, двухтарифный и тп
         /// </summary>
         public int? Tariff { get; set; }
 
         /// <summary>
-        /// 
+        /// Вид номенклатуры
         /// </summary>
         public string EnergyCategory { get; set; }
 
         /// <summary>
-        /// 
+        /// Категория - Профильный счетчик(часы) ,Трансформатор тока и тп
         /// </summary>
         public string DeviceCategory { get; set; }
 
         /// <summary>
-        /// Трехфазный
+        /// фазность - трехфазный, да / нет
         /// </summary>
         public bool Phase3 { get; set; }
 
@@ -104,7 +150,7 @@ namespace PgDbase.entity
         public string PrecissionClass { get; set; }
 
         /// <summary>
-        /// Номинальное напряжение
+        /// Для счетчиков - Номинальное напряжение, В; для ТТ и ТН - Класс напряжения, кВ
         /// </summary>
         public string VoltageNominal { get; set; }
 
