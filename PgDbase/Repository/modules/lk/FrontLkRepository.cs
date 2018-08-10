@@ -289,9 +289,9 @@ namespace PgDbase.Repository.front
                 {
                     return query.Select(s => new SubscrManager
                     {
-                        Id = s.fksubscrconfigssubscrs.id,
-                        FIO = s.fksubscrconfigssubscrs.c_name,
-                        Email = s.fksubscrconfigssubscrs.c_email
+                        Id = s.fksubscrconfigsmanagers.id,
+                        FIO = s.fksubscrconfigsmanagers.c_name,
+                        Email = s.fksubscrconfigsmanagers.c_email
                     })
                     .FirstOrDefault();
                 }
@@ -965,14 +965,23 @@ namespace PgDbase.Repository.front
                     .Select(s => new PuModel
                     {
                         Id = s.id,
+                        //Link = s.link,
+                        SubscrId = s.f_subscr,
+                        SubscrLink = s.n_subscr,
                         IsPu = (s.link != null) ? true : false,
                         Number = s.c_number,
                         Name = s.c_name,
+                        Year = s.n_year,
                         InstallPlace = s.c_install_place,
                         InstallDate = s.d_setup,
                         CheckDate = s.d_check,
-                        //Tariff = s.n_tariff,
+                        NextCheckDate = s.d_next_check,
+                        ReplaceBeforeDate = s.d_replace_before,
+                        ValidDate = s.d_valid,
+                        EnergyLvl = s.c_energy_lvl,
+       
                         Multiplier = s.n_rate,
+                        DeviceId = s.f_device,
                         DeviceInfo = (s.f_device != null) ?
                                 new DeviceModel()
                                 {
@@ -984,7 +993,8 @@ namespace PgDbase.Repository.front
                                     DeviceCategory = s.fksubscrdevicesdevices.c_device_category,
                                     EnergyCategory = s.fksubscrdevicesdevices.c_energy_category,
                                     PrecissionClass = s.fksubscrdevicesdevices.c_precission_class,
-                                    VoltageNominal = s.fksubscrdevicesdevices.c_voltage_nominal
+                                    VoltageNominal = s.fksubscrdevicesdevices.c_voltage_nominal,
+                                    CheckCycle = s.fksubscrdevicesdevices.n_check_cycle
                                 }
                                 : null
 
@@ -1020,28 +1030,38 @@ namespace PgDbase.Repository.front
                    .Select(s => new PuModel
                    {
                        Id = s.id,
+                       //Link = s.link,
+                       SubscrId = s.f_subscr,
+                       SubscrLink = s.n_subscr,
                        IsPu = (s.link != null) ? true : false,
                        Number = s.c_number,
                        Name = s.c_name,
+                       Year = s.n_year,
                        InstallPlace = s.c_install_place,
                        InstallDate = s.d_setup,
                        CheckDate = s.d_check,
-                       //Tariff = s.n_tariff,
+                       NextCheckDate = s.d_next_check,
+                       ReplaceBeforeDate = s.d_replace_before,
+                       ValidDate = s.d_valid,
+                       EnergyLvl = s.c_energy_lvl,
+
                        Multiplier = s.n_rate,
+                       DeviceId = s.f_device,
                        DeviceInfo = (s.f_device != null) ?
-                               new DeviceModel()
-                               {
-                                   Name = s.fksubscrdevicesdevices.c_name,
-                                   Tariff = s.fksubscrdevicesdevices.n_tariff,
-                                   Modification = s.fksubscrdevicesdevices.c_modification,
-                                   Manufactirer = s.fksubscrdevicesdevices.c_manufacturer,
-                                   Phase3 = s.fksubscrdevicesdevices.b_phase3,
-                                   DeviceCategory = s.fksubscrdevicesdevices.c_device_category,
-                                   EnergyCategory = s.fksubscrdevicesdevices.c_energy_category,
-                                   PrecissionClass = s.fksubscrdevicesdevices.c_precission_class,
-                                   VoltageNominal = s.fksubscrdevicesdevices.c_voltage_nominal
-                               }
-                               : null
+                                new DeviceModel()
+                                {
+                                    Name = s.fksubscrdevicesdevices.c_name,
+                                    Tariff = s.fksubscrdevicesdevices.n_tariff,
+                                    Modification = s.fksubscrdevicesdevices.c_modification,
+                                    Manufactirer = s.fksubscrdevicesdevices.c_manufacturer,
+                                    Phase3 = s.fksubscrdevicesdevices.b_phase3,
+                                    DeviceCategory = s.fksubscrdevicesdevices.c_device_category,
+                                    EnergyCategory = s.fksubscrdevicesdevices.c_energy_category,
+                                    PrecissionClass = s.fksubscrdevicesdevices.c_precission_class,
+                                    VoltageNominal = s.fksubscrdevicesdevices.c_voltage_nominal,
+                                    CheckCycle = s.fksubscrdevicesdevices.n_check_cycle
+                                }
+                                : null
 
                    }).Single();
                 }
