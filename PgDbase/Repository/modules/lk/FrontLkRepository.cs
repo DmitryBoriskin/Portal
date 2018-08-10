@@ -1013,7 +1013,11 @@ namespace PgDbase.Repository.front
             }
         }
 
-
+        /// <summary>
+        /// информацмя о счетчика
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public PuModel GetPuModel(Guid id)
         {
             using (var db = new CMSdb(_context))
@@ -1063,6 +1067,27 @@ namespace PgDbase.Repository.front
                 }
 
 
+                return null;
+            }
+        }
+
+        public Paged<MeterModel> GetMeterModel(Guid id,FilterModel filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_meters.Where(w => w.f_device == id);
+                if (query.Any())
+                {
+                    query = query.OrderByDescending(o => o.d_date);
+                    int itemsCount = query.Count();
+                    var list = query
+                        .Skip(filter.Size * (filter.Page - 1))
+                        .Take(filter.Size)
+                        .Select(s => new MeterModel {
+                            Date=s.d_date,
+                            
+                        }).ToArray();
+                }
                 return null;
             }
         }

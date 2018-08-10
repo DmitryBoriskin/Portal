@@ -17,5 +17,9 @@ namespace LkModule.Areas.Lk.Models
         /// Прибор учета
         /// </summary>
         public PuModel Devices { get; set; }
+        /// <summary>
+        /// Показания прибора учета
+        /// </summary>
+        public MeterModel[] DevicesMeter { get; set; }
     }
 }
