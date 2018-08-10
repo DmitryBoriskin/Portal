@@ -119,6 +119,7 @@ body {
 .btn.btn_border__blue:hover {
   border-color: rgba(0, 57, 166, 0.6);
   background-color: #f7f7f7;
+  text-decoration: none;
 }
 .btn.btn_white {
   background-color: #fff;
@@ -494,6 +495,7 @@ h3 {
 }
 .devices-list {
   margin-top: 9px;
+  padding-bottom: 6px;
 }
 .devices-list .devices_head {
   padding-bottom: 16px;
@@ -549,4 +551,7 @@ h3 {
 }
 .keyval .keyval_val {
   padding-left: 14px;
+}
+.devices-stat h3 {
+  padding-bottom: 20px;
 }
