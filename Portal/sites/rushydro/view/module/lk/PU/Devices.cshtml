@@ -25,7 +25,7 @@
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Дата установки</span></div>
-                            <div class="keyval_val">@Model.Devices.InstallDate</div>
+                            <div class="keyval_val">@(Model.Devices.InstallDate.HasValue?@Model.Devices.InstallDate.Value.ToString("d"):"")</div>
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Место установки</span></div>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Дата поверки</span></div>
-                            <div class="keyval_val">@Model.Devices.CheckDate</div>
+                            <div class="keyval_val">@(Model.Devices.CheckDate.HasValue? @Model.Devices.CheckDate.Value.ToString("d"):"")</div>
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Дата следующей поверки</span></div>
