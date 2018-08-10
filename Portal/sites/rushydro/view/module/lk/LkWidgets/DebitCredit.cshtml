@@ -13,43 +13,42 @@
             <th>Балaнс <br /> на начало периода </th>
             <th>Баланс<br /> на конец периода</th>
         </tr>
-        <tr>
-            <td>СЕНТЯБРЬ 2017</td>
-            <td><span class="table_price">760 000</span></td>
-            <td><span class="table_price">760 000</span></td>
-            <td>
-                <span class="rub_positiv table_price">+ 658 000</span>
-            </td>
-            <td>
-                <span class="rub_negativ table_price">- 102 000</span>
-            </td>
-        </tr>
-        <tr>
-            <td>СЕНТЯБРЬ 2017</td>
-            <td><span class="table_price">760 000</span></td>
-            <td><span class="table_price">760 000</span></td>
-            <td>
-                <span class="rub_positiv table_price">+ 658 000</span>
-            </td>
-            <td>
-                <span class="rub_negativ table_price">- 102 000</span>
-            </td>
-        </tr>
-        <tr>
-            <td>СЕНТЯБРЬ 2017</td>
-            <td><span class="table_price">760 000</span></td>
-            <td><span class="table_price">760 000</span> </td>
-            <td>
-                <span class="rub_positiv table_price">+ 658 000</span>
-            </td>
-            <td>
-                <span class="rub_negativ table_price">- 102 000</span>
-            </td>
-        </tr>
+        @if (Model != null && Model.DebitCreditData != null && Model.DebitCreditData.Items != null && Model.DebitCreditData.Items.Count() > 0)
+        {
+            var beginBalance = Model.Balance.Saldo.Value;
+            var endBalance = Model.Balance.Saldo.Value;
 
+            foreach (var item in Model.DebitCreditData.Items)
+            {
+                endBalance = beginBalance;
+                beginBalance -= (item.PaymentAmount.Value - item.InvoiceAmount.Value);
+
+                <tr>
+                    <td style="text-transform:uppercase;">@(item.Period.HasValue ? item.Period.Value.ToString("MMM yyyy") : "")</td>
+                    <td><span class="table_price">@(item.InvoiceAmount.HasValue ? item.InvoiceAmount.Value.ToString("N2") : "0.00")</span></td>
+                    <td><span class="table_price"> @(item.PaymentAmount.HasValue ? item.PaymentAmount.Value.ToString("N2") : "0.00")</span></td>
+                    <td>
+                        <span class="@(beginBalance >= 0? "rub_positiv": "rub_negativ") table_price">@beginBalance.ToString("N2")</span>
+                    </td>
+                    <td>
+                        <span class="@(endBalance >= 0? "rub_positiv": "rub_negativ") table_price">@endBalance.ToString("N2")</span>
+                    </td>
+                </tr>
+            }
+        }
     </table>
 
     <div class="block_btnarea">
-        <a class="btn btn__blue btn_big" href="#">загрузить еще</a>
+        <a class="btn btn__blue btn_big js_loadMore-link" href="#">загрузить еще</a>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".js_loadMore-link").on("click", function (e) {
+            e.preventDefault();
+            alert("Данный функционал находится в разработке.");
+        });
+    });
+</script>
+

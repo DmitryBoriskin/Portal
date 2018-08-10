@@ -9,7 +9,6 @@ namespace LkModule.Areas.Lk.Models
     /// </summary>
     public class StatisticsFrontModel : LayoutFrontModel
     {
-
         /// <summary>
         /// Платежи json
         /// </summary>
@@ -26,15 +25,14 @@ namespace LkModule.Areas.Lk.Models
         public string InvoicesAndPaymentsByDateJson { get; set; }
 
         /// <summary>
-        ///  Потребление Список 
+        /// Начисления и платежи, баланс для главной страницы
         /// </summary>
-        public List<InvoiceModel> Consumption { get; set; }
-
+        public Paged<DebitCreditModel> DebitCreditData { get; set; }
 
         /// <summary>
-        /// Потребление json
+        /// Текущий баланс
         /// </summary>
-        public string ConsumptionByDateJson { get; set; }
+        public SubscrShortModel Balance { get; set; }
 
     }
 }

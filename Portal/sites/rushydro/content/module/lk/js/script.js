@@ -1,5 +1,35 @@
 ﻿$(document).ready(function () {
 
+        //Переключение лс
+        $('.js_subscrChange-link').click(function (e) {
+            e.preventDefault();
+
+            var _subscrId = $(this).data('subscrId');
+            var _action = $(this).attr("href");
+
+            try {
+                $.ajax({
+                    method: "POST",
+                    url: _action,
+                    async: true,
+                    data: { subscrId: _subscrId },
+                })
+                    .done(function (response) {
+                        location.reload();
+                    })
+                    .fail(function (jqXHR, status) {
+                        console.log("Ошибка" + " " + status + " " + jqXHR);
+                    })
+                    .always(function (response) {
+
+                    });
+            }
+            catch (ex) {
+                console.log(ex);
+            };
+        });
+
+
     $('#js_filterDateRange-input').daterangepicker({
         "locale": {
             "format": "DD.MM.YYYY",
