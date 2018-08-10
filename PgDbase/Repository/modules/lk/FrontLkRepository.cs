@@ -1079,6 +1079,18 @@ namespace PgDbase.Repository.front
             using (var db = new CMSdb(_context))
             {
                 var query = db.lk_meters.Where(w => w.f_device == id);
+
+                if (filter.Date != null)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date);
+                }
+
+                if (filter.DateEnd!= null)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd);
+                }
+
+
                 if (query.Any())
                 {
                     query = query.OrderByDescending(o => o.d_date);
