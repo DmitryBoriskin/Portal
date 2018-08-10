@@ -154,6 +154,14 @@ body {
 .mgr .mgr_name {
   padding-bottom: 17px;
 }
+.mgr .mgr_name a {
+  color: #333;
+}
+.mgr .mgr_name a:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: #ff7900;
+}
 #index_right .invoice {
   height: calc(100vh - 118px);
   overflow: auto;
@@ -570,4 +578,7 @@ h3 {
 }
 .devices_meters table {
   margin-top: 5px;
+}
+.modal_hydro .modal-content {
+  border-radius: 0;
 }

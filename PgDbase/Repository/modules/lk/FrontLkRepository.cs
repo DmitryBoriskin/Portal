@@ -291,7 +291,10 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.fksubscrconfigsmanagers.id,
                         FIO = s.fksubscrconfigsmanagers.c_name,
-                        Email = s.fksubscrconfigsmanagers.c_email
+                        Email = s.fksubscrconfigsmanagers.c_email,
+                        Desc=s.fksubscrconfigsmanagers.c_desc,
+                        Phone=s.fksubscrconfigsmanagers.c_phone,
+                        Post=s.fksubscrconfigsmanagers.c_post                        
                     })
                     .FirstOrDefault();
                 }

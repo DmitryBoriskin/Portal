@@ -275,5 +275,7 @@ namespace PgDbase.entity
         /// </summary>
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string Post { get; set; }
+        public string Desc { get; set; }
     }
  }

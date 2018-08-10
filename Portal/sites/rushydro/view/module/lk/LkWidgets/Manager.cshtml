@@ -3,10 +3,45 @@
 {
     <div class="mgr index_padd">
         <div class="mgr_spec">Персональный менеджер</div>
-        <div class="mgr_name">@Model.FIO</div>
+        <div class="mgr_name">
+            <a  data-toggle="modal" data-target="#persMgr">@Model.FIO</a>            
+        </div>
         <div class="mgr_btn">
             <a href="/messages" class="btn btn_border btn_border__blue">написать обращение</a>
             <a href="/messages?type=ordercall" class="btn btn_border btn_border__blue">заказать звонок</a>
+        </div>
+    </div>
+
+    <div class="modal fade modal_hydro" id="persMgr" tabindex="-1" role="dialog" aria-labelledby="persMgrLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="persMgrLabel">Персональный менеджер</h3>
+                </div>
+
+                <div class="modal-body">
+                    <div class="modal_hydro_content">               
+
+                        <dl class="dl-horizontal">
+                            <dt>ФИО</dt>
+                            <dd>@Model.FIO</dd>
+
+                            <dt>Должность</dt>
+                            <dd>@Model.Post</dd>
+
+                            <dt>E-mail</dt>
+                            <dd><a href="mailto:@Model.Email">@Model.Email</a></dd>
+
+                            <dt>Информация</dt>
+                            <dd>@Model.Desc</dd>
+                            
+                        </dl>
+                    </div>
+                    
+                </div>
+                
+            </div>
         </div>
     </div>
 }
