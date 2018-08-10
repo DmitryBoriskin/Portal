@@ -21,5 +21,10 @@ namespace LkModule.Areas.Lk.Models
         /// Показания прибора учета
         /// </summary>
         public MeterModel[] DevicesMeter { get; set; }
+
+        /// <summary>
+        /// Данные по потреблению для построения графиков
+        /// </summary>
+        public string СonsumptionDataJson { get; set; }
     }
 }

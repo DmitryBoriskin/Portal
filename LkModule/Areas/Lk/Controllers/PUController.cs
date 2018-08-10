@@ -36,7 +36,10 @@ namespace LkModule.Areas.Lk.Controllers
             };
         }
 
-        // GET: Admin/MeterDevices
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             //Шаблон
@@ -46,16 +49,35 @@ namespace LkModule.Areas.Lk.Controllers
 
             filter = GetFilter();
 
+            if (!filter.Date.HasValue)
+                filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
+            if (!filter.DateEnd.HasValue)
+                filter.DateEnd = DateTime.Now;
+
             var userId = CurrentUser.UserId;
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
-
             if (userSubscr != null)
             {
-                model.List = _Repository.GetSubscrDevices(userSubscr.Id, filter);
+                var pFilter = FilterModel.Extend<LkFilter>(filter);
+                model.List = _Repository.GetSubscrDevices(userSubscr.Id, pFilter);
+
+                var paysheets = _Repository.GetPaysheetsList(userSubscr.Id, pFilter);
+                if (paysheets != null && paysheets.Count() > 0)
+                {
+                    var data = paysheets.Reverse();
+                    model.СonsumptionDataJson = "[['Месяц','Потребление']," + string.Join(",", data.Select(s => string.Format("['{0}',{1}]", s.Period.ToString("MMM"), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
+                }
             }
+            model.Filter = filter;
 
             return View(ViewName, model);
         }
+
+        /// <summary>
+        /// Список Пу
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Devices(Guid id)
         {
             ViewName = _Repository.GetModuleView(ControllerName, ActionName);
@@ -67,25 +89,8 @@ namespace LkModule.Areas.Lk.Controllers
 
             return View(ViewName, model);
         }
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "search-btn")]
-        //public ActionResult Search(string size, string page, bool enabled)
-        //{
-        //    string query = HttpUtility.UrlDecode(Request.Url.Query);
-        //    query = AddFilterParam(query, "page", String.Empty);
-        //    query = AddFilterParam(query, "size", size);
-        //    query = AddFilterParam(query, "disabled", (!enabled).ToString().ToLower());
 
-        //    return Redirect(StartUrl + query);
-        //}
-
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "clear-btn")]
-        //public ActionResult ClearFiltr(Guid subscr)
-        //{
-        //    return Redirect($"{StartUrl}?subscr={subscr}");
-        //}
-
+        
         [HttpPost]
         public ActionResult GetPuMeters(Guid device)
         {
@@ -99,23 +104,5 @@ namespace LkModule.Areas.Lk.Controllers
             return PartialView(ViewName, model);
         }
 
-        //[HttpPost]
-        //public ActionResult GetTariffes(Guid device)
-        //{
-        //    var tariffes = _cmsRepository.GetTariffes(device);
-
-        //    var json = JsonConvert.SerializeObject(tariffes);
-        //    return Json(json);
-        //}
-
-        //[HttpPost]
-        //[MultiButton(MatchFormKey = "action", MatchFormValue = "back-btn")]
-        //public ActionResult Back()
-        //{
-        //    string par = Request.UrlReferrer.Query;
-        //    string subscr = par.Replace("?subscr=", "");
-        //    string url = $"/admin/subscrs/item/{subscr}";
-        //    return Redirect(url);
-        //}
     }
 }

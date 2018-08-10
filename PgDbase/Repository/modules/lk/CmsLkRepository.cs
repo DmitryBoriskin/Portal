@@ -840,7 +840,7 @@ namespace PgDbase.Repository.cms
                         //DateDue = s.d_date_due,
 
                         //Debit = s.b_debit,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                         Payed = s.b_closed,
 
                         StatusId = s.n_status,
@@ -904,7 +904,7 @@ namespace PgDbase.Repository.cms
                         DateDue = s.d_date_due,
 
                         Debit = s.b_debit,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                         Payed = s.b_closed,
 
                         StatusId = s.n_status,
@@ -1094,7 +1094,7 @@ namespace PgDbase.Repository.cms
                         Id = s.id,
                         Date = s.d_date,
                         Amount = s.n_amount,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                     }).ToArray();
 
                 return new Paged<PaymentModel>

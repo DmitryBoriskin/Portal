@@ -25,7 +25,20 @@ namespace PgDbase.entity
         /// <summary>
         /// Дата начала периода
         /// </summary>
-        public DateTime? Period { get; set; }
+        public DateTime? Period {
+            get
+            {
+                if (PeriodId.HasValue)
+                {
+                    var str = PeriodId.Value.ToString();
+                    var year = str.Substring(0, 4);
+                    var month = str.Substring(4, 1) == "0" ? str.Substring(5, 1) : str.Substring(4, 2);
+
+                    return new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
+                }
+                return null;
+            }
+        }
 
 
         /// <summary>

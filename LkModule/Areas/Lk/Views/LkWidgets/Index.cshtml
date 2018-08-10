@@ -42,46 +42,6 @@
         </div>
     </div>
 }
-else
-{
-    <li>
-        <a href="/settings" class="text-orange">Подключить лицевой счет</a>
-    </li>
-}
 
-<script>
-    $(document).ready(function (e) {
-        //Переключение лс
-        $('.setSubscDefault-link').click(function (e) {
-            e.preventDefault();
-
-            var _subscrId = $(this).data('subscrId');
-            var _action = $(this).attr("href");
-
-            try {
-                $.ajax({
-                    method: "POST",
-                    url: _action,
-                    async: true,
-                    data: { subscrId: _subscrId },
-                })
-                    .done(function (response) {
-                        location.reload();
-                    })
-                    .fail(function (jqXHR, status) {
-                        console.log("Ошибка" + " " + status + " " + jqXHR);
-                    })
-                    .always(function (response) {
-
-                    });
-            }
-            catch (ex) {
-                console.log(ex);
-            };
-
-        });
-
-    });
-</script>
 
 

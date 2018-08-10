@@ -22,11 +22,12 @@
                 {
                     amountWithOutTax = amountWithOutTax - item.Tax.Value;
                 }
+
                 <div class="factura @(i==1?"factura_open":"")">
                     <table>
                         <tr>
                             <td>@item.DocType № @item.Number <span>от @item.Date.ToString("dd.MM.yyyy")</span></td>
-                            <td><span>Период расчета:</span> @item.Period</td>
+                            <td><span>Период расчета:</span> @item.Period.ToString("MMMM yyyy")</td>
                             <td>
                                 <a class="js_collapse_btn" role="button" data-toggle="collapse" href="#invoice_@item.Link" aria-expanded="false" aria-controls="collapseExample">
                                     @(i == 1 ? "Свернуть" : "Подробнее")

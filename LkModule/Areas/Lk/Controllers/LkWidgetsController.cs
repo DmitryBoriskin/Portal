@@ -32,7 +32,7 @@ namespace LkModule.Areas.Lk.Controllers
             var userSubscr = _Repository.GetUserSubscrDefault(userId);
             if (userSubscr != null)
             {
-                model.List = _Repository.GetSubscrSaldoInfo(userSubscr.Id);
+                model.List = _Repository.GetSubscrSaldoInfo(userId);
                 model.Item = (model.List != null) ? model.List.SingleOrDefault(s => s.Default == true) : null;
             }
 
@@ -148,8 +148,7 @@ namespace LkModule.Areas.Lk.Controllers
             if (string.IsNullOrEmpty(ViewName))
                 throw new Exception("Не указан шаблон представления для данного контроллера и метода");
 
-            FilterModel filter;
-            filter = GetFilter();
+            var filter = GetFilter();
 
             if (!filter.Date.HasValue)
                 filter.Date = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
@@ -172,17 +171,17 @@ namespace LkModule.Areas.Lk.Controllers
 
                 if (balances != null && balances.Count() > 0)
                 {
-                    foreach (var balance in balances)
-                    {
-                        if (balance.PeriodId.HasValue)
-                        {
-                            var str = balance.PeriodId.Value.ToString();
-                            var year = str.Substring(0, 4);
-                            var month = str.Substring(4, 1) == "0" ? str.Substring(5, 1) : str.Substring(4, 2);
+                    //foreach (var balance in balances)
+                    //{
+                    //    if (balance.PeriodId.HasValue)
+                    //    {
+                    //        var str = balance.PeriodId.Value.ToString();
+                    //        var year = str.Substring(0, 4);
+                    //        var month = str.Substring(4, 1) == "0" ? str.Substring(5, 1) : str.Substring(4, 2);
 
-                            balance.Period = new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
-                        }
-                    }
+                    //        balance.Period = new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
+                    //    }
+                    //}
                     var data = balances.Reverse();
                     model.InvoicesAndPaymentsByDateJson = "[['Месяц','Начисления','Платежи']," + string.Join(",", data.Select(s => string.Format("['{0}',{1}, {2}]", s.Period.Value.ToString("MMM"), s.InvoiceAmount.Value.ToString("0.00").Replace(",", "."), s.PaymentAmount.Value.ToString("0.00").Replace(",", ".")))) + "]";
                 }
@@ -266,20 +265,20 @@ namespace LkModule.Areas.Lk.Controllers
                 model.Balance = (subscrBalances != null) ? subscrBalances.SingleOrDefault(s => s.Default == true) : null;
 
                 model.DebitCreditData = _Repository.GetDebitCreditData(userSubscr.Id, pFilter);
-                if (model.DebitCreditData != null && model.DebitCreditData.Items != null && model.DebitCreditData.Items.Count() > 0)
-                {
-                    foreach (var balance in model.DebitCreditData.Items)
-                    {
-                        if (balance.PeriodId.HasValue)
-                        {
-                            var str = balance.PeriodId.Value.ToString();
-                            var year = str.Substring(0, 4);
-                            var month = str.Substring(4, 1) == "0" ? str.Substring(5, 1) : str.Substring(4, 2);
+                //if (model.DebitCreditData != null && model.DebitCreditData.Items != null && model.DebitCreditData.Items.Count() > 0)
+                //{
+                //    foreach (var balance in model.DebitCreditData.Items)
+                //    {
+                //        if (balance.PeriodId.HasValue)
+                //        {
+                //            var str = balance.PeriodId.Value.ToString();
+                //            var year = str.Substring(0, 4);
+                //            var month = str.Substring(4, 1) == "0" ? str.Substring(5, 1) : str.Substring(4, 2);
 
-                            balance.Period = new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
-                        }
-                    }
-                }
+                //            balance.Period = new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
+                //        }
+                //    }
+                //}
             }
 
             return PartialView(ViewName, model);

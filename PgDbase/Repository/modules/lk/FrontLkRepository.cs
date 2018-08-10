@@ -576,7 +576,7 @@ namespace PgDbase.Repository.front
                         DateDue = s.d_date_due,
 
                         Debit = s.b_debit,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                         Payed = s.b_closed,
 
                         StatusId = s.n_status,
@@ -668,7 +668,7 @@ namespace PgDbase.Repository.front
                         DateDue = s.d_date_due,
 
                         Debit = s.b_debit,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                         Payed = s.b_closed,
 
                         StatusId = s.n_status,
@@ -729,7 +729,7 @@ namespace PgDbase.Repository.front
                         DateDue = s.d_date_due,
 
                         Debit = s.b_debit,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                         Payed = s.b_closed,
 
                         StatusId = s.n_status,
@@ -949,7 +949,7 @@ namespace PgDbase.Repository.front
         /// <param name="subscr"></param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public Paged<PuModel> GetSubscrDevices(Guid subscr, FilterModel filter)
+        public Paged<PuModel> GetSubscrDevices(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -1168,7 +1168,7 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.id,
                         Date = s.d_date,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                         Amount = s.n_amount,
                         Destination = s.c_destination,
                         Documents = GetBindInvoiceDocuments(s.link)
@@ -1198,7 +1198,6 @@ namespace PgDbase.Repository.front
         {
             using (var db = new CMSdb(_context))
             {
-                var result = new Paged<PaymentModel>();
                 var query = db.lk_payments
                     .Where(w => w.f_subscr == subscr);
 
@@ -1218,7 +1217,7 @@ namespace PgDbase.Repository.front
                     {
                         Id = s.id,
                         Date = s.d_date,
-                        Period = s.n_period,
+                        PeriodId = s.n_period,
                         Amount = s.n_amount,
                         Destination = s.c_destination,
                         Documents = GetBindInvoiceDocuments(s.link)
@@ -1257,6 +1256,213 @@ namespace PgDbase.Repository.front
         }
 
         #endregion
+
+        // <summary>
+        /// Возвращает постраничный список расчетных ведомостей 
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public Paged<PaysheetModel> GetPaysheets(Guid subscr, LkFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_paysheets
+                    .Where(w => w.f_subscr == subscr);
+
+                if (filter.Date.HasValue)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date.Value);
+                }
+                if (filter.DateEnd.HasValue)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
+                }
+
+                int itemsCount = query.Count();
+                query = query.OrderBy(o => o.d_date);
+
+                var list = query
+                    .Skip(filter.Size * (filter.Page - 1))
+                    .Take(filter.Size)
+                    .Select(s => new PaysheetModel
+                    {
+                        Id = s.id,
+                        Link = s.link,
+                        Number = s.c_number,
+
+                        SubscrId = s.f_subscr,
+                        SubscrLink = s.n_subscr,
+
+                        DocTypeId = s.n_doctype,
+                        DocType = s.c_doctype,
+
+                        StatusId = s.n_status,
+                        Status = s.c_status,
+
+                        SaleCategoryId = s.n_sale_category,
+                        SaleCategory = s.c_sale_category,
+
+                        Date = s.d_date,
+                        DateBegin = s.d_date_begin,
+                        DateEnd = s.d_date_end,
+                        PeriodId = s.n_period,
+
+                        Amount = s.n_amount,
+                        Cons = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Quantity2 = s.n_quantity2,
+                        TaxAmount = s.n_tax,
+
+                        //Details = null,
+                        Documents = GetBindInvoiceDocuments(s.link)
+                    })
+                    .ToArray();
+
+                return  new Paged<PaysheetModel>
+                {
+                    Items = list,
+                    Pager = new PagerModel
+                    {
+                        PageNum = filter.Page,
+                        PageSize = filter.Size,
+                        TotalCount = itemsCount
+                    }
+                };
+            }
+        }
+
+        // <summary>
+        /// Возвращает список расчетных ведомостей в виде массива
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public PaysheetModel[] GetPaysheetsList(Guid subscr, LkFilter filter)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_paysheets
+                    .Where(w => w.f_subscr == subscr);
+
+                if (filter.Date.HasValue)
+                {
+                    query = query.Where(w => w.d_date >= filter.Date.Value);
+                }
+                if (filter.DateEnd.HasValue)
+                {
+                    query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
+                }
+
+                query = query.OrderBy(o => o.d_date);
+
+                var list = query
+                    .Select(s => new PaysheetModel
+                    {
+                        Id = s.id,
+                        Link = s.link,
+                        Number = s.c_number,
+
+                        SubscrId = s.f_subscr,
+                        SubscrLink = s.n_subscr,
+
+                        DocTypeId = s.n_doctype,
+                        DocType = s.c_doctype,
+
+                        StatusId = s.n_status,
+                        Status = s.c_status,
+
+                        SaleCategoryId = s.n_sale_category,
+                        SaleCategory = s.c_sale_category,
+                        
+                        Date = s.d_date,
+                        DateBegin = s.d_date_begin,
+                        DateEnd = s.d_date_end,
+                        PeriodId = s.n_period,
+
+                        Amount = s.n_amount,
+                        Cons = s.n_cons,
+                        Quantity = s.n_quantity,
+                        Quantity2 = s.n_quantity2,
+                        TaxAmount = s.n_tax,
+                        
+                        //Details = null,
+                        Documents = GetBindInvoiceDocuments(s.link)
+                    })
+                    .ToArray();
+
+                return list;
+            }
+        }
+
+        // <summary>
+        /// Возвращает список расчетных ведомостей в виде массива
+        /// </summary>
+        /// <param name="subscr"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public PaySheetDetailsModel[] GetPaysheets(Guid paysheetId)
+        {
+            using (var db = new CMSdb(_context))
+            {
+                var query = db.lk_paysheets_details
+                    .Where(w => w.f_paysheet == paysheetId);
+
+                var list = query
+                    .Select(s => new PaySheetDetailsModel
+                    {
+                        Id = s.id,
+                        Link = s.link,
+
+                        PaysheetId = s.f_paysheet,
+                        PaysheetLInk = s.n_paysheet,
+
+                        BillGrp = s.n_bill_grp,
+                        InvoceGrp = s.n_invoce_grp,
+
+                        CalcMethod = s.c_calc_method,
+                        DeviceId = s.f_device,
+                        DeviceLink = s.n_device,
+                        DeviceName = s.c_device,
+
+                        DateBegin = s.d_date_begin,
+                        DateEnd = s.d_date_end,
+                        Period = s.n_period,
+
+                        VoltageNominal = s.c_voltage_nominal,
+                        UnitId = s.n_unit,
+                        Unit = s.c_unit,
+
+                        EnergyLvlId = s.n_energy_lvl,
+                        EnergyLvl = s.c_energy_lvl,
+                        
+                        EnergyTypeId = s.n_energy_type,
+                        EnergyType = s.c_energy_type,
+
+                        SaleItem = s.c_sale_item,
+                        SaleItemName = s.c_sale_item_doc,
+
+                        TimeZoneId = s.n_tariff_zone,
+                        TimeZone = s.c_tariff,
+
+                        TariffId = s.n_tariff,
+                        Tariff = s.c_tariff,
+                        TariffAmount = s.n_tariff_amount,
+
+                        TaxPersent = s.n_tax_persent,
+                        Amount = s.n_amount,
+                        Quantity = s.n_quantity,
+                        TaxAmount = s.n_tax,
+                        Cons = s.n_cons,
+                        MrCons = s.n_mr_cons,
+                        Persent = s.n_persent,
+
+                    })
+                    .ToArray();
+
+                return list;
+            }
+        }
 
     }
 }

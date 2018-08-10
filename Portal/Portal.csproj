@@ -1166,6 +1166,7 @@
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\Manager.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\SubscrWidget\Manager.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\PU\Devices.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\LkWidgets\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

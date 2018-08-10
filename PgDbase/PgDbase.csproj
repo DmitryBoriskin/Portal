@@ -85,6 +85,7 @@
     <Compile Include="Entity\modules\lk\DepartmentModel.cs" />
     <Compile Include="Entity\modules\lk\MeterModel.cs" />
     <Compile Include="Entity\modules\lk\MeterDeviceModel.cs" />
+    <Compile Include="Entity\modules\lk\PaysheetModel.cs" />
     <Compile Include="Entity\modules\lk\PaymentModel.cs" />
     <Compile Include="Entity\modules\lk\SubscrModel.cs" />
     <Compile Include="Entity\modules\lk\TariffModel.cs" />

@@ -49,7 +49,8 @@ namespace LkModule.Areas.Lk.Controllers
 
             if (userSubscr != null)
             {
-                model.List = _Repository.GetSubscrDevices(userSubscr.Id, filter);
+                var pFilter = FilterModel.Extend<LkFilter>(filter);
+                model.List = _Repository.GetSubscrDevices(userSubscr.Id, pFilter);
             }
 
             if (filter.Date.HasValue)

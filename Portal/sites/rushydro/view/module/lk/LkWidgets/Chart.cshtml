@@ -29,7 +29,8 @@
             function drawCharts() {
                 var chartData = google.visualization.arrayToDataTable(eval("@Html.Raw(dataJson)"));
 
-                var optionsPayments = {
+                //Настройки для построения двух разных графиков в разных системах координат по оси Y
+                var optionsPayments_2 = {
                     isStacked: false,
                     chart: {
                         //title: 'Статистика потребления за @DateTime.Now.Year',
@@ -51,6 +52,22 @@
                             payments: { side: 'right', label: 'Платежи, руб' } // Right y-axis.
                         }
                     }
+                };
+
+                var optionsPayments = {
+                    isStacked: false,
+                    chart: {
+                        //title: 'Статистика потребления за @DateTime.Now.Year',
+                        //subtitle: 'руб.',
+                    },
+                    //width: 900,
+                    height: 400,
+                    isStacked: false,
+                    vAxis: { format: 'decimal' },
+
+                    colors: ['#ff7900', '#0050e6'],
+
+                    yAxis: { format: 'decimal'}
                 };
 
                 var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));

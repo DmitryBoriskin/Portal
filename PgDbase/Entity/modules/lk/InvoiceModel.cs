@@ -50,7 +50,22 @@ namespace PgDbase.entity
         /// <summary>
         /// Период
         /// </summary>
-        public int Period { get; set; }
+        public int PeriodId { get; set; }
+
+        /// <summary>
+        /// Период в формате DateTime
+        /// </summary>
+        public DateTime Period
+        {
+            get
+            {
+                var str = PeriodId.ToString();
+                var year = str.Substring(0, 4);
+                var month = str.Substring(4, 1) == "0" ? str.Substring(5, 1) : str.Substring(4, 2);
+
+                return new DateTime(int.Parse(year), int.Parse(month), 1, 0, 0, 0);
+            }
+        }
 
         /// <summary>
         /// Номер документа
@@ -156,6 +171,9 @@ namespace PgDbase.entity
         public InvoiceDetailModel[] Details { get; set; }
     }
 
+    /// <summary>
+    /// Выставленный счёт - детализация
+    /// </summary>
     public class InvoiceDetailModel
     {
         /// <summary>
