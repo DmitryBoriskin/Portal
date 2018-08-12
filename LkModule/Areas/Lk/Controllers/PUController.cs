@@ -61,11 +61,11 @@ namespace LkModule.Areas.Lk.Controllers
                 var pFilter = FilterModel.Extend<LkFilter>(filter);
                 model.List = _Repository.GetSubscrDevices(userSubscr.Id, pFilter);
 
-                var paysheets = _Repository.GetPaysheetsList(userSubscr.Id, pFilter);
-                if (paysheets != null && paysheets.Count() > 0)
+                var cons = _Repository.GetConsumptionStatistics(userSubscr.Id, pFilter);
+                if (cons != null && cons.Count() > 0)
                 {
-                    var data = paysheets.Reverse();
-                    model.СonsumptionDataJson = "[['Месяц','Потребление']," + string.Join(",", data.Select(s => string.Format("['{0}',{1}]", s.Period.ToString("MMM"), s.Amount.Value.ToString("0.00").Replace(",", ".")))) + "]";
+                    var data = cons.Reverse();
+                    model.СonsumptionDataJson = "[['Месяц','Потребление', 'Мощность']," + string.Join(",", data.Select(s => string.Format("['{0}',{1},{2}]", s.Period.Value.ToString("MMM"), s.ConsumptionAmount1.Value.ToString("0.00").Replace(",", "."), s.ConsumptionAmount2.Value.ToString("0.00").Replace(",", ".")))) + "]";
                 }
             }
             model.Filter = filter;

@@ -167,7 +167,7 @@ namespace LkModule.Areas.Lk.Controllers
                 var pFilter = FilterModel.Extend<LkFilter>(filter);
 
                 //Для двойного графика (начисления, платежи)
-                var balances = _Repository.GetDebitCreditList(userSubscr.Id, pFilter);
+                var balances = _Repository.GetDebitCreditStatisticsList(userSubscr.Id, pFilter);
 
                 if (balances != null && balances.Count() > 0)
                 {

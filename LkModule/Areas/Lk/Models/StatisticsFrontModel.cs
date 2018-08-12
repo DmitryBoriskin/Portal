@@ -27,7 +27,7 @@ namespace LkModule.Areas.Lk.Models
         /// <summary>
         /// Начисления и платежи, баланс для главной страницы
         /// </summary>
-        public Paged<DebitCreditModel> DebitCreditData { get; set; }
+        public Paged<StatisticsModel> DebitCreditData { get; set; }
 
         /// <summary>
         /// Текущий баланс

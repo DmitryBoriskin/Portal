@@ -5,7 +5,7 @@ namespace PgDbase.entity
     /// <summary>
     /// Выставленный счёт
     /// </summary>
-    public class DebitCreditModel
+    public class StatisticsModel
     {
         /// <summary>
         /// Линк в ОМНИС
@@ -50,6 +50,16 @@ namespace PgDbase.entity
         /// Сумма по платежам
         /// </summary>
         public decimal? PaymentAmount { get; set; }
+
+        /// <summary>
+        /// Сумма по потреблению по группе КВт*ч
+        /// </summary>
+        public decimal? ConsumptionAmount1 { get; set; }
+
+        /// <summary>
+        /// Сумма по потреблению по группе Квт
+        /// </summary>
+        public decimal? ConsumptionAmount2 { get; set; }
 
     }
 }

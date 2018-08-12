@@ -42,16 +42,16 @@
                     vAxis: { format: 'decimal' },
 
                     colors: ['#ff7900','#0050e6'],
-                    series: {
-                        0: { axis: 'invoices' },
-                        1: { axis: 'payments' }
-                    },
-                    axes: {
-                        y: {
-                            invoices : { label: 'Начисления, руб' }, // Left y-axis.
-                            payments: { side: 'right', label: 'Платежи, руб' } // Right y-axis.
-                        }
-                    }
+                    //series: {
+                    //    0: { axis: 'invoices' },
+                    //    1: { axis: 'payments' }
+                    //},
+                    //axes: {
+                    //    y: {
+                    //        invoices : { label: 'Начисления, руб' }, // Left y-axis.
+                    //        payments: { side: 'right', label: 'Платежи, руб' } // Right y-axis.
+                    //    }
+                    //}
                 };
 
                 var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));

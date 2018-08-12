@@ -1,5 +1,5 @@
-﻿@model PuFrontModel
-@using LkModule.Areas.Lk.Models
+﻿@using LkModule.Areas.Lk.Models
+@model PuFrontModel
 
 @{
     Layout = ViewBag.Layout;
@@ -34,7 +34,7 @@
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Дата установки</span></div>
-                            <div class="keyval_val">@(Model.Devices.InstallDate.HasValue?@Model.Devices.InstallDate.Value.ToString("d"):"")</div>
+                            <div class="keyval_val">@(Model.Devices.InstallDate.HasValue ? @Model.Devices.InstallDate.Value.ToString("d") : "")</div>
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Место установки</span></div>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Дата поверки</span></div>
-                            <div class="keyval_val">@(Model.Devices.CheckDate.HasValue? @Model.Devices.CheckDate.Value.ToString("d"):"")</div>
+                            <div class="keyval_val">@(Model.Devices.CheckDate.HasValue ? @Model.Devices.CheckDate.Value.ToString("d") : "")</div>
                         </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Дата следующей поверки</span></div>
@@ -55,13 +55,13 @@
                         <div class="keyval">
                             <div class="keyval_key"><span>Тариф по уровню напряжения</span></div>
                             <div class="keyval_val"></div>
-                        </div>                        
+                        </div>
                         <div class="keyval">
                             <div class="keyval_key"><span>Расчетный коэффициент</span></div>
                             <div class="keyval_val">@Model.Devices.Multiplier</div>
                         </div>
                     </div>
-                    <div class="col-md-6">                        
+                    <div class="col-md-6">
                         <div class="keyval">
                             <div class="keyval_key"><span>Категория</span></div>
                             <div class="keyval_val">@Model.Devices.DeviceInfo.DeviceCategory</div>
@@ -104,7 +104,7 @@
             <div class="devices_meters">
                 <h3 class="devices_single_name">Показания прибора</h3>
 
-                <form role="form" id="filter-form">
+                @*<form role="form" id="filter-form">
                     <div class="row">
                         <div class="col-xs-8 col-sm-4">
                             <div class="form-group">
@@ -117,10 +117,12 @@
                             </div>
                         </div>
                     </div>
-                </form>
-                
+                </form>*@
 
-                @if (Model.DevicesMeter != null && Model.DevicesMeter.Items!=null)
+                @Html.Partial("/sites/rushydro/view/module/lk/PU/Part/Filter.cshtml")
+
+
+                @if (Model.DevicesMeter != null && Model.DevicesMeter.Items != null)
                 {
                     <table>
                         <tr>
@@ -149,13 +151,15 @@
                 }
             </div>
         </div>
-        
+
     </div>
 </div>
 
-
-
 @section Scripts {
+    <script src="~/sites/rushydro/content/module/lk/js/script.js"></script>
+}
+
+@*@section Scripts {
     <script>
         $(document).ready(function (e) {
 
@@ -210,7 +214,7 @@
 
 
 
-            
+
 
             $("#js_filterPayed-select").on("change", function () {
                 $("#filter-form").submit();
@@ -222,4 +226,4 @@
 
 
     </script>
-}
+}*@

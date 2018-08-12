@@ -1164,8 +1164,9 @@
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\Chart.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\DebitCredit.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\Manager.cshtml" />
-    <Content Include="sites\rushydro\view\module\lk\PU\Devices.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Item.cshtml" />
     <Content Include="sites\rushydro\view\module\lk\LkWidgets\Index.cshtml" />
+    <Content Include="sites\rushydro\view\module\lk\PU\Part\Chart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

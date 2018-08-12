@@ -850,7 +850,7 @@ namespace PgDbase.Repository.front
         /// </summary>
         /// <param name="subscr"></param>
         /// <returns></returns>
-        public DebitCreditModel[] GetDebitCreditList(Guid subscr, LkFilter filter)
+        public StatisticsModel[] GetDebitCreditStatisticsList(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -873,7 +873,7 @@ namespace PgDbase.Repository.front
                 query = query.OrderByDescending(o => o.n_period);
 
                 var list = query
-                    .Select(s => new DebitCreditModel
+                    .Select(s => new StatisticsModel
                     {
                         SubscrId = s.f_subscr,
                         Subscr = s.n_subscr,
@@ -892,7 +892,7 @@ namespace PgDbase.Repository.front
         /// </summary>
         /// <param name="subscr"></param>
         /// <returns></returns>
-        public Paged<DebitCreditModel> GetDebitCreditData(Guid subscr, LkFilter filter)
+        public Paged<StatisticsModel> GetDebitCreditData(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
@@ -918,7 +918,7 @@ namespace PgDbase.Repository.front
                 var list = query
                     .Skip(filter.Size * (filter.Page - 1))
                     .Take(filter.Size)
-                    .Select(s => new DebitCreditModel
+                    .Select(s => new StatisticsModel
                     {
                         SubscrId = s.f_subscr,
                         Subscr = s.n_subscr,
@@ -929,7 +929,7 @@ namespace PgDbase.Repository.front
                     })
                      .ToArray();
 
-                return new Paged<DebitCreditModel>
+                return new Paged<StatisticsModel>
                 {
                     Items = list,
                     Pager = new PagerModel
@@ -1369,56 +1369,39 @@ namespace PgDbase.Repository.front
         /// <param name="subscr"></param>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public PaysheetModel[] GetPaysheetsList(Guid subscr, LkFilter filter)
+        public StatisticsModel[] GetConsumptionStatistics(Guid subscr, LkFilter filter)
         {
             using (var db = new CMSdb(_context))
             {
-                var query = db.lk_paysheets
+                var query = db.lk_cv_subscr_consumption
                     .Where(w => w.f_subscr == subscr);
 
                 if (filter.Date.HasValue)
                 {
-                    query = query.Where(w => w.d_date >= filter.Date.Value);
+                    var month = (filter.Date.Value.Month < 10) ? "0" + filter.Date.Value.Month : filter.Date.Value.Month.ToString();
+                    var beginPeriod = int.Parse($"{filter.Date.Value.Year}{month}");
+                    query = query.Where(w => w.n_period >= beginPeriod);
                 }
                 if (filter.DateEnd.HasValue)
                 {
-                    query = query.Where(w => w.d_date <= filter.DateEnd.Value.AddDays(1));
+                    var month = (filter.DateEnd.Value.Month < 10) ? "0" + filter.DateEnd.Value.Month : filter.DateEnd.Value.Month.ToString();
+                    var endPeriod = int.Parse($"{filter.DateEnd.Value.Year}{month}");
+                    query = query.Where(w => w.n_period <= endPeriod);
                 }
 
-                query = query.OrderBy(o => o.d_date);
+                query = query.OrderByDescending(o => o.n_period);
 
                 var list = query
-                    .Select(s => new PaysheetModel
+                    .Select(s => new StatisticsModel
                     {
-                        Id = s.id,
-                        Link = s.link,
-                        Number = s.c_number,
+                       
 
                         SubscrId = s.f_subscr,
-                        SubscrLink = s.n_subscr,
-
-                        DocTypeId = s.n_doctype,
-                        DocType = s.c_doctype,
-
-                        StatusId = s.n_status,
-                        Status = s.c_status,
-
-                        SaleCategoryId = s.n_sale_category,
-                        SaleCategory = s.c_sale_category,
-                        
-                        Date = s.d_date,
-                        DateBegin = s.d_date_begin,
-                        DateEnd = s.d_date_end,
+                        Subscr = s.n_subscr,
                         PeriodId = s.n_period,
 
-                        Amount = s.n_amount,
-                        Cons = s.n_cons,
-                        Quantity = s.n_quantity,
-                        Quantity2 = s.n_quantity2,
-                        TaxAmount = s.n_tax,
-                        
-                        //Details = null,
-                        Documents = GetBindInvoiceDocuments(s.link)
+                        ConsumptionAmount1 = s.n_quantity_kvth,
+                        ConsumptionAmount2 = s.n_quantity_kvt
                     })
                     .ToArray();
 

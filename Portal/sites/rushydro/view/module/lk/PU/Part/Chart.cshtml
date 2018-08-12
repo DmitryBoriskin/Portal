@@ -1,20 +1,21 @@
 ﻿@using LkModule.Areas.Lk.Models
-@model StatisticsFrontModel
+@model PuFrontModel
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 @{
-    string dataJson = Model.InvoicesAndPaymentsByDateJson;
+    string dataJson = Model.СonsumptionDataJson;
 }
 
 <div class="block block_white block_padd indicators">
-    <div class="block_head__blue">Ключевые показатели</div>
+    <div class="block_head__blue">Статистика потребления</div>
+    @*<input type="text" class="form-control meterActualDate-input" value="@DateTime.Now.ToString(" dd.MM.yyyy")" />*@
 
-    @Html.Partial("/sites/rushydro/view/module/lk/LkWidgets/Part/Filter.cshtml")
+    @Html.Partial("/sites/rushydro/view/module/lk/PU/Part/Filter.cshtml")
 
     <div class="block block__white" style="min-height:438px;">
         <div id="chartPayments" class="chart-block">
-            <span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />
+            @*<span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />*@
             <div class="noItems">Нет данных...</div>
         </div>
 
@@ -29,30 +30,6 @@
                 var chartData = google.visualization.arrayToDataTable(eval("@Html.Raw(dataJson)"));
 
                 //Настройки для построения двух разных графиков в разных системах координат по оси Y
-                var optionsPayments_2 = {
-                    isStacked: false,
-                    chart: {
-                        //title: 'Статистика потребления за @DateTime.Now.Year',
-                        //subtitle: 'руб.',
-                    },
-                    //width: 900,
-                    height: 400,
-                    isStacked: false,
-                    vAxis: { format: 'decimal' },
-
-                    colors: ['#ff7900','#0050e6'],
-                    series: {
-                        0: { axis: 'invoices' },
-                        1: { axis: 'payments' }
-                    },
-                    axes: {
-                        y: {
-                            invoices: { label: 'Начисления, руб' }, // Left y-axis.
-                            payments: { side: 'right', label: 'Платежи, руб' } // Right y-axis.
-                        }
-                    }
-                };
-
                 var optionsPayments = {
                     isStacked: false,
                     chart: {
@@ -62,11 +39,18 @@
                     //width: 900,
                     height: 400,
                     isStacked: false,
-                    vAxis: { format: 'decimal' },
-
-                    colors: ['#ff7900', '#0050e6'],
-
-                    yAxis: { format: 'decimal'}
+                    
+                    colors: ['#ff7900','#0050e6'],
+                    series: {
+                        0: { axis: 'cons1' },
+                        1: { axis: 'cons2' }
+                    },
+                    axes: {
+                        y: {
+                            cons1: { label: 'Потребление, Кв.ч' }, // Left y-axis.
+                            cons2: { side: 'right', label: 'Мощность, КВт' } // Right y-axis.
+                        }
+                    }
                 };
 
                 var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));
