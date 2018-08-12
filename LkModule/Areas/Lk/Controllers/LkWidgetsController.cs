@@ -183,7 +183,10 @@ namespace LkModule.Areas.Lk.Controllers
                     //    }
                     //}
                     var data = balances.Reverse();
-                    model.InvoicesAndPaymentsByDateJson = "[['Месяц','Начисления','Платежи']," + string.Join(",", data.Select(s => string.Format("['{0}',{1}, {2}]", s.Period.Value.ToString("MMM"), s.InvoiceAmount.Value.ToString("0.00").Replace(",", "."), s.PaymentAmount.Value.ToString("0.00").Replace(",", ".")))) + "]";
+                    model.InvoicesAndPaymentsByDateJson = "[['Месяц','Начисления, ₽','Платежи, ₽']," + string.Join(",", data.Select(s => string.Format("['{0}',{1}, {2}]", s.Period.Value.ToString("MMM"), s.InvoiceAmount.Value.ToString("0.00").Replace(",", "."), s.PaymentAmount.Value.ToString("0.00").Replace(",", ".")))) + "]";
+
+                    model.InvoicesSumByPeriod = data.Sum(i => i.InvoiceAmount) ?? 0.0m;
+                    model.PaymentsSumByPeriod = data.Sum(p => p.PaymentAmount) ?? 0.0m;
                 }
 
                 #region Графики по отдельности (закоментировано)

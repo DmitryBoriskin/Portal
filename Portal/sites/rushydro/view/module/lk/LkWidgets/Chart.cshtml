@@ -13,14 +13,31 @@
     @Html.Partial("/sites/rushydro/view/module/lk/LkWidgets/Part/Filter.cshtml")
 
     <div class="block block__white" style="min-height:438px;">
-        <div id="chartPayments" class="chart-block">
-            <span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />
-            <div class="noItems">Нет данных...</div>
+        <div class="row">
+            <div class="col-md-9">
+                <div id="chartPayments" class="chart-block">
+                    <span style="color:rgb(117, 117, 117);font-size:16px;">Статистика потребления за @DateTime.Now.Year</span><br /><br />
+                    <div class="noItems">Нет данных...</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <br /><br /><br /><br /><br />
+                <div><span class="block_head__blue">Начислено:</span><br />
+                    @Model.InvoicesSumByPeriod.ToString("N2")<span>₽</span>
+                </div>
+                <br />
+                <div><span class="block_head__blue">Оплачено:</span><br />
+                    @Model.PaymentsSumByPeriod.ToString("N2")<span>₽</span>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
 
-        @if (!string.IsNullOrEmpty(dataJson))
-        {
-            <script type="text/javascript">
+
+@if (!string.IsNullOrEmpty(dataJson))
+{
+    <script type="text/javascript">
             google.charts.load('current', { packages: ['bar', 'corechart'], 'language': 'ru' });
             google.charts.setOnLoadCallback(drawCharts);
 
@@ -47,7 +64,13 @@
                     },
                     axes: {
                         y: {
-                            invoices: { label: 'Начисления, руб' }, // Left y-axis.
+                            invoices: {
+                                title: 'Hello',
+                                titleTextStyle: {
+                                    color: '#000000'
+                                },
+                                label: 'Начисления, руб'
+                            }, // Left y-axis.
                             payments: { side: 'right', label: 'Платежи, руб' } // Right y-axis.
                         }
                     }
@@ -72,7 +95,6 @@
                 var chartPayments = new google.charts.Bar(document.getElementById('chartPayments'));
                 chartPayments.draw(chartData, optionsPayments);
             }
-            </script>
-        }
-    </div>
-</div>
+    </script>
+}
+

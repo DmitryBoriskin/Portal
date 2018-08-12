@@ -20,6 +20,16 @@ namespace LkModule.Areas.Lk.Models
         public string InvoicesByDateJson { get; set; }
 
         /// <summary>
+        /// Итоговая сумма платежей за период
+        /// </summary>
+        public decimal PaymentsSumByPeriod { get; set; }
+
+        /// <summary>
+        /// Итоговая сумма начислений за период
+        /// </summary>
+        public decimal InvoicesSumByPeriod { get; set; }
+
+        /// <summary>
         /// Начисления и платежи (объединение) json
         /// </summary>
         public string InvoicesAndPaymentsByDateJson { get; set; }
